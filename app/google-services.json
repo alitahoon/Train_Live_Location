@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "708577088590",
+    "project_id": "trainlocationlive",
+    "storage_bucket": "trainlocationlive.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:708577088590:android:590b4dd025b86145c71f1f",
+        "android_client_info": {
+          "package_name": "com.example.trainlivelocation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "708577088590-dbehm1is961r6nt1r2u0uo3kq2pa1elv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.trainlivelocation",
+            "certificate_hash": "bee508ae443294e4100c71099a7a36fac5f2a921"
+          }
+        },
+        {
+          "client_id": "708577088590-nobj5dk6sqi68l9suh7enat4br0q4k6f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSgUKRQNBpaKBnPAUuJR_h5NK9QFzry8w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "708577088590-nobj5dk6sqi68l9suh7enat4br0q4k6f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

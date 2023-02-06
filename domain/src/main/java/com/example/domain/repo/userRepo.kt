@@ -1,8 +1,10 @@
 package com.example.domain.repo
 
-import com.example.domain.entity.user
+import com.example.domain.entity.userResponse
 
 interface userRepo {
     fun checkUserFirebaseAuth():Boolean
-    fun getUserData(): user
+    fun getUserData(): userResponse
+
+    fun addNewUser()
 }

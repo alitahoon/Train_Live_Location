@@ -18,6 +18,6 @@ object UserCaseModule  {
     }
     @Provides
     fun provideUserCaseCheckAuth(UserRepo: userRepo): CheckUserAuthFB{
-        return CheckUserAuthFB()
+        return CheckUserAuthFB(UserRepo)
     }
 }

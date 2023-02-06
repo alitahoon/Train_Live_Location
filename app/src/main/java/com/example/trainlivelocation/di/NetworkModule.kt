@@ -29,7 +29,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient):Retrofit{
         return Retrofit.Builder()
-            .baseUrl("")
+            .baseUrl("https://egypttrainapi.azurewebsites.net")
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -40,4 +40,5 @@ object NetworkModule {
     fun provideApiService(retrofit: Retrofit):ApiService{
         return retrofit.create(ApiService::class.java)
     }
+
 }
