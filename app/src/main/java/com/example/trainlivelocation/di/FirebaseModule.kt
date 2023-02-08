@@ -1,8 +1,7 @@
 package com.example.trainlivelocation.di
 
-import com.example.domain.repo.userRepo
+import com.example.domain.repo.UserRepo
 import com.example.domain.usecase.AddNewUser
-import com.example.domain.usecase.CheckUserAuthFB
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,13 +14,13 @@ object FirebaseModule {
 
     @Provides
     @Singleton
-    fun provideCheckUserAuthFB(UserRepo: userRepo):CheckUserAuthFB{
+    fun provideCheckUserAuthFB(UserRepo: UserRepo):CheckUserAuthFB{
         return CheckUserAuthFB(UserRepo)
     }
 
     @Provides
     @Singleton
-    fun provideAddNewUser(UserRepo: userRepo):AddNewUser{
+    fun provideAddNewUser(UserRepo: UserRepo):AddNewUser{
         return AddNewUser(UserRepo)
     }
 }

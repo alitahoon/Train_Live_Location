@@ -3,9 +3,9 @@ package com.example.repo
 import com.example.data.ApiService
 import com.example.data.FirebaseService
 import com.example.domain.entity.userResponse
-import com.example.domain.repo.userRepo
+import com.example.domain.repo.UserRepo
 
-class userRepoImpl(private val apiService:ApiService,private val firebaseService: FirebaseService): userRepo{
+class userRepoImpl(private val apiService:ApiService,private val firebaseService: FirebaseService): UserRepo{
     override fun checkUserFirebaseAuth(): Boolean =firebaseService.checkUserAuthWithPhone()
 
     override fun getUserData(): userResponse =apiService.getUserData()

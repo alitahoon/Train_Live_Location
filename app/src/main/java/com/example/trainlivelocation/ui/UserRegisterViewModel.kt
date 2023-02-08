@@ -1,6 +1,5 @@
 package com.example.trainlivelocation.ui
 
-import com.example.domain.usecase.CheckUserAuthFB
 import com.example.domain.usecase.AddNewUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
