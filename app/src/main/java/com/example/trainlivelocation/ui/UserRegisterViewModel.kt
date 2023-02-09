@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.domain.usecase.*
 import com.example.trainlivelocation.R
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +20,7 @@ class UserRegisterViewModel @Inject constructor(
     private val setVerificationId: SetVerificationId,
     private val verifyOtpCode: VerifyOtpCode,
     private val jobsList:ArrayList< out String>
-){
+):ViewModel(){
     lateinit var userRegisterListener:RegisterListener
     lateinit var listenerCallbacks:PhoneCallbacksListener
     val gender_redio_checked=MutableLiveData<Int>()

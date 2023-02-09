@@ -3,7 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
-    id 'com.google.gms.google-services'
+//    id 'com.google.gms.google-services'
 }
 
 android {
@@ -43,6 +43,7 @@ android {
 
 dependencies {
     def lifecycle_version = "2.5.1"
+    def lottieVersion = "5.2.0"
 
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.0'
@@ -90,5 +91,6 @@ dependencies {
     // Add the dependency for the Firebase Authentication library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 
 }
