@@ -56,6 +56,7 @@ class Register : Fragment() ,RegisterListener{
             .apply {
                 this.viewmodel=registerViewModel
             }
+        registerViewModel?.setbaseActivity(requireActivity())
         binding.viewmodel?.userRegisterListener=this
         return binding.root
     }

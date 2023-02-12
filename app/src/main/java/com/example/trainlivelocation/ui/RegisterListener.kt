@@ -9,5 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 interface RegisterListener {
     fun onStartRegister()
     fun onSuccessRegister()
+    fun onOtbCodeSendToUser()
+
     fun onFailure(message:String)
 }

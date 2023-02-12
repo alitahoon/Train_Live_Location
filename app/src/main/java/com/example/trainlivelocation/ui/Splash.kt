@@ -26,6 +26,7 @@ class Splash : AppCompatActivity() {
 //        val animationScale = AnimationUtils.loadAnimation(this, R.anim.zoom_in)
 //        binding.appLogo.startAnimation(animationScale)
 //        supportFragmentManager.fragmentFactory=mainFragemntFactory
+
         supportFragmentManager.beginTransaction()
             .replace(R.id.splash_fragmentContainer,Register(),null)
             .commit()
