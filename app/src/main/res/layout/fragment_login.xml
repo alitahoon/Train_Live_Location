@@ -18,6 +18,7 @@
         <androidx.appcompat.widget.AppCompatEditText
             android:drawableLeft="@drawable/phone_icon"
             android:drawablePadding="10dp"
+            android:textColor="@color/new_ui_color1"
             android:text="@={viewmodel.userPhone}"
             android:id="@+id/appCompatEditText"
             android:layout_width="match_parent"
@@ -35,6 +36,7 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/appCompatEditText2"
+            android:textColor="@color/new_ui_color1"
             android:drawableLeft="@drawable/password_icon"
             android:drawablePadding="10dp"
             android:layout_width="match_parent"

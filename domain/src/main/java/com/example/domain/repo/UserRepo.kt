@@ -1,20 +1,18 @@
 package com.example.domain.repo
 
 import android.app.Activity
+import com.example.domain.entity.RegisterUser
 import com.example.domain.entity.userResponse
 import com.example.domain.entity.userResponseItem
+import retrofit2.Call
+import retrofit2.Response
 
 interface UserRepo {
-    fun getUserData(): userResponseItem
+     suspend fun getUserData(userPhone:String?,userPassword:String?): Response<ArrayList<userResponseItem>>
 
-    fun addNewUser():userResponseItem
+     suspend fun  addNewUser(user: RegisterUser?):Response<ArrayList<userResponseItem>>
     suspend fun sendOtpToPhone(phoneNumber: String, activity: Activity)
-
     suspend fun resendOtpCode(phoneNumber: String, activity: Activity)
 
-    suspend fun isUserVerified(): Boolean
 
-    suspend fun setVerificationId(verificationId: String)
-
-    fun verifyOtpCode(otpCode: String)
 }

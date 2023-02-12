@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.TrainLiveLocation" parent="Base.Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.TrainLiveLocation" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/basicColor</item>
         <item name="colorPrimaryVariant">@color/secondColor</item>
@@ -13,4 +13,13 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="Theme.TrainLiveLocation.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.TrainLiveLocation.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.TrainLiveLocation.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

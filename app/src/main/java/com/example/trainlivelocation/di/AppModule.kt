@@ -16,9 +16,8 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
     @Provides
-    fun providesFireAuthInstance(@ApplicationContext context: Application): Array<out String> {
-        return context.resources.getStringArray(R.array.jopsArray)
+    fun providesArrayString(@ApplicationContext context: Application):Application{
+        return context
     }
 }

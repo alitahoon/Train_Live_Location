@@ -1,5 +1,6 @@
 package com.example.trainlivelocation.di
 
+import com.example.data.FirebaseService
 import com.example.domain.repo.UserRepo
 import com.example.domain.usecase.AddNewUser
 import com.example.trainlivelocation.ui.PhoneCallbacksListener
@@ -15,7 +16,11 @@ import javax.inject.Singleton
 object FirebaseModule {
 
     @Provides
+    @Singleton
     fun providesFireAuthInstance():FirebaseAuth{
         return FirebaseAuth.getInstance()
     }
+
+
+
 }

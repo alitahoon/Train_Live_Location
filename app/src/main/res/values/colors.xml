@@ -10,4 +10,7 @@
     <color name="textAlarmColor">#FF0B0B</color>
     <color name="textLogoColor">#1572A1</color>
     <color name="textHintColorSecond">#676161</color>
+    <color name="new_ui_color1">#E69023</color>
+    <color name="new_ui_color2">#22222E</color>
+
 </resources>

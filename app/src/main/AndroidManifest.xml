@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".TrainLiveLocation"
         android:allowBackup="true"
@@ -13,20 +15,22 @@
         android:theme="@style/Theme.TrainLiveLocation"
         tools:targetApi="31">
         <activity
-            android:name=".ui.splash"
-            android:exported="true" >
+            android:name=".splash_new_ui"
+            android:exported="false"
+            android:label="@string/title_activity_splash_new_ui"
+            android:theme="@style/Theme.TrainLiveLocation.NoActionBar" />
+        <activity
+            android:name=".ui.Splash"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".ui.MainActivity"
-            android:exported="false">
-
-        </activity>
+            android:exported="false" />
     </application>
 
 </manifest>
