@@ -31,8 +31,8 @@ android {
 }
 
 dependencies {
-
-    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.4.2"
+    implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'com.google.android.material:material:1.8.0'
     testImplementation 'junit:junit:4.13.2'
@@ -46,6 +46,26 @@ dependencies {
     //Courtines
     implementation'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     implementation'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+
+
+    // Import the Firebase BoM
+    implementation platform('com.google.firebase:firebase-bom:31.2.0')
+    implementation("com.squareup:javapoet:1.13.0") // <-- added this
+
+
+    // TODO: Add the dependencies for Firebase products you want to use
+    // When using the BoM, don't specify versions in Firebase dependencies
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+
+
+    // Add the dependencies for any other desired Firebase products
+    // https://firebase.google.com/docs/android/setup#available-libraries
+
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:31.2.0')
+    // Add the dependency for the Firebase Authentication library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-auth-ktx'
 
 
     implementation project(path:':domain')

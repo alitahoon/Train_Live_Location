@@ -1,6 +1,9 @@
 package com.example.trainlivelocation
 
 import android.app.Application
+import android.content.Context
+import dagger.hilt.android.HiltAndroidApp
 
-class TrainLiveLocation : Application() {
+@HiltAndroidApp
+public class TrainLiveLocation : Application() {
 }

@@ -1,16 +1,11 @@
-package com.example.data
-
-import android.app.Activity
-
-interface FirebaseService {
-    fun checkUserAuthWithPhone():Boolean
-    suspend fun sendOtpToPhone(phoneNumber: String, activity: Activity)
-
-    suspend fun resendOtpCode(phoneNumber: String, activity: Activity)
-
-    suspend fun isUserVerified(): Boolean
-
-    suspend fun setVerificationId(verificationId: String)
-
-    fun verifyOtpCode(otpCode: String)
-}
+//package com.example.data
+//
+//import android.app.Activity
+//import com.google.firebase.auth.PhoneAuthOptions
+//
+//interface FirebaseService{
+//    suspend fun sendOtpToPhone(phoneNumber: String,phoneAuthOptions: PhoneAuthOptions)
+//
+//    suspend fun resendOtpCode(phoneNumber: String,phoneAuthOptions: PhoneAuthOptions)
+//
+//}

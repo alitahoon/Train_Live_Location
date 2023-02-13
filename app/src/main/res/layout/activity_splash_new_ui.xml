@@ -5,15 +5,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.splash_new_ui"
+<<<<<<< HEAD
     android:background="@color/white">
 
     <ImageView
         android:id="@+id/imageView"
+=======
+    android:background="@color/new_ui_color2">
+
+    <ImageView
+        android:id="@+id/imageView2"
+>>>>>>> origin/master
         android:layout_width="350dp"
         android:layout_height="350dp"
         android:layout_marginStart="-150dp"
         android:layout_marginTop="-150dp"
+<<<<<<< HEAD
         android:src="@drawable/sign_up_shape_circle"
+=======
+        android:src="@drawable/signup_shap_circule"
+>>>>>>> origin/master
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,19 +34,35 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="220dp"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:text="@string/welcome_back"
         android:textColor="@color/white"
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
+=======
+        android:text="@string/Wellcome_back"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+        app:layout_constraintEnd_toEndOf="@+id/imageView2"
+>>>>>>> origin/master
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <FrameLayout
+<<<<<<< HEAD
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
+=======
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+>>>>>>> origin/master
 </androidx.constraintlayout.widget.ConstraintLayout>

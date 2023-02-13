@@ -14,32 +14,26 @@ import dagger.hilt.components.SingletonComponent
 object UserCaseModule  {
 
     @Provides
-    fun provideUserCaseUserData(userRepo: UserRepo): GetUserData{
+    fun provideUserGetCaseUserData(userRepo: UserRepo): GetUserData{
         return GetUserData(userRepo)
     }
     @Provides
-    fun provideAddNewUser(userRepo: UserRepo):AddNewUser{
+    fun provideAddNewUser(userRepo: UserRepo):AddNewUser {
         return AddNewUser(userRepo)
     }
+
     @Provides
-    fun provideIsUserVerified(userRepo: UserRepo):IsUserVerified{
-        return IsUserVerified(userRepo)
+    fun provideSendOtbToPhone(userRepo: UserRepo):SendOtpToPhone{
+        return SendOtpToPhone(userRepo)
     }
     @Provides
-    fun provideResendOtbCode(userRepo: UserRepo,@ApplicationContext activity: MainActivity):ResendOtpCode{
-        return ResendOtpCode(userRepo,activity)
+    fun provideReSendOtbToPhone(userRepo: UserRepo):ResendOtpCode{
+        return ResendOtpCode(userRepo)
     }
+
     @Provides
-    fun provideSendOtbCode(userRepo: UserRepo,@ApplicationContext activity: MainActivity):SendOtpToPhone{
-        return SendOtpToPhone(userRepo,activity)
-    }
-    @Provides
-    fun provideSetVerificationId(userRepo: UserRepo):SetVerificationId{
-        return SetVerificationId(userRepo)
-    }
-    @Provides
-    fun provideVerifyOtbCode(userRepo: UserRepo):VerifyOtpCode{
-        return VerifyOtpCode(userRepo)
+    fun provideSignInWithPhoneAuthCredential(userRepo: UserRepo):SignInWithPhoneAuthCredential{
+        return SignInWithPhoneAuthCredential(userRepo)
     }
 
 

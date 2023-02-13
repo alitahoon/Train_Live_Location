@@ -7,8 +7,10 @@ import android.view.Window
 import android.view.WindowManager
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.ActivitySplashBinding
+import dagger.hilt.android.AndroidEntryPoint
 
-class splash : AppCompatActivity() {
+@AndroidEntryPoint
+class Splash : AppCompatActivity() {
     //    @Inject
 //    lateinit var mainFragemntFactory: MainFragemntFactory
     private lateinit var binding: ActivitySplashBinding
@@ -24,8 +26,9 @@ class splash : AppCompatActivity() {
 //        val animationScale = AnimationUtils.loadAnimation(this, R.anim.zoom_in)
 //        binding.appLogo.startAnimation(animationScale)
 //        supportFragmentManager.fragmentFactory=mainFragemntFactory
+
         supportFragmentManager.beginTransaction()
-            .replace(R.id.splash_fragmentContainer,register(),null)
+            .replace(R.id.splash_fragmentContainer,Register(),null)
             .commit()
 //        val splashRunnable=Runnable{
 //            binding.appLogo.setVisibility(View.GONE)
