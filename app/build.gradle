@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
 
+
 //    id 'com.google.gms.google-services'
 }
 
@@ -42,12 +43,18 @@ android {
         jvmTarget = '1.8'
     }
 }
+apply plugin: 'com.google.gms.google-services'
+
 
 dependencies {
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
+    def nav_version = "2.5.3"
     def lifecycle_version = "2.5.1"
     def lottieVersion = "5.2.0"
-    implementation "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.4.2"
+
+    // Kotlin navigation graph
+    implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
+    implementation("androidx.navigation:navigation-ui-ktx:$nav_version")
+
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
