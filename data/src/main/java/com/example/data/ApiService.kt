@@ -12,20 +12,14 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
-    @GET("api/user/UserLogin")
-    suspend fun getUserData(
-        @Query("phone") userPhone: String, @Query("password") userPassword: String
-    ): Response<ArrayList<userResponseItem>>
 
-    @POST("api/user/CreateUser")
-    suspend fun addNewUser(@Body user: RegisterUser?): Response<ArrayList<userResponseItem>>
 
 
 
 
     //Admins
     @GET("/api/Admin/GetAdmins")
-    suspend fun GetAdmins():Response<Admin>
+    suspend fun GetAdmins():Response<List<Admin>>
 
     @GET("/api/Admin/GetLoginAdmin/{phone}/{password}")
     suspend fun GetLoginAdmin(@Path ("phone") adminPhone:String, @Path("password")  adminPass:String):Response<Admin>
@@ -45,7 +39,7 @@ interface ApiService {
 
     //Comments
     @GET("/api/Comment/GetAllComments")
-    suspend fun GetAllComments():Response<Comment>
+    suspend fun GetAllComments():Response<List<Comment>>
 
     @GET("/api/Comment/GetComment/{id}")
     suspend fun GetComment(@Path("id") commentId:Int):Response<Comment>
@@ -61,7 +55,7 @@ interface ApiService {
 
     //Payment
     @GET("/api/Payment/GetPayments")
-    suspend fun GetPayments():Response<Payment>
+    suspend fun GetPayments():Response<List<Payment>>
 
     @GET("/api/Payment/GetPayment/{id}")
     suspend fun GetPayment(@Path("id") payId: Int):Response<Payment>
@@ -70,14 +64,14 @@ interface ApiService {
     suspend fun createPayment():Response<Payment>
 
     @PUT("/api/Payment/UpdatePayment/{Id}")
-    suspend fun UpdatePayment(@Path("Id") payId: Int):Response<Payment>
+    suspend fun UpdatePayment(@Path("Id") payId: Int):Response<UpPayment>
 
     @DELETE("/api/Payment/DeletePayment/{Id}")
     suspend fun DeletePayment(@Path("Id") payId: Int):Response<Payment>
 
     //Post
     @GET("/api/Post/GetAllPosts")
-    suspend fun GetAllPosts():Response<Post>
+    suspend fun GetAllPosts():Response<List<Post>>
 
     @GET("/api/Post/GetPost/{id}")
     suspend fun GetPost(@Path("id") postId: Int):Response<Post>
@@ -89,31 +83,31 @@ interface ApiService {
     suspend fun DeletePost(@Path("Id") postId: Int):Response<Post>
 
     @PUT("/api/Post/UpdatePost/{Id}")
-    suspend fun UpdatePost(@Path("Id") postId: Int):Response<Post>
+    suspend fun UpdatePost(@Path("Id") postId: Int):Response<UpPost>
 
 
     //Station
     @GET("/api/station/GetAllStation")
-    suspend fun GetAllStation():Response<Station>
+    suspend fun GetAllStation():Response<List<Station>>
 
     @GET("/api/station/GetStationsForOneTrain")
-    suspend fun GetStationsForOneTrain(@Query("trainId") trainId:Int):Response<Station>
+    suspend fun GetStationsForOneTrain(@Query("trainId") trainId:Int):Response<List<Station>>
 
     @GET("/api/station/GetStationById")
-    suspend fun GetStationById(@Query("Id") Id: Int):Response<Station>
+    suspend fun GetStationById(@Query("Id") StationId: Int):Response<Station>
 
     @POST("/api/station/CreateStation")
     suspend fun CreateStation():Response<Station>
 
     @DELETE("/api/station/DeleteStation")
-    suspend fun DeleteStation(@Query("Id") Id: Int):Response<Station>
+    suspend fun DeleteStation(@Query("Id") StationId: Int):Response<Station>
 
     @PUT("/api/station/UpdateStation")
     suspend fun UpdateStation(@Query("StationId") StationId: Int):Response<Station>
 
     //Ticket
     @GET("/api/ticket/GetTicketById")
-    suspend fun GetTicketById(@Query("Id") Id: Int):Response<Ticket>
+    suspend fun GetTicketById(@Query("Id") ticketId: Int):Response<Ticket>
 
     @POST("/api/ticket/CreateTicket")
     suspend fun CreateTicket():Response<Ticket>
@@ -123,6 +117,52 @@ interface ApiService {
 
     @GET("/api/ticket/CheckIfScannOrNot")
     suspend fun CheckIfScannOrNot(@Query("ticketId")ticketId:Int):Response<ScanTicket>
+
+
+    //Train
+    @GET("/api/train/GetAllConductor")
+    suspend fun GetAllConductor()
+
+    @GET("/api/train/GetAllDriver")
+    suspend fun GetAllDriver()
+
+    @GET("/api/train/GetTrains")
+    suspend fun GetTrains():Response<List<Train>>
+
+    @GET("/api/train/GetTrainById")
+    suspend fun GetTrainById(@Query("Id") trainId: Int):Response<Train>
+
+    @POST("/api/train/CreateTrain")
+    suspend fun CreateTrain():Response<Train>
+
+    @DELETE("/api/train/DeleteTrain")
+    suspend fun DeleteTrain(@Query("Id") trainId:Int):Response<Train>
+
+    @PUT("/api/train/UpdateTrain")
+    suspend fun UpdateTrain(@Query("trainId") trainId: Int):Response<Train>
+
+    //User
+
+       @GET("/api/user/GetUsers")
+       suspend fun GetUsers():Response<List<userResponseItem>>
+
+       @GET("/api/user/GetUserById")
+       suspend fun GetUserById(@Query("Id") userId:Int):Response<userResponseItem>
+       @GET("api/user/UserLogin")
+       suspend fun getUserData(
+        @Query("phone") userPhone: String, @Query("password") userPassword: String
+    ): Response<ArrayList<userResponseItem>>
+
+       @POST("api/user/CreateUser")
+       suspend fun addNewUser(@Body user: RegisterUser?): Response<ArrayList<userResponseItem>>
+
+       @DELETE("/api/user/DeleteUser")
+       suspend fun DeleteUser(@Query("Id") userId:Int):Response<userResponseItem>
+
+       @PUT("/api/user/UpdateUser")
+       suspend fun UpdateUser(@Query("userId") userId:Int):Response<UpdateUser>
+
+
 
 
 
