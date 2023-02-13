@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".ui.sign_in"
+    android:orientation="vertical"
+    android:gravity="center">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <EditText
+        android:id="@+id/signin_txt_email"
+        android:drawableEnd="@drawable/email_icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:hint="@string/email"
+        android:textColorHint="@color/white"
+        tools:layout_editor_absoluteX="50dp"
+        android:paddingVertical="5dp"
+        android:paddingHorizontal="10dp"
+        android:drawablePadding="5dp"
+        android:background="@drawable/signin_fragment_txt_selector"/>
+
+    <EditText
+        android:id="@+id/signin_txt_password"
+        android:drawableEnd="@drawable/password_icon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="50dp"
+        android:hint="@string/password"
+        android:paddingVertical="5dp"
+        android:paddingHorizontal="10dp"
+        android:drawablePadding="5dp"
+        android:background="@drawable/signin_fragment_txt_selector"
+        android:textColorHint="@color/white"
+        tools:layout_editor_absoluteX="50dp"
+        android:layout_marginTop="30dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/forget_password"
+        android:textAllCaps="true"
+        android:textColor="@color/new_UI_color"
+        android:layout_gravity="right"
+        android:layout_marginEnd="60dp"
+        android:layout_marginTop="30dp"
+        android:textSize="14sp"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        android:paddingVertical="10dp"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/signup"
+            android:textAllCaps="true"
+            android:textColor="@color/new_UI_color"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:layout_weight="1"/>
+        <ImageView
+            android:src="@drawable/arrow_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:background="@drawable/signin_fragment_btn_shape"
+            />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.splash_features"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/white">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        android:paddingVertical="10dp"
+        android:gravity="center">
+        <ImageView
+            android:src="@drawable/location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/features1"
+            android:textColor="@color/new_UI_color"
+            android:gravity="center"
+            android:textSize="25sp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        android:paddingVertical="10dp"
+        android:gravity="center">
+        <ImageView
+            android:src="@drawable/baseline_add_alert_24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/features2"
+            android:textColor="@color/new_UI_color"
+            android:gravity="center"
+            android:textSize="25sp"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="100dp"
+        android:paddingVertical="10dp"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginHorizontal="1dp"
+            android:background="@drawable/circle_dark_blue"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginHorizontal="1dp"
+            android:background="@drawable/circle_light_blue"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginHorizontal="1dp"
+            android:background="@drawable/circle_light_blue"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginHorizontal="1dp"
+            android:background="@drawable/circle_light_blue"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="1dp"
+        android:paddingVertical="10dp"
+        android:gravity="center">
+        <Button
+            android:id="@+id/signup_btn_signup"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/next"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:textSize="30sp"
+            android:layout_weight="1"
+            android:layout_marginLeft="90dp"
+            android:layout_marginRight="90dp"
+            android:background="@drawable/signin_fragment_btn_shape" />
+    </LinearLayout>
+
+</LinearLayout>
