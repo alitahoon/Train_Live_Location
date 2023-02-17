@@ -6,6 +6,8 @@
     <color name="fourth">#00B4D8</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFCFC</color>
+    <color name="btn_background">#187498</color>
+    <color name="headline_color">#2192FF</color>
     <color name="textHintColorFirst">#ABAFB0</color>
     <color name="textAlarmColor">#FF0B0B</color>
     <color name="textLogoColor">#1572A1</color>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -7,3 +8,12 @@
     android:textColor="@color/new_UI_color">
 
 </CheckedTextView>
+=======
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="?android:spinnerDropDownItemStyle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:maxLines="1"
+    android:textColor="@color/basicColor"/>
+>>>>>>> origin/master

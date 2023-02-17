@@ -1,11 +1,19 @@
 package com.example.trainlivelocation.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.trainlivelocation.R
+import com.example.trainlivelocation.databinding.FragmentLoginBinding
+import com.example.trainlivelocation.databinding.FragmentSignInBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,10 +25,16 @@ private const val ARG_PARAM2 = "param2"
  * Use the [sign_in.newInstance] factory method to
  * create an instance of this fragment.
  */
-class sign_in : Fragment() {
+@AndroidEntryPoint
+class sign_in : Fragment(),SignInListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    private val signInViewModel: UserSignInViewModel? by viewModels()
+    private lateinit var binding: FragmentSignInBinding
+    private val TAG:String?="sign_in_Fragment"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +49,13 @@ class sign_in : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_in, container, false)
+        // Inflate the layout for this fragment
+        binding = FragmentSignInBinding.inflate(inflater, container, false)
+            .apply {
+                this.viewmodel = signInViewModel
+            }
+        binding.viewmodel?.signInListener = this
+        return binding.root
     }
 
     companion object {
@@ -56,5 +76,25 @@ class sign_in : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    override fun onStartLogin() {
+
+    }
+
+    override fun onSuccessLogin() {
+        signInViewModel?.userLoginDataLive?.observe(viewLifecycleOwner,
+            Observer {
+                if (it!= null){
+                    Log.e("login",it.toString())
+                }
+            })
+    }
+
+    override fun onSignUpBtnClicked() {
+        findNavController().navigate(R.id.action_sign_in_to_sign_up)
+    }
+
+    override fun onLoginFailure(message: String) {
     }
 }
