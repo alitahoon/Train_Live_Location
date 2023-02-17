@@ -1,10 +1,8 @@
 package com.example.trainlivelocation.ui
 
-import com.example.domain.entity.userResponse
-import kotlinx.coroutines.flow.StateFlow
-
-interface LoginListener {
+interface SignInListener {
     fun onStartLogin()
     fun onSuccessLogin()
+    fun onSignUpBtnClicked()
     fun onLoginFailure(message:String)
 }

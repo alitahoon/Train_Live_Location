@@ -2,36 +2,15 @@
     <string name="app_name">Train Live Location</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="welcome_back">Welcome back!</string>
-    <string name="email">Email</string>
-    <string name="password">Password</string>
-    <string name="forget_password"><u>Forget Password?</u></string>
-    <string name="signup"><u>Sign Up</u></string>
-    <string name="signup1">Sign Up</string>
-    <string name="signin"><u>Sign In</u></string>
-    <string name="username">Name</string>
+    <string name="Wellcome_back">Wellcome back!</string>
     <string name="phone">Phone</string>
-    <string name="job">Job</string>
-    <string name="gender">Gender</string>
-    <string name="birthdate">BirthDate</string>
-    <string name="have_account">Already have account?</string>
-    <string name="send_code">Send Code</string>
-    <string name="features1">Live Location of the train.</string>
-    <string name="features2">Alert before arriving at the station.</string>
-    <string name="next">Next</string>
-
-    <string-array name="Jobs">
-        <item>Doctor</item>
-        <item>Engineer</item>
-        <item>Accountant</item>
-        <item>Writer</item>
-        <item>Dentist</item>
-        <item>Pilot</item>
-        <item>Nurse</item>
-        <item>Lawyer</item>
-        <item>Train Driver</item>
-    </string-array>
-
+    <string name="password">Password</string>
+    <string name="forget_password"><u>Forger Password?</u></string>
+    <string name="sign_in"><u>Sign In?</u></string>
+    <string name="sign_up"><u>Sign Up?</u></string>
+    <string name="submit"><u>submit?</u></string>
+    <string name="sending_code">Sending Code...</string>
+    <string name="verification_done">verification done...</string>
     <array name="jopsArray">
         <item>Doctor</item>
         <item>Engineer</item>
@@ -44,7 +23,7 @@
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
+    <string name="next"><u>Next</u></string>
     <string name="previous">Previous</string>
 
     <string name="hello_first_fragment">Hello first fragment</string>

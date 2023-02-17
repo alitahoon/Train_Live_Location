@@ -8,15 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
-import com.example.domain.entity.userResponse
+import androidx.navigation.fragment.findNavController
 import com.example.trainlivelocation.R
-import com.example.trainlivelocation.databinding.FragmentLoginBinding
 import com.example.trainlivelocation.databinding.FragmentRegisterBinding
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -25,16 +20,17 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [login.newInstance] factory method to
+ * Use the [SignUp.newInstance] factory method to
  * create an instance of this fragment.
  */
-class login : Fragment(), LoginListener {
+@AndroidEntryPoint
+class SignUp : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private val registerViewModel:UserRegisterViewModel? by activityViewModels()
+    private lateinit var binding: FragmentRegisterBinding
 
-    private val loginViewModel: UserLoginViewModel? by activityViewModels()
-    private lateinit var binding: FragmentLoginBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -48,11 +44,12 @@ class login : Fragment(), LoginListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentLoginBinding.inflate(inflater, container, false)
+        binding= FragmentRegisterBinding.inflate(inflater,container,false)
             .apply {
-                this.viewmodel = loginViewModel
+                this.viewmodel=registerViewModel
             }
-        binding.viewmodel?.loginListener = this
+        registerViewModel?.setbaseActivity(requireActivity())
+//        binding.viewmodel?.userSignUpListener=this
         return binding.root
     }
 
@@ -63,12 +60,12 @@ class login : Fragment(), LoginListener {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment login.
+         * @return A new instance of fragment register.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            login().apply {
+            SignUp().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
@@ -76,23 +73,29 @@ class login : Fragment(), LoginListener {
             }
     }
 
-    override fun onStartLogin() {
-        binding.loginProgressBar.setVisibility(View.VISIBLE)
-
-    }
-
-    override fun onSuccessLogin() {
-        loginViewModel?.userLoginDataLive?.observe(viewLifecycleOwner,
-        Observer {
-            if (it!= null){
-                binding.loginProgressBar.setVisibility(View.GONE)
-                Log.e("login",it.toString())
-            }
-        })
-    }
-
-    override fun onLoginFailure(message: String) {
-        binding.loginProgressBar.setVisibility(View.GONE)
-    }
-
+//    override fun onStartRegister() {
+//        Toast.makeText(requireContext(), "onStartRegister", Toast.LENGTH_SHORT).show()
+//        findNavController().navigate(R.id.action_sign_up_to_dialogLoading)
+//    }
+//
+//    override fun onSuccessRegister() {
+//        //start dialog otb loading fragment
+//        //get user post object
+////        registerViewModel?.userDataLive?.observe(viewLifecycleOwner,
+////        Observer {
+////            if (it != null){
+////                binding.registerProgressBar.setVisibility(View.GONE)
+////                Toast.makeText(requireContext(), "done", Toast.LENGTH_SHORT).show()
+////                Log.e("register",it.toString())
+////            }
+////        })
+//    }
+//
+//    override fun onOtbCodeSendToUser() {
+//        findNavController().navigate(R.id.action_dialogLoading_to_otb_code_verfication)
+//    }
+//
+//    override fun onFailure(message: String) {
+//        Log.e("registerOnFailure",message)
+//    }
 }

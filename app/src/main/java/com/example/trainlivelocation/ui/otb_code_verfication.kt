@@ -1,17 +1,16 @@
 package com.example.trainlivelocation.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.trainlivelocation.R
+import com.example.trainlivelocation.databinding.FragmentOtbCodeVerficationBinding
 import com.example.trainlivelocation.databinding.FragmentSignUpBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,16 +19,16 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [Sign_up.newInstance] factory method to
+ * Use the [otb_code_verfication.newInstance] factory method to
  * create an instance of this fragment.
  */
-class Sign_up : Fragment(),SignUpListener {
+@AndroidEntryPoint
+class otb_code_verfication : Fragment(),SignUpListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private lateinit var binding: FragmentOtbCodeVerficationBinding
     private val registerViewModel:UserSignUpViewModel? by activityViewModels()
-    private lateinit var binding: FragmentSignUpBinding
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,18 +43,12 @@ class Sign_up : Fragment(),SignUpListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding= FragmentSignUpBinding.inflate(inflater,container,false)
+        binding= FragmentOtbCodeVerficationBinding.inflate(inflater,container,false)
             .apply {
                 this.viewmodel=registerViewModel
             }
         registerViewModel?.setbaseActivity(requireActivity())
         binding.viewmodel?.userSignUpListener=this
-
-        var jobArrayAdapter:ArrayAdapter<CharSequence> =ArrayAdapter.createFromResource(requireContext(),R.array.jopsArray,R.layout.spinner_jop_item_layout)
-        jobArrayAdapter.setDropDownViewResource(R.layout.spinner_job_dropdown_item_layout)
-        binding.RegisterSpinnerJobs.adapter=jobArrayAdapter
-
-
         return binding.root
     }
 
@@ -66,12 +59,12 @@ class Sign_up : Fragment(),SignUpListener {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment sign_up.
+         * @return A new instance of fragment otb_code_verfication.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            Sign_up().apply {
+            otb_code_verfication().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
@@ -80,41 +73,32 @@ class Sign_up : Fragment(),SignUpListener {
     }
 
     override fun onStartSignUp() {
-        Toast.makeText(requireContext(), "onStartRegister", Toast.LENGTH_SHORT).show()
-        findNavController().navigate(R.id.action_sign_up_to_otb_code_verfication)
-    }
-
-    override fun onSuccessSignUp() {
-        //start dialog otb loading fragment
-        //get user post object
-//        registerViewModel?.userDataLive?.observe(viewLifecycleOwner,
-//        Observer {
-//            if (it != null){
-//                binding.registerProgressBar.setVisibility(View.GONE)
-//                Toast.makeText(requireContext(), "done", Toast.LENGTH_SHORT).show()
-//                Log.e("register",it.toString())
-//            }
-//        })
-        }
-
-    override fun onOtbCodeSendToUser() {
-    }
-
-    override fun onVerificationCompleted() {
-    }
-
-    override fun onVerficationSuccess() {
         TODO("Not yet implemented")
     }
 
+    override fun onSuccessSignUp() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onOtbCodeSendToUser() {
+        binding.CodeVerficationDialogLoadingCodeSending.setVisibility(View.GONE)
+        binding.CodeVerficationLayout.setVisibility(View.VISIBLE)
+    }
+
+    override fun onVerificationCompleted() {
+        binding.CodeVerficationLayout.setVisibility(View.GONE)
+        binding.CodeVerficationDialogLoadingDone.setVisibility(View.VISIBLE)
+    }
+
+    override fun onVerficationSuccess() {
+        findNavController().navigate(R.id.action_otb_code_verfication_to_sign_in)
+    }
+
     override fun nextBtnClicked() {
-        binding.signUpFirstPhaseLayout.setVisibility(View.GONE)
-        binding.signUpSecondPhaseLayout.setVisibility(View.VISIBLE)
+        TODO("Not yet implemented")
     }
 
     override fun onFailure(message: String) {
-        Log.e("registerOnFailure",message)
+        TODO("Not yet implemented")
     }
-
-
 }
