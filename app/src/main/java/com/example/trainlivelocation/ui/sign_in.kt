@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.trainlivelocation.R
-import com.example.trainlivelocation.databinding.FragmentLoginBinding
 import com.example.trainlivelocation.databinding.FragmentSignInBinding
 import dagger.hilt.android.AndroidEntryPoint
 

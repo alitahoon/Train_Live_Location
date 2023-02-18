@@ -26,11 +26,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.Splash"
-            android:exported="false">
-
-        </activity>
-        <activity
             android:name=".ui.MainActivity"
             android:exported="false" />
     </application>

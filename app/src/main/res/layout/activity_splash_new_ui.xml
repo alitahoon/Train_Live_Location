@@ -1,73 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.splash_new_ui"
-    android:background="#187498"
-    android:fillViewport="true">
+    android:background="#187498">
 
 
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/splash_appBar_layout"
+        android:stateListAnimator="@null"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:fitsSystemWindows="true"
+        android:theme="@style/Theme.TrainLiveLocation">
+        <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="@color/btn_background"
+            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
+            android:id="@+id/splash_CollapsingToolbarLayout"
+            android:background="@color/btn_background"
+            app:title="@string/app_name"
+            app:expandedTitleGravity="center|bottom"
+            app:expandedTitleTextAppearance="@style/ExpandedAppBarTextStyle"
+            app:collapsedTitleTextAppearance="@style/CollapsedAppBarTextStyle">
 
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayout"
-                android:layout_width="match_parent"
-                android:layout_height="250dp"
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_marginBottom="20dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:src="@drawable/logo_icon_white"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_marginTop="52dp"
-                    android:src="@drawable/logo_icon_white"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+<!--            <TextView-->
+<!--                android:id="@+id/textView7"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:drawableLeft="@drawable/live_icon"-->
+<!--                android:drawablePadding="5dp"-->
+<!--                android:gravity="center"-->
+<!--                android:text="@string/app_name"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="26dp"-->
+<!--                android:textStyle="bold"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/imageView2" />-->
 
-                <TextView
-                    android:id="@+id/textView7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/live_icon"
-                    android:drawablePadding="5dp"
-                    android:gravity="center"
-                    android:text="@string/app_name"
-                    android:textColor="@color/white"
-                    android:textSize="26dp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                android:id="@+id/constraintLayout"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="250dp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.0"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent">-->
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.fragment.app.FragmentContainerView
-                android:layout_marginTop="30dp"
-                android:id="@+id/fragmentContainerView"
-                android:name="androidx.navigation.fragment.NavHostFragment"
+<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+            <androidx.appcompat.widget.Toolbar
+                android:stateListAnimator="@null"
+                android:id="@+id/splash_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:background="@drawable/splash_fragment_background"
-                app:defaultNavHost="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-                app:navGraph="@navigation/user_sign_nav_graph" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                android:layout_height="?actionBarSize"
+                app:layout_collapseMode="pin"
+                android:theme="@style/Theme.TrainLiveLocation">
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:fillViewport="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerView"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/splash_fragment_background"
+            app:defaultNavHost="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
+            app:navGraph="@navigation/user_sign_nav_graph" />    </androidx.core.widget.NestedScrollView>
 
 
 
 
-</ScrollView>
+
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

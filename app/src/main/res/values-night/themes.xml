@@ -1,7 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.TrainLiveLocation" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="Theme.TrainLiveLocation" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Primary brand color. -->
+        <item name="materialThemeOverlay">@style/ButtonStyleTextColor</item>
         <item name="colorPrimary">@color/basicColor</item>
         <item name="colorPrimaryVariant">@color/secondColor</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -14,5 +15,25 @@
 <!--        <item name="android:windowTranslucentStatus">true</item>-->
 <!--        <item name="android:windowTranslucentNavigation">true</item>-->
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="ButtonStyleTextColor">
+        <item name="colorOnPrimary">@color/btn_background</item>
+        <item name="colorOnSecondary">@color/basicColor</item>
+        <item name="colorOnSurface">@color/white</item>
+    </style>
+
+    <style name="ExpandedAppBarTextStyle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">26sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:drawableLeft">@drawable/live_icon</item>
+    </style>
+
+    <style name="CollapsedAppBarTextStyle" parent="@android:style/TextAppearance.Medium">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:drawableLeft">@drawable/live_icon</item>
     </style>
 </resources>

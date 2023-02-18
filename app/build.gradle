@@ -106,4 +106,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation "com.airbnb.android:lottie:5.2.0"
 
+    //circleimageview
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //material_design
+    implementation 'com.google.android.material:material:<version>'
+
+
+
+
 }
