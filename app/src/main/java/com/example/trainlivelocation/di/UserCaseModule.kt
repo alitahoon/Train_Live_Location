@@ -35,6 +35,10 @@ object UserCaseModule  {
     fun provideSignInWithPhoneAuthCredential(userRepo: UserRepo):SignInWithPhoneAuthCredential{
         return SignInWithPhoneAuthCredential(userRepo)
     }
+    @Provides
+    fun provideSendProfileImageToFirebaseStorage(userRepo: UserRepo):SendProfileImageToFirebaseStorage{
+        return SendProfileImageToFirebaseStorage(userRepo)
+    }
 
 
 

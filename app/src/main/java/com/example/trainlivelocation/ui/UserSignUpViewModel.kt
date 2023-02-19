@@ -3,6 +3,7 @@ package com.example.trainlivelocation.ui
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.ScrollView
@@ -20,6 +21,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,8 +35,10 @@ class UserSignUpViewModel @Inject constructor(
     private val application: Application,
     private val sendOtpToPhone: SendOtpToPhone,
     private val resendOtpCode: ResendOtpCode,
-    private val signInWithPhoneAuthCredential: SignInWithPhoneAuthCredential
+    private val signInWithPhoneAuthCredential: SignInWithPhoneAuthCredential,
+    private val sendProfileImageToFirebaseStorage: SendProfileImageToFirebaseStorage
 ) : ViewModel() {
+    private var imageRefrence:StorageReference=Firebase.storage.reference
     private var nextCounter:Int?=0
     var codeVerfication: String? = null
     private val TAG: String? = "RegisterViewModel"
@@ -267,7 +273,13 @@ class UserSignUpViewModel @Inject constructor(
         fun onClickCancel()
     }
 
-    //crete dialog date picker
+    fun uploadProfileImage(profileImageUri:Uri){
+        viewModelScope.launch {
+            sendProfileImageToFirebaseStorage(profileImageUri,userPhone!!,
+            imageRefrence)
+
+        }
+    }
 
 
 }
