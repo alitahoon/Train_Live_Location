@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="viewmodel"
             type="com.example.trainlivelocation.ui.UserSignUpViewModel" />
@@ -130,7 +129,7 @@
                         android:layout_height="wrap_content"
                         android:entries="@array/jopsArray"
                         android:layout_gravity="center"
-                        android:selectedItemPosition="@={viewmodel.jopSpinnerSelectedPosition}"
+                        tools:setOnItemSelectedListener="@{viewmodel.clickListener}"
                         android:spinnerMode="dropdown" />
                 </FrameLayout>
 

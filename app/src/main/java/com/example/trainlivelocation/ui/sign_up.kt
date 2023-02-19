@@ -170,7 +170,7 @@ class Sign_up : Fragment(),SignUpListener {
     override fun nextBtnClicked() {
 //        binding.signUpFirstPhaseLayout.setVisibility(View.GONE)
 //        binding.signUpSecondPhaseLayout.setVisibility(View.VISIBLE)
-        registerViewModel?.uploadProfileImage(profileImage_URI!!)
+//        registerViewModel?.uploadProfileImage(profileImage_URI!!)
     }
 
     override fun onFailure(message: String) {

@@ -6,6 +6,8 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.view.View
+import android.widget.Adapter
+import android.widget.AdapterView
 import android.widget.ScrollView
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.DialogFragment
@@ -38,6 +40,7 @@ class UserSignUpViewModel @Inject constructor(
     private val signInWithPhoneAuthCredential: SignInWithPhoneAuthCredential,
     private val sendProfileImageToFirebaseStorage: SendProfileImageToFirebaseStorage
 ) : ViewModel() {
+    private var selectedJop:String?=""
     private var imageRefrence:StorageReference=Firebase.storage.reference
     private var nextCounter:Int?=0
     var codeVerfication: String? = null
@@ -97,6 +100,7 @@ class UserSignUpViewModel @Inject constructor(
             //check values
 
             Log.d(TAG,gender_redio_checked.value.toString())
+            Log.d(TAG,selectedJop!!)
 
             //fire base auth
 //            userSignUpListener?.onStartSignUp()
@@ -278,6 +282,17 @@ class UserSignUpViewModel @Inject constructor(
             sendProfileImageToFirebaseStorage(profileImageUri,userPhone!!,
             imageRefrence)
 
+        }
+    }
+
+
+
+    val clickListener=object :AdapterView.OnItemSelectedListener{
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            selectedJop = parent?.getItemAtPosition(position) as String
+        }
+
+        override fun onNothingSelected(p0: AdapterView<*>?) {
         }
     }
 
