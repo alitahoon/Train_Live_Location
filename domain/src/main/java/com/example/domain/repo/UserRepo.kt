@@ -1,7 +1,11 @@
 package com.example.domain.repo
 
 import android.app.Activity
+import android.location.Location
 import android.net.Uri
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import com.example.domain.entity.LocationDetails
 import com.example.domain.entity.RegisterUser
 import com.example.domain.entity.userResponse
 import com.example.domain.entity.userResponseItem
@@ -48,5 +52,7 @@ interface UserRepo {
         imageReference: StorageReference
     )
 
+    suspend fun startLocationUpdate()
+    suspend fun GetUserLocationLive(): LiveData<LocationDetails>
 
 }

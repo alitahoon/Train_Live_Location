@@ -1,29 +1,27 @@
 package com.example.trainlivelocation.ui
 
+import android.Manifest
 import android.app.Activity
-import android.app.Activity.ACTIVITY_SERVICE
-import android.app.Activity.RESULT_OK
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.database.Cursor
 import android.net.Uri
-import android.os.Build.VERSION
-import android.os.Build.VERSION_CODES
+import android.net.Uri.Builder
+import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.core.content.ContextCompat.checkSelfPermission
-import androidx.fragment.app.Fragment
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentSignUpBinding
-
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,8 +39,13 @@ class Sign_up : Fragment(),SignUpListener {
     private var param2: String? = null
     private val registerViewModel:UserSignUpViewModel? by activityViewModels()
     private lateinit var binding: FragmentSignUpBinding
-    private val REQUEST_CODE:Int?=101
-    private var profileImage_URI:Uri?=null
+    private val REQUSET_CODE_IMAGE:Int=101
+    private val REQUSET_CODE_Camera:Int=102
+    private val REQUSET_CODE_location:Int=103
+    private var imageUri:Uri?=null
+    private val TAG:String?="Sign_up_Fragment"
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -66,37 +69,53 @@ class Sign_up : Fragment(),SignUpListener {
         jobArrayAdapter.setDropDownViewResource(R.layout.spinner_job_dropdown_item_layout)
         binding.RegisterSpinnerJobs.adapter=jobArrayAdapter
 
-        //handle get image from gallery
-        binding.signUpImageViewProofileImage.setOnClickListener(View.OnClickListener { view ->
-            if(VERSION.SDK_INT>=VERSION_CODES.M){
-                if (requireActivity().checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED){
-                    //Permission Denied
-                    val permissions= arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE)
-                    requestPermissions(permissions,REQUEST_CODE!!)
-                }else{
-                    //Permission Granted
-                    pickImageFromGallery()
-                }
-                //System os >= marshmello
-                pickImageFromGallery()
+        binding.signUpImageViewProofileImage.setOnClickListener{
+            //request permission
+            checkSelfPermissions(Manifest.permission.READ_EXTERNAL_STORAGE,"Image",REQUSET_CODE_IMAGE)
+            checkSelfPermissions(Manifest.permission.CAMERA,"Camera",REQUSET_CODE_Camera)
+            checkSelfPermissions(Manifest.permission.ACCESS_FINE_LOCATION,"Image",REQUSET_CODE_location)
+        }
 
-            }
-        })
         return binding.root
     }
+    private fun checkSelfPermissions(permissions:String,name:String,requestCode: Int){
+        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+            when{
+                ContextCompat.checkSelfPermission(requireActivity(),permissions)==PackageManager.PERMISSION_GRANTED->{
+                            Toast.makeText(requireContext(),"$name permissin granted",Toast.LENGTH_SHORT).show()
+                        }
+                shouldShowRequestPermissionRationale(permissions)-> showDialog(permissions,name,requestCode)
+                else-> ActivityCompat.requestPermissions(requireActivity(), arrayOf(permissions),requestCode)
+            }
+        }
+    }
 
-    private fun pickImageFromGallery() {
-        val intent=Intent(Intent.ACTION_PICK)
-        intent.type="image/*"
-        startActivityForResult(intent,REQUEST_CODE!!)
+    private fun showDialog(permissions: String, name: String, requestCode: Int) {
+        val builder=AlertDialog.Builder(requireContext())
+        builder.apply {
+            setMessage("Permission to access your $name is required to use this app ")
+            setTitle("Permission required")
+            setPositiveButton("OK"){dialog,which ->
+                ActivityCompat.requestPermissions(requireActivity(), arrayOf(permissions),requestCode)
+            }
+            val dialog=builder.create()
+            dialog.show()
+        }
+    }
+
+
+    private fun getImageUri(){
+        Intent(Intent.ACTION_GET_CONTENT).also {
+            it.type="image/*"
+            startActivityForResult(it,REQUSET_CODE_IMAGE)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode== Activity.RESULT_OK&&requestCode==REQUEST_CODE){
+        if (resultCode==Activity.RESULT_OK&&resultCode==REQUSET_CODE_IMAGE){
             data?.data.let {
-                profileImage_URI=it
-                binding.signUpImageViewProofileImage.setImageURI(it!!)
+                imageUri=it
             }
         }
     }
@@ -106,17 +125,22 @@ class Sign_up : Fragment(),SignUpListener {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when(requestCode){
-            REQUEST_CODE->{
-                if (grantResults.size>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                    pickImageFromGallery()
-                }else{
-                    //Permission Denied
-                    Toast.makeText(requireContext(),"Permission Denied",Toast.LENGTH_SHORT).show()
+        fun innerCheck(name: String){
+            if (grantResults.isNotEmpty()||grantResults[0]!=PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(requireContext(),"$name permission Refused",Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(requireContext(),"$name permission Accepted",Toast.LENGTH_SHORT).show()
+                if (requestCode==REQUSET_CODE_IMAGE){
+                    getImageUri()
                 }
             }
         }
+        when (requestCode){
+            REQUSET_CODE_IMAGE->innerCheck("Read External Storage")
+            REQUSET_CODE_Camera->innerCheck("open Camera")
+            REQUSET_CODE_location->innerCheck("Access location ")
+        }
+
     }
 
     companion object {
@@ -168,9 +192,8 @@ class Sign_up : Fragment(),SignUpListener {
     }
 
     override fun nextBtnClicked() {
-//        binding.signUpFirstPhaseLayout.setVisibility(View.GONE)
-//        binding.signUpSecondPhaseLayout.setVisibility(View.VISIBLE)
-//        registerViewModel?.uploadProfileImage(profileImage_URI!!)
+        binding.signUpFirstPhaseLayout.setVisibility(View.GONE)
+        binding.signUpSecondPhaseLayout.setVisibility(View.VISIBLE)
     }
 
     override fun onFailure(message: String) {

@@ -48,6 +48,7 @@ apply plugin: 'com.google.gms.google-services'
 
 dependencies {
     implementation 'com.google.firebase:firebase-storage-ktx:20.0.1'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
     def nav_version = "2.5.3"
     def lifecycle_version = "2.5.1"
 
@@ -112,6 +113,7 @@ dependencies {
 
     //material_design
     implementation 'com.google.android.material:material:<version>'
+
 
 
 

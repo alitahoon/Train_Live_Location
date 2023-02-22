@@ -1,5 +1,6 @@
 package com.example.trainlivelocation.ui
 
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -7,12 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
-import com.example.trainlivelocation.R
-import com.example.trainlivelocation.databinding.FragmentSignInBinding
+import androidx.lifecycle.lifecycleScope
+import com.example.domain.entity.LocationDetails
+import com.example.trainlivelocation.databinding.FragmentLiveLocationFeatureBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,19 +22,17 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [sign_in.newInstance] factory method to
+ * Use the [liveLocationFeature.newInstance] factory method to
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class sign_in : Fragment(),SignInListener {
+class liveLocationFeature : Fragment() ,LiveLocationListener{
+    private var TAG:String?="liveLocationFeatureFragment"
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
-    private val signInViewModel: UserSignInViewModel? by viewModels()
-    private lateinit var binding: FragmentSignInBinding
-    private val TAG:String?="sign_in_Fragment"
-
+    private lateinit var binding: FragmentLiveLocationFeatureBinding
+    private val liveLocationViewModel:LiveLocationViewModel? by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,13 +46,14 @@ class sign_in : Fragment(),SignInListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        // Inflate the layout for this fragment
-        binding = FragmentSignInBinding.inflate(inflater, container, false)
-            .apply {
-                this.viewmodel = signInViewModel
-            }
-        binding.viewmodel?.signInListener = this
+      binding= FragmentLiveLocationFeatureBinding.inflate(inflater,container,false)
+          .apply {
+              this.viewmodel=liveLocationViewModel
+          }
+        liveLocationViewModel?.setbaseActivity(requireActivity())
+        binding.viewmodel?.liveLocationListener=this
+
+
         return binding.root
     }
 
@@ -64,12 +64,12 @@ class sign_in : Fragment(),SignInListener {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment sign_in.
+         * @return A new instance of fragment Feature_live_location.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            sign_in().apply {
+            liveLocationFeature().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
@@ -77,27 +77,17 @@ class sign_in : Fragment(),SignInListener {
             }
     }
 
-    override fun onStartLogin() {
-
+    override fun onBtnShareTrainLocationClicked() {
+        TODO("Not yet implemented")
     }
 
-    override fun onSuccessLogin() {
-        signInViewModel?.userLoginDataLive?.observe(viewLifecycleOwner,
+    override fun onBtnTrackTrainLocationClicked() {
+        Log.i("Location_is","begain")
+        lifecycleScope.launch {
+            liveLocationViewModel?.locationLiveData?.observe(this@liveLocationFeature,
             Observer {
-                if (it!= null){
-                    Log.e("login",it.toString())
-                }
+                Log.i(TAG,it.longitude+" "+it.latitude)
             })
-    }
-
-    override fun onSignUpBtnClicked() {
-        findNavController().navigate(R.id.action_sign_in_to_sign_up)
-    }
-
-    override fun onSignInBtnClicked() {
-        findNavController().navigate(R.id.action_sign_in_to_home_nav_graph)
-    }
-
-    override fun onLoginFailure(message: String) {
+        }
     }
 }

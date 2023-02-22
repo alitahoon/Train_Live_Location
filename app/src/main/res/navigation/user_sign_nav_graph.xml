@@ -17,6 +17,9 @@
             app:exitAnim="@anim/slide_out_up"
             app:popEnterAnim="@anim/slide_in_down"
             app:popExitAnim="@anim/slide_out_down" />
+        <action
+            android:id="@+id/action_sign_in_to_home_nav_graph"
+            app:destination="@id/home_nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/sign_up"
@@ -36,9 +39,5 @@
             android:id="@+id/action_otb_code_verfication_to_sign_in"
             app:destination="@id/sign_in" />
     </fragment>
-    <fragment
-        android:id="@+id/datePicker"
-        android:name="com.example.trainlivelocation.datePicker"
-        android:label="fragment_date_picker"
-        tools:layout="@layout/fragment_date_picker" />
+    <include app:graph="@navigation/home_nav_graph" />
 </navigation>

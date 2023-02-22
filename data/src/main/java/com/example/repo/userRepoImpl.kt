@@ -1,24 +1,27 @@
 package com.example.repo
 
+import com.example.domain.repo.LocationListener
 import android.app.Activity
+import android.location.Location
 import android.net.Uri
 import android.util.Log
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.example.data.ApiService
+import com.example.data.LocationLive
+import com.example.domain.entity.LocationDetails
 import com.example.domain.entity.RegisterUser
-import com.example.domain.entity.userResponse
 import com.example.domain.entity.userResponseItem
 import com.example.domain.repo.UserRepo
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
-import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
-import retrofit2.Call
 import retrofit2.Response
 import java.util.concurrent.TimeUnit
 
-class userRepoImpl(private val apiService: ApiService) : UserRepo {
+class userRepoImpl(private val apiService: ApiService,private val locationLive: LocationLive) : UserRepo {
     private val TAG:String?="userRepoImpl"
     override suspend fun getUserData(
         userPhone: String?,
@@ -83,5 +86,27 @@ class userRepoImpl(private val apiService: ApiService) : UserRepo {
             }
         }
     }
+
+    override suspend fun startLocationUpdate() {
+        locationLive.startLocationUpdate()
+    }
+
+    override suspend fun GetUserLocationLive(): LiveData<LocationDetails> {
+        return locationLive
+    }
+
+
+//    override suspend fun startLocationLiveUpdate(lifecycleOwner: LifecycleOwner) {
+//         locationListener.startService()
+//        locationListener?.let {
+//            if (it.hasObservers()){
+//                it.observe(lifecycleOwner, Observer<Location?> {
+//                        location ->
+//                    location?.let {
+//                    }
+//                })
+//            }
+//        }
+//    }
 
 }
