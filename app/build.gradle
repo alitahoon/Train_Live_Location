@@ -47,6 +47,7 @@ apply plugin: 'com.google.gms.google-services'
 
 
 dependencies {
+    implementation 'com.android.volley:volley:1.2.1'
     def nav_version = "2.5.3"
     def lifecycle_version = "2.5.1"
 
@@ -105,5 +106,8 @@ dependencies {
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-auth-ktx'
     implementation "com.airbnb.android:lottie:5.2.0"
+
+    //circular image
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
 
 }
