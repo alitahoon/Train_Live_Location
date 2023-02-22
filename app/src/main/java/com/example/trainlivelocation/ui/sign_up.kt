@@ -42,6 +42,8 @@ class Sign_up : Fragment(),SignUpListener {
     private val REQUSET_CODE_IMAGE:Int=101
     private val REQUSET_CODE_Camera:Int=102
     private val REQUSET_CODE_location:Int=103
+    private val REQUSET_CODE_background_location:Int=104
+    private val REQUSET_CODE_Forground_location:Int=105
     private var imageUri:Uri?=null
     private val TAG:String?="Sign_up_Fragment"
 
@@ -71,9 +73,11 @@ class Sign_up : Fragment(),SignUpListener {
 
         binding.signUpImageViewProofileImage.setOnClickListener{
             //request permission
-            checkSelfPermissions(Manifest.permission.READ_EXTERNAL_STORAGE,"Image",REQUSET_CODE_IMAGE)
-            checkSelfPermissions(Manifest.permission.CAMERA,"Camera",REQUSET_CODE_Camera)
-            checkSelfPermissions(Manifest.permission.ACCESS_FINE_LOCATION,"Image",REQUSET_CODE_location)
+            checkSelfPermissions(Manifest.permission.READ_EXTERNAL_STORAGE,"IMAGE",REQUSET_CODE_IMAGE)
+            checkSelfPermissions(Manifest.permission.CAMERA,"CAMERA",REQUSET_CODE_Camera)
+            checkSelfPermissions(Manifest.permission.ACCESS_FINE_LOCATION,"LOCATION",REQUSET_CODE_location)
+            checkSelfPermissions(Manifest.permission.ACCESS_BACKGROUND_LOCATION,"BACKGROUND LOCATION",REQUSET_CODE_background_location)
+            checkSelfPermissions(Manifest.permission.FOREGROUND_SERVICE,"BACKGROUND LOCATION",REQUSET_CODE_Forground_location)
         }
 
         return binding.root
@@ -139,6 +143,8 @@ class Sign_up : Fragment(),SignUpListener {
             REQUSET_CODE_IMAGE->innerCheck("Read External Storage")
             REQUSET_CODE_Camera->innerCheck("open Camera")
             REQUSET_CODE_location->innerCheck("Access location ")
+            REQUSET_CODE_background_location->innerCheck("Access background location ")
+            REQUSET_CODE_Forground_location->innerCheck("Access Forground Services ")
         }
 
     }

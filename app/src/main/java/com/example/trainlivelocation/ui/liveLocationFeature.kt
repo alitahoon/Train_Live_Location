@@ -1,5 +1,6 @@
 package com.example.trainlivelocation.ui
 
+import android.content.Intent
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +15,9 @@ import com.example.domain.entity.LocationDetails
 import com.example.trainlivelocation.databinding.FragmentLiveLocationFeatureBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kotlinx.serialization.descriptors.serialDescriptor
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,12 +38,29 @@ class liveLocationFeature : Fragment() ,LiveLocationListener{
     private lateinit var binding: FragmentLiveLocationFeatureBinding
     private val liveLocationViewModel:LiveLocationViewModel? by activityViewModels()
 
+    override fun onStart() {
+        super.onStart()
+        if (!EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().register(this)
+        }
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().unregister(this)
+        }
+        liveLocationViewModel?.stopLocationService(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
     }
 
     override fun onCreateView(
@@ -52,8 +73,6 @@ class liveLocationFeature : Fragment() ,LiveLocationListener{
           }
         liveLocationViewModel?.setbaseActivity(requireActivity())
         binding.viewmodel?.liveLocationListener=this
-
-
         return binding.root
     }
 
@@ -78,7 +97,7 @@ class liveLocationFeature : Fragment() ,LiveLocationListener{
     }
 
     override fun onBtnShareTrainLocationClicked() {
-        TODO("Not yet implemented")
+        liveLocationViewModel?.startLocationService()
     }
 
     override fun onBtnTrackTrainLocationClicked() {
@@ -90,4 +109,10 @@ class liveLocationFeature : Fragment() ,LiveLocationListener{
             })
         }
     }
+
+    @Subscribe
+    fun recieveLocationEvent(locationDetails: LocationDetails){
+        Log.i(TAG,"Location Latitude --> ${locationDetails?.latitude}\nLocation longitude --> ${locationDetails?.longitude}")
+    }
+
 }

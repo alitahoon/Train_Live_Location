@@ -1,9 +1,11 @@
 package com.example.domain.repo
 
 import android.app.Activity
+import android.app.Service
 import android.location.Location
 import android.net.Uri
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.LiveData
 import com.example.domain.entity.LocationDetails
 import com.example.domain.entity.RegisterUser
@@ -54,5 +56,7 @@ interface UserRepo {
 
     suspend fun startLocationUpdate()
     suspend fun GetUserLocationLive(): LiveData<LocationDetails>
+
+    suspend fun getLocationTrackBackgroundService():LifecycleService
 
 }

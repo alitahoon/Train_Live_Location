@@ -2,6 +2,7 @@ package com.example.trainlivelocation.di
 
 import android.content.Context
 import com.example.data.LocationLive
+import com.example.data.LocationTrackBackgroundService
 import com.example.domain.repo.LocationListener
 import dagger.Module
 import dagger.Provides
@@ -15,5 +16,9 @@ object LocationModule {
     @Provides
     fun ProvideLocationLitener(context: Context): LocationLive {
         return LocationLive(context)
+    }
+    @Provides
+    fun ProvideLocationTrackBackgroundService(): LocationTrackBackgroundService {
+        return LocationTrackBackgroundService()
     }
 }

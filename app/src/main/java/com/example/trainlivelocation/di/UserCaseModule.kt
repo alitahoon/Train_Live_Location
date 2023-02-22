@@ -48,6 +48,11 @@ object UserCaseModule  {
         return StartLocationUpdate(userRepo)
     }
 
+    @Provides
+    fun provideGetLocationTrackBackgroundService(userRepo: UserRepo): GetLocationTrackBackgroundService {
+        return GetLocationTrackBackgroundService(userRepo)
+    }
+
 
 
 
