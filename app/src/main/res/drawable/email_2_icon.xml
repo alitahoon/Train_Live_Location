@@ -1,12 +1,12 @@
 <vector android:autoMirrored="true" android:height="45dp"
     android:viewportHeight="256" android:viewportWidth="256"
     android:width="45dp" xmlns:android="http://schemas.android.com/apk/res/android">
-    <path android:fillColor="@color/new_ui_color1" android:fillType="nonZero"
+    <path android:fillColor="@color/basicColor" android:fillType="nonZero"
         android:pathData="M127.86,147.01l126.45,-95.17l0,-5.53c0,-5.7 -4.63,-10.33 -10.33,-10.33L11.74,35.98C6.03,35.98 1.41,40.6 1.41,46.3l0,5.53L127.86,147.01z"
-        android:strokeColor="@color/new_ui_color1" android:strokeLineCap="butt"
+        android:strokeColor="@color/basicColor" android:strokeLineCap="butt"
         android:strokeLineJoin="miter" android:strokeWidth="2.81"/>
-    <path android:fillColor="@color/new_ui_color1" android:fillType="nonZero"
+    <path android:fillColor="@color/basicColor" android:fillType="nonZero"
         android:pathData="M134.61,170.06c-2,1.51 -4.38,2.26 -6.76,2.26s-4.76,-0.75 -6.76,-2.26L1.41,79.97l0,129.44c0,5.7 4.63,10.33 10.33,10.33l232.24,0c5.7,0 10.33,-4.63 10.33,-10.33L254.31,79.97L134.61,170.06z"
-        android:strokeColor="@color/new_ui_color1" android:strokeLineCap="butt"
+        android:strokeColor="@color/basicColor" android:strokeLineCap="butt"
         android:strokeLineJoin="miter" android:strokeWidth="2.81"/>
 </vector>

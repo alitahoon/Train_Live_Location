@@ -7,6 +7,7 @@
     <string name="password">Password</string>
     <string name="forget_password"><u>Forger Password?</u></string>
     <string name="sign_in"><u>Sign In?</u></string>
+    <string name="sign_in_without_underScore">Sign In</string>
     <string name="sign_up"><u>Sign Up?</u></string>
     <string name="submit"><u>submit?</u></string>
     <string name="sending_code">Sending Code...</string>
@@ -41,4 +42,7 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="profile_name">Profile Name</string>
+    <string name="features1">Track train live</string>
+    <string name="features2">Notify you before arriving to your staion</string>
 </resources>

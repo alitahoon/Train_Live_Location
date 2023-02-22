@@ -3,8 +3,11 @@ package com.example.trainlivelocation.ui
 import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.net.Uri
 import android.util.Log
 import android.view.View
+import android.widget.Adapter
+import android.widget.AdapterView
 import android.widget.ScrollView
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.DialogFragment
@@ -20,6 +23,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,8 +37,11 @@ class UserSignUpViewModel @Inject constructor(
     private val application: Application,
     private val sendOtpToPhone: SendOtpToPhone,
     private val resendOtpCode: ResendOtpCode,
-    private val signInWithPhoneAuthCredential: SignInWithPhoneAuthCredential
+    private val signInWithPhoneAuthCredential: SignInWithPhoneAuthCredential,
+    private val sendProfileImageToFirebaseStorage: SendProfileImageToFirebaseStorage
 ) : ViewModel() {
+    private var selectedJop:String?=""
+    private var imageRefrence:StorageReference=Firebase.storage.reference
     private var nextCounter:Int?=0
     var codeVerfication: String? = null
     private val TAG: String? = "RegisterViewModel"
@@ -91,6 +100,7 @@ class UserSignUpViewModel @Inject constructor(
             //check values
 
             Log.d(TAG,gender_redio_checked.value.toString())
+            Log.d(TAG,selectedJop!!)
 
             //fire base auth
 //            userSignUpListener?.onStartSignUp()
@@ -267,7 +277,24 @@ class UserSignUpViewModel @Inject constructor(
         fun onClickCancel()
     }
 
-    //crete dialog date picker
+    fun uploadProfileImage(profileImageUri:Uri){
+        viewModelScope.launch {
+            sendProfileImageToFirebaseStorage(profileImageUri,userPhone!!,
+            imageRefrence)
+
+        }
+    }
+
+
+
+    val clickListener=object :AdapterView.OnItemSelectedListener{
+        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+            selectedJop = parent?.getItemAtPosition(position) as String
+        }
+
+        override fun onNothingSelected(p0: AdapterView<*>?) {
+        }
+    }
 
 
 }

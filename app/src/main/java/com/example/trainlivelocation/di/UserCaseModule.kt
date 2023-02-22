@@ -1,12 +1,11 @@
 package com.example.trainlivelocation.di
 
+import com.example.domain.repo.LocationListener
 import com.example.domain.repo.UserRepo
 import com.example.domain.usecase.*
-import com.example.trainlivelocation.ui.MainActivity
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 
 @Module
@@ -34,6 +33,24 @@ object UserCaseModule  {
     @Provides
     fun provideSignInWithPhoneAuthCredential(userRepo: UserRepo):SignInWithPhoneAuthCredential{
         return SignInWithPhoneAuthCredential(userRepo)
+    }
+    @Provides
+    fun provideSendProfileImageToFirebaseStorage(userRepo: UserRepo):SendProfileImageToFirebaseStorage{
+        return SendProfileImageToFirebaseStorage(userRepo)
+    }
+    @Provides
+    fun provideGetLocationLive(userRepo: UserRepo):GetLocationLive{
+        return GetLocationLive(userRepo)
+    }
+
+    @Provides
+    fun provideStartLocationUpdate(userRepo: UserRepo):StartLocationUpdate{
+        return StartLocationUpdate(userRepo)
+    }
+
+    @Provides
+    fun provideGetLocationTrackBackgroundService(userRepo: UserRepo): GetLocationTrackBackgroundService {
+        return GetLocationTrackBackgroundService(userRepo)
     }
 
 

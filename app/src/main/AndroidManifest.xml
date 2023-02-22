@@ -3,6 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-feature android:name="android.hardware.camera" android:required="true"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+
 
     <application
         android:name=".TrainLiveLocation"
@@ -26,13 +35,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.Splash"
-            android:exported="false">
-
-        </activity>
-        <activity
             android:name=".ui.MainActivity"
             android:exported="false" />
+
+        <service
+            android:name="com.example.data.LocationTrackBackgroundService"
+            android:enabled="true"
+            android:exported="false"
+            />
     </application>
 
 </manifest>

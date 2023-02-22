@@ -9,19 +9,14 @@
             type="com.example.trainlivelocation.ui.UserSignInViewModel" />
     </data>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true"
-        tools:context=".ui.sign_in">
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            tools:context=".ui.sign_in"
             android:layout_height="match_parent"
             android:background="@drawable/splash_fragment_background"
             >
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:inputType="number"
                 android:id="@+id/signin_txt_email"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="24dp"
@@ -31,18 +26,19 @@
                 app:layout_constraintHorizontal_bias="0.233"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0"
-                android:textColorHint="@color/basicColor">
-                <androidx.appcompat.widget.AppCompatEditText
+                app:boxStrokeColor="@color/basicColor"
+                app:boxStrokeWidth="1dp"
+                android:textColorHint="@color/textHintColorFirst">
+                <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:inputType="number"
-                    android:layout_height="48dp"
-                    android:backgroundTint="@color/basicColor"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+
+                    android:background="@drawable/login_textfield_selector"
                     android:drawableStart="@drawable/phone_icon"
                     android:drawablePadding="5dp"
                     android:hint="@string/phone"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="5dp"
                     android:text="@={viewmodel.userPhone}"
                     android:textColor="@color/textAlarmColor"
                     android:textColorHint="@color/fourth"
@@ -95,8 +91,10 @@
                 android:layout_marginVertical="24dp"
                 android:layout_marginStart="49dp"
                 android:layout_marginEnd="49dp"
+                app:boxStrokeColor="@color/basicColor"
+                app:boxStrokeWidth="1dp"
                 android:layout_marginBottom="560dp"
-                android:textColorHint="@color/basicColor"
+                android:textColorHint="@color/textHintColorFirst"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -106,16 +104,14 @@
                 app:passwordToggleEnabled="true"
                 app:passwordToggleTint="@color/basicColor">
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:backgroundTint="@color/basicColor"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
                     android:drawableStart="@drawable/password_icon"
                     android:drawablePadding="5dp"
                     android:hint="@string/password"
                     android:inputType="textPassword"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="5dp"
                     android:text="@={viewmodel.userPassword}"
                     android:textColor="@color/textAlarmColor"
                     android:textColorHint="@color/fourth" />
@@ -137,17 +133,20 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/signin_txt_password" />
 
-            <ImageView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/sign_btn_sign_in"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="80dp"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="50dp"
-                android:layout_marginTop="32dp"
-                android:background="@drawable/signin_fragment_btn_shape"
+                android:layout_marginTop="30dp"
+                app:cornerRadius="30dp"
+                android:textSize="16sp"
+                android:padding="15dp"
+                android:backgroundTint="@color/btn_background"
+                android:text="@string/sign_in_without_underScore"
+                android:textColor="@color/white"
                 android:onClick="@{ viewmodel::onLoginButtonClick}"
-                android:src="@drawable/arrow_left_icon"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
@@ -187,6 +186,5 @@
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
 
 </layout>

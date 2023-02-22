@@ -11,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.trainlivelocation.R
-import com.example.trainlivelocation.databinding.FragmentLoginBinding
 import com.example.trainlivelocation.databinding.FragmentSignInBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -93,6 +92,10 @@ class sign_in : Fragment(),SignInListener {
 
     override fun onSignUpBtnClicked() {
         findNavController().navigate(R.id.action_sign_in_to_sign_up)
+    }
+
+    override fun onSignInBtnClicked() {
+        findNavController().navigate(R.id.action_sign_in_to_home_nav_graph)
     }
 
     override fun onLoginFailure(message: String) {
