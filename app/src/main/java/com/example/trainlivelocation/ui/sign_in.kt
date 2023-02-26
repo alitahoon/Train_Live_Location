@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -81,11 +82,16 @@ class sign_in : Fragment(),SignInListener {
 
     }
 
-    override fun onSuccessLogin() {
+    override fun onSuccessLogin(userPhone:String,userPassowrd:String) {
         signInViewModel?.userLoginDataLive?.observe(viewLifecycleOwner,
             Observer {
                 if (it!= null){
                     Log.e("login",it.toString())
+                    if (it.get(0).phone.equals(userPhone) && it.get(0).password.equals(userPassowrd)){
+                        findNavController().navigate(R.id.action_sign_in_to_mainActivity)
+                    }else{
+                        Toast.makeText(requireContext(), "Wrong Phone or Password", Toast.LENGTH_SHORT).show()
+                    }
                 }
             })
     }
@@ -93,11 +99,6 @@ class sign_in : Fragment(),SignInListener {
     override fun onSignUpBtnClicked() {
         findNavController().navigate(R.id.action_sign_in_to_sign_up)
     }
-
-    override fun onSignInBtnClicked() {
-        findNavController().navigate(R.id.action_sign_in_to_home_nav_graph)
-    }
-
     override fun onLoginFailure(message: String) {
     }
 }

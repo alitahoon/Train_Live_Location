@@ -170,8 +170,6 @@ class Sign_up : Fragment(),SignUpListener {
     }
 
     override fun onStartSignUp() {
-        Toast.makeText(requireContext(), "onStartRegister", Toast.LENGTH_SHORT).show()
-        findNavController().navigate(R.id.action_sign_up_to_otb_code_verfication)
     }
 
     override fun onSuccessSignUp() {
@@ -197,7 +195,12 @@ class Sign_up : Fragment(),SignUpListener {
         TODO("Not yet implemented")
     }
 
-    override fun nextBtnClicked() {
+    override fun nextBtnClicked(type:String) {
+        when(type){
+            "register" -> {
+                findNavController().navigate(R.id.action_sign_up_to_authCheck)
+            }
+        }
         binding.signUpFirstPhaseLayout.setVisibility(View.GONE)
         binding.signUpSecondPhaseLayout.setVisibility(View.VISIBLE)
     }

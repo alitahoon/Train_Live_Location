@@ -91,10 +91,10 @@ class otb_code_verfication : Fragment(),SignUpListener {
     }
 
     override fun onVerficationSuccess() {
-        findNavController().navigate(R.id.action_otb_code_verfication_to_sign_in)
+        findNavController().navigate(R.id.action_hilt_otb_code_verfication_to_splash_new_ui3)
     }
 
-    override fun nextBtnClicked() {
+    override fun nextBtnClicked(type:String) {
         TODO("Not yet implemented")
     }
 

@@ -96,26 +96,24 @@ class UserSignUpViewModel @Inject constructor(
 
     fun onBtnRegisterClick(view: View) {
         if (nextCounter != 0){
-
             //check values
+//
+//            Log.d(TAG,gender_redio_checked.value.toString())
+//            Log.d(TAG,selectedJop!!)
 
-            Log.d(TAG,gender_redio_checked.value.toString())
-            Log.d(TAG,selectedJop!!)
-
-            //fire base auth
-//            userSignUpListener?.onStartSignUp()
-//            if (userPhone.isNullOrEmpty() || userName.isNullOrEmpty() ||
-//                userPassword.isNullOrEmpty() || userEmail.isNullOrEmpty() || userBirthDate.isNullOrEmpty()
-//            ) {
-//                //return error message
-//                userSignUpListener?.onFailure("Please complete register data")
-//                return
-//            } else {
-//                sendOtpToUserPhone()
-//                return
-//            }
+//            fire base auth
+            if (userPhone.isNullOrEmpty() || userName.isNullOrEmpty() ||
+                userPassword.isNullOrEmpty() || userEmail.isNullOrEmpty() || userBirthDate.isNullOrEmpty()
+            ) {
+                //return error message
+                userSignUpListener?.onFailure("Please complete register data")
+                return
+            } else {
+                sendOtpToUserPhone()
+                return
+            }
         }else{
-            userSignUpListener.nextBtnClicked()
+            userSignUpListener.nextBtnClicked("register")
             nextCounter = nextCounter!! + 1
         }
 
@@ -154,11 +152,13 @@ class UserSignUpViewModel @Inject constructor(
         }
     }
 
-    fun sendOtpToUserPhone() {
+    fun sendOtpToUserPhone(){
+        userSignUpListener.onStartSignUp()
         viewModelScope.launch {
             callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                 override fun onVerificationCompleted(credential: PhoneAuthCredential) {
                     Log.d(TAG, "VerificationCompleted:$credential")
+                    signInCredential(credential)
                     userSignUpListener.onVerificationCompleted()
                 }
 
@@ -180,6 +180,7 @@ class UserSignUpViewModel @Inject constructor(
 
                 }
             }
+
             PhoneAuthProvider.verifyPhoneNumber(
                 sendOtpToPhone(
                     "+20" + userPhone,
@@ -201,7 +202,7 @@ class UserSignUpViewModel @Inject constructor(
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "signInWithCredential:success")
-
+                        userSignUpListener.onSuccessSignUp()
                         val user = task.result?.user
                     } else {
                         // Sign in failed, display a message and update the UI
@@ -228,15 +229,15 @@ class UserSignUpViewModel @Inject constructor(
             try {
                 var result = addNewUser(
                     RegisterUser(
-                        "shamma",
-                        "1-5-2001",
-                        "alitahoon2886666@gmail.com",
-                        "Male",
-                        "Sabak_Android",
-                        "ali",
-                        "123",
-                        "01234",
-                        "admin"
+                        "******",
+                        "******",
+                        userEmail?.trim()!!,
+                        gender_redio_checked.value!!,
+                        selectedJop!!,
+                        userName?.trim()!!,
+                        userPassword?.trim()!!,
+                        userPhone?.trim()!!,
+                        "normal"
                     )
                 )
                 if (result.isSuccessful) {

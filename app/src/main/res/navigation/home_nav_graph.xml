@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/home_nav_graph"
-    app:startDestination="@id/liveLocationFeature">
+    app:startDestination="@id/home2">
     <fragment
-        android:id="@+id/liveLocationFeature"
-        android:name="com.example.trainlivelocation.ui.liveLocationFeature"
-        android:label="fragment_live_location_feature"
-        tools:layout="@layout/fragment_live_location_feature" />
+        android:id="@+id/home2"
+        android:name="com.example.trainlivelocation.ui.home"
+        android:label="fragment home"
+        tools:layout="@layout/fragment_home" />
 </navigation>

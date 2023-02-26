@@ -26,31 +26,30 @@ class UserSignInViewModel @Inject constructor(
         MutableLiveData(null)
     val userLoginDataLive: LiveData<ArrayList<userResponseItem>?> = _userLoginDataMuta
     fun onLoginButtonClick(view: View) {
-        signInListener?.onSignInBtnClicked()
-//        signInListener?.onStartLogin()
-//
-//        if (userPhone.isNullOrEmpty() || userPassword.isNullOrEmpty()) {
-//            //view user error message
-//            signInListener?.onLoginFailure("Please type your email && password...")
-//            return
-//        } else {
-//            //get data from repo
-//            viewModelScope.launch {
-//                var result = getUserData(userPhone,userPassword)
-//                if (result.isSuccessful) {
-//                    if (result.body() != null) {
-//                        _userLoginDataMuta.postValue(result.body())
-//                        signInListener?.onSuccessLogin()
-//                    }
-//                } else {
-//                    Log.e("Register Error in sendUsersData", result.message())
-//                    signInListener?.onLoginFailure(result.message())
-//                }
-//            }
-//            viewModelScope.launch {
-//
-//            }
-//        }
+        signInListener?.onStartLogin()
+
+        if (userPhone.isNullOrEmpty() || userPassword.isNullOrEmpty()) {
+            //view user error message
+            signInListener?.onLoginFailure("Please type your email && password...")
+            return
+        } else {
+            //get data from repo
+            viewModelScope.launch {
+                var result = getUserData(userPhone,userPassword)
+                if (result.isSuccessful) {
+                    if (result.body() != null) {
+                        _userLoginDataMuta.postValue(result.body())
+                        signInListener?.onSuccessLogin(userPhone!!,userPassword!!)
+                    }
+                } else {
+                    Log.e("Register Error in sendUsersData", result.message())
+                    signInListener?.onLoginFailure(result.message())
+                }
+            }
+            viewModelScope.launch {
+
+            }
+        }
     }
     fun onSignUpBtnClicked(view: View){
         Log.e(TAG,"onSignUpBtnClicked")

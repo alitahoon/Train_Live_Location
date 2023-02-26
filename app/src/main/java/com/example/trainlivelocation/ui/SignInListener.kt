@@ -2,8 +2,7 @@ package com.example.trainlivelocation.ui
 
 interface SignInListener {
     fun onStartLogin()
-    fun onSuccessLogin()
+    fun onSuccessLogin(userPhone:String,userPassowrd:String)
     fun onSignUpBtnClicked()
-    fun onSignInBtnClicked()
     fun onLoginFailure(message:String)
 }

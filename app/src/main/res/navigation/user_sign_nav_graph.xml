@@ -18,8 +18,8 @@
             app:popEnterAnim="@anim/slide_in_down"
             app:popExitAnim="@anim/slide_out_down" />
         <action
-            android:id="@+id/action_sign_in_to_home_nav_graph"
-            app:destination="@id/home_nav_graph" />
+            android:id="@+id/action_sign_in_to_mainActivity"
+            app:destination="@id/mainActivity" />
     </fragment>
     <fragment
         android:id="@+id/sign_up"
@@ -27,17 +27,17 @@
         android:label="fragment sign up"
         tools:layout="@layout/fragment_sign_up" >
         <action
-            android:id="@+id/action_sign_up_to_otb_code_verfication"
-            app:destination="@id/otb_code_verfication" />
+            android:id="@+id/action_sign_up_to_authCheck"
+            app:destination="@id/authCheck" />
     </fragment>
-    <fragment
-        android:id="@+id/otb_code_verfication"
-        android:name="com.example.trainlivelocation.ui.otb_code_verfication"
-        android:label="fragment otb code verfication"
-        tools:layout="@layout/fragment_otb_code_verfication" >
-        <action
-            android:id="@+id/action_otb_code_verfication_to_sign_in"
-            app:destination="@id/sign_in" />
-    </fragment>
-    <include app:graph="@navigation/home_nav_graph" />
+    <activity
+        android:id="@+id/mainActivity"
+        android:name="com.example.trainlivelocation.ui.MainActivity"
+        android:label="activity_main"
+        tools:layout="@layout/activity_main" />
+    <activity
+        android:id="@+id/authCheck"
+        android:name="com.example.trainlivelocation.ui.AuthCheck"
+        android:label="activity_auth_check"
+        tools:layout="@layout/activity_auth_check" />
 </navigation>

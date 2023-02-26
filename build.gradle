@@ -2,6 +2,7 @@
 buildscript {
     repositories {
         // Make sure that you have the following two repositories
+        jcenter()
         google()  // Google's Maven repository
         mavenCentral()  // Maven Central repository
 
