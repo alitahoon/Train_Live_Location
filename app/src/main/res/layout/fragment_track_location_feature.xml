@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.example.trainlivelocation.ui.TrackLocationFeatureViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.TrackLocationFeature"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginVertical="20dp"
+            android:layout_marginTop="28dp"
+            android:textColorHint="@color/textHintColorFirst"
+            app:boxStrokeColor="@color/basicColor"
+            app:boxStrokeWidth="1dp"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/Register_btn_date_picker"
+                android:layout_width="match_parent"
+                android:gravity="center|start"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:drawableLeft="@drawable/train_id_txt"
+                android:drawablePadding="10dp"
+                android:hint="Train Id"
+                android:minHeight="48dp"
+                android:text="@={viewmodel.trainid}"
+                android:textColor="@color/textAlarmColor"
+                android:textColorHint="@color/textHintColorFirst"
+                android:textSize="18sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/liveLocation_TrackTrainLocation"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginHorizontal="80dp"-->
+<!--            android:onClick="@{viewmodel::onBtnTrackTrainLocationClicked}"-->
+<!--            android:padding="15dp"-->
+<!--            android:text="Track Location"-->
+<!--            android:textSize="14sp"-->
+<!--            android:textColor="@color/white"-->
+<!--            app:cornerRadius="30dp" />-->
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/liveLocation_ShareTrainLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="80dp"
+            android:onClick="@{viewmodel::onBtnTrackTrainLocationClicked}"
+            android:padding="15dp"
+            android:text="Share Location"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            app:cornerRadius="30dp" />
+
+
+
+    </LinearLayout>
+</layout>

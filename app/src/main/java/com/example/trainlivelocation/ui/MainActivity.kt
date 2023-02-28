@@ -11,7 +11,9 @@ import android.view.Window
 import android.view.WindowManager
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.utli.toast
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

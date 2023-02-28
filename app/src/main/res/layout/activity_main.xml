@@ -209,30 +209,32 @@
                     android:id="@+id/fragmentContainerView2"
                     android:name="androidx.navigation.fragment.NavHostFragment"
                     android:layout_width="match_parent"
-                    android:layout_height="280dp"
+                    android:layout_height="0dp"
                     app:defaultNavHost="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/home_txt_features_label"
-                    app:navGraph="@navigation/home_nav_graph" />
+                    app:layout_constraintVertical_bias="0.0"
+                    app:navGraph="@navigation/main_nav_graph" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>
 
-        <TextView
-            android:id="@+id/home_txt_features_news"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:text="News"
-            android:textColor="@color/btn_background"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_anchor="@+id/nestedScrollView2"
-            app:layout_anchorGravity="center" />
+<!--        <TextView-->
+<!--            android:id="@+id/home_txt_features_news"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginHorizontal="20dp"-->
+<!--            android:text="News"-->
+<!--            android:textColor="@color/btn_background"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_anchor="@+id/nestedScrollView2"-->
+<!--            app:layout_anchorGravity="center" />-->
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinatorLayout2"
             android:layout_width="match_parent"

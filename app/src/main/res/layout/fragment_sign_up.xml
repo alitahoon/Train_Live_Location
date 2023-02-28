@@ -128,7 +128,6 @@
                         android:id="@+id/Register_spinner_jobs"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:entries="@array/jopsArray"
                         android:layout_gravity="center"
                         tools:setOnItemSelectedListener="@{viewmodel.clickListener}"
                         android:spinnerMode="dropdown" />

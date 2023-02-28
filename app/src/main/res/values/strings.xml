@@ -19,7 +19,21 @@
         <item>Farmer</item>
         <item>Software Engineer</item>
     </array>
-    <string name="title_activity_splash_new_ui">splash_new_ui</string>
+    <array name="TrainID">
+        <item>44645</item>
+        <item>76766</item>
+        <item>56465</item>
+        <item>45646</item>
+        <item>68665</item>
+    </array>
+    <array name="stations">
+        <item>Shamma</item>
+        <item>Shieben</item>
+        <item>Shanawan</item>
+        <item>Ashmoun</item>
+        <item>Ramcec</item>
+    </array>
+    <string name="title_activity_splash_new_ui">splash</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -37,7 +51,7 @@
     <string name="help">Help</string>
     <string name="notification">Notification</string>
     <string name="location">Location</string>
-    <string name="emergency">Emergency</string>
+    <string name="passengers">Passengers</string>
     <string name="posts">Posts</string>
     <string name="tickets">Tickets</string>
     <string name="chat">Chat</string>

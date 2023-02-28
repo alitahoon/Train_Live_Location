@@ -52,6 +52,22 @@ object UserCaseModule  {
     fun provideGetLocationTrackBackgroundService(userRepo: UserRepo): GetLocationTrackBackgroundService {
         return GetLocationTrackBackgroundService(userRepo)
     }
+    @Provides
+    fun provideGetLocationTrackForegroundService(userRepo: UserRepo): GetLocationTrackForegroundService {
+        return GetLocationTrackForegroundService(userRepo)
+    }
+
+    @Provides
+    fun provideGetLiveLoctationFromApi(userRepo: UserRepo): GetLiveLoctationFromApi {
+        return GetLiveLoctationFromApi(userRepo)
+    }
+
+
+    @Provides
+    fun provideAddLiveLoctationToApi(userRepo: UserRepo) :AddLiveLoctationToApi{
+        return AddLiveLoctationToApi(userRepo)
+    }
+
 
 
 

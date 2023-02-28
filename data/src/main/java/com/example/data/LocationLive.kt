@@ -13,6 +13,7 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import org.greenrobot.eventbus.EventBus
 
 class LocationLive(private val context: Context) : LiveData<LocationDetails>() {
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
@@ -38,7 +39,8 @@ class LocationLive(private val context: Context) : LiveData<LocationDetails>() {
 
     private fun setLocationData(location: Location?) {
         location?.let { location ->
-            value = LocationDetails(location.longitude.toString(), location.latitude.toString())
+            value = LocationDetails(location.longitude.toFloat(), location.latitude.toFloat())
+            EventBus.getDefault().post(LocationDetails(location.longitude.toFloat(), location.latitude.toFloat()))
             Log.i("Location is", location.longitude.toString() +"***"+location.latitude.toString())
         }
     }

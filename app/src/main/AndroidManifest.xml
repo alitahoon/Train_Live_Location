@@ -16,7 +16,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:name=".TrainLiveLocation"
+        android:name=".ui.TrainLiveLocation"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -29,7 +29,7 @@
             android:name=".ui.AuthCheck"
             android:exported="false" />
         <activity
-            android:name=".ui.splash_new_ui"
+            android:name=".ui.splash"
             android:exported="true"
             android:label="@string/title_activity_splash_new_ui"
             android:theme="@style/Theme.TrainLiveLocation.NoActionBar">
@@ -44,7 +44,7 @@
             android:exported="false" />
 
         <service
-            android:name="com.example.data.LocationTrackBackgroundService"
+            android:name="com.example.data.LocationTrackForegroundService"
             android:enabled="true"
             android:exported="false" />
     </application>

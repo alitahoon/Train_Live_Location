@@ -7,10 +7,7 @@ import android.net.Uri
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.LiveData
-import com.example.domain.entity.LocationDetails
-import com.example.domain.entity.RegisterUser
-import com.example.domain.entity.userResponse
-import com.example.domain.entity.userResponseItem
+import com.example.domain.entity.*
 import com.google.android.gms.auth.api.signin.internal.Storage
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
@@ -58,5 +55,9 @@ interface UserRepo {
     suspend fun GetUserLocationLive(): LiveData<LocationDetails>
 
     suspend fun getLocationTrackBackgroundService():LifecycleService
+    suspend fun getLocationTrackForegroundService():LifecycleService
+
+    suspend fun addLiveLoctationToApi(locationRequest: Location_Request):Response<Location_Request_with_id>
+    suspend fun getLiveLoctationFromApi(trainid:Int):Response<Location_Response>
 
 }

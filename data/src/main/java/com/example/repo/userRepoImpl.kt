@@ -1,22 +1,15 @@
 package com.example.repo
 
-import com.example.domain.repo.LocationListener
 import android.app.Activity
-import android.app.Service
-import android.content.res.Resources
-import android.location.Location
 import android.net.Uri
 import android.util.Log
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import com.example.data.ApiService
 import com.example.data.LocationLive
 import com.example.data.LocationTrackBackgroundService
-import com.example.domain.entity.LocationDetails
-import com.example.domain.entity.RegisterUser
-import com.example.domain.entity.userResponseItem
+import com.example.data.LocationTrackForegroundService
+import com.example.domain.entity.*
 import com.example.domain.repo.UserRepo
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
@@ -25,8 +18,13 @@ import com.google.firebase.storage.StorageReference
 import retrofit2.Response
 import java.util.concurrent.TimeUnit
 
-class userRepoImpl(private val apiService: ApiService,private val locationLive: LocationLive,private val locationTrackBackgroundService: LocationTrackBackgroundService) : UserRepo {
-    private val TAG:String?="userRepoImpl"
+class userRepoImpl(
+    private val apiService: ApiService,
+    private val locationLive: LocationLive,
+    private val locationTrackForegroundService: LocationTrackForegroundService,
+    private val locationTrackBackgroundService: LocationTrackBackgroundService
+) : UserRepo {
+    private val TAG: String? = "userRepoImpl"
     override suspend fun getUserData(
         userPhone: String?,
         userPassword: String?
@@ -77,16 +75,16 @@ class userRepoImpl(private val apiService: ApiService,private val locationLive: 
     override suspend fun sendProfileImageToFirebaseStorage(
         profileImagesUri: Uri,
         imageName: String,
-        imageRef:StorageReference
-    ){
+        imageRef: StorageReference
+    ) {
         profileImagesUri?.let {
             imageRef.child("profileImages/$imageName").putFile(it).addOnCompleteListener(
                 OnCompleteListener {
-                    if (it.isSuccessful){
-                        Log.i(TAG,it.result.toString())
+                    if (it.isSuccessful) {
+                        Log.i(TAG, it.result.toString())
                     }
                 }).addOnFailureListener {
-                    Log.e(TAG,it.message.toString())
+                Log.e(TAG, it.message.toString())
             }
         }
     }
@@ -102,6 +100,16 @@ class userRepoImpl(private val apiService: ApiService,private val locationLive: 
     override suspend fun getLocationTrackBackgroundService(): LifecycleService {
         return locationTrackBackgroundService
     }
+
+    override suspend fun getLocationTrackForegroundService(): LifecycleService {
+        return locationTrackForegroundService
+    }
+
+    override suspend fun addLiveLoctationToApi(locationRequest: Location_Request): Response<Location_Request_with_id> =
+        apiService.AddLocation(locationRequest)
+
+    override suspend fun getLiveLoctationFromApi(trainid: Int): Response<Location_Response> =
+        apiService.GetLocation(trainid)
 
 
 }

@@ -28,28 +28,28 @@ class UserSignInViewModel @Inject constructor(
     fun onLoginButtonClick(view: View) {
         signInListener?.onStartLogin()
 
-        if (userPhone.isNullOrEmpty() || userPassword.isNullOrEmpty()) {
-            //view user error message
-            signInListener?.onLoginFailure("Please type your email && password...")
-            return
-        } else {
-            //get data from repo
-            viewModelScope.launch {
-                var result = getUserData(userPhone,userPassword)
-                if (result.isSuccessful) {
-                    if (result.body() != null) {
-                        _userLoginDataMuta.postValue(result.body())
-                        signInListener?.onSuccessLogin(userPhone!!,userPassword!!)
-                    }
-                } else {
-                    Log.e("Register Error in sendUsersData", result.message())
-                    signInListener?.onLoginFailure(result.message())
-                }
-            }
-            viewModelScope.launch {
-
-            }
-        }
+//        if (userPhone.isNullOrEmpty() || userPassword.isNullOrEmpty()) {
+//            //view user error message
+//            signInListener?.onLoginFailure("Please type your email && password...")
+//            return
+//        } else {
+//            //get data from repo
+//            viewModelScope.launch {
+//                var result = getUserData(userPhone,userPassword)
+//                if (result.isSuccessful) {
+//                    if (result.body() != null) {
+//                        _userLoginDataMuta.postValue(result.body())
+//                        signInListener?.onSuccessLogin(userPhone!!,userPassword!!)
+//                    }
+//                } else {
+//                    Log.e("Register Error in sendUsersData", result.message())
+//                    signInListener?.onLoginFailure(result.message())
+//                }
+//            }
+//            viewModelScope.launch {
+//
+//            }
+//        }
     }
     fun onSignUpBtnClicked(view: View){
         Log.e(TAG,"onSignUpBtnClicked")
