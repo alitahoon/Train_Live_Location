@@ -1,5 +1,6 @@
 package com.example.data
 
+import android.location.LocationRequest
 import com.example.domain.entity.*
 import retrofit2.Call
 import retrofit2.Response
@@ -163,7 +164,12 @@ interface ApiService {
        suspend fun UpdateUser(@Query("userId") userId:Int):Response<UpdateUser>
 
 
+        //location
+       @POST("/api/LiveLocation/CreateLocation")
+       suspend fun AddLocation(@Body locationResponse: Location_Request):Response<Location_Request_with_id>
 
+       @GET("/api/LiveLocation/GetLocation")
+       suspend fun GetLocation(@Query("trainId") trainid:Int):Response<Location_Response>
 
 
 

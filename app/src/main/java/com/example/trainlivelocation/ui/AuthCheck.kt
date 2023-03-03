@@ -2,19 +2,18 @@ package com.example.trainlivelocation.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
 import com.example.trainlivelocation.R
-import com.example.trainlivelocation.databinding.ActivitySplashNewUiBinding
+import com.example.trainlivelocation.databinding.ActivityAuthCheckBinding
+import com.example.trainlivelocation.databinding.ActivitySplashBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class splash_new_ui : AppCompatActivity() {
-    private lateinit var binding:ActivitySplashNewUiBinding
+class AuthCheck : AppCompatActivity() {
+    private lateinit var binding: ActivityAuthCheckBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding= ActivitySplashNewUiBinding.inflate(layoutInflater)
+        binding= ActivityAuthCheckBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
     }
 }

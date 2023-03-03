@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/home_nav_graph"
+    app:startDestination="@id/home2">
+    <fragment
+        android:id="@+id/home2"
+        android:name="com.example.trainlivelocation.ui.Home"
+        android:label="fragment home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_home_to_locationDialogFragment"
+            app:destination="@id/locationDialogFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/locationDialogFragment"
+        android:name="com.example.trainlivelocation.ui.LocationDialogFragment"
+        android:label="LocationDialogFragment" >
+        <action
+            android:id="@+id/action_locationDialogFragment_to_shareLocationFeature"
+            app:destination="@id/shareLocationFeature"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_locationDialogFragment_to_trackLocationFeature"
+            app:destination="@id/trackLocationFeature" />
+    </dialog>
+    <fragment
+        android:id="@+id/shareLocationFeature"
+        android:name="com.example.trainlivelocation.ui.ShareLocationFeature"
+        android:label="ShareLocationFeature" />
+    <fragment
+        android:id="@+id/trackLocationFeature"
+        android:name="com.example.trainlivelocation.ui.TrackLocationFeature"
+        android:label="fragment_track_location_feature"
+        tools:layout="@layout/fragment_track_location_feature" />
+
+</navigation>

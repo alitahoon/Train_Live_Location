@@ -1,18 +1,304 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.MainActivity"
+    android:background="@color/white">
 
-    <TextView
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/home_appBar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:fitsSystemWindows="true"
+            android:stateListAnimator="@null"
+            android:theme="@style/Theme.TrainLiveLocation"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/splash_CollapsingToolbarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:fitsSystemWindows="true"
+                app:collapsedTitleTextAppearance="@style/CollapsedAppBarTextStyle"
+                app:contentScrim="@color/basicColor"
+                app:expandedTitleGravity="center|bottom"
+                app:expandedTitleTextAppearance="@style/ExpandedAppBarTextStyle"
+                app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
+
+               <androidx.constraintlayout.widget.ConstraintLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   >
+                   <LinearLayout
+                       android:id="@+id/home_action_bar"
+                       android:layout_width="match_parent"
+                       android:layout_height="?actionBarSize"
+                       android:gravity="center"
+                       android:orientation="horizontal"
+                       android:paddingStart="15dp"
+                       android:paddingEnd="15dp"
+                       app:layout_constraintLeft_toLeftOf="parent"
+                       app:layout_constraintRight_toRightOf="parent"
+                       app:layout_constraintTop_toTopOf="parent">
+
+                       <RelativeLayout
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent">
+
+                           <de.hdodenhof.circleimageview.CircleImageView
+                               android:id="@+id/main_activity_ci_profile_image"
+                               android:layout_width="60dp"
+                               android:layout_height="60dp"
+                               android:layout_alignParentTop="true"
+                               android:layout_alignParentEnd="true"
+                               android:layout_alignParentBottom="true"
+                               android:layout_marginStart="2dp"
+                               android:layout_marginTop="2dp"
+                               android:layout_marginEnd="2dp"
+                               android:layout_marginBottom="2dp"
+                               android:src="@drawable/profile_image" />
+
+                           <TextView
+                               android:layout_marginTop="10dp"
+                               android:id="@+id/main_activity_ci_profile_name"
+                               android:layout_width="wrap_content"
+                               android:layout_height="match_parent"
+                               android:layout_alignParentTop="true"
+                               android:layout_marginEnd="2dp"
+                               android:layout_toStartOf="@+id/main_activity_ci_profile_image"
+                               android:layout_toLeftOf="@id/main_activity_ci_profile_image"
+                               android:text="@string/profile_name"
+                               android:textColor="@color/basicColor"
+                               android:textSize="16sp" />
+
+                           <TextView
+                               android:id="@+id/main_activity_ci_profile_jop"
+                               android:layout_width="wrap_content"
+                               android:layout_height="match_parent"
+                               android:layout_alignTop="@id/main_activity_ci_profile_name"
+                               android:layout_alignParentBottom="true"
+                               android:layout_marginTop="20dp"
+                               android:layout_marginEnd="2dp"
+                               android:layout_toStartOf="@+id/main_activity_ci_profile_image"
+                               android:layout_toLeftOf="@id/main_activity_ci_profile_image"
+                               android:text="@string/profile_jop"
+                               android:textColor="@color/fourth"
+                               android:textSize="12sp" />
+
+                           <ImageView
+                               android:layout_width="wrap_content"
+                               android:layout_height="match_parent"
+                               android:layout_alignParentStart="true"
+                               android:layout_alignParentTop="true"
+                               android:layout_alignParentBottom="true"
+                               android:src="@drawable/menu" />
+                       </RelativeLayout>
+
+
+                   </LinearLayout>
+
+
+                   <androidx.cardview.widget.CardView
+                       android:id="@+id/home_card_view"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:layout_margin="15dp"
+                       android:backgroundTint="@color/basicColor"
+                       app:cardCornerRadius="50dp"
+                       app:cardElevation="20dp"
+                       app:layout_constraintEnd_toEndOf="parent"
+                       app:layout_constraintStart_toStartOf="parent"
+                       app:layout_constraintTop_toBottomOf="@id/home_action_bar">
+
+                       <androidx.constraintlayout.widget.ConstraintLayout
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           android:padding="15dp">
+
+                           <ImageView
+                               android:id="@+id/home_card_train_icon"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:src="@drawable/home_card_train_icon"
+                               app:layout_constraintBottom_toBottomOf="parent"
+                               app:layout_constraintStart_toStartOf="parent"
+                               app:layout_constraintTop_toTopOf="parent"
+                               app:layout_constraintVertical_bias="0.533" />
+
+                           <TextView
+                               android:id="@+id/home_card_train_id"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:layout_marginTop="40dp"
+                               android:drawableStart="@drawable/train_id"
+                               android:drawablePadding="10dp"
+                               android:gravity="center"
+                               android:text="Train ID"
+                               android:textColor="@color/white"
+                               android:textSize="22sp"
+                               app:layout_constraintEnd_toEndOf="parent"
+                               app:layout_constraintHorizontal_bias="0.0"
+                               app:layout_constraintStart_toEndOf="@id/home_card_train_icon"
+                               app:layout_constraintTop_toTopOf="parent" />
+
+                           <TextView
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:drawableLeft="@drawable/timer"
+                               android:drawablePadding="10dp"
+                               android:gravity="center"
+                               android:text="2:13:30"
+                               android:textColor="@color/white"
+                               android:textSize="22sp"
+                               app:layout_constraintBottom_toBottomOf="parent"
+                               app:layout_constraintEnd_toEndOf="parent"
+                               app:layout_constraintHorizontal_bias="0.0"
+                               app:layout_constraintStart_toEndOf="@id/home_card_train_icon"
+                               app:layout_constraintTop_toBottomOf="@id/home_card_train_id"
+                               app:layout_constraintVertical_bias="0.461" />
+
+                       </androidx.constraintlayout.widget.ConstraintLayout>
+                   </androidx.cardview.widget.CardView>
+               </androidx.constraintlayout.widget.ConstraintLayout>
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/splash_toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    android:stateListAnimator="@null"
+                    android:theme="@style/Theme.TrainLiveLocation"
+                    app:layout_collapseMode="pin"/>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_appBar_layout">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/home_txt_features_label"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10dp"
+                    android:layout_marginStart="20dp"
+                    android:text="Features"
+                    android:textColor="@color/btn_background"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.fragment.app.FragmentContainerView
+                    android:id="@+id/fragmentContainerView2"
+                    android:name="androidx.navigation.fragment.NavHostFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:defaultNavHost="true"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/home_txt_features_label"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:navGraph="@navigation/main_nav_graph" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+<!--        <TextView-->
+<!--            android:id="@+id/home_txt_features_news"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginHorizontal="20dp"-->
+<!--            android:text="News"-->
+<!--            android:textColor="@color/btn_background"-->
+<!--            android:textSize="18sp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:layout_anchor="@+id/nestedScrollView2"-->
+<!--            app:layout_anchorGravity="center" />-->
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinatorLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_gravity="bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.bottomappbar.BottomAppBar
+                android:id="@+id/bottom_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:backgroundTint="@color/basicColor"
+                app:fabAnimationMode="slide"
+                app:fabCradleRoundedCornerRadius="20dp"
+                app:hideOnScroll="true"
+                app:layout_constraintBottom_toBottomOf="parent">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="15dp">
+
+                    <com.google.android.material.bottomnavigation.BottomNavigationView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="?android:selectableItemBackground"
+                        android:textAlignment="center"
+                        app:itemIconTint="@color/white"
+                        app:itemTextColor="@color/white"
+                        app:menu="@menu/footer_home_menu"
+
+                        />
+                </FrameLayout>
+
+
+            </com.google.android.material.bottomappbar.BottomAppBar>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/Home_floationbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="70dp"
+                android:backgroundTint="@color/btn_background"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/home"
+                app:layout_anchor="@id/bottom_bar"
+                app:layout_anchorGravity="top|center"
+                app:maxImageSize="45dp"
+                app:tint="@color/white" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/home_navigation_view"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:menu="@menu/home_menu"
+        android:backgroundTint="@color/basicColor"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"/>
+</androidx.drawerlayout.widget.DrawerLayout>

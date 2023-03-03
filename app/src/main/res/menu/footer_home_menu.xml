@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/bnbMenuStore"
+        android:title="@string/location"
+        android:icon="@drawable/location_icon"
+        app:showAsAction="always"/>
+    <item android:id="@+id/bnbMenuHome"
+        android:title=""
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/bnbMenuNotification"
+        android:title="@string/notification"
+        android:icon="@drawable/notifications"
+        app:showAsAction="always"/>
+</menu>

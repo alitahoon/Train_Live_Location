@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Train Live Location</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="Wellcome_back">Wellcome back!</string>
     <string name="phone">Phone</string>
@@ -10,21 +9,8 @@
     <string name="sign_in_without_underScore">Sign In</string>
     <string name="sign_up"><u>Sign Up?</u></string>
     <string name="submit"><u>submit?</u></string>
-    <string name="sending_code">Sending Code...</string>
-    <string name="profile_name">Profile Name</string>
-    <string name="profile">Profile</string>
-    <string name="security">Security</string>
-    <string name="invite_friend">Invite Friend</string>
-    <string name="contact_us">Contact Us</string>
-    <string name="help">Help</string>
-    <string name="home_settings_title">Settings</string>
-    <string name="home_profile_title">Profile</string>
-    <string name="home_ticket_title">Buy Ticket</string>
-    <string name="home_schedule_title">Schedules</string>
-    <string name="home_post_title">Posts Page</string>
-    <string name="home_prayer_title">Qibla</string>
-    <string name="profile_job">Profile Job</string>
-    <string name="verification_done">verification done...</string>
+    <string name="sending_code">Sending Code…</string>
+    <string name="verification_done">verification done…</string>
     <array name="jopsArray">
         <item>Doctor</item>
         <item>Engineer</item>
@@ -33,16 +19,42 @@
         <item>Farmer</item>
         <item>Software Engineer</item>
     </array>
-    <string name="title_activity_splash_new_ui">splash_new_ui</string>
+    <array name="TrainID">
+        <item>44645</item>
+        <item>76766</item>
+        <item>56465</item>
+        <item>45646</item>
+        <item>68665</item>
+    </array>
+    <array name="stations">
+        <item>Shamma</item>
+        <item>Shieben</item>
+        <item>Shanawan</item>
+        <item>Ashmoun</item>
+        <item>Ramcec</item>
+    </array>
+    <string name="title_activity_splash_new_ui">splash</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next"><u>Next</u></string>
     <string name="previous">Previous</string>
-
     <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="profile_name">Profile Name</string>
     <string name="features1">Track train live</string>
-    <string name="features2">Notify you before arriving to your staion</string>
+    <string name="features2">Notify you before arriving to your station</string>
+    <string name="profile_jop">Profile Jop</string>
+    <string name="profile">Profile</string>
+    <string name="security">Security</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="invite_friend">Invite Friend</string>
+    <string name="help">Help</string>
+    <string name="notification">Notification</string>
+    <string name="location">Location</string>
+    <string name="passengers">Passengers</string>
+    <string name="posts">Posts</string>
+    <string name="tickets">Tickets</string>
+    <string name="chat">Chat</string>
+    <string name="abbreviations">abbreviations</string>
+    <string name="abbreviation">Abbreviation</string>
 </resources>

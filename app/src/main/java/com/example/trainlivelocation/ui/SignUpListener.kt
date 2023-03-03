@@ -7,6 +7,6 @@ interface SignUpListener {
     fun onVerificationCompleted()
     fun onVerficationSuccess()
 
-    fun nextBtnClicked()
+    fun nextBtnClicked(type:String)
     fun onFailure(message:String)
 }

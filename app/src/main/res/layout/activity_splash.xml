@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.splash_new_ui"
+    tools:context=".ui.splash"
     android:background="#187498">
 
 
@@ -96,7 +96,8 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-            app:navGraph="@navigation/user_sign_nav_graph" />    </androidx.core.widget.NestedScrollView>
+            app:navGraph="@navigation/user_sign_nav_graph" />
+    </androidx.core.widget.NestedScrollView>
 
 
 
