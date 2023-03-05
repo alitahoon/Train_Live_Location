@@ -9,6 +9,7 @@
     <color name="btn_background">#187498</color>
     <color name="headline_color">#2192FF</color>
     <color name="textHintColorFirst">#ABAFB0</color>
+    <color name="dark_mode_background">#2C3333</color>
     <color name="textAlarmColor">#FF0B0B</color>
     <color name="textLogoColor">#1572A1</color>
     <color name="textHintColorSecond">#676161</color>

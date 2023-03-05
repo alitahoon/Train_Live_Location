@@ -1,18 +1,15 @@
 package com.example.data
 
-import android.app.Activity
-import android.content.res.Resources
+import androidx.appcompat.app.AppCompatActivity
 import android.net.Uri
 import android.util.Log
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import com.google.firebase.storage.StorageReference
 import java.util.concurrent.TimeUnit
 
 class FirebaseService(
     private val auth: FirebaseAuth,
-    private val activity: Activity,
+    private val activity: AppCompatActivity,
     private val imageRef: StorageReference,
     private val phoneAuthOptions: PhoneAuthOptions,
     private val firebaseServiceCallbacks: FirebaseServiceCallbacks

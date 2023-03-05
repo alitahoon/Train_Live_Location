@@ -1,4 +1,4 @@
-package com.example.trainlivelocation.ui
+package com.example.trainlivelocation
 
 import android.app.Application
 import android.content.Context

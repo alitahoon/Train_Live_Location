@@ -142,7 +142,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_gravity="center"
-                    android:src="@drawable/spinner_drop_icon" />
+                    app:srcCompat="@drawable/spinner_drop_icon" />
 
 
 

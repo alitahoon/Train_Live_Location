@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_home_to_locationDialogFragment"
             app:destination="@id/locationDialogFragment" />
+        <action
+            android:id="@+id/action_home_to_posts"
+            app:destination="@id/posts2" />
     </fragment>
     <dialog
         android:id="@+id/locationDialogFragment"
@@ -35,7 +38,11 @@
     <fragment
         android:id="@+id/trackLocationFeature"
         android:name="com.example.trainlivelocation.ui.TrackLocationFeature"
-        android:label="fragment_track_location_feature"
+        android:label="fragment track location feature"
         tools:layout="@layout/fragment_track_location_feature" />
+    <fragment
+        android:id="@+id/posts2"
+        android:name="com.example.trainlivelocation.ui.Posts"
+        android:label="Posts" />
 
 </navigation>

@@ -100,7 +100,7 @@
                                android:layout_alignParentStart="true"
                                android:layout_alignParentTop="true"
                                android:layout_alignParentBottom="true"
-                               android:src="@drawable/menu" />
+                               app:srcCompat="@drawable/menu" />
                        </RelativeLayout>
 
 
@@ -128,7 +128,7 @@
                                android:id="@+id/home_card_train_icon"
                                android:layout_width="wrap_content"
                                android:layout_height="wrap_content"
-                               android:src="@drawable/home_card_train_icon"
+                               app:srcCompat="@drawable/home_card_train_icon"
                                app:layout_constraintBottom_toBottomOf="parent"
                                app:layout_constraintStart_toStartOf="parent"
                                app:layout_constraintTop_toTopOf="parent"
@@ -264,7 +264,7 @@
                     <com.google.android.material.bottomnavigation.BottomNavigationView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="?android:selectableItemBackground"
+                        android:background="?attr/selectableItemBackground"
                         android:textAlignment="center"
                         app:itemIconTint="@color/white"
                         app:itemTextColor="@color/white"

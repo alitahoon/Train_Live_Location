@@ -16,7 +16,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:name=".ui.TrainLiveLocation"
+        android:name=".TrainLiveLocation"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -45,6 +45,17 @@
 
         <service
             android:name="com.example.data.LocationTrackForegroundService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
+            android:name="com.example.data.LocationTrackBackgroundService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
+            android:name="com.example.data.GetLocationService"
+            android:enabled="true"
+            android:exported="false" /><service
+            android:name=".ui.GetLocationServiceui"
             android:enabled="true"
             android:exported="false" />
     </application>

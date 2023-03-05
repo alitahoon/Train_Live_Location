@@ -10,6 +10,10 @@ import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.Observer
 import com.example.domain.entity.LocationDetails
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import org.greenrobot.eventbus.EventBus
 
 class LocationTrackForegroundService : LifecycleService() {
@@ -18,6 +22,7 @@ class LocationTrackForegroundService : LifecycleService() {
         private val NOTIFICATION_ID:Int? = 105
     }
 
+    private var supervisorJob = SupervisorJob(parent = null)
     private lateinit var locationLive: LocationLive
     private val TAG: String? = "LocationTrackForegroundService"
     private var notificationManager: NotificationManager? = null
@@ -73,5 +78,6 @@ class LocationTrackForegroundService : LifecycleService() {
         super.onDestroy()
         stopForeground(true)
         stopSelf()
+
     }
 }

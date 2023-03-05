@@ -1,19 +1,14 @@
 package com.example.trainlivelocation.ui
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.app.Application
-import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.view.View
-import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.ScrollView
 import androidx.databinding.BindingAdapter
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.*
-import androidx.navigation.fragment.DialogFragmentNavigator
 import com.example.domain.entity.RegisterUser
 import com.example.domain.entity.userResponseItem
 import com.example.domain.usecase.*
@@ -48,7 +43,7 @@ class UserSignUpViewModel @Inject constructor(
     var auth: FirebaseAuth = FirebaseAuth.getInstance()
     lateinit var resendtoken: PhoneAuthProvider.ForceResendingToken
     lateinit var storedverificationId: String
-    lateinit var activity: Activity
+    lateinit var activity: AppCompatActivity
     lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
     lateinit var userSignUpListener: SignUpListener
     val gender_redio_checked = MutableLiveData<String>()
@@ -65,7 +60,7 @@ class UserSignUpViewModel @Inject constructor(
 //        gender_redio_checked.postValue(R.id.male)//def value
 //    }
 
-    fun setbaseActivity(baseActivity: Activity) {
+    fun setbaseActivity(baseActivity: AppCompatActivity) {
         activity = baseActivity
     }
 

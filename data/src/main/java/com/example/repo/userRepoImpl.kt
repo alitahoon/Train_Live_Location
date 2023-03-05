@@ -1,14 +1,11 @@
 package com.example.repo
 
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.LiveData
-import com.example.data.ApiService
-import com.example.data.LocationLive
-import com.example.data.LocationTrackBackgroundService
-import com.example.data.LocationTrackForegroundService
+import com.example.data.*
 import com.example.domain.entity.*
 import com.example.domain.repo.UserRepo
 import com.google.android.gms.tasks.OnCompleteListener
@@ -21,8 +18,8 @@ import java.util.concurrent.TimeUnit
 class userRepoImpl(
     private val apiService: ApiService,
     private val locationLive: LocationLive,
-    private val locationTrackForegroundService: LocationTrackForegroundService,
-    private val locationTrackBackgroundService: LocationTrackBackgroundService
+    private val locationTrackBackgroundService: LocationTrackBackgroundService,
+    private val getLocationService: GetLocationService
 ) : UserRepo {
     private val TAG: String? = "userRepoImpl"
     override suspend fun getUserData(
@@ -36,7 +33,7 @@ class userRepoImpl(
     override suspend fun sendOtpToPhone(
         phoneNumber: String,
         auth: FirebaseAuth,
-        activity: Activity,
+        activity: AppCompatActivity,
         callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks,
     ): PhoneAuthOptions {
         auth.setLanguageCode("ar")
@@ -52,7 +49,7 @@ class userRepoImpl(
     override suspend fun resendOtpCode(
         phoneNumber: String,
         auth: FirebaseAuth,
-        activity: Activity,
+        activity: AppCompatActivity,
         callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
     ): PhoneAuthOptions {
         auth.setLanguageCode("ar")
@@ -97,12 +94,14 @@ class userRepoImpl(
         return locationLive
     }
 
-    override suspend fun getLocationTrackBackgroundService(): LifecycleService {
+    override suspend fun getLocationTrackBackgroundService(trainid: Int,userid:Int): LifecycleService {
+//        locationTrackBackgroundService.setTrainId_userId(trainid,userid)
         return locationTrackBackgroundService
     }
 
-    override suspend fun getLocationTrackForegroundService(): LifecycleService {
-        return locationTrackForegroundService
+    override suspend fun getLocationTrackForegroundService(trainid:Int): LifecycleService {
+        getLocationService.setTrainID(trainid)
+        return getLocationService
     }
 
     override suspend fun addLiveLoctationToApi(locationRequest: Location_Request): Response<Location_Request_with_id> =

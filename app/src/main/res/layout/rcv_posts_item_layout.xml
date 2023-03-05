@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:backgroundTint="@color/dark_mode_background"
+    android:layout_margin="5dp"
+    app:strokeColor="@color/textHintColorFirst"
+    app:strokeWidth="1dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="15dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginHorizontal="10dp"
+            >
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/post_rcv_item_profile_img"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:src="@drawable/account_circle_150"/>
+
+            <TextView
+                android:id="@+id/post_rcv_item_txt_profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="5dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="5dp"
+                android:layout_toEndOf="@+id/post_rcv_item_profile_img"
+                android:text="@string/post_profile_name"
+                android:textColor="@color/white" />
+
+
+
+            <ImageView
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:id="@+id/post_rcv_item_more_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toStartOf="@id/post_rcv_item_close_icon"
+                app:srcCompat="@drawable/more_icon" />
+            <ImageView
+                android:id="@+id/post_rcv_item_close_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:srcCompat="@drawable/close_icon"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="5dp"/>
+        </RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="convenient. With new technological innovations, human beings have become more dependent on science and technology. We rely on technology for all our activities, and have become an integral part of our lives"
+            android:layout_marginHorizontal="20dp"
+            android:gravity="start"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginHorizontal="20dp"
+            app:srcCompat="@drawable/train"
+            android:layout_marginVertical="5dp"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white"
+            android:layout_marginVertical="5dp"
+            android:layout_marginHorizontal="20dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="10dp">
+            <TextView
+                android:gravity="center|start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/comments"
+                android:text="@string/comments"
+                android:textColor="@color/white"
+                android:drawablePadding="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                />
+            <TextView
+                android:drawablePadding="10dp"
+                android:layout_marginStart="10dp"
+                android:drawableLeft="@drawable/time"
+                android:gravity="center|start"
+                android:id="@+id/post_rcv_item_txt_profile_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/post_time"
+                android:textColor="@color/white" />
+            <TextView
+                android:drawablePadding="10dp"
+                android:layout_marginStart="10dp"
+                android:drawableLeft="@drawable/like"
+                android:gravity="center|start"
+                android:id="@+id/post_rcv_item_txt_profile_likes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/post_Likes"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+
+
+</com.google.android.material.card.MaterialCardView>

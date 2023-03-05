@@ -10,6 +10,8 @@
     <string name="sign_up"><u>Sign Up?</u></string>
     <string name="submit"><u>submit?</u></string>
     <string name="sending_code">Sending Code…</string>
+    <string name="CriticalPosts">Critical Posts page</string>
+    <string name="NoneCriticalPosts">None Critical Posts page</string>
     <string name="verification_done">verification done…</string>
     <array name="jopsArray">
         <item>Doctor</item>
@@ -57,4 +59,8 @@
     <string name="chat">Chat</string>
     <string name="abbreviations">abbreviations</string>
     <string name="abbreviation">Abbreviation</string>
+    <string name="post_profile_name">profile name</string>
+    <string name="post_time">post time</string>
+    <string name="comments">Comments</string>
+    <string name="post_Likes">post Likes</string>
 </resources>

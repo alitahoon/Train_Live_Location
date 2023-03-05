@@ -100,9 +100,9 @@ class ShareLocationFeature : Fragment() ,LiveLocationListener{
         shareLocationViewModel?.uplaodLocationToApi(locationDetails.longitude,locationDetails.latitude)    }
 
     override fun onBtnShareTrainLocationClicked() {
-        shareLocationViewModel?.setbaseActivity(requireActivity())
         shareLocationViewModel?.setLiveLocation()
         shareLocationViewModel?.startUpdate()
+//        shareLocationViewModel?.startLocationService()
     }
 
     override fun onBtnTrackTrainLocationClicked() {
@@ -115,9 +115,6 @@ class ShareLocationFeature : Fragment() ,LiveLocationListener{
         }
     }
 
-    @Subscribe
-    fun recieveLocationEvent(locationDetails: LocationDetails){
-        Log.i(TAG,"Location Latitude --> ${locationDetails?.latitude}\nLocation longitude --> ${locationDetails?.longitude}")
-    }
+
 
 }

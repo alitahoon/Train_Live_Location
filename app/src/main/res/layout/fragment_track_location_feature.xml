@@ -62,7 +62,7 @@
             android:layout_marginHorizontal="80dp"
             android:onClick="@{viewmodel::onBtnTrackTrainLocationClicked}"
             android:padding="15dp"
-            android:text="Share Location"
+            android:text="Track Location"
             android:textSize="14sp"
             android:textColor="@color/white"
             app:cornerRadius="30dp" />

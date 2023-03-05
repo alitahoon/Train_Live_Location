@@ -1,16 +1,12 @@
 package com.example.trainlivelocation.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
-import com.example.trainlivelocation.R
-import com.example.trainlivelocation.databinding.FragmentHomeBinding
 import com.example.trainlivelocation.databinding.FragmentTrackLocationFeatureBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -51,13 +47,13 @@ class TrackLocationFeature : Fragment() ,TrackLocationListener{
                 this.viewmodel=trackLocationFeatureViewModel
             }
         binding?.viewmodel?.trackLocationListener=this
-//            setObservers()
+        trackLocationFeatureViewModel?.setbaseActivity(requireActivity())
+        setObservers()
+
         return binding?.root
     }
 
-    fun setObservers(){
 
-    }
 
     companion object {
         /**
@@ -79,17 +75,37 @@ class TrackLocationFeature : Fragment() ,TrackLocationListener{
             }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        trackLocationFeatureViewModel?.stopTrackLocationForgroundService()
+    }
+
     override fun onBtnClickListener() {
+//        trackLocationFeatureViewModel?.btnTrackLocationFeature?.observe(viewLifecycleOwner, Observer {
+//            if (it==true){
+////                //get location from API
+////                Log.e(TAG,"setObservers")
+////                trackLocationFeatureViewModel?.getTrainLocationFromApi()
+////                trackLocationFeatureViewModel?._trainLocationMuta?.observe(viewLifecycleOwner,
+////                    Observer {
+////                        Log.e(TAG,"observe")
+////                        Log.e(TAG,it?.longitude.toString()+"  "+it?.longitude)
+////                    })
+//            }
+//        })
+    }
+    fun setObservers(){
         trackLocationFeatureViewModel?.btnTrackLocationFeature?.observe(viewLifecycleOwner, Observer {
             if (it==true){
+                trackLocationFeatureViewModel?.startTrackLocationForgroundService()
                 //get location from API
-                Log.e(TAG,"setObservers")
-                trackLocationFeatureViewModel?.getTrainLocationFromApi()
-                trackLocationFeatureViewModel?._trainLocationMuta?.observe(viewLifecycleOwner,
-                    Observer {
-                        Log.e(TAG,"observe")
-                        Log.e(TAG,it?.longitude.toString()+"  "+it?.longitude)
-                    })
+//                Log.e(TAG,"setObservers")
+//                trackLocationFeatureViewModel?.getTrainLocationFromApi()
+//                trackLocationFeatureViewModel?._trainLocationMuta?.observe(viewLifecycleOwner,
+//                    Observer {
+//                        Log.e(TAG,"observe")
+//                        Log.e(TAG,it?.longitude.toString()+"  "+it?.latitude.toString())
+//                    })
             }
         })
     }

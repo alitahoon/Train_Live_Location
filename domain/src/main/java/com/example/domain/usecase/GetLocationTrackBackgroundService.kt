@@ -6,5 +6,5 @@ import androidx.lifecycle.LifecycleService
 import com.example.domain.repo.UserRepo
 
 class GetLocationTrackBackgroundService(private val userRepo: UserRepo) {
-    suspend operator fun invoke(): LifecycleService =userRepo.getLocationTrackBackgroundService()
+    suspend operator fun invoke(trainid: Int,userid:Int): LifecycleService =userRepo.getLocationTrackBackgroundService(trainid,userid)
 }

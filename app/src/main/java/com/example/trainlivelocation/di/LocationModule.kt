@@ -1,9 +1,7 @@
 package com.example.trainlivelocation.di
 
 import android.content.Context
-import com.example.data.LocationLive
-import com.example.data.LocationTrackBackgroundService
-import com.example.data.LocationTrackForegroundService
+import com.example.data.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,8 +18,18 @@ object LocationModule {
     @Provides
     fun ProvideLocationTrackBackgroundService(): LocationTrackBackgroundService {
         return LocationTrackBackgroundService()
-    } @Provides
+    }
+    @Provides
     fun ProvideLocationTrackForegroundService(): LocationTrackForegroundService {
         return LocationTrackForegroundService()
     }
+
+
+    @Provides
+    fun ProvideLocationGetLocationService(): GetLocationService {
+        return GetLocationService()
+    }
+
+
+
 }

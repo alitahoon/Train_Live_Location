@@ -3,6 +3,7 @@ package com.example.trainlivelocation.di
 import com.example.domain.repo.LocationListener
 import com.example.domain.repo.UserRepo
 import com.example.domain.usecase.*
+import com.example.trainlivelocation.ui.GetLocationServiceui
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -66,6 +67,10 @@ object UserCaseModule  {
     @Provides
     fun provideAddLiveLoctationToApi(userRepo: UserRepo) :AddLiveLoctationToApi{
         return AddLiveLoctationToApi(userRepo)
+    }
+    @Provides
+    fun provideGetLocationServiceui() :GetLocationServiceui{
+        return GetLocationServiceui()
     }
 
 

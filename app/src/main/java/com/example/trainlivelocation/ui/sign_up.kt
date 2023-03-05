@@ -1,12 +1,11 @@
 package com.example.trainlivelocation.ui
 
 import android.Manifest
-import android.app.Activity
-import android.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
-import android.net.Uri.Builder
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -95,7 +94,7 @@ class Sign_up : Fragment(),SignUpListener {
     }
 
     private fun showDialog(permissions: String, name: String, requestCode: Int) {
-        val builder=AlertDialog.Builder(requireContext())
+        val builder= AlertDialog.Builder(requireContext())
         builder.apply {
             setMessage("Permission to access your $name is required to use this app ")
             setTitle("Permission required")
@@ -117,7 +116,7 @@ class Sign_up : Fragment(),SignUpListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode==Activity.RESULT_OK&&resultCode==REQUSET_CODE_IMAGE){
+        if (resultCode== AppCompatActivity.RESULT_OK&&resultCode==REQUSET_CODE_IMAGE){
             data?.data.let {
                 imageUri=it
             }

@@ -198,7 +198,7 @@
                         android:layout_marginHorizontal="50dp"
                         android:background="@drawable/signin_fragment_btn_shape"
                         android:onClick="@{ viewmodel::onBtnSubmitCodeClicked}"
-                        android:src="@drawable/arrow_left_icon" />
+                        app:srcCompat="@drawable/arrow_left_icon" />
 
                 </LinearLayout>
 
