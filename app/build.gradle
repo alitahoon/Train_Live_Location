@@ -118,6 +118,11 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:2.0.0"
 
 
+    implementation 'com.google.maps.android:maps-utils-ktx:3.4.0'
+    implementation "com.google.android.gms:play-services-maps:18.1.0"
+    implementation "com.google.android.gms:play-services-location:21.0.1"
+
+
 
 
 

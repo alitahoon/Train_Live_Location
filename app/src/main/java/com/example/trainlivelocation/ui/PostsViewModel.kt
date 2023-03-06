@@ -6,5 +6,5 @@ import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 
 class PostsViewModel :ViewModel(){
     var pageChangeListener: OnPageChangeListener? = null
-    var pagerAdapter: SomeFragmentPagerAdapter? = null
+    var pagerAdapter: PostsSomeFragmentPagerAdapter? = null
 }

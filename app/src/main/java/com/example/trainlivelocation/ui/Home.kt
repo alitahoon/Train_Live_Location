@@ -63,6 +63,11 @@ class Home : Fragment() {
                 findNavController().navigate(R.id.action_home_to_posts)
             }
         })
+        homeViewModel?.locationCardBtn?.observe(viewLifecycleOwner, Observer {
+            if (it==true){
+                findNavController().navigate(R.id.action_home2_to_trainLocationInMap)
+            }
+        })
     }
 
     companion object {

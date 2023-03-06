@@ -1,5 +1,6 @@
 package com.example.trainlivelocation.ui
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.app.Application
 import android.net.Uri
@@ -27,7 +28,7 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class UserSignUpViewModel @Inject constructor(
+class SignUpViewModel @Inject constructor(
     private val addNewUser: AddNewUser,
     private val application: Application,
     private val sendOtpToPhone: SendOtpToPhone,

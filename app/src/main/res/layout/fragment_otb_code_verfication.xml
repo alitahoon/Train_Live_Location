@@ -7,7 +7,7 @@
 
         <variable
             name="viewmodel"
-            type="com.example.trainlivelocation.ui.UserSignUpViewModel" />
+            type="com.example.trainlivelocation.ui.SignUpViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

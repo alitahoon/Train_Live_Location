@@ -7,18 +7,16 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.userResponseItem
 import com.example.domain.usecase.GetUserData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class UserSignInViewModel @Inject constructor(
+class SignInViewModel @Inject constructor(
     private val getUserData: GetUserData
 ) : ViewModel() {
-    private val TAG:String?="UserSignInViewModel"
+    private val TAG:String?="SignInViewModel"
     var userPhone: String? = null
     var userPassword: String? = null
     var signInListener: SignInListener? = null

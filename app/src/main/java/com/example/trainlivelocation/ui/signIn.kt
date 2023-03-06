@@ -1,15 +1,11 @@
 package com.example.trainlivelocation.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentSignInBinding
@@ -22,16 +18,16 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [sign_in.newInstance] factory method to
+ * Use the [signIn.newInstance] factory method to
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class sign_in : Fragment(),SignInListener {
+class signIn : Fragment(),SignInListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
-    private val signInViewModel: UserSignInViewModel? by viewModels()
+    private val signInViewModel: SignInViewModel? by viewModels()
     private lateinit var binding: FragmentSignInBinding
     private val TAG:String?="sign_in_Fragment"
 
@@ -65,12 +61,12 @@ class sign_in : Fragment(),SignInListener {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment sign_in.
+         * @return A new instance of fragment signIn.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            sign_in().apply {
+            signIn().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

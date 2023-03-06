@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.example.trainlivelocation.ui.UserSignUpViewModel" />
+            type="com.example.trainlivelocation.ui.SignUpViewModel" />
     </data>
 
     <LinearLayout
@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/splash_fragment_background"
         android:orientation="vertical"
-        tools:context=".ui.Sign_up">
+        tools:context=".ui.SignUp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/signUp_secondPhaseLayout"
@@ -107,16 +107,16 @@
                     android:textColor="@color/textHintColorFirst"
                     android:textSize="16sp" />
 
-<!--                <RelativeLayout-->
-<!--                    android:padding="5dp"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:layout_weight="1"-->
-<!--                    android:background="@drawable/register_spinner_background_shape"-->
-<!--                    android:gravity="center">-->
+                <!--                <RelativeLayout-->
+                <!--                    android:padding="5dp"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="match_parent"-->
+                <!--                    android:layout_weight="1"-->
+                <!--                    android:background="@drawable/register_spinner_background_shape"-->
+                <!--                    android:gravity="center">-->
 
-<!--                   -->
-<!--                </RelativeLayout>-->
+                <!--                   -->
+                <!--                </RelativeLayout>-->
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_weight="1"
@@ -404,7 +404,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
-                android:text="@string/sign_in"
+                android:text="@string/signIn"
                 android:textColor="@color/basicColor"
                 android:textSize="16dp"
                 android:textStyle="bold" />

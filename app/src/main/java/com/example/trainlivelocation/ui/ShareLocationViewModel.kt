@@ -1,5 +1,6 @@
 package com.example.trainlivelocation.ui
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Context
 import android.content.Intent
@@ -26,14 +27,14 @@ class ShareLocationViewModel @Inject constructor(
     val _locationMutableData: MutableLiveData<LocationDetails> = MutableLiveData(null)
     lateinit var locationLiveData: LiveData<LocationDetails>
     private val TAG: String? = "ShareLocationViewModel"
-    private lateinit var activity: AppCompatActivity
+    private lateinit var activity: Activity
     lateinit var liveLocationListener: LiveLocationListener
 
     private val _trainLocationMeta: MutableLiveData<Location_Request_with_id?> = MutableLiveData(null)
     val trainLocationLive: LiveData<Location_Request_with_id?> = _trainLocationMeta
 
     //get activity context from fragment
-    fun setbaseActivity(baseActivity: AppCompatActivity) {
+    fun setbaseActivity(baseActivity: Activity) {
         activity = baseActivity
     }
 
@@ -57,7 +58,7 @@ class ShareLocationViewModel @Inject constructor(
     fun setLocationBackgroundServices() {
         viewModelScope.launch {
             locationBackgroundservice =
-                Intent(activity, getLocationTrackBackgroundService(trainId!!.toInt(), 1)::class.java)
+                Intent(activity, getLocationTrackBackgroundService(trainId!!.toInt(), 2)::class.java)
         }
     }
 
@@ -77,7 +78,7 @@ class ShareLocationViewModel @Inject constructor(
         Log.e(TAG,"uplaodLocationToApi")
         Log.e(TAG,longtude.toString()+" "+latitude.toString())
         viewModelScope.launch {
-           var result=addLiveLoctationToApi(Location_Request(longtude, latitude,trainId!!.toInt(),1))
+           var result=addLiveLoctationToApi(Location_Request(longtude, latitude,trainId!!.toInt(),2))
             if (result.isSuccessful){
                 if (result.body()!=null){
                     _trainLocationMeta.postValue(result.body())

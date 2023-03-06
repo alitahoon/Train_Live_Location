@@ -5,11 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentOtbCodeVerficationBinding
-import com.example.trainlivelocation.databinding.FragmentSignUpBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 // TODO: Rename parameter arguments, choose names that match
@@ -28,7 +28,7 @@ class otb_code_verfication : Fragment(),SignUpListener {
     private var param1: String? = null
     private var param2: String? = null
     private lateinit var binding: FragmentOtbCodeVerficationBinding
-    private val registerViewModel:UserSignUpViewModel? by activityViewModels()
+    private val registerViewModel:SignUpViewModel? by activityViewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +47,7 @@ class otb_code_verfication : Fragment(),SignUpListener {
             .apply {
                 this.viewmodel=registerViewModel
             }
-        registerViewModel?.setbaseActivity(requireActivity())
+        registerViewModel?.setbaseActivity(requireActivity() as AppCompatActivity)
         binding.viewmodel?.userSignUpListener=this
         return binding.root
     }
