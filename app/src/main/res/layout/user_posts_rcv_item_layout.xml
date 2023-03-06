@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="post"
+            type="com.example.domain.entity.Post" />
+        <variable
+            name="listener"
+            type="com.example.trainlivelocation.ui.PostListener" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="15dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="@color/white"
+        android:layout_margin="15dp">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/btn_background"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="15dp">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/post_rcv_item_profile_img"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
+                    android:src="@drawable/post_profile_icon"/>
+
+                <TextView
+                    android:id="@+id/post_rcv_item_txt_profile_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{post.content}"
+                    android:layout_toEndOf="@+id/post_rcv_item_profile_img"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"/>
+
+                <ImageView
+                    android:id="@+id/post_rcv_item_more_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/more_icon"
+                    android:layout_toLeftOf="@+id/post_rcv_item_close_icon"
+                    android:onClick="@{() -> listener.OnSettingClickListener()}"/>
+                <ImageView
+                    android:id="@+id/post_rcv_item_close_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/close_icon"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginHorizontal="5dp"
+                    android:onClick="@{() -> listener.OnDeleteClickListener()}"/>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="15dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{post.content}"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:src="@mipmap/post_train_image_foreground"/>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/white"
+                android:layout_margin="15dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:layout_margin="15dp">
+
+                <TextView
+                    android:id="@+id/posts_btn_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="14sp"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="15dp"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:text="@string/comments"
+                    android:drawableStart="@drawable/comment_icon"
+                    android:onClick="@{() -> listener.OnCommentClickListener()}"/>
+
+
+                <TextView
+                    android:id="@+id/posts_btn_post_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="14sp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:text="@string/post_time"
+                    android:drawableStart="@drawable/post_time"/>
+
+
+                <TextView
+                    android:id="@+id/posts_btn_report"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="14sp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_marginStart="15dp"
+                    android:textColor="@color/white"
+                    android:text="@string/post_repot"
+                    android:drawableStart="@drawable/report_icon"
+                    android:onClick="@{() -> listener.OnReportClickListener()}"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</layout>

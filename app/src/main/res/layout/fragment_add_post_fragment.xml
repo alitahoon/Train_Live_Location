@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="post"
+            type="" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/post_cover_color"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_margin="15dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/add_post_rcv_item_profile_img"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:src="@drawable/post_profile_icon"/>
+
+            <TextView
+                android:id="@+id/add_post_rcv_item_txt_profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/add_post_rcv_item_profile_img"
+                android:layout_centerVertical="true"
+                android:text="@string/post_profile_name"
+                android:textColor="@color/basicColor"
+                android:textSize="25sp"/>
+
+            <ImageView
+                android:id="@+id/add_post_rcv_item_more_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/more_icon"
+                android:layout_toLeftOf="@+id/add_post_rcv_item_close_icon"/>
+
+            <ImageView
+                android:id="@+id/add_post_rcv_item_close_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/close_icon"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
+                android:layout_centerVertical="true"
+                android:layout_marginHorizontal="5dp"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/post_content"
+            android:textColorHint="@color/textHintColorFirst"
+            android:textSize="20sp"
+            android:layout_margin="15dp"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:src="@drawable/add_photo_icon"
+            android:layout_margin="15dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="15dp">
+
+<!--            <RadioGroup-->
+<!--                android:id="@+id/add_post_rcv_item_radio_group"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:background="#dbeceb"-->
+<!--                android:padding="15dp">-->
+
+                <RadioButton
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/textHintColorFirst"
+                    android:textSize="20sp"
+                    android:hint="@string/add_critical_post_content"
+                    android:onClick="radio_button_click"/>
+
+                <RadioButton
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:textColorHint="@color/textHintColorFirst"
+                    android:textSize="20sp"
+                    android:hint="@string/add_non_critical_post_content"
+                    android:onClick="radio_button_click"/>
+
+<!--            </RadioGroup>-->
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/add_post_submit"
+            android:textColor="@color/white"
+            android:layout_marginLeft="170dp"/>
+
+    </LinearLayout>
+
+</layout>
+
+
+
+
+
+
+
+
+<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    tools:context=".ui.add_post_fragment">-->
+
+<!--    &lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;-->
+<!--    <TextView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:text="@string/hello_blank_fragment" />-->
+
+<!--</FrameLayout>-->
