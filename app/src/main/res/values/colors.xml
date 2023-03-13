@@ -15,4 +15,5 @@
     <color name="textHintColorSecond">#676161</color>
     <color name="new_UI_color">#0AA1DD</color>
     <color name="new_back_UI_color">#79DAE8</color>
+    <color name="post_cover_color">#F6FBF4</color>
 </resources>

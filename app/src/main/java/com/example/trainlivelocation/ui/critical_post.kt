@@ -5,56 +5,67 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.example.domain.entity.Post
 import com.example.trainlivelocation.R
+import com.example.trainlivelocation.databinding.FragmentCriticalPostBinding
+import com.example.trainlivelocation.databinding.UserPostsRcvItemLayoutBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [critical_post.newInstance] factory method to
- * create an instance of this fragment.
- */
 class critical_post : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private lateinit var binding:FragmentCriticalPostBinding
+    private val postsViewModel:CriticalPostViewModel? by activityViewModels()
+    private val listener : PostListener? by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_critical_post, container, false)
+        binding = FragmentCriticalPostBinding.inflate(inflater,container,false)
+            .apply {
+                this.viewModel = postsViewModel
+                this.adapter = Posts_RCV_Adapter(arrayListOf(),listener!!,R.layout.fragment_critical_post)
+            }
+        return binding!!.root
+    }
+    @BindingAdapter("setAdapter")
+    fun setAdapter(recyclerView: RecyclerView,adapter: PostBaseAdapter<UserPostsRcvItemLayoutBinding,Post>){
+        adapter?.let {
+            recyclerView.adapter = it
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    @BindingAdapter("submitList")
+    fun submitList(recyclerView: RecyclerView, postArrayList:ArrayList<Post>){
+        val adapter = recyclerView.adapter as PostBaseAdapter<UserPostsRcvItemLayoutBinding,Post>
+        adapter?.updateData(postArrayList?: arrayListOf())
+    }
+
+    @BindingAdapter("setImage")
+    fun setImage(imageView: ImageView,urlString: String){
+        Glide.with(imageView.context).load(urlString).into(imageView)
+    }
+
+    @BindingAdapter("onClickReport")
+    fun onClickReport(item:Post, isClicked:Boolean){
+        if(isClicked){
+            // TODO: sent report to API => Fatema
+        }
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment critical_post.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            critical_post().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+
     }
 }

@@ -110,5 +110,7 @@ class userRepoImpl(
     override suspend fun getLiveLoctationFromApi(trainid: Int): Response<Location_Response> =
         apiService.GetLocation(trainid)
 
+    override suspend fun createPost(post: Post): Response<Post> = apiService.CreatePost()
+
 
 }

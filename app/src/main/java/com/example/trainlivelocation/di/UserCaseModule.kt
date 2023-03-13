@@ -67,7 +67,10 @@ object UserCaseModule  {
         return AddLiveLoctationToApi(userRepo)
     }
 
-
+    @Provides
+    fun provideCreatePost(userRepo: UserRepo) :CreatePost{
+        return CreatePost(userRepo)
+    }
 
 
 

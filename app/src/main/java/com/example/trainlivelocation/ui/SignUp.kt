@@ -22,7 +22,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentSignUpBinding
-import com.example.trainlivelocation.databinding.FragmentSignUpBindingImpl
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

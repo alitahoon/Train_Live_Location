@@ -10,6 +10,7 @@
     <string name="sign_up"><u>Sign Up?</u></string>
     <string name="submit"><u>submit?</u></string>
     <string name="sending_code">Sending Code…</string>
+    <string name="post_repot">Report</string>
     <string name="CriticalPosts">Critical Posts page</string>
     <string name="NoneCriticalPosts">None Critical Posts page</string>
     <string name="verification_done">verification done…</string>
@@ -63,4 +64,8 @@
     <string name="post_time">post time</string>
     <string name="comments">Comments</string>
     <string name="post_Likes">post Likes</string>
+    <string name="post_content">Post Content</string>
+    <string name="add_critical_post_content">critical post content</string>
+    <string name="add_non_critical_post_content">non critical post content</string>
+    <string name="add_post_submit">Submit</string>
 </resources>

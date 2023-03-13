@@ -55,4 +55,7 @@ interface UserRepo {
     suspend fun addLiveLoctationToApi(locationRequest: Location_Request):Response<Location_Request_with_id>
     suspend fun getLiveLoctationFromApi(trainid:Int):Response<Location_Response>
 
+    suspend fun createPost(post:Post):Response<Post>
+
+
 }

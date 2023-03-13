@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
-            name="post"
-            type="" />
+            name="viewModel"
+            type="com.example.trainlivelocation.ui.Add_post_fragment_ViewModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -61,6 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/post_content"
+            android:text="@{viewModel.postContent}"
             android:textColorHint="@color/textHintColorFirst"
             android:textSize="20sp"
             android:layout_margin="15dp"/>
@@ -90,7 +91,7 @@
                     android:textColorHint="@color/textHintColorFirst"
                     android:textSize="20sp"
                     android:hint="@string/add_critical_post_content"
-                    android:onClick="radio_button_click"/>
+                    android:onClick="@{viewModel.setCritical}"/>
 
                 <RadioButton
                     android:layout_width="200dp"
@@ -98,7 +99,7 @@
                     android:textColorHint="@color/textHintColorFirst"
                     android:textSize="20sp"
                     android:hint="@string/add_non_critical_post_content"
-                    android:onClick="radio_button_click"/>
+                    android:onClick="@{viewModel.setNONCritical"/>
 
 <!--            </RadioGroup>-->
 
@@ -109,7 +110,8 @@
             android:layout_height="wrap_content"
             android:text="@string/add_post_submit"
             android:textColor="@color/white"
-            android:layout_marginLeft="170dp"/>
+            android:layout_marginLeft="170dp"
+            android:onClick="@{viewModel::onSubmitButtonClick}"/>
 
     </LinearLayout>
 
