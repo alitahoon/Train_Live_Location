@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
+import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.core.app.ActivityCompat
@@ -15,10 +16,11 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import org.greenrobot.eventbus.EventBus
 
-class LocationLive(private val context: Context) : LiveData<LocationDetails>() {
+class LocationLiveForTracking(private val context: Context) : LiveData<LocationDetails>() {
+    private var location: Location? = null
+    private val TAG:String?="LocationLiveForTracking"
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
     private var locationRequest: com.google.android.gms.location.LocationRequest? = null
-    private var interval:Long?=null
     override fun onActive() {
         super.onActive()
         if (ActivityCompat.checkSelfPermission(
@@ -39,14 +41,26 @@ class LocationLive(private val context: Context) : LiveData<LocationDetails>() {
     }
 
     private fun setLocationData(location: Location?) {
+        this.location = location
         location?.let { location ->
             value = LocationDetails(location.longitude.toFloat(), location.latitude.toFloat())
-            EventBus.getDefault().post(LocationDetails(location.longitude.toFloat(), location.latitude.toFloat()))
-            Log.i("Location is", location.longitude.toString() +"***"+location.latitude.toString())
+            EventBus.getDefault()
+                .post(LocationDetails(location.longitude.toFloat(), location.latitude.toFloat()))
+            Log.i(
+                "Location is",
+                location.longitude.toString() + "***" + location.latitude.toString()
+            )
         }
     }
 
-    internal  fun startLocationUpdate() {
+    public fun gitLocation(callback: (LocationDetails) -> Unit) {
+        Handler(Looper.getMainLooper()).postDelayed({
+            Log.i(TAG,location!!.longitude.toString()+" "+location!!.latitude.toString())
+            callback(LocationDetails(this.location!!.longitude.toFloat(),this.location!!.longitude.toFloat()))
+        }, 1000)
+    }
+
+    internal fun startLocationUpdate() {
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -64,9 +78,6 @@ class LocationLive(private val context: Context) : LiveData<LocationDetails>() {
             Looper.getMainLooper()
         )
     }
-    internal fun stopLocationLiveUpdate(){
-        fusedLocationClient.removeLocationUpdates(locationCallback)
-    }
 
     private val locationCallback = object : LocationCallback() {
         override fun onLocationResult(locationResult: LocationResult) {
@@ -83,14 +94,15 @@ class LocationLive(private val context: Context) : LiveData<LocationDetails>() {
         super.onInactive()
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
-    fun setInterVal(interval:Long){
-        this.interval=interval
+
+    companion object {
+        val ONE_MINUTE: Long = 6000
     }
 
     private fun createLocationRequest() {
         locationRequest = LocationRequest.create()
-        locationRequest?.interval = interval!!
-        locationRequest?.fastestInterval = interval!!/4
+        locationRequest?.interval = 60000
+        locationRequest?.fastestInterval = 60000 / 4
         locationRequest?.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
     }
 

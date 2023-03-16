@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentSignInBinding
+import com.example.trainlivelocation.utli.SignInListener
 import dagger.hilt.android.AndroidEntryPoint
 
 // TODO: Rename parameter arguments, choose names that match
@@ -18,11 +19,11 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [signIn.newInstance] factory method to
+ * Use the [SignIn.newInstance] factory method to
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class signIn : Fragment(),SignInListener {
+class SignIn : Fragment(), SignInListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -61,12 +62,12 @@ class signIn : Fragment(),SignInListener {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment signIn.
+         * @return A new instance of fragment SignIn.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            signIn().apply {
+            SignIn().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

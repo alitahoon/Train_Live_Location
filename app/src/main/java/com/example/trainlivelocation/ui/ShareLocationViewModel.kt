@@ -1,7 +1,6 @@
 package com.example.trainlivelocation.ui
 
 import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -10,6 +9,7 @@ import android.view.View
 import androidx.lifecycle.*
 import com.example.domain.entity.*
 import com.example.domain.usecase.*
+import com.example.trainlivelocation.utli.LiveLocationListener
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,6 +19,7 @@ class ShareLocationViewModel @Inject constructor(
     private val getLocationLive: GetLocationLive,
     private val addLiveLoctationToApi: AddLiveLoctationToApi,
     private val startLocationUpdate: StartLocationUpdate,
+    private val stopLocationUpdate: StopLocationUpdate,
     private val getLocationTrackBackgroundService: GetLocationTrackBackgroundService,
     private val context: Context
 ) : ViewModel() {
@@ -86,6 +87,12 @@ class ShareLocationViewModel @Inject constructor(
             }else{
                 Log.e(TAG,result.message())
             }
+        }
+    }
+
+    public fun stopLocationUpdate(){
+        viewModelScope.launch {
+            stopLocationUpdate()
         }
     }
 

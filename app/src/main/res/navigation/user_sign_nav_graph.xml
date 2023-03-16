@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/signIn"
-        android:name="com.example.trainlivelocation.ui.signIn"
+        android:name="com.example.trainlivelocation.ui.SignIn"
         android:label="fragment sign in"
         tools:layout="@layout/fragment_sign_in" >
         <action

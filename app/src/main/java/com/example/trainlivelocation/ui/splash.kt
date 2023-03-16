@@ -13,6 +13,5 @@ class splash : AppCompatActivity() {
         binding= ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
     }
 }

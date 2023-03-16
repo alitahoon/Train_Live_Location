@@ -10,6 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentOtbCodeVerficationBinding
+import com.example.trainlivelocation.utli.SignUpListener
 import dagger.hilt.android.AndroidEntryPoint
 
 // TODO: Rename parameter arguments, choose names that match
@@ -23,7 +24,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class otb_code_verfication : Fragment(),SignUpListener {
+class otb_code_verfication : Fragment(), SignUpListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null

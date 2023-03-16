@@ -68,9 +68,11 @@ object UserCaseModule  {
     }
 
     @Provides
-    fun provideCreatePost(userRepo: UserRepo) :CreatePost{
-        return CreatePost(userRepo)
+    fun provideGetUserLocation(userRepo: UserRepo) :GetUserLocation{
+        return GetUserLocation(userRepo)
     }
+
+
 
 
 

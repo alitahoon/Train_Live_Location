@@ -19,10 +19,8 @@
             android:id="@+id/action_home2_to_trainLocationInMap"
             app:destination="@id/trainLocationInMap" />
         <argument
-            android:name="trainCurrantLocation"
-            app:argType="com.example.domain.entity.Location_Response"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            android:name="distance"
+            app:argType="float" />
     </fragment>
     <dialog
         android:id="@+id/locationDialogFragment"

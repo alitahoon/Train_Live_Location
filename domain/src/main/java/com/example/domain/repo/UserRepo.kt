@@ -1,5 +1,7 @@
 package com.example.domain.repo
 
+import android.app.Activity
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.net.Uri
 import androidx.lifecycle.LifecycleService
@@ -45,7 +47,7 @@ interface UserRepo {
         imageName: String,
         imageReference: StorageReference
     )
-
+    suspend fun stopLocationUpdate()
     suspend fun startLocationUpdate()
     suspend fun GetUserLocationLive(): LiveData<LocationDetails>
 
@@ -55,7 +57,6 @@ interface UserRepo {
     suspend fun addLiveLoctationToApi(locationRequest: Location_Request):Response<Location_Request_with_id>
     suspend fun getLiveLoctationFromApi(trainid:Int):Response<Location_Response>
 
-    suspend fun createPost(post:Post):Response<Post>
-
+    suspend fun getUserLocation(callback :(LocationDetails)->Unit)
 
 }

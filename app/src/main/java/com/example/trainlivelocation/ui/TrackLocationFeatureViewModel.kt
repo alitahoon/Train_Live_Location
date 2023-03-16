@@ -1,19 +1,23 @@
 package com.example.trainlivelocation.ui
 
-import SingleLiveEvent
 import android.app.Activity
-import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
+import android.location.Location
 import android.util.Log
 import android.view.View
-import androidx.fragment.app.FragmentActivity
+import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.entity.LocationDetails
 import com.example.domain.entity.Location_Response
 import com.example.domain.usecase.GetLiveLoctationFromApi
-import com.example.domain.usecase.GetLocationTrackBackgroundService
 import com.example.domain.usecase.GetLocationTrackForegroundService
+import com.example.domain.usecase.GetUserLocation
+import com.example.domain.usecase.StopLocationUpdate
+import com.example.trainlivelocation.utli.SingleLiveEvent
+import com.example.trainlivelocation.utli.TrackLocationListener
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,13 +25,24 @@ import javax.inject.Inject
 @HiltViewModel
 class TrackLocationFeatureViewModel @Inject constructor(
     private val getLiveLoctationFromApi: GetLiveLoctationFromApi,
-    private var getLocationTrackForegroundService: GetLocationTrackForegroundService
+    private var getLocationTrackForegroundService: GetLocationTrackForegroundService,
+    private val getUserLocation: GetUserLocation,
+    private val stopLocationUpdate: StopLocationUpdate
 ) :ViewModel(){
     private var TAG:String?="TrackLocationFeatureViewModel"
-    lateinit var trackLocationListener:TrackLocationListener
+    private val _userLocationMuta:MutableLiveData<LocationDetails?> = MutableLiveData(null)
+    val userLocation:LiveData<LocationDetails?> = _userLocationMuta
+
+    val _distanceMuta:MutableLiveData<Double?> = MutableLiveData(null)
+    val distanceLiveData:LiveData<Double?> = _distanceMuta
+
+    lateinit var trackLocationListener: TrackLocationListener
     val _trainLocationMuta: MutableLiveData<Location_Response?> =
         MutableLiveData(null)
-    var btnTrackLocationFeature=SingleLiveEvent<Boolean>()
+
+    val trainLocationLive: LiveData<Location_Response?> =
+        _trainLocationMuta
+    var btnTrackLocationFeature= SingleLiveEvent<Boolean>()
     var trainid:String?=null
     private lateinit var activity: Activity
     var locationForegrondservice: Intent? = null
@@ -52,11 +67,14 @@ class TrackLocationFeatureViewModel @Inject constructor(
            var result=getLiveLoctationFromApi(trainid!!.toInt())
             if (result.isSuccessful){
                 if (result.body()!=null){
+                    Log.e(TAG,"success")
                     _trainLocationMuta.postValue(result.body())
                 }else{
-                    Log.e("TAG",result.errorBody().toString())
+                    Log.e(TAG,result.errorBody().toString())
+                    Toast.makeText(activity, result.errorBody().toString(), Toast.LENGTH_SHORT).show()
                 }
             }else{
+                Toast.makeText(activity, result.message(), Toast.LENGTH_SHORT).show()
                 Log.e(TAG,result.message())
             }
         }
@@ -69,4 +87,20 @@ class TrackLocationFeatureViewModel @Inject constructor(
     fun stopTrackLocationForgroundService(){
         activity.stopService(locationForegrondservice)
     }
+
+    fun getUserCurrantLocation(){
+        viewModelScope.launch {
+            getUserLocation(){
+                location ->
+                _userLocationMuta.postValue(location)
+            }
+        }
+    }
+
+
+
+
+
+
+
 }

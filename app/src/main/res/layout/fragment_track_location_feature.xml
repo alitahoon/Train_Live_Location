@@ -15,6 +15,13 @@
         tools:context=".ui.TrackLocationFeature"
         android:background="@color/white"
         android:orientation="vertical">
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:layout_width="match_parent"
+            android:id="@+id/track_Location_progress_bar"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            style="@style/Widget.MaterialComponents.LinearProgressIndicator"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"

@@ -6,13 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.example.domain.entity.LocationDetails
-import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentShareLocationBinding
+import com.example.trainlivelocation.utli.LiveLocationListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
@@ -29,7 +28,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class ShareLocationFeature : Fragment() ,LiveLocationListener{
+class ShareLocationFeature : Fragment() , LiveLocationListener {
     private var TAG:String?="liveLocationFeatureFragment"
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -50,7 +49,8 @@ class ShareLocationFeature : Fragment() ,LiveLocationListener{
         if (EventBus.getDefault().isRegistered(this)){
             EventBus.getDefault().unregister(this)
         }
-        shareLocationViewModel?.stopLocationService(this)
+        shareLocationViewModel!!.stopLocationUpdate()
+//        shareLocationViewModel?.stopLocationService(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -11,7 +11,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            tools:context=".ui.signIn"
+            tools:context=".ui.SignIn"
             android:layout_height="match_parent"
             android:background="@drawable/splash_fragment_background"
             >
@@ -63,7 +63,7 @@
 <!--                    android:layout_height="match_parent"-->
 <!--                    android:layout_weight="1"-->
 <!--                    android:gravity="center"-->
-<!--                    android:text="@string/signIn"-->
+<!--                    android:text="@string/SignIn"-->
 <!--                    android:textAllCaps="true"-->
 <!--                    android:textColor="@color/headline_color"-->
 <!--                    android:textSize="18sp" />-->

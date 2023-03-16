@@ -1,8 +1,7 @@
 package com.example.trainlivelocation.ui
 
-import SingleLiveEvent
+import com.example.trainlivelocation.utli.SingleLiveEvent
 import android.view.View
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModel
 
 class LocationDialogFragmentViewModel: ViewModel() {

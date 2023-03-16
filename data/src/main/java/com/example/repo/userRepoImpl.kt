@@ -1,5 +1,7 @@
 package com.example.repo
 
+import android.app.Activity
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.net.Uri
 import android.util.Log
@@ -19,7 +21,8 @@ class userRepoImpl(
     private val apiService: ApiService,
     private val locationLive: LocationLive,
     private val locationTrackBackgroundService: LocationTrackBackgroundService,
-    private val getLocationService: GetLocationService
+    private val getLocationService: GetLocationService,
+    private val getUserLocation: userLocation
 ) : UserRepo {
     private val TAG: String? = "userRepoImpl"
     override suspend fun getUserData(
@@ -86,6 +89,8 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun stopLocationUpdate() =locationLive.stopLocationLiveUpdate()
+
     override suspend fun startLocationUpdate() {
         locationLive.startLocationUpdate()
     }
@@ -94,12 +99,15 @@ class userRepoImpl(
         return locationLive
     }
 
-    override suspend fun getLocationTrackBackgroundService(trainid: Int,userid:Int): LifecycleService {
+    override suspend fun getLocationTrackBackgroundService(
+        trainid: Int,
+        userid: Int
+    ): LifecycleService {
 //        locationTrackBackgroundService.setTrainId_userId(trainid,userid)
         return locationTrackBackgroundService
     }
 
-    override suspend fun getLocationTrackForegroundService(trainid:Int): LifecycleService {
+    override suspend fun getLocationTrackForegroundService(trainid: Int): LifecycleService {
         getLocationService.setTrainID(trainid)
         return getLocationService
     }
@@ -111,6 +119,9 @@ class userRepoImpl(
         apiService.GetLocation(trainid)
 
     override suspend fun createPost(post: Post): Response<Post> = apiService.CreatePost()
+
+
+    override suspend fun getUserLocation(callback :(LocationDetails)->Unit) =getUserLocation.getLocationWithLocationManger(callback)!!
 
 
 }

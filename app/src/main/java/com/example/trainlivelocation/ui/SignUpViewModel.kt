@@ -1,6 +1,5 @@
 package com.example.trainlivelocation.ui
 
-import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.app.Application
 import android.net.Uri
@@ -14,6 +13,7 @@ import com.example.domain.entity.RegisterUser
 import com.example.domain.entity.userResponseItem
 import com.example.domain.usecase.*
 import com.example.trainlivelocation.R
+import com.example.trainlivelocation.utli.SignUpListener
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException

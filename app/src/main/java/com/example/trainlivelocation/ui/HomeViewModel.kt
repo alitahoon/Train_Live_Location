@@ -1,9 +1,8 @@
 package com.example.trainlivelocation.ui
 
-import SingleLiveEvent
+import com.example.trainlivelocation.utli.SingleLiveEvent
 import android.view.View
 import androidx.lifecycle.ViewModel
-import dagger.hilt.android.AndroidEntryPoint
 
 class HomeViewModel :ViewModel() {
     var locationBtn= SingleLiveEvent<Boolean>()

@@ -169,7 +169,7 @@ interface ApiService {
        suspend fun AddLocation(@Body locationResponse: Location_Request):Response<Location_Request_with_id>
 
        @GET("/api/LiveLocation/GetLocation")
-       suspend fun GetLocation(@Query("trainId") trainid:Int):Response<Location_Response>
+       suspend fun GetLocation(@Query("trainid") trainid:Int):Response<Location_Response>
 
 
 

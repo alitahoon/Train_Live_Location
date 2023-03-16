@@ -2,6 +2,7 @@ package com.example.trainlivelocation.di
 
 import com.example.data.*
 import com.example.domain.repo.UserRepo
+import com.example.domain.usecase.GetUserLocation
 import com.example.repo.userRepoImpl
 import dagger.Module
 import dagger.Provides
@@ -18,13 +19,15 @@ object RepoModule {
         locationLive: LocationLive,
         locationTrackForegroundService: LocationTrackForegroundService,
         locationTrackBackgroundService: LocationTrackBackgroundService,
-        getLocationService: GetLocationService
+        getLocationService: GetLocationService,
+        location: userLocation
     ): UserRepo {
         return userRepoImpl(
             apiService,
             locationLive,
             locationTrackBackgroundService,
-            getLocationService
+            getLocationService,
+            location
         )
     }
 

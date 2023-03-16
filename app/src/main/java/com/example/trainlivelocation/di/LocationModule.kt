@@ -29,6 +29,10 @@ object LocationModule {
     fun ProvideLocationGetLocationService(): GetLocationService {
         return GetLocationService()
     }
+    @Provides
+    fun ProvideUserLocation(context: Context): userLocation {
+        return userLocation(context)
+    }
 
 
 

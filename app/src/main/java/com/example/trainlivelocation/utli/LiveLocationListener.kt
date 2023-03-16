@@ -1,4 +1,4 @@
-package com.example.trainlivelocation.ui
+package com.example.trainlivelocation.utli
 
 interface LiveLocationListener {
     fun onBtnShareTrainLocationClicked()

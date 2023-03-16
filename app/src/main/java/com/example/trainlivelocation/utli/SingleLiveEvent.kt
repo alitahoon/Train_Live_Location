@@ -1,3 +1,5 @@
+package com.example.trainlivelocation.utli
+
 import android.util.Log
 import androidx.annotation.MainThread
 import androidx.lifecycle.LifecycleOwner
@@ -39,6 +41,6 @@ class SingleLiveEvent<T> : MutableLiveData<T?>() {
     }
 
     companion object {
-        private const val TAG = "SingleLiveEvent"
+        private const val TAG = "com.example.trainlivelocation.utli.SingleLiveEvent"
     }
 }
