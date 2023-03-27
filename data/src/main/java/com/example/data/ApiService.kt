@@ -72,13 +72,13 @@ interface ApiService {
 
     //Post
     @GET("/api/Post/GetAllPosts")
-    suspend fun GetAllPosts():Response<List<Post>>
+    suspend fun GetAllPosts():Response<ArrayList<Post>>
 
     @GET("/api/Post/GetPost/{id}")
     suspend fun GetPost(@Path("id") postId: Int):Response<Post>
 
     @POST("/api/Post/CreatePost")
-    suspend fun CreatePost():Response<Post>
+    suspend fun CreatePost(@Body post:Post):Response<PostModelResponse>
 
     @DELETE("/api/Post/DeletePost/{Id}")
     suspend fun DeletePost(@Path("Id") postId: Int):Response<Post>

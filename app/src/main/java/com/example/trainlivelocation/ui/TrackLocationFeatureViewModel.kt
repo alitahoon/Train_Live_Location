@@ -12,10 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.LocationDetails
 import com.example.domain.entity.Location_Response
-import com.example.domain.usecase.GetLiveLoctationFromApi
-import com.example.domain.usecase.GetLocationTrackForegroundService
-import com.example.domain.usecase.GetUserLocation
-import com.example.domain.usecase.StopLocationUpdate
+import com.example.domain.usecase.*
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import com.example.trainlivelocation.utli.TrackLocationListener
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,6 +24,7 @@ class TrackLocationFeatureViewModel @Inject constructor(
     private val getLiveLoctationFromApi: GetLiveLoctationFromApi,
     private var getLocationTrackForegroundService: GetLocationTrackForegroundService,
     private val getUserLocation: GetUserLocation,
+    private val startLocationUpdate: StartLocationUpdate,
     private val stopLocationUpdate: StopLocationUpdate
 ) :ViewModel(){
     private var TAG:String?="TrackLocationFeatureViewModel"
@@ -90,10 +88,11 @@ class TrackLocationFeatureViewModel @Inject constructor(
 
     fun getUserCurrantLocation(){
         viewModelScope.launch {
-            getUserLocation(){
-                location ->
-                _userLocationMuta.postValue(location)
-            }
+//            getUserLocation(){
+//                location ->
+//                _userLocationMuta.postValue(location)
+//            }
+            startLocationUpdate(6000)
         }
     }
 

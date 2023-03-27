@@ -7,10 +7,12 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFCFC</color>
     <color name="btn_background">#187498</color>
+    <color name="pinViewCursorColor">#86C8BC</color>
+
     <color name="headline_color">#2192FF</color>
     <color name="textHintColorFirst">#ABAFB0</color>
     <color name="dark_mode_background">#2C3333</color>
-    <color name="textAlarmColor">#FF0B0B</color>
+    <color name="textAlarmColor">#EF5B7E</color>
     <color name="textLogoColor">#1572A1</color>
     <color name="textHintColorSecond">#676161</color>
     <color name="new_UI_color">#0AA1DD</color>

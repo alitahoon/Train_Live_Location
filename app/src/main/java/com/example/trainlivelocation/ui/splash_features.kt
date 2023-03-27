@@ -1,33 +1,28 @@
 package com.example.trainlivelocation.ui
 
+import android.app.AlertDialog
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.trainlivelocation.R
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [splash_features.newInstance] factory method to
- * create an instance of this fragment.
- */
 class splash_features : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private val REQUSET_CODE_Camera:Int=102
+    private val REQUSET_CODE_location:Int=103
+    private val REQUSET_CODE_background_location:Int=104
+    private val REQUSET_CODE_Forground_location:Int=105
+    private val REQUSET_CODE_IMAGE:Int=101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
@@ -37,24 +32,55 @@ class splash_features : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_splash_features, container, false)
     }
+    private fun showDialog(permissions: String, name: String, requestCode: Int) {
+        val builder= AlertDialog.Builder(requireContext())
+        builder.apply {
+            setMessage("Permission to access your $name is required to use this app ")
+            setTitle("Permission required")
+            setPositiveButton("OK"){dialog,which ->
+                ActivityCompat.requestPermissions(requireActivity(), arrayOf(permissions),requestCode)
+            }
+            val dialog=builder.create()
+            dialog.show()
+        }
+    }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment splash_features.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            splash_features().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun checkSelfPermissions(permissions:String,name:String,requestCode: Int){
+        if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.M){
+            when{
+                ContextCompat.checkSelfPermission(requireActivity(),permissions)== PackageManager.PERMISSION_GRANTED->{
+                    Toast.makeText(requireContext(),"$name permissin granted", Toast.LENGTH_SHORT).show()
+                }
+                shouldShowRequestPermissionRationale(permissions)-> showDialog(permissions,name,requestCode)
+                else-> ActivityCompat.requestPermissions(requireActivity(), arrayOf(permissions),requestCode)
+            }
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        fun innerCheck(name: String){
+            if (grantResults.isNotEmpty()||grantResults[0]!=PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(requireContext(),"$name permission Refused",Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(requireContext(),"$name permission Accepted",Toast.LENGTH_SHORT).show()
+                if (requestCode==REQUSET_CODE_IMAGE){
                 }
             }
+        }
+        when (requestCode){
+            REQUSET_CODE_IMAGE->innerCheck("Read External Storage")
+            REQUSET_CODE_Camera->innerCheck("open Camera")
+            REQUSET_CODE_location->innerCheck("Access location ")
+            REQUSET_CODE_background_location->innerCheck("Access background location ")
+            REQUSET_CODE_Forground_location->innerCheck("Access Forground Services ")
+        }
+
+    }
+
+    companion object {
     }
 }

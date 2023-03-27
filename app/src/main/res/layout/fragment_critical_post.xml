@@ -1,45 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
-            name="viewModel"
+            name="viemodel"
             type="com.example.trainlivelocation.ui.CriticalPostViewModel" />
+
         <variable
             name="adapter"
-            type="com.example.trainlivelocation.ui.Posts_RCV_Adapter" />
+            type="com.example.trainlivelocation.utli.PostCustomAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.critical_post"
-        android:background="@color/white">
+        android:background="@color/thirdColor"
+        tools:context=".ui.CriticalPost">
+
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/crtical_progress_bar"
+            style="@style/Widget.MaterialComponents.LinearProgressIndicator"
+            android:layout_width="match_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:listitem="@layout/user_posts_rcv_item_layout"
+            app:layout_constraintTop_toBottomOf="@+id/add_post_progress_bar"
             app:setAdapter="@{adapter}"
-            app:submitList="@{viewModel.postLiveData}" />
+            tools:listitem="@layout/user_posts_rcv_item_layout" />
 
         <ProgressBar
+            android:id="@+id/progressBar"
             android:layout_width="100dp"
+
             android:layout_height="100dp"
-            app:manageState="@{viewModel.showProgressBar}"
             android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
+        <!--            app:manageState="@{viewModel.showProgressBar}"/>-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

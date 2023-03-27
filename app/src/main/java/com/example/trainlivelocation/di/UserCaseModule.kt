@@ -34,8 +34,8 @@ object UserCaseModule  {
         return SignInWithPhoneAuthCredential(userRepo)
     }
     @Provides
-    fun provideSendProfileImageToFirebaseStorage(userRepo: UserRepo):SendProfileImageToFirebaseStorage{
-        return SendProfileImageToFirebaseStorage(userRepo)
+    fun provideSendProfileImageToFirebaseStorage(userRepo: UserRepo):SendImageToFirebaseStorage{
+        return SendImageToFirebaseStorage(userRepo)
     }
     @Provides
     fun provideGetLocationLive(userRepo: UserRepo):GetLocationLive{
@@ -71,6 +71,35 @@ object UserCaseModule  {
     fun provideGetUserLocation(userRepo: UserRepo) :GetUserLocation{
         return GetUserLocation(userRepo)
     }
+
+
+    @Provides
+    fun provideCreatePost(userRepo: UserRepo) :CreatePost{
+        return CreatePost(userRepo)
+    }
+    @Provides
+    fun provideGetAllPostsFromAPI(userRepo: UserRepo) :GetAllPostsFromAPI{
+        return GetAllPostsFromAPI(userRepo)
+    }
+    @Provides
+    fun provideStopLocationUpdate(userRepo: UserRepo) :StopLocationUpdate{
+        return StopLocationUpdate(userRepo)
+    }
+    @Provides
+    fun provideGetUserDataById(userRepo: UserRepo) :GetUserDataById{
+        return GetUserDataById(userRepo)
+    }
+
+    @Provides
+    fun provideCreateAPhoneAuthCredential(userRepo: UserRepo) :CreateAPhoneAuthCredential{
+        return CreateAPhoneAuthCredential(userRepo)
+    }
+
+    @Provides
+    fun provideSetFirebaseServiceActivity(userRepo: UserRepo) :SetFirebaseServiceActivity{
+        return SetFirebaseServiceActivity(userRepo)
+    }
+
 
 
 

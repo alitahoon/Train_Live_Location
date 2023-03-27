@@ -20,14 +20,16 @@ object RepoModule {
         locationTrackForegroundService: LocationTrackForegroundService,
         locationTrackBackgroundService: LocationTrackBackgroundService,
         getLocationService: GetLocationService,
-        location: userLocation
+        location: userLocation,
+        firebaseService: FirebaseService
     ): UserRepo {
         return userRepoImpl(
             apiService,
             locationLive,
             locationTrackBackgroundService,
             getLocationService,
-            location
+            location,
+            firebaseService
         )
     }
 

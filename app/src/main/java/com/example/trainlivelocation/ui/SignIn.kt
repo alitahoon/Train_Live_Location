@@ -96,7 +96,7 @@ class SignIn : Fragment(), SignInListener {
     }
 
     override fun onSignUpBtnClicked() {
-        findNavController().navigate(R.id.action_sign_in_to_sign_up)
+        findNavController().navigate(SignInDirections.actionSignInToAuthCheck())
     }
     override fun onLoginFailure(message: String) {
     }

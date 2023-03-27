@@ -11,23 +11,10 @@
         android:label="fragment sign in"
         tools:layout="@layout/fragment_sign_in" >
         <action
-            android:id="@+id/action_sign_in_to_sign_up"
-            app:destination="@id/sign_up"
-            app:enterAnim="@anim/slide_in_up"
-            app:exitAnim="@anim/slide_out_up"
-            app:popEnterAnim="@anim/slide_in_down"
-            app:popExitAnim="@anim/slide_out_down" />
-        <action
             android:id="@+id/action_sign_in_to_mainActivity"
             app:destination="@id/mainActivity" />
-    </fragment>
-    <fragment
-        android:id="@+id/sign_up"
-        android:name="com.example.trainlivelocation.ui.SignUp"
-        android:label="fragment sign up"
-        tools:layout="@layout/fragment_sign_up" >
         <action
-            android:id="@+id/action_sign_up_to_authCheck"
+            android:id="@+id/action_signIn_to_authCheck"
             app:destination="@id/authCheck" />
     </fragment>
     <activity

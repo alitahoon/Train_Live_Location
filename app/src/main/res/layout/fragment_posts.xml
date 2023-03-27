@@ -7,32 +7,36 @@
         <variable
             name="viewmodel"
             type="com.example.trainlivelocation.ui.PostsViewModel" />
+
     </data>
-    <androidx.drawerlayout.widget.DrawerLayout
+<!--    <androidx.drawerlayout.widget.DrawerLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        tools:context=".ui.Posts"-->
+<!--        android:background="@color/white">-->
+
+
+
+<!--    </androidx.drawerlayout.widget.DrawerLayout>-->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.Posts"
-        android:background="@color/white">
+        android:orientation="vertical"
+        tools:context=".ui.Posts">
 
-        <LinearLayout
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/posts_tablayout_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/fourth"
+            bind:tabSelectedTextColor="@color/white"
+            android:nestedScrollingEnabled="false"/>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/posts_tablayout_viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:background="@color/thirdColor" />
+    </LinearLayout>
 
-            <com.google.android.material.tabs.TabLayout
-
-                android:id="@+id/posts_tablayout_tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/basicColor" />
-
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/posts_tablayout_viewPager"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/thirdColor" />
-        </LinearLayout>
-
-
-    </androidx.drawerlayout.widget.DrawerLayout>
 </layout>

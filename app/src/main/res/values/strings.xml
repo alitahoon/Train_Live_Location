@@ -65,7 +65,10 @@
     <string name="comments">Comments</string>
     <string name="post_Likes">post Likes</string>
     <string name="post_content">Post Content</string>
-    <string name="add_critical_post_content">critical post content</string>
-    <string name="add_non_critical_post_content">non critical post content</string>
+    <string name="add_critical_post_content">critical post</string>
+    <string name="add_non_critical_post_content">non critical post</string>
     <string name="add_post_submit">Submit</string>
+    <string name="critcal">critcal</string>
+    <string name="nonCritcal">nonCritcal</string>
+    <string name="share_location_para">Thank you for sharing your location. This helps us to provide a better service to assist passengers who are waiting for the train at different stations to know the location of the train. We wish you a happy trip</string>
 </resources>

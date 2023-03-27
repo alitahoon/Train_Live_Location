@@ -53,7 +53,7 @@ class ShareLocationViewModel @Inject constructor(
 
     fun startUpdate(){
         viewModelScope.launch {
-            startLocationUpdate()
+            startLocationUpdate(6000)
         }
     }
     fun setLocationBackgroundServices() {
@@ -90,9 +90,9 @@ class ShareLocationViewModel @Inject constructor(
         }
     }
 
-    public fun stopLocationUpdate(){
+    public fun stopLocationLiveUpdate(){
         viewModelScope.launch {
-            stopLocationUpdate()
+            stopLocationUpdate
         }
     }
 

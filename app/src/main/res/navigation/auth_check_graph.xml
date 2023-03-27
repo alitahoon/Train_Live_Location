@@ -3,18 +3,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/auth_check_graph"
-    app:startDestination="@id/otb_code_verfication">
+    app:startDestination="@id/authPhone">
     <fragment
-        android:id="@+id/otb_code_verfication"
-        android:name="com.example.trainlivelocation.ui.otb_code_verfication"
-        android:label="otb code verification" >
+        android:id="@+id/authPhone"
+        android:name="com.example.trainlivelocation.ui.AuthPhone"
+        android:label="fragment_auth_phone"
+        tools:layout="@layout/fragment_auth_phone" >
         <action
-            android:id="@+id/action_otb_code_verfication_to_splash_new_ui3"
-            app:destination="@id/splash_new_ui3" />
+            android:id="@+id/action_authPhone_to_authCode"
+            app:destination="@id/authCode" />
+        <action
+            android:id="@+id/action_authPhone_to_signUp"
+            app:destination="@id/signUp" />
     </fragment>
-    <activity
-        android:id="@+id/splash_new_ui3"
-        android:name="com.example.trainlivelocation.ui.splash"
-        android:label="activity splash new ui"
-        tools:layout="@layout/activity_splash" />
+    <fragment
+        android:id="@+id/authCode"
+        android:name="com.example.trainlivelocation.ui.AuthCode"
+        android:label="fragment_auth_code"
+        tools:layout="@layout/fragment_auth_code" >
+        <action
+            android:id="@+id/action_authCode_to_signUp"
+            app:destination="@id/signUp" />
+        <argument
+            android:name="userPhone"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUp"
+        android:name="com.example.trainlivelocation.ui.SignUp"
+        android:label="SignUp" >
+        <argument
+            android:name="userPhone"
+            app:argType="string" />
+    </fragment>
 </navigation>

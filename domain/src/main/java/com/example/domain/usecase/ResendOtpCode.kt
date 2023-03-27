@@ -9,8 +9,6 @@ import com.google.firebase.auth.PhoneAuthProvider
 class ResendOtpCode(private val userRepo: UserRepo) {
     suspend operator fun invoke(
         phone: String?,
-        activity: AppCompatActivity,
-        auth: FirebaseAuth,
-        callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
-    ): PhoneAuthOptions = userRepo.resendOtpCode(phone!!,auth,activity, callbacks)
+        callback: (result: String?) -> Unit
+    ) = userRepo.resendOtpCode(phone!!,callback)
 }

@@ -49,6 +49,9 @@
         <action
             android:id="@+id/action_trackLocationFeature_to_home2"
             app:destination="@id/home2" />
+        <action
+            android:id="@+id/action_trackLocationFeature_to_trainLocationInMap"
+            app:destination="@id/trainLocationInMap" />
     </fragment>
     <fragment
         android:id="@+id/posts2"
@@ -57,6 +60,13 @@
     <fragment
         android:id="@+id/trainLocationInMap"
         android:name="com.example.trainlivelocation.ui.TrainLocationInMap"
-        android:label="TrainLocationInMap" />
+        android:label="TrainLocationInMap" >
+        <argument
+            android:name="userLocation"
+            app:argType="com.example.domain.entity.LocationDetails" />
+        <argument
+            android:name="trainLocation"
+            app:argType="com.example.domain.entity.LocationDetails" />
+    </fragment>
 
 </navigation>

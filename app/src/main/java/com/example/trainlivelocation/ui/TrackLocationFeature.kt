@@ -10,13 +10,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.example.domain.entity.LocationDetails
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentTrackLocationFeatureBinding
 import com.example.trainlivelocation.utli.TrackLocationListener
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.SphericalUtil
 import dagger.hilt.android.AndroidEntryPoint
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import kotlin.math.acos
 import kotlin.math.cos
 import kotlin.math.sin
@@ -33,6 +39,7 @@ private const val ARG_PARAM2 = "param2"
  */
 @AndroidEntryPoint
 class TrackLocationFeature : Fragment(), TrackLocationListener {
+    private val _userLocationMuta: MutableLiveData<LocationDetails?> = MutableLiveData(null)
     private val trackLocationFeatureViewModel: TrackLocationFeatureViewModel? by activityViewModels()
     private var binding: FragmentTrackLocationFeatureBinding? = null
 
@@ -58,6 +65,17 @@ class TrackLocationFeature : Fragment(), TrackLocationListener {
         return binding?.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this)
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+    }
+
 
     companion object {
 
@@ -65,6 +83,9 @@ class TrackLocationFeature : Fragment(), TrackLocationListener {
 
     override fun onDestroy() {
         super.onDestroy()
+        if (EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().unregister(this)
+        }
 //        trackLocationFeatureViewModel?.stopTrackLocationForgroundService()
     }
 
@@ -92,7 +113,7 @@ class TrackLocationFeature : Fragment(), TrackLocationListener {
                     binding?.trackLocationProgressBar?.setVisibility(View.VISIBLE)
                     var trainLocation: LocationDetails? = null
                     var userLocation: LocationDetails? = null
-                    var distance:Double?=null
+                    var distance: Double? = null
 
                     //get train location
 //                trackLocationFeatureViewModel?.startTrackLocationForgroundService()
@@ -102,9 +123,15 @@ class TrackLocationFeature : Fragment(), TrackLocationListener {
                     trackLocationFeatureViewModel?._trainLocationMuta?.observe(viewLifecycleOwner,
                         Observer {
                             it?.let {
-                                Log.e(TAG, it?.longitude.toString() + "  " + it?.latitude.toString())
+                                Log.e(
+                                    TAG,
+                                    it?.longitude.toString() + "  " + it?.latitude.toString()
+                                )
                                 trainLocation =
-                                    LocationDetails(it!!.longitude.longitude, it!!.latitude.latitude)
+                                    LocationDetails(
+                                        it!!.longitude.longitude,
+                                        it!!.latitude.latitude
+                                    )
                             }
 
                         })
@@ -113,39 +140,61 @@ class TrackLocationFeature : Fragment(), TrackLocationListener {
                     //get user location
                     Log.e(TAG, "get user location")
                     trackLocationFeatureViewModel?.getUserCurrantLocation()
-                    trackLocationFeatureViewModel?.userLocation?.observe(
+                    _userLocationMuta?.observe(
                         viewLifecycleOwner,
                         Observer {
                             it?.let {
-                                Log.e(TAG, it?.longitude.toString() + "  " + it?.latitude.toString())
+                                Log.e(
+                                    TAG,
+                                    it?.longitude.toString() + "  " + it?.latitude.toString()
+                                )
                                 userLocation = it
                             }
 
                         })
 
                     Handler(Looper.getMainLooper()).postDelayed({
-                        if (trainLocation!= null && userLocation!=null){
+                        if (trainLocation != null && userLocation != null) {
                             //compute distance between user and train
                             Log.e(TAG, "compute distance between user and train")
-                            distance=getKilometers(
-                                trainLocation?.latitude!!.toDouble(),
+                            distance = distanceInMeter(
                                 trainLocation?.longitude!!.toDouble(),
+                                trainLocation?.latitude!!.toDouble(),
                                 userLocation?.latitude!!.toDouble(),
                                 userLocation?.longitude!!.toDouble()
                             )
+//                            distance=getDistanceUsingGoogleMapApi(
+//                                LatLng(
+//                                    trainLocation?.latitude!!.toDouble(),
+//                                    trainLocation?.longitude!!.toDouble()
+//                                ),
+//                                LatLng(
+//                                    userLocation?.latitude!!.toDouble(),
+//                                    userLocation?.longitude!!.toDouble()
+//                                )
+//                            )
 
 
-                            if (distance!=null){
+                            if (distance != null) {
+                                Log.e(TAG, "Distance ${distance}")
                                 val bundle = Bundle()
                                 bundle.putFloat("distance", distance!!.toFloat())
                                 binding?.trackLocationProgressBar?.setVisibility(View.INVISIBLE)
-                                findNavController().navigate(R.id.action_trackLocationFeature_to_home2,bundle)
+//                                findNavController().navigate(
+//                                    R.id.action_trackLocationFeature_to_home2,
+//                                    bundle
+//                                )
+                                val action: NavDirections =
+                                    TrackLocationFeatureDirections.actionTrackLocationFeatureToTrainLocationInMap(
+                                        userLocation!!,
+                                        trainLocation!!
+                                    )
+                                findNavController().navigate(action)
                             }
-                        }else{
-                            Log.e(TAG,"Error")
+                        } else {
+                            Log.e(TAG, "Error")
                         }
-                    },4000)
-
+                    }, 10000)
 
 
                 }
@@ -153,7 +202,12 @@ class TrackLocationFeature : Fragment(), TrackLocationListener {
             })
     }
 
-    fun getDistanceBetweenUserAndTrain(lat1: Double, lon1: Double, lat2: Double, lon2: Double):Double {
+    fun getDistanceBetweenUserAndTrain(
+        lat1: Double,
+        lon1: Double,
+        lat2: Double,
+        lon2: Double
+    ): Double {
         val theta = lon1 - lon2
         var dist = (Math.sin(deg2rad(lat1))
                 * Math.sin(deg2rad(lat2))
@@ -174,7 +228,7 @@ class TrackLocationFeature : Fragment(), TrackLocationListener {
         return rad * 180.0 / Math.PI
     }
 
-    private fun  computeDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double? {
+    private fun computeDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double? {
         val startPoint = Location("locationA")
         startPoint.setLatitude(lat1)
         startPoint.setLongitude(lon1)
@@ -186,6 +240,7 @@ class TrackLocationFeature : Fragment(), TrackLocationListener {
         return startPoint.distanceTo(endPoint).toDouble()
 
     }
+
     fun getKilometers(lat1: Double, long1: Double, lat2: Double, long2: Double): Double {
         val PI_RAD = Math.PI / 180.0
         val phi1 = lat1 * PI_RAD
@@ -195,5 +250,38 @@ class TrackLocationFeature : Fragment(), TrackLocationListener {
         return 6371.01 * acos(sin(phi1) * sin(phi2) + cos(phi1) * cos(phi2) * cos(lam2 - lam1))
     }
 
+    @Subscribe
+    fun getUserLocationLive(locationDetails: LocationDetails) {
+        Log.e(
+            TAG,
+            locationDetails.latitude.toString() + "////" + locationDetails.longitude.toString()
+        )
+        _userLocationMuta.postValue(locationDetails)
+    }
+
+    fun getDistanceUsingGoogleMapApi(point1: LatLng, point2: LatLng): Double? {
+        if (point1 == null || point2 == null) {
+            return null;
+        }
+
+        return SphericalUtil.computeDistanceBetween(point1, point2);
+    }
+
+    private fun distanceInMeter(
+        startLat: Double,
+        startLon: Double,
+        endLat: Double,
+        endLon: Double
+    ): Double {
+        var results = FloatArray(1)
+        Log.e(TAG, "startLat ${startLat}")
+        Log.e(TAG, "startLon ${startLon}")
+        Log.e(TAG, "endLat ${endLat}")
+        Log.e(TAG, "endLon ${endLon}")
+
+        Location.distanceBetween(startLat, startLon, endLat, endLon, results)
+        Log.e(TAG, "distanceInMeter ${results[0]}")
+        return results[0].toDouble()
+    }
 
 }

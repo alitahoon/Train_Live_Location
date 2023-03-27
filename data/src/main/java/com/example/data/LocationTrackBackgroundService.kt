@@ -9,6 +9,7 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.Observer
 import com.example.domain.entity.LocationDetails
 import com.example.domain.entity.Location_Request
+import com.google.android.gms.location.LocationRequest
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
@@ -35,7 +36,11 @@ class LocationTrackBackgroundService : LifecycleService() {
         super.onCreate()
 
         locationLive = LocationLive(this)
-        locationLive.startLocationUpdate()
+        var  locationRequest=LocationRequest()
+        locationRequest?.interval = 6000
+        locationRequest?.fastestInterval = 6000 / 4
+        locationRequest?.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationLive.startLocationUpdate(locationRequest)
         onNewLocation()
 
     }

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@drawable/splash_fragment_background">
+
+    <CalendarView
+        android:id="@+id/date_picker_dialog_cal_dateOfBirth"
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_height="match_parent"
+        android:background="@color/basicColor"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/btn_background"
+        android:gravity="end">
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OK"
+            android:id="@+id/date_picker_btn_ok"
+            android:textColor="@color/white" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cancel"
+            android:id="@+id/date_picker_btn_cancel"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/textAlarmColor"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"/>
+    </LinearLayout>
+
+
+</LinearLayout>

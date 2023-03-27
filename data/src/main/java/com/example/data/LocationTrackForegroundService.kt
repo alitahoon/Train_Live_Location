@@ -10,6 +10,7 @@ import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.Observer
 import com.example.domain.entity.LocationDetails
+import com.google.android.gms.location.LocationRequest
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,7 +31,12 @@ class LocationTrackForegroundService : LifecycleService() {
     override fun onCreate() {
         super.onCreate()
         locationLive = LocationLive(this)
-        locationLive.startLocationUpdate()
+        locationLive = LocationLive(this)
+        var  locationRequest= LocationRequest()
+        locationRequest?.interval = 6000
+        locationRequest?.fastestInterval = 6000 / 4
+        locationRequest?.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationLive.startLocationUpdate(locationRequest)
         notificationManager = this.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(

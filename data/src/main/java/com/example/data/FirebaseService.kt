@@ -1,64 +1,120 @@
 package com.example.data
 
+import android.app.Activity
+import android.net.Credentials
 import androidx.appcompat.app.AppCompatActivity
 import android.net.Uri
 import android.util.Log
+import com.google.firebase.FirebaseException
+import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
+import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
 import com.google.firebase.storage.StorageReference
 import java.util.concurrent.TimeUnit
 
 class FirebaseService(
     private val auth: FirebaseAuth,
-    private val activity: AppCompatActivity,
-    private val imageRef: StorageReference,
-    private val phoneAuthOptions: PhoneAuthOptions,
-    private val firebaseServiceCallbacks: FirebaseServiceCallbacks
-) {
-    private val TAG:String?="FirebaseService"
-
-     fun sendOtpToPhone(phoneNumber: String?,callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks) {
+    private val storageRef: StorageReference,
+){
+    private val TAG: String? = "FirebaseService"
+    companion object{
+        var storedVerificationId:String?=null
+        var storedtoken: PhoneAuthProvider.ForceResendingToken?=null
+        var firebaseAuthActivity:AppCompatActivity?=null
+        // The test phone number and code should be whitelisted in the console.
+        val phoneNumber = "+2001225137528"
+        val smsCode = "123456"
+    }
+    fun sendOtpToPhone(
+        phoneNumber: String?,
+        callback: (result: String?) -> Unit
+    ){
+        Log.i(TAG,"${phoneNumber}")
         auth.setLanguageCode("ar")
+        // Configure faking the auto-retrieval with the whitelisted numbers.
+        auth.firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber(phoneNumber, smsCode)
+        auth.firebaseAuthSettings.forceRecaptchaFlowForTesting(true)
         val options = PhoneAuthOptions.newBuilder(auth)
             .setPhoneNumber(phoneNumber!!)
             .setTimeout(60L, TimeUnit.SECONDS)
-            .setActivity(activity)
-            .setCallbacks(callbacks)
+            .setActivity(firebaseAuthActivity!!)
+            .setCallbacks(object :OnVerificationStateChangedCallbacks(){
+                override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                    //start sign in with credential
+                    Log.d(TAG, "onVerificationCompleted:$credential")
+                    signInWithPhoneAuthCredential(credential){
+                        Log.i(TAG,it!!)
+                    }
+                    callback("onVerificationCompleted")
+                }
+
+                override fun onVerificationFailed(e: FirebaseException) {
+                    //stop progress bar
+                    callback("onVerificationFailed")
+                    if (e is FirebaseAuthInvalidCredentialsException) {
+                        // Invalid request
+                        Log.e(TAG,"onVerificationFailed ${e.message}")
+                    } else if (e is FirebaseTooManyRequestsException) {
+                        // The SMS quota for the project has been exceeded
+                        Log.e(TAG,"FirebaseTooManyRequestsException ${e.message}")
+
+                    }
+
+                }
+
+                override fun onCodeSent(verificationId: String, token: PhoneAuthProvider.ForceResendingToken) {
+                    super.onCodeSent(verificationId, token)
+                    // The SMS verification code has been sent to the provided phone number, we
+                    // now need to ask the user to enter the code and then construct a credential
+                    // by combining the code with a verification ID
+                    Log.d(TAG, "onCodeSent:$verificationId")
+                    storedtoken=token
+                    storedVerificationId=verificationId
+                    callback("onCodeSent")
+                }
+
+            })
             .build()
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
-     fun resendOtpCode(phoneNumber: String?) {
+    fun resendOtpCode(phoneNumber: String?,callback: (result: String?) -> Unit
+    ) {
 
     }
 
-     fun sendProfileImageToFirebaseStorage(
+    fun sendImageToFirebaseStorage(
         profileImagesUri: Uri,
-        imageName: String,
+        imagePath: String,
+        callback: (result: String?) -> Unit
     ) {
         profileImagesUri?.let {
-            imageRef.child("profileImages/$imageName").putFile(it).addOnSuccessListener {
-                firebaseServiceCallbacks.onImageSendSuccessfully()
+            storageRef.child(imagePath).putFile(it).addOnSuccessListener {
+                callback("Image upload to ${imagePath} successfully  ${it.metadata.toString()}")
             }.addOnFailureListener {
-                Log.e(TAG,it.message.toString())
-                firebaseServiceCallbacks.onImageSendFailure(it)
+                callback("Image upload to ${imagePath} faild  ${it.message}")
             }
         }
     }
 
-     fun signInWithPhoneAuthCredential(
-        credential: PhoneAuthCredential
+    fun signInWithPhoneAuthCredential(
+        credential: PhoneAuthCredential,
+        callback: (result: String?) -> Unit
     ) {
         auth.signInWithCredential(credential)
-            .addOnCompleteListener(activity) { task ->
+            .addOnCompleteListener(firebaseAuthActivity!!) { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithCredential:success")
                     val user = task.result?.user
+                    callback("success")
                 } else {
+                    callback("failure")
                     // Sign in failed, display a message and update the UI
                     Log.w(TAG, "signInWithCredential:failure", task.exception)
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
                         // The verification code entered was invalid
+                        Log.w(TAG, "FirebaseAuthInvalidCredentialsException:failure", task.exception)
                     }
                     // Update UI
                 }
@@ -66,9 +122,20 @@ class FirebaseService(
 
     }
 
-     fun CreateAPhoneAuthCredentialWithCode(verificationId:String?,OtbCode:String?){
-        val credential = PhoneAuthProvider.getCredential(verificationId!!, OtbCode!!)
+    fun CreateAPhoneAuthCredentialWithCode(
+         OtbCode: String?, callback: (result: PhoneAuthCredential?) -> Unit
+    ) {
+        var vrCode= storedVerificationId
+        Log.i(TAG,"${OtbCode} ,${vrCode}")
+        val credential = PhoneAuthProvider.getCredential(vrCode!!, OtbCode!!)
+        callback(credential)
     }
+
+    fun setActivity(activity: AppCompatActivity){
+        Log.i(TAG,"setActivity")
+        firebaseAuthActivity=activity
+    }
+
 
 
 

@@ -17,7 +17,7 @@ import org.greenrobot.eventbus.EventBus
 
 class LocationLive(private val context: Context) : LiveData<LocationDetails>() {
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-    private var locationRequest: com.google.android.gms.location.LocationRequest? = null
+//    private var locationRequest: com.google.android.gms.location.LocationRequest? = null
     private var interval:Long?=null
     override fun onActive() {
         super.onActive()
@@ -46,7 +46,7 @@ class LocationLive(private val context: Context) : LiveData<LocationDetails>() {
         }
     }
 
-    internal  fun startLocationUpdate() {
+    internal  fun startLocationUpdate(locationRequest: LocationRequest) {
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -57,7 +57,7 @@ class LocationLive(private val context: Context) : LiveData<LocationDetails>() {
         ) {
             return
         }
-        createLocationRequest()
+//        createLocationRequest()
         fusedLocationClient.requestLocationUpdates(
             locationRequest!!,
             locationCallback,
@@ -87,11 +87,11 @@ class LocationLive(private val context: Context) : LiveData<LocationDetails>() {
         this.interval=interval
     }
 
-    private fun createLocationRequest() {
-        locationRequest = LocationRequest.create()
-        locationRequest?.interval = interval!!
-        locationRequest?.fastestInterval = interval!!/4
-        locationRequest?.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-    }
+//    private fun createLocationRequest() {
+//        locationRequest = LocationRequest.create()
+//        locationRequest?.interval = interval!!
+//        locationRequest?.fastestInterval = interval!!/4
+//        locationRequest?.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+//    }
 
 }

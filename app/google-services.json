@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "708577088590",
-    "project_id": "trainlocationlive",
-    "storage_bucket": "trainlocationlive.appspot.com"
+    "project_number": "153948082012",
+    "project_id": "trainlivelocation-21eaf",
+    "storage_bucket": "trainlivelocation-21eaf.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:708577088590:android:590b4dd025b86145c71f1f",
+        "mobilesdk_app_id": "1:153948082012:android:151999f044b4136107bb99",
         "android_client_info": {
           "package_name": "com.example.trainlivelocation"
         }
       },
       "oauth_client": [
         {
-          "client_id": "708577088590-dbehm1is961r6nt1r2u0uo3kq2pa1elv.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.trainlivelocation",
-            "certificate_hash": "bee508ae443294e4100c71099a7a36fac5f2a921"
-          }
-        },
-        {
-          "client_id": "708577088590-hk0ou1r0k5h1n0g5kriqjcfrsrlblthr.apps.googleusercontent.com",
+          "client_id": "153948082012-0jh9pek8iq3fluj89oj0urprrfno77rc.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBSgUKRQNBpaKBnPAUuJR_h5NK9QFzry8w"
+          "current_key": "AIzaSyDC8JLNTul4EP1AVBrhzmWmf0atvokV0r8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "708577088590-hk0ou1r0k5h1n0g5kriqjcfrsrlblthr.apps.googleusercontent.com",
+              "client_id": "153948082012-0jh9pek8iq3fluj89oj0urprrfno77rc.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

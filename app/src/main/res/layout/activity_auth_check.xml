@@ -5,16 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.AuthCheck"
+    android:orientation="vertical"
     android:background="@color/white">
 
 
+>
+
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragmentContainerView5"
+        android:id="@+id/fragmentContainerView3"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/auth_check_graph"
-        tools:layout="@layout/fragment_otb_code_verfication" />
+        app:navGraph="@navigation/auth_check_graph" />
 </LinearLayout>

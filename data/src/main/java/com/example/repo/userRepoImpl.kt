@@ -10,6 +10,7 @@ import androidx.lifecycle.LiveData
 import com.example.data.*
 import com.example.domain.entity.*
 import com.example.domain.repo.UserRepo
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
@@ -22,7 +23,8 @@ class userRepoImpl(
     private val locationLive: LocationLive,
     private val locationTrackBackgroundService: LocationTrackBackgroundService,
     private val getLocationService: GetLocationService,
-    private val getUserLocation: userLocation
+    private val getUserLocation: userLocation,
+    private val firebaseService: FirebaseService
 ) : UserRepo {
     private val TAG: String? = "userRepoImpl"
     override suspend fun getUserData(
@@ -34,65 +36,40 @@ class userRepoImpl(
         apiService.addNewUser(user)
 
     override suspend fun sendOtpToPhone(
-        phoneNumber: String,
-        auth: FirebaseAuth,
-        activity: AppCompatActivity,
-        callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks,
-    ): PhoneAuthOptions {
-        auth.setLanguageCode("ar")
-        val options = PhoneAuthOptions.newBuilder(auth)
-            .setPhoneNumber(phoneNumber)
-            .setTimeout(60L, TimeUnit.SECONDS)
-            .setActivity(activity)
-            .setCallbacks(callbacks)
-            .build()
-        return options
-    }
+        phoneNumber: String?,
+        callback: (result: String?) -> Unit
+    )=firebaseService.sendOtpToPhone(phoneNumber,callback)
 
     override suspend fun resendOtpCode(
-        phoneNumber: String,
-        auth: FirebaseAuth,
-        activity: AppCompatActivity,
-        callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
-    ): PhoneAuthOptions {
-        auth.setLanguageCode("ar")
-        val options = PhoneAuthOptions.newBuilder(auth)
-            .setPhoneNumber(phoneNumber)
-            .setTimeout(60L, TimeUnit.SECONDS)
-            .setActivity(activity)
-            .setCallbacks(callbacks)
-            .build()
-        return options
-    }
+        phoneNumber: String?,
+        callback: (result: String?) -> Unit
+
+    )=firebaseService.resendOtpCode(phoneNumber!!,callback)
 
     override suspend fun signInWithPhoneAuthCredential(
         credential: PhoneAuthCredential,
-        auth: FirebaseAuth
-    ): Task<AuthResult> {
-        return auth.signInWithCredential(credential)
-    }
+        callback: (result: String?) -> Unit
+    )=firebaseService.signInWithPhoneAuthCredential(credential,callback)
 
-    override suspend fun sendProfileImageToFirebaseStorage(
+    override suspend fun createAPhoneAuthCredential(
+        code: String?,
+        callback: (result: PhoneAuthCredential?) -> Unit
+    )=firebaseService.CreateAPhoneAuthCredentialWithCode(code,callback)
+
+    override suspend fun sendImageToFirebaseStorage(
         profileImagesUri: Uri,
-        imageName: String,
-        imageRef: StorageReference
-    ) {
-        profileImagesUri?.let {
-            imageRef.child("profileImages/$imageName").putFile(it).addOnCompleteListener(
-                OnCompleteListener {
-                    if (it.isSuccessful) {
-                        Log.i(TAG, it.result.toString())
-                    }
-                }).addOnFailureListener {
-                Log.e(TAG, it.message.toString())
-            }
-        }
-    }
+        imagePath: String,
+        callback: (result: String?) -> Unit
+    ) =firebaseService.sendImageToFirebaseStorage(profileImagesUri,imagePath,callback)
 
-    override suspend fun stopLocationUpdate() =locationLive.stopLocationLiveUpdate()
+    override suspend fun stopLocationUpdate() = locationLive.stopLocationLiveUpdate()
 
-    override suspend fun startLocationUpdate() {
-        locationLive.startLocationUpdate()
+    override suspend fun startLocationUpdate(interval:Long?) {
+        var locationRequest = LocationRequest.create()
+        locationRequest?.interval = interval!!
+        locationRequest?.fastestInterval = interval!! / 4
+        locationRequest?.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationLive.startLocationUpdate(locationRequest)
     }
 
     override suspend fun GetUserLocationLive(): LiveData<LocationDetails> {
@@ -118,10 +95,23 @@ class userRepoImpl(
     override suspend fun getLiveLoctationFromApi(trainid: Int): Response<Location_Response> =
         apiService.GetLocation(trainid)
 
-    override suspend fun createPost(post: Post): Response<Post> = apiService.CreatePost()
+    override suspend fun createPost(post: Post): Response<PostModelResponse> =
+        apiService.CreatePost(post)
+
+    override suspend fun getAllPostsFromAPI(): Response<ArrayList<Post>> = apiService.GetAllPosts()
 
 
-    override suspend fun getUserLocation(callback :(LocationDetails)->Unit) =getUserLocation.getLocationWithLocationManger(callback)!!
+    override suspend fun getUserDataById(userID: Int): Response<userResponseItem> =
+        apiService.GetUserById(userID)
+
+    override suspend fun setFirebaseServiceActivity(activity: AppCompatActivity) {
+        Log.i(TAG,"setFirebaseServiceActivity")
+        firebaseService.setActivity(activity)
+    }
+
+
+    override suspend fun getUserLocation(callback: (LocationDetails) -> Unit) =
+        getUserLocation.getLocationWithLocationManger(callback)!!
 
 
 }

@@ -39,15 +39,16 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
-            android:backgroundTint="@color/btn_background"
+            android:layout_marginBottom="100dp"
+            android:backgroundTint="#AE187498"
             app:cardCornerRadius="30dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/trainLocationMap_horizontile_line"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="15dp">
+                android:padding="15dp"
+                >
 
                 <LinearLayout
                     android:id="@+id/LinearLayout_distance"
@@ -70,7 +71,7 @@
                         android:textColor="@color/white" />
 
                     <com.google.android.material.textview.MaterialTextView
-                        android:id="@+id/trainLocation_txt_train_distance_long"
+                        android:id="@+id/trainLocation_txt_train_distance_value"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"

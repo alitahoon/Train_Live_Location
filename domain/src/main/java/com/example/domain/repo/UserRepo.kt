@@ -24,39 +24,48 @@ interface UserRepo {
 
     suspend fun addNewUser(user: RegisterUser?): Response<ArrayList<userResponseItem>>
     suspend fun sendOtpToPhone(
-        phoneNumber: String,
-        auth: FirebaseAuth,
-        activity: AppCompatActivity,
-        callbacks: OnVerificationStateChangedCallbacks
-    ): PhoneAuthOptions
+        phoneNumber: String?,
+        callback: (result: String?) -> Unit
+    )
 
     suspend fun resendOtpCode(
-        phoneNumber: String,
-        auth: FirebaseAuth,
-        activity: AppCompatActivity,
-        callbacks: OnVerificationStateChangedCallbacks
-    ): PhoneAuthOptions
+        phoneNumber: String?,
+        callback: (result: String?) -> Unit
+    )
 
     suspend fun signInWithPhoneAuthCredential(
         credential: PhoneAuthCredential,
-        auth: FirebaseAuth
-    ): Task<AuthResult>
-
-    suspend fun sendProfileImageToFirebaseStorage(
-        profileImagesUri: Uri,
-        imageName: String,
-        imageReference: StorageReference
+        callback: (result: String?) -> Unit
     )
+
+    suspend fun createAPhoneAuthCredential(
+        code: String?,
+        callback: (result: PhoneAuthCredential?) -> Unit
+    )
+
+    suspend fun sendImageToFirebaseStorage(
+        profileImagesUri: Uri,
+        imagePath: String,
+        callback: (result: String?) -> Unit
+    )
+
     suspend fun stopLocationUpdate()
-    suspend fun startLocationUpdate()
+    suspend fun startLocationUpdate(interval: Long?)
     suspend fun GetUserLocationLive(): LiveData<LocationDetails>
 
-    suspend fun getLocationTrackBackgroundService(trainid: Int,userid:Int):LifecycleService
-    suspend fun getLocationTrackForegroundService(trainid:Int):LifecycleService
+    suspend fun getLocationTrackBackgroundService(trainid: Int, userid: Int): LifecycleService
+    suspend fun getLocationTrackForegroundService(trainid: Int): LifecycleService
 
-    suspend fun addLiveLoctationToApi(locationRequest: Location_Request):Response<Location_Request_with_id>
-    suspend fun getLiveLoctationFromApi(trainid:Int):Response<Location_Response>
+    suspend fun addLiveLoctationToApi(locationRequest: Location_Request): Response<Location_Request_with_id>
+    suspend fun getLiveLoctationFromApi(trainid: Int): Response<Location_Response>
 
-    suspend fun getUserLocation(callback :(LocationDetails)->Unit)
+    suspend fun getUserLocation(callback: (LocationDetails) -> Unit)
 
+    suspend fun createPost(post: Post): Response<PostModelResponse>
+    suspend fun getAllPostsFromAPI(): Response<ArrayList<Post>>
+
+
+    suspend fun getUserDataById(userID: Int): Response<userResponseItem>
+
+    suspend fun setFirebaseServiceActivity(activity: AppCompatActivity)
 }
