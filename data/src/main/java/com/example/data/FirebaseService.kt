@@ -22,8 +22,6 @@ class FirebaseService(
         var storedtoken: PhoneAuthProvider.ForceResendingToken?=null
         var firebaseAuthActivity:AppCompatActivity?=null
         // The test phone number and code should be whitelisted in the console.
-        val phoneNumber = "+2001225137528"
-        val smsCode = "123456"
     }
     fun sendOtpToPhone(
         phoneNumber: String?,
@@ -32,7 +30,6 @@ class FirebaseService(
         Log.i(TAG,"${phoneNumber}")
         auth.setLanguageCode("ar")
         // Configure faking the auto-retrieval with the whitelisted numbers.
-        auth.firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber(phoneNumber, smsCode)
         auth.firebaseAuthSettings.forceRecaptchaFlowForTesting(true)
         val options = PhoneAuthOptions.newBuilder(auth)
             .setPhoneNumber(phoneNumber!!)

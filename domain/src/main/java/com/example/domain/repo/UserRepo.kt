@@ -1,6 +1,6 @@
 package com.example.domain.repo
 
-import android.app.Activity
+import Resource
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.net.Uri
@@ -20,9 +20,9 @@ interface UserRepo {
     suspend fun getUserData(
         userPhone: String?,
         userPassword: String?
-    ): Response<ArrayList<userResponseItem>>
+    ): Response<userResponseItem>
 
-    suspend fun addNewUser(user: RegisterUser?): Response<ArrayList<userResponseItem>>
+    suspend fun addNewUser(user: RegisterUser?,result:(Resource<userResponseItem>)->Unit)
     suspend fun sendOtpToPhone(
         phoneNumber: String?,
         callback: (result: String?) -> Unit
@@ -68,4 +68,6 @@ interface UserRepo {
     suspend fun getUserDataById(userID: Int): Response<userResponseItem>
 
     suspend fun setFirebaseServiceActivity(activity: AppCompatActivity)
+
+    suspend fun getAllStations(result:(Resource<stationResponse>)->Unit)
 }

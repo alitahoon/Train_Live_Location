@@ -12,8 +12,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/splash_fragment_background"
         android:orientation="vertical"
+        android:background="@color/white"
         tools:context=".ui.SignUp">
         <LinearLayout
             android:visibility="gone"
@@ -25,6 +25,7 @@
                 android:id="@+id/signUp_imageView_proofileImage"
                 android:layout_width="300dp"
                 android:visibility="visible"
+                android:onClick="@{viewmodel::onChooseImageBtnClicked}"
                 android:layout_marginTop="100dp"
                 android:layout_marginBottom="10dp"
                 app:civ_border_color="@color/textHintColorFirst"
@@ -51,13 +52,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:layout_width="match_parent"
+                android:id="@+id/sign_upLocation_progress_bar"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:visibility="invisible"
+                style="@style/Widget.MaterialComponents.LinearProgressIndicator"/>
 
             <LinearLayout
                 android:id="@+id/spinner_jop_menu_layout"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:layout_marginHorizontal="20dp"
-                android:layout_marginVertical="30dp"
+                android:layout_marginTop="15dp"
                 android:orientation="horizontal"
                 android:paddingHorizontal="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -117,6 +125,38 @@
             </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/signUp_txt_station_tablayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginVertical="20dp"
+                android:layout_marginTop="28dp"
+                android:textColorHint="@color/textHintColorFirst"
+                app:boxStrokeColor="@color/basicColor"
+                app:boxStrokeWidth="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radioGroup">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/SignUp_txt_station"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:focusable="false"
+                    android:drawableLeft="@drawable/sation"
+                    android:drawablePadding="10dp"
+                    android:hint="Station"
+                    android:onClick="@{viewmodel::onDatePickerTxtClicked}"
+                    android:minHeight="48dp"
+                    android:text="@={viewmodel.userBirthDate}"
+                    android:textColor="@color/basicColor"
+                    android:textColorHint="@color/textHintColorFirst"
+                    android:textSize="18sp" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/signUp_txt_birthdate_tablayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -136,13 +176,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
+                    android:focusable="false"
                     android:drawableLeft="@drawable/date_icon"
                     android:drawablePadding="10dp"
                     android:hint="Birthdate"
                     android:onClick="@{viewmodel::onDatePickerTxtClicked}"
                     android:minHeight="48dp"
                     android:text="@={viewmodel.userBirthDate}"
-                    android:textColor="@color/textAlarmColor"
+                    android:textColor="@color/basicColor"
                     android:textColorHint="@color/textHintColorFirst"
                     android:textSize="18sp" />
 
@@ -171,7 +212,7 @@
                     android:drawablePadding="10dp"
                     android:hint="Name"
                     android:text="@={viewmodel.userName}"
-                    android:textColor="#FF0000"
+                    android:textColor="@color/basicColor"
                     android:textSize="16sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -203,7 +244,7 @@
                     android:inputType="textEmailAddress"
                     android:minHeight="48dp"
                     android:text="@={viewmodel.userEmail}"
-                    android:textColor="#FF0000"
+                    android:textColor="@color/basicColor"
                     android:textSize="16sp" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -233,7 +274,7 @@
                     android:hint="Password"
                     android:inputType="textPassword"
                     android:text="@={viewmodel.userPassword}"
-                    android:textColor="#FF0000"
+                    android:textColor="@color/basicColor"
                     android:textSize="16sp" />
                 <RadioGroup
                     android:id="@+id/radioGroup"
@@ -287,11 +328,11 @@
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/sign_up_btn_sign_up"
+            android:id="@+id/sign_up_btn_next"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="80dp"
-            android:layout_marginVertical="20dp"
+            android:layout_marginBottom="20dp"
             android:backgroundTint="@color/btn_background"
             android:drawableRight="@drawable/next_icon"
             android:onClick="@{viewmodel::onNextBtnClicked}"

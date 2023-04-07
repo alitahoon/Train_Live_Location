@@ -7,53 +7,61 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.userResponseItem
 import com.example.domain.usecase.GetUserData
 import com.example.trainlivelocation.utli.SignInListener
+import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
     private val getUserData: GetUserData
 ) : ViewModel() {
-    private val TAG:String?="SignInViewModel"
+    private val TAG: String? = "SignInViewModel"
     var userPhone: String? = null
     var userPassword: String? = null
     var signInListener: SignInListener? = null
-    private val _userLoginDataMuta: MutableLiveData<ArrayList<userResponseItem>?> =
-        MutableLiveData(null)
-    val userLoginDataLive: LiveData<ArrayList<userResponseItem>?> = _userLoginDataMuta
-    fun onLoginButtonClick(view: View) {
-        signInListener?.onStartLogin()
+    var signInBtnClicked = SingleLiveEvent<Boolean>()
+    var signUpBtnClicked = SingleLiveEvent<Boolean>()
+    var loginfialed = SingleLiveEvent<Boolean>()
 
-//        if (userPhone.isNullOrEmpty() || userPassword.isNullOrEmpty()) {
-//            //view user error message
-//            signInListener?.onLoginFailure("Please type your email && password...")
-//            return
-//        } else {
-//            //get data from repo
-//            viewModelScope.launch {
-//                var result = getUserData(userPhone,userPassword)
-//                if (result.isSuccessful) {
-//                    if (result.body() != null) {
-//                        _userLoginDataMuta.postValue(result.body())
-//                        signInListener?.onSuccessLogin(userPhone!!,userPassword!!)
-//                    }
-//                } else {
-//                    Log.e("Register Error in sendUsersData", result.message())
-//                    signInListener?.onLoginFailure(result.message())
-//                }
-//            }
-//            viewModelScope.launch {
-//
-//            }
-//        }
+    private val _userLoginDataMuta: MutableLiveData<userResponseItem?> =
+        MutableLiveData(null)
+    val userLoginDataLive: LiveData<userResponseItem?> = _userLoginDataMuta
+    fun onLoginButtonClick(view: View) {
+
+        if (userPhone.isNullOrEmpty() || userPassword.isNullOrEmpty()) {
+            //view user error message
+            signInListener?.onLoginFailure("Please type your email && password...")
+            return
+        } else {
+            //get data from repo
+
+        }
     }
-    fun onSignUpBtnClicked(view: View){
-        Log.e(TAG,"onSignUpBtnClicked")
-        signInListener?.onSignUpBtnClicked()
+
+    fun onSignUpBtnClicked(view: View) {
+        Log.e(TAG, "onSignUpBtnClicked")
+        signUpBtnClicked.postValue(true)
     }
+
+    fun checkIfUserIsSignIn(phone: String?, password: String?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            var result = getUserData(phone, password)
+            if (result.isSuccessful) {
+                if (result.body() != null) {
+                    _userLoginDataMuta.postValue(result.body())
+                }
+            } else {
+                Log.e("Register Error in sendUsersData", result.message())
+            }
+        }
+    }
+
 
     @BindingAdapter("scrollTo")
     fun scrollTo(view: ScrollView, viewId: Int) {

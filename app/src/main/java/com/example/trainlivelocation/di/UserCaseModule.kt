@@ -100,6 +100,11 @@ object UserCaseModule  {
         return SetFirebaseServiceActivity(userRepo)
     }
 
+    @Provides
+    fun provideGetAllStations(userRepo: UserRepo) :GetAllStations{
+        return GetAllStations(userRepo)
+    }
+
 
 
 

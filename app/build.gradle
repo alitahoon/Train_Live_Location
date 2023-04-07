@@ -24,7 +24,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    buildFeatures{
+    buildFeatures {
         viewBinding true
         dataBinding true
 
@@ -141,7 +141,10 @@ dependencies {
     //calender
     implementation 'com.applandeo:material-calendar-view:1.9.0-rc03'
 
-
+    //Now I will explain a little bit about these libraries, the first one kotlinx-coroutines-play-services
+    // will give us the .await() method to work with Task objects, and since Firebase returns Tasks as objects
+    // in any call, this will help us
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.1.1'
 
 
 }

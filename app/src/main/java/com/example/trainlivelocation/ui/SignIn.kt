@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentSignInBinding
@@ -52,7 +53,16 @@ class SignIn : Fragment(), SignInListener {
                 this.viewmodel = signInViewModel
             }
         binding.viewmodel?.signInListener = this
+        setObservers()
         return binding.root
+    }
+
+    private fun setObservers() {
+        signInViewModel!!.signUpBtnClicked.observe(viewLifecycleOwner, Observer {
+            if (it==true){
+                findNavController().navigate(SignInDirections.actionSignInToAuthCheck())
+            }
+        })
     }
 
     companion object {
@@ -96,7 +106,6 @@ class SignIn : Fragment(), SignInListener {
     }
 
     override fun onSignUpBtnClicked() {
-        findNavController().navigate(SignInDirections.actionSignInToAuthCheck())
     }
     override fun onLoginFailure(message: String) {
     }

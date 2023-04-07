@@ -89,22 +89,22 @@ interface ApiService {
 
     //Station
     @GET("/api/station/GetAllStation")
-    suspend fun GetAllStation():Response<List<Station>>
+    suspend fun GetAllStation():Response<stationResponse>
 
-    @GET("/api/station/GetStationsForOneTrain")
-    suspend fun GetStationsForOneTrain(@Query("trainId") trainId:Int):Response<List<Station>>
-
-    @GET("/api/station/GetStationById")
-    suspend fun GetStationById(@Query("Id") StationId: Int):Response<Station>
-
-    @POST("/api/station/CreateStation")
-    suspend fun CreateStation():Response<Station>
-
-    @DELETE("/api/station/DeleteStation")
-    suspend fun DeleteStation(@Query("Id") StationId: Int):Response<Station>
-
-    @PUT("/api/station/UpdateStation")
-    suspend fun UpdateStation(@Query("StationId") StationId: Int):Response<Station>
+//    @GET("/api/station/GetStationsForOneTrain")
+//    suspend fun GetStationsForOneTrain(@Query("trainId") trainId:Int):Response<List<Station>>
+//
+//    @GET("/api/station/GetStationById")
+//    suspend fun GetStationById(@Query("Id") StationId: Int):Response<Station>
+//
+//    @POST("/api/station/CreateStation")
+//    suspend fun CreateStation():Response<Station>
+//
+//    @DELETE("/api/station/DeleteStation")
+//    suspend fun DeleteStation(@Query("Id") StationId: Int):Response<Station>
+//
+//    @PUT("/api/station/UpdateStation")
+//    suspend fun UpdateStation(@Query("StationId") StationId: Int):Response<Station>
 
     //Ticket
     @GET("/api/ticket/GetTicketById")
@@ -152,10 +152,10 @@ interface ApiService {
        @GET("api/user/UserLogin")
        suspend fun getUserData(
         @Query("phone") userPhone: String, @Query("password") userPassword: String
-    ): Response<ArrayList<userResponseItem>>
+    ): Response<userResponseItem>
 
        @POST("api/user/CreateUser")
-       suspend fun addNewUser(@Body user: RegisterUser?): Response<ArrayList<userResponseItem>>
+       suspend fun addNewUser(@Body user: RegisterUser?): Response<userResponseItem>
 
        @DELETE("/api/user/DeleteUser")
        suspend fun DeleteUser(@Query("Id") userId:Int):Response<userResponseItem>

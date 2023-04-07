@@ -1,5 +1,6 @@
 package com.example.repo
 
+import Resource
 import android.app.Activity
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
@@ -30,10 +31,19 @@ class userRepoImpl(
     override suspend fun getUserData(
         userPhone: String?,
         userPassword: String?
-    ): Response<ArrayList<userResponseItem>> = apiService.getUserData(userPhone!!, userPassword!!)
+    ): Response<userResponseItem> = apiService.getUserData(userPhone!!, userPassword!!)
 
-    override suspend fun addNewUser(user: RegisterUser?): Response<ArrayList<userResponseItem>> =
-        apiService.addNewUser(user)
+    override suspend fun addNewUser(user: RegisterUser?, result: (Resource<userResponseItem>)->Unit) {
+       var res= apiService.addNewUser(user)
+        if (res.isSuccessful){
+            if (res.body()!=null){
+                result.invoke(Resource.Success(res.body()!!))
+            }
+        }else{
+                result.invoke(Resource.Failure(res.message()))
+        }
+    }
+
 
     override suspend fun sendOtpToPhone(
         phoneNumber: String?,
@@ -107,6 +117,17 @@ class userRepoImpl(
     override suspend fun setFirebaseServiceActivity(activity: AppCompatActivity) {
         Log.i(TAG,"setFirebaseServiceActivity")
         firebaseService.setActivity(activity)
+    }
+
+    override suspend fun getAllStations(result: (Resource<stationResponse>) -> Unit) {
+        var res=apiService.GetAllStation()
+        if (res.isSuccessful){
+            if (res.body()!=null){
+                result.invoke(Resource.Success(res.body()!!))
+            }
+        }else{
+            result.invoke(Resource.Failure(res.message()))
+        }
     }
 
 
