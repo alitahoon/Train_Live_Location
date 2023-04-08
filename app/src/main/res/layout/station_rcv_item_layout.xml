@@ -15,7 +15,8 @@
         android:id="@+id/station_RCV_irem_Color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
+        android:layout_marginVertical="5dp"
+        android:layout_marginHorizontal="15dp"
         android:background="@color/basicColor">
 
         <TextView

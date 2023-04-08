@@ -14,6 +14,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.domain.entity.LocationDetails
 import com.example.trainlivelocation.databinding.DatePickerDialogFragmentBinding
 import com.example.trainlivelocation.databinding.DialogFragmentLocationLayoutBinding
 import com.example.trainlivelocation.databinding.StationsDialogFragmentBinding
@@ -28,7 +29,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 @AndroidEntryPoint
-class ChooseStationDialogFragment(private val listener: Station_Dialog_Listener) : BottomSheetDialogFragment() {
+class ChooseStationDialogFragment(private val listener: Station_Dialog_Listener) : BottomSheetDialogFragment(),Station_Dialog_Listener {
     private var _binding: StationsDialogFragmentBinding? = null
     private val binding get() = _binding!!
     private val chooseStationDialogFragmentViewModel : ChooseStationDialogFragmentViewModel by activityViewModels()
@@ -53,16 +54,20 @@ class ChooseStationDialogFragment(private val listener: Station_Dialog_Listener)
 
     }
     private fun setAdapterItems(): StationCustomAdapter {
-        val adapter: StationCustomAdapter = StationCustomAdapter(listener)
+        val adapter: StationCustomAdapter = StationCustomAdapter(this)
         chooseStationDialogFragmentViewModel.stationsData.observe(viewLifecycleOwner, Observer {
             when(it){
                 is Resource.Loading->{
+                    binding.stationDialogRcv.visibility=View.INVISIBLE
 //                    binding.stationDialogRcv.setVisibility(View.INVISIBLE)
 //                    binding.stationDialogProgressBar.setVisibility(View.VISIBLE)
                     Log.i(TAG,"Loading")
 
                 }
                 is Resource.Success->{
+                    binding.stationDialogShimmerLoading.stopShimmer()
+                    binding.stationDialogShimmerLoading.visibility=View.INVISIBLE
+                    binding.stationDialogRcv.visibility=View.VISIBLE
                     Log.i(TAG,"Success")
                     adapter.setData(it.data!!)
 //                    binding.stationDialogRcv.setVisibility(View.VISIBLE)
@@ -84,6 +89,10 @@ class ChooseStationDialogFragment(private val listener: Station_Dialog_Listener)
         _binding = null
     }
 
+    override fun onStationSelected(StationId: Int?, StationName: String?,stationLocation:LocationDetails?) {
+        listener.onStationSelected(StationId,StationName,stationLocation)
+        dismiss()
+    }
 
 
 }
