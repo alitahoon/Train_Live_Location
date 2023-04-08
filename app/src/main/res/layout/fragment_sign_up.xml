@@ -148,9 +148,9 @@
                     android:drawableLeft="@drawable/sation"
                     android:drawablePadding="10dp"
                     android:hint="Station"
-                    android:onClick="@{viewmodel::onDatePickerTxtClicked}"
+                    android:onClick="@{viewmodel::onStationTxtClicked}"
                     android:minHeight="48dp"
-                    android:text="@={viewmodel.userBirthDate}"
+                    android:text="@={viewmodel.userStation}"
                     android:textColor="@color/basicColor"
                     android:textColorHint="@color/textHintColorFirst"
                     android:textSize="18sp" />

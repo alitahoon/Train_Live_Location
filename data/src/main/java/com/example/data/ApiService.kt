@@ -1,8 +1,6 @@
 package com.example.data
 
-import android.location.LocationRequest
 import com.example.domain.entity.*
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -89,7 +87,7 @@ interface ApiService {
 
     //Station
     @GET("/api/station/GetAllStation")
-    suspend fun GetAllStation():Response<stationResponse>
+    suspend fun GetAllStation():Response<ArrayList<StationResponseItem>>
 
 //    @GET("/api/station/GetStationsForOneTrain")
 //    suspend fun GetStationsForOneTrain(@Query("trainId") trainId:Int):Response<List<Station>>

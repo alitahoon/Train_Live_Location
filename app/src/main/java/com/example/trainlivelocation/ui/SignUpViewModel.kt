@@ -49,6 +49,7 @@ class SignUpViewModel @Inject constructor(
     var submitBtnClicked = SingleLiveEvent<Boolean>()
     var chooseImageBtnClicked = SingleLiveEvent<Boolean>()
     var datePickerTxtClicked = SingleLiveEvent<Boolean>()
+    var stationTxtClicked = SingleLiveEvent<Boolean>()
 
     companion object {
         private var layoutCounter: Int? = 0
@@ -67,6 +68,9 @@ class SignUpViewModel @Inject constructor(
 
     fun onDatePickerTxtClicked(view: View) {
         datePickerTxtClicked.postValue(true)
+    }
+    fun onStationTxtClicked(view: View){
+        stationTxtClicked.postValue(true)
     }
 
     fun onChooseImageBtnClicked(view: View) {
@@ -93,7 +97,7 @@ class SignUpViewModel @Inject constructor(
     private val _userDataMuta: MutableLiveData<Resource<userResponseItem>?> = MutableLiveData(null)
     val userDataLive: LiveData<Resource<userResponseItem>?> = _userDataMuta
 
-    fun sendUserDataToApi(userPhone: String?) {
+    fun sendUserDataToApi(userPhone: String?,stationId:Int?) {
         //Start send user data to api
         _userDataMuta.value = Resource.Loading
         viewModelScope.launch {
@@ -107,7 +111,8 @@ class SignUpViewModel @Inject constructor(
                     userName?.trim()!!,
                     userPassword?.trim()!!,
                     userPhone?.trim()!!,
-                    "normal"
+                    "normal",
+                    stationId!!
                 )
             ) {
                 _userDataMuta.value = it

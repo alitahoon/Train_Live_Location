@@ -28,6 +28,7 @@ import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentSignUpBinding
 import com.example.trainlivelocation.utli.DatePickerListener
 import com.example.trainlivelocation.utli.SignUpListener
+import com.example.trainlivelocation.utli.Station_Dialog_Listener
 import com.example.trainlivelocation.utli.toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -35,14 +36,13 @@ import kotlinx.coroutines.withContext
 import kotlin.math.sign
 
 
-class SignUp : Fragment(), DatePickerListener {
+class SignUp : Fragment(), DatePickerListener,Station_Dialog_Listener {
 
     private val signUpViewModel: SignUpViewModel? by activityViewModels()
     private lateinit var binding: FragmentSignUpBinding
     private val REQUSET_CODE_IMAGE: Int = 101
     private val args by navArgs<SignUpArgs>()
-
-
+    private var stationId:Int?=null
     private val TAG: String? = "Sign_up_Fragment"
 
 
@@ -87,7 +87,7 @@ class SignUp : Fragment(), DatePickerListener {
                 binding.signUpLayoutProfileImage.setVisibility(View.VISIBLE)
                 Log.i(TAG, "setObservers-nextBtnClicked")
                 //send user date to api
-                signUpViewModel!!.sendUserDataToApi("+20${args.userPhone}")
+                signUpViewModel!!.sendUserDataToApi("${args.userPhone}",stationId)
                 signUpViewModel!!.userDataLive.observe(viewLifecycleOwner, Observer {
                    when(it){
                        is Resource.Loading->{
@@ -136,6 +136,16 @@ class SignUp : Fragment(), DatePickerListener {
         })
 
 
+
+        signUpViewModel!!.stationTxtClicked.observe(viewLifecycleOwner, Observer {
+            if (it == true){
+                var dialog = ChooseStationDialogFragment(this)
+                var childFragmentManager = getChildFragmentManager()
+                dialog.show(childFragmentManager, "station_dialog")
+            }
+        })
+
+
     }
 
 
@@ -164,6 +174,11 @@ class SignUp : Fragment(), DatePickerListener {
     override fun onDateSelected(date: String) {
         binding.SignUpTxtDatePicker.setText(date)
 
+    }
+
+    override fun onStationSelected(StationId: Int?,StationName: String?) {
+        binding.SignUpTxtStation.setText(StationName!!)
+        this.stationId=stationId
     }
 
 

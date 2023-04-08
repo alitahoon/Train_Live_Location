@@ -38,6 +38,3 @@ class PostCustomAdapter(private val postListener: PostListener) :
         notifyDataSetChanged()
     }
 }
-interface BindableAdapter<T> {
-    fun setData(data: T)
-}

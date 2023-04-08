@@ -1,8 +1,6 @@
 package com.example.repo
 
 import Resource
-import android.app.Activity
-import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.net.Uri
 import android.util.Log
@@ -12,12 +10,8 @@ import com.example.data.*
 import com.example.domain.entity.*
 import com.example.domain.repo.UserRepo
 import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.*
-import com.google.firebase.storage.StorageReference
 import retrofit2.Response
-import java.util.concurrent.TimeUnit
 
 class userRepoImpl(
     private val apiService: ApiService,
@@ -119,7 +113,7 @@ class userRepoImpl(
         firebaseService.setActivity(activity)
     }
 
-    override suspend fun getAllStations(result: (Resource<stationResponse>) -> Unit) {
+    override suspend fun getAllStations(result: (Resource<ArrayList<StationResponseItem>>) -> Unit) {
         var res=apiService.GetAllStation()
         if (res.isSuccessful){
             if (res.body()!=null){

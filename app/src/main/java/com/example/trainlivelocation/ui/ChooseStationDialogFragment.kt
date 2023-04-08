@@ -2,7 +2,9 @@ package com.example.trainlivelocation.ui
 
 import android.R
 import android.os.Build
+import Resource
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +18,8 @@ import com.example.trainlivelocation.databinding.DatePickerDialogFragmentBinding
 import com.example.trainlivelocation.databinding.DialogFragmentLocationLayoutBinding
 import com.example.trainlivelocation.databinding.StationsDialogFragmentBinding
 import com.example.trainlivelocation.utli.DatePickerListener
+import com.example.trainlivelocation.utli.PostCustomAdapter
+import com.example.trainlivelocation.utli.StationCustomAdapter
 import com.example.trainlivelocation.utli.Station_Dialog_Listener
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,17 +28,13 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 @AndroidEntryPoint
-class ChooseStationDialogFragment(private val listener: Station_Dialog_Listener) : DialogFragment() {
+class ChooseStationDialogFragment(private val listener: Station_Dialog_Listener) : BottomSheetDialogFragment() {
     private var _binding: StationsDialogFragmentBinding? = null
     private val binding get() = _binding!!
     private val chooseStationDialogFragmentViewModel : ChooseStationDialogFragmentViewModel by activityViewModels()
-    private var dateOfBirth: String?="No Selected Date"
+    private var stationId: Int?=null
+    private val TAG:String?="ChooseStationDialogFragment"
 
-    //    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-//        return AlertDialog.Builder(requireActivity())
-//            .setView(_binding?.root)
-//            .create()
-//    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,12 +43,39 @@ class ChooseStationDialogFragment(private val listener: Station_Dialog_Listener)
             .apply {
                 this.viewmodel=chooseStationDialogFragmentViewModel
             }
+        chooseStationDialogFragmentViewModel!!.getAllStationFromApi()
+        binding.adapter=setAdapterItems()
         setObservers()
         return binding.root
     }
 
     private fun setObservers() {
 
+    }
+    private fun setAdapterItems(): StationCustomAdapter {
+        val adapter: StationCustomAdapter = StationCustomAdapter(listener)
+        chooseStationDialogFragmentViewModel.stationsData.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is Resource.Loading->{
+//                    binding.stationDialogRcv.setVisibility(View.INVISIBLE)
+//                    binding.stationDialogProgressBar.setVisibility(View.VISIBLE)
+                    Log.i(TAG,"Loading")
+
+                }
+                is Resource.Success->{
+                    Log.i(TAG,"Success")
+                    adapter.setData(it.data!!)
+//                    binding.stationDialogRcv.setVisibility(View.VISIBLE)
+//                    binding.stationDialogProgressBar.setVisibility(View.GONE)
+                }
+
+                else -> {
+
+                }
+            }
+
+        })
+        return adapter
     }
 
 
