@@ -35,5 +35,13 @@
         <argument
             android:name="userPhone"
             app:argType="string" />
+        <action
+            android:id="@+id/action_signUp_to_splash"
+            app:destination="@id/splash" />
     </fragment>
+    <activity
+        android:id="@+id/splash"
+        android:name="com.example.trainlivelocation.ui.splash"
+        android:label="activity_splash"
+        tools:layout="@layout/activity_splash" />
 </navigation>

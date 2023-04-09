@@ -1,10 +1,12 @@
 package com.example.data
 
+import Resource
 import android.app.Activity
 import android.net.Credentials
 import androidx.appcompat.app.AppCompatActivity
 import android.net.Uri
 import android.util.Log
+import com.example.domain.entity.userResponseItem
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
@@ -83,13 +85,14 @@ class FirebaseService(
     fun sendImageToFirebaseStorage(
         profileImagesUri: Uri,
         imagePath: String,
-        callback: (result: String?) -> Unit
+        result: (Resource<String>)->Unit
     ) {
         profileImagesUri?.let {
             storageRef.child(imagePath).putFile(it).addOnSuccessListener {
-                callback("Image upload to ${imagePath} successfully  ${it.metadata.toString()}")
+
+                result(Resource.Success(  "Image upload to ${imagePath} successfully  ${it.metadata.toString()}"))
             }.addOnFailureListener {
-                callback("Image upload to ${imagePath} faild  ${it.message}")
+                result(Resource.Failure("Image upload to ${imagePath} faild  ${it.message}"))
             }
         }
     }

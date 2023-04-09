@@ -14,6 +14,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingTop="10dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,18 +25,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="20dp"
+            android:layout_marginBottom="20dp"
             android:textColorHint="@color/textHintColorFirst"
             app:boxStrokeColor="@color/basicColor"
             app:boxStrokeWidth="1dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/SignUp_txt_station"
                 android:layout_width="match_parent"
+                android:text="@={viewmodel.staionName}"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
                 android:drawableStart="@drawable/search_24"

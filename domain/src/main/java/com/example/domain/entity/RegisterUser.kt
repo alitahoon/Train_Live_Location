@@ -10,6 +10,5 @@ data class RegisterUser(
     val password: String,
     val phone: String,
     val role: String,
-    val stationId:Int
-
+    val stationId: Int
 )

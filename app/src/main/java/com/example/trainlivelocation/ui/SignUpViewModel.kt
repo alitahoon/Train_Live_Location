@@ -3,6 +3,9 @@ package com.example.trainlivelocation.ui
 import Resource
 import androidx.appcompat.app.AppCompatActivity
 import android.app.Application
+import android.content.Context
+import android.location.Address
+import android.location.Geocoder
 import android.net.Uri
 import android.util.Log
 import android.view.View
@@ -10,8 +13,7 @@ import android.widget.AdapterView
 import android.widget.ScrollView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.*
-import com.example.domain.entity.RegisterUser
-import com.example.domain.entity.userResponseItem
+import com.example.domain.entity.*
 import com.example.domain.usecase.*
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.utli.SignUpListener
@@ -24,6 +26,7 @@ import com.google.firebase.storage.ktx.storage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 
@@ -31,6 +34,7 @@ import javax.inject.Inject
 class SignUpViewModel @Inject constructor(
     private val addNewUser: AddNewUser,
     private val application: Application,
+    private val context: Context,
     private val sendImageToFirebaseStorage: SendImageToFirebaseStorage
 ) : ViewModel() {
     private var selectedJop: String? = ""
@@ -42,6 +46,7 @@ class SignUpViewModel @Inject constructor(
         MutableLiveData<Int>() // This gets updated once spinner item selection changes
     var userPassword: String? = null
     var userEmail: String? = null
+    var userAddress: String? = null
     var userBirthDate: String? = null
     var userStation: String? = null
     var joblist = application.resources.getStringArray(R.array.jopsArray)
@@ -51,6 +56,8 @@ class SignUpViewModel @Inject constructor(
     var datePickerTxtClicked = SingleLiveEvent<Boolean>()
     var stationTxtClicked = SingleLiveEvent<Boolean>()
 
+    private var _sendingProfileImageResult:MutableLiveData<Resource<String>?> = MutableLiveData(null)
+    var sendingProfileImageResult:LiveData<Resource<String>?> = MutableLiveData(null)
     companion object {
         private var layoutCounter: Int? = 0
     }
@@ -100,20 +107,22 @@ class SignUpViewModel @Inject constructor(
     fun sendUserDataToApi(userPhone: String?,stationId:Int?) {
         //Start send user data to api
         _userDataMuta.value = Resource.Loading
+        val newUser=RegisterUser(
+            userAddress!!,
+            userBirthDate!!,
+            userEmail?.trim()!!,
+            gender_redio_checked.value!!,
+            selectedJop!!,
+            userName?.trim()!!,
+            userPassword?.trim()!!,
+            userPhone?.trim()!!,
+            "normal",
+            stationId!!
+        )
+        Log.i(TAG,"${newUser}")
         viewModelScope.launch {
             var result = addNewUser(
-                RegisterUser(
-                    "******",
-                    userBirthDate!!,
-                    userEmail?.trim()!!,
-                    gender_redio_checked.value!!,
-                    selectedJop!!,
-                    userName?.trim()!!,
-                    userPassword?.trim()!!,
-                    userPhone?.trim()!!,
-                    "normal",
-                    stationId!!
-                )
+               newUser
             ) {
                 _userDataMuta.value = it
             }
@@ -136,9 +145,11 @@ class SignUpViewModel @Inject constructor(
 
 
         fun uploadProfileImage(profileImageUri: Uri, userPhone: String?) {
+            _sendingProfileImageResult.value=Resource.Loading
             viewModelScope.launch {
-                sendImageToFirebaseStorage(profileImageUri, "/profileImages/${userPhone!!}") {
+                sendImageToFirebaseStorage(profileImageUri, "profileImages/${userPhone!!}") {
                     Log.i(TAG, "${it}")
+                    _sendingProfileImageResult.value=it
                 }
 
             }
@@ -162,7 +173,37 @@ class SignUpViewModel @Inject constructor(
             }
         }
 
+    fun getAddress(longitude: Double,latitude: Double){
+        Log.i(TAG,"${longitude},${latitude}")
+        val geocoder: Geocoder
+        val addresses: List<Address>?
+        geocoder = Geocoder(context, Locale.getDefault())
 
+        addresses = geocoder.getFromLocation(
+            longitude,
+            latitude,
+            4
+        ) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+
+
+        val address: String =
+            addresses!![0].getAddressLine(0) // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+
+       if (addresses[0]==null){
+           val city: String = addresses!![0].locality
+           val state: String = addresses!![0].adminArea
+           val country: String = addresses!![0].countryName
+           val postalCode: String = addresses!![0].postalCode
+           val knownName: String = addresses!![0].featureName // Only if available else return NULL
+           userAddress=""
+       }else{
+           //get first name of state
+           val stateArr=addresses!![0].adminArea.split(" ")
+           this.userAddress="${addresses!![0].locality},${stateArr[0]},${addresses!![0].countryName}"
+       }
+
+
+    }
 
 }
 

@@ -1,5 +1,6 @@
 package com.example.trainlivelocation.ui
 
+import Resource
 import android.util.Log
 import android.view.View
 import android.widget.ScrollView
@@ -29,9 +30,11 @@ class SignInViewModel @Inject constructor(
     var signUpBtnClicked = SingleLiveEvent<Boolean>()
     var loginfialed = SingleLiveEvent<Boolean>()
 
-    private val _userLoginDataMuta: MutableLiveData<userResponseItem?> =
+    private val _userLoginDataMuta: MutableLiveData<Resource<userResponseItem>?> =
         MutableLiveData(null)
-    val userLoginDataLive: LiveData<userResponseItem?> = _userLoginDataMuta
+    val userLoginDataLive: LiveData<Resource<userResponseItem>?> = _userLoginDataMuta
+
+
     fun onLoginButtonClick(view: View) {
 
         if (userPhone.isNullOrEmpty() || userPassword.isNullOrEmpty()) {
@@ -50,29 +53,15 @@ class SignInViewModel @Inject constructor(
     }
 
     fun checkIfUserIsSignIn(phone: String?, password: String?) {
-        viewModelScope.launch(Dispatchers.IO) {
-            var result = getUserData(phone, password)
-            if (result.isSuccessful) {
-                if (result.body() != null) {
-                    _userLoginDataMuta.postValue(result.body())
-                }
-            } else {
-                Log.e("Register Error in sendUsersData", result.message())
+        _userLoginDataMuta.value=Resource.Loading
+        viewModelScope.launch {
+            getUserData(phone,password){
+                _userLoginDataMuta.value=it
             }
         }
     }
 
 
-    @BindingAdapter("scrollTo")
-    fun scrollTo(view: ScrollView, viewId: Int) {
-        if (viewId == 0) {
-            view.scrollTo(0, 0)
-            return
-        }
-        val v = view.findViewById<View>(viewId)
-        view.scrollTo(0, v.top)
-        v.requestFocus()
-    }
 
 
 }

@@ -24,17 +24,32 @@ class userRepoImpl(
     private val TAG: String? = "userRepoImpl"
     override suspend fun getUserData(
         userPhone: String?,
-        userPassword: String?
-    ): Response<userResponseItem> = apiService.getUserData(userPhone!!, userPassword!!)
+        userPassword: String?,
+        result: (Resource<userResponseItem>) -> Unit
+    ) {
+        val res = apiService.getUserData(userPhone!!, userPassword!!)
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke(Resource.Failure("Error Body is null:${res.body()}"))
+            }
+        } else {
+            result.invoke(Resource.Failure("failed:${res.message()}"))
+        }
+    }
 
-    override suspend fun addNewUser(user: RegisterUser?, result: (Resource<userResponseItem>)->Unit) {
-       var res= apiService.addNewUser(user)
-        if (res.isSuccessful){
-            if (res.body()!=null){
+    override suspend fun addNewUser(
+        user: RegisterUser?,
+        result: (Resource<userResponseItem>) -> Unit
+    ) {
+        var res = apiService.addNewUser(user)
+        if (res.isSuccessful) {
+            if (res.body() != null) {
                 result.invoke(Resource.Success(res.body()!!))
             }
-        }else{
-                result.invoke(Resource.Failure(res.message()))
+        } else {
+            result.invoke(Resource.Failure("${res.message()}:${res.errorBody()}"))
         }
     }
 
@@ -42,33 +57,33 @@ class userRepoImpl(
     override suspend fun sendOtpToPhone(
         phoneNumber: String?,
         callback: (result: String?) -> Unit
-    )=firebaseService.sendOtpToPhone(phoneNumber,callback)
+    ) = firebaseService.sendOtpToPhone(phoneNumber, callback)
 
     override suspend fun resendOtpCode(
         phoneNumber: String?,
         callback: (result: String?) -> Unit
 
-    )=firebaseService.resendOtpCode(phoneNumber!!,callback)
+    ) = firebaseService.resendOtpCode(phoneNumber!!, callback)
 
     override suspend fun signInWithPhoneAuthCredential(
         credential: PhoneAuthCredential,
         callback: (result: String?) -> Unit
-    )=firebaseService.signInWithPhoneAuthCredential(credential,callback)
+    ) = firebaseService.signInWithPhoneAuthCredential(credential, callback)
 
     override suspend fun createAPhoneAuthCredential(
         code: String?,
         callback: (result: PhoneAuthCredential?) -> Unit
-    )=firebaseService.CreateAPhoneAuthCredentialWithCode(code,callback)
+    ) = firebaseService.CreateAPhoneAuthCredentialWithCode(code, callback)
 
     override suspend fun sendImageToFirebaseStorage(
         profileImagesUri: Uri,
         imagePath: String,
-        callback: (result: String?) -> Unit
-    ) =firebaseService.sendImageToFirebaseStorage(profileImagesUri,imagePath,callback)
+        result: (Resource<String>) -> Unit
+    ) = firebaseService.sendImageToFirebaseStorage(profileImagesUri, imagePath, result)
 
     override suspend fun stopLocationUpdate() = locationLive.stopLocationLiveUpdate()
 
-    override suspend fun startLocationUpdate(interval:Long?) {
+    override suspend fun startLocationUpdate(interval: Long?) {
         var locationRequest = LocationRequest.create()
         locationRequest?.interval = interval!!
         locationRequest?.fastestInterval = interval!! / 4
@@ -109,17 +124,17 @@ class userRepoImpl(
         apiService.GetUserById(userID)
 
     override suspend fun setFirebaseServiceActivity(activity: AppCompatActivity) {
-        Log.i(TAG,"setFirebaseServiceActivity")
+        Log.i(TAG, "setFirebaseServiceActivity")
         firebaseService.setActivity(activity)
     }
 
     override suspend fun getAllStations(result: (Resource<ArrayList<StationResponseItem>>) -> Unit) {
-        var res=apiService.GetAllStation()
-        if (res.isSuccessful){
-            if (res.body()!=null){
+        var res = apiService.GetAllStation()
+        if (res.isSuccessful) {
+            if (res.body() != null) {
                 result.invoke(Resource.Success(res.body()!!))
             }
-        }else{
+        } else {
             result.invoke(Resource.Failure(res.message()))
         }
     }

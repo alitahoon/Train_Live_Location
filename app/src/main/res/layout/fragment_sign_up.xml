@@ -340,9 +340,24 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             app:cornerRadius="30dp" />
-
+    <LinearLayout
+        android:id="@+id/sign_up_loading_layout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/sign_up_loading_lotti"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            app:lottie_rawRes="@raw/loading_sign_in"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
+    </LinearLayout>
 
     </LinearLayout>
+
 
 </layout>
 

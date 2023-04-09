@@ -27,6 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.ArrayList
 
 @AndroidEntryPoint
 class ChooseStationDialogFragment(private val listener: Station_Dialog_Listener) : BottomSheetDialogFragment(),Station_Dialog_Listener {
@@ -51,7 +52,14 @@ class ChooseStationDialogFragment(private val listener: Station_Dialog_Listener)
     }
 
     private fun setObservers() {
-
+        chooseStationDialogFragmentViewModel.staionName.observe(viewLifecycleOwner, Observer {
+            Log.i(TAG,"${it}")
+//            val typedName=it
+//            val filteredData=binding.adapter!!.stationArrayList.filter {
+//                it.name==typedName
+//            }
+//            binding.adapter.setData(ArrayList(filteredData))
+        })
     }
     private fun setAdapterItems(): StationCustomAdapter {
         val adapter: StationCustomAdapter = StationCustomAdapter(this)
@@ -84,13 +92,14 @@ class ChooseStationDialogFragment(private val listener: Station_Dialog_Listener)
     }
 
 
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
 
-    override fun onStationSelected(StationId: Int?, StationName: String?,stationLocation:LocationDetails?) {
-        listener.onStationSelected(StationId,StationName,stationLocation)
+    override fun onStationSelected(StationId: Int?, StationName: String?,longitude:Double?,latitude:Double?) {
+        listener.onStationSelected(StationId,StationName,longitude,latitude)
         dismiss()
     }
 

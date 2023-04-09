@@ -12,10 +12,10 @@ import retrofit2.Response
 interface UserRepo {
     suspend fun getUserData(
         userPhone: String?,
-        userPassword: String?
-    ): Response<userResponseItem>
+        userPassword: String?, result: (Resource<userResponseItem>) -> Unit
+    )
 
-    suspend fun addNewUser(user: RegisterUser?,result:(Resource<userResponseItem>)->Unit)
+    suspend fun addNewUser(user: RegisterUser?, result: (Resource<userResponseItem>) -> Unit)
     suspend fun sendOtpToPhone(
         phoneNumber: String?,
         callback: (result: String?) -> Unit
@@ -39,7 +39,7 @@ interface UserRepo {
     suspend fun sendImageToFirebaseStorage(
         profileImagesUri: Uri,
         imagePath: String,
-        callback: (result: String?) -> Unit
+        result: (Resource<String>) -> Unit
     )
 
     suspend fun stopLocationUpdate()
@@ -62,5 +62,5 @@ interface UserRepo {
 
     suspend fun setFirebaseServiceActivity(activity: AppCompatActivity)
 
-    suspend fun getAllStations(result:(Resource<ArrayList<StationResponseItem>>)->Unit)
+    suspend fun getAllStations(result: (Resource<ArrayList<StationResponseItem>>) -> Unit)
 }

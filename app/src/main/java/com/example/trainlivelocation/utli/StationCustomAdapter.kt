@@ -39,7 +39,7 @@ class StationCustomAdapter(private val stationListener: Station_Dialog_Listener)
         Log.i(TAG,"${stationList.get(position)}")
         holder.bind(station)
         holder.itemView.setOnClickListener{
-            stationListener.onStationSelected(station.id,station.name, LocationDetails(station.longitude,station.latitude))
+            stationListener.onStationSelected(station.id,station.name,station.longitude,station.latitude)
         }
     }
 

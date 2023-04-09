@@ -1,5 +1,6 @@
 package com.example.domain.usecase
 
+import Resource
 import android.net.Uri
 import com.example.domain.repo.UserRepo
 import com.google.firebase.auth.PhoneAuthCredential
@@ -9,7 +10,7 @@ class SendImageToFirebaseStorage(private val userRepo: UserRepo) {
     suspend operator fun invoke(
         profileImageUri: Uri,
         imagePath: String,
-        callback: (result: String?) -> Unit
+        result: (Resource<String>)->Unit
     ) =
-        userRepo.sendImageToFirebaseStorage(profileImageUri, imagePath, callback)
+        userRepo.sendImageToFirebaseStorage(profileImageUri, imagePath, result)
 }

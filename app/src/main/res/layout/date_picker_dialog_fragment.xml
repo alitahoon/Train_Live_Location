@@ -4,11 +4,15 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
-    android:background="@drawable/splash_fragment_background">
+    android:background="@color/basicColor">
 
-    <CalendarView
+    <DatePicker
+        android:headerBackground="@color/secondColor"
         android:id="@+id/date_picker_dialog_cal_dateOfBirth"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        android:scaleX="1.1"
+        android:scaleY="1.1"
+        android:layout_marginTop="37dp"
         android:layout_gravity="center"
         android:layout_height="match_parent"
         android:background="@color/basicColor"/>
