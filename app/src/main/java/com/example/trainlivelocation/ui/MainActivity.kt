@@ -1,23 +1,23 @@
 package com.example.trainlivelocation.ui
 
-import android.content.Context
-import android.graphics.Color
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
+import Resource
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
 import android.view.View
-import android.view.Window
 import android.view.WindowManager
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import com.ashokvarma.bottomnavigation.BottomNavigationBar
 import com.ashokvarma.bottomnavigation.BottomNavigationItem
+import com.bumptech.glide.Glide
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.ActivityMainBinding
-import com.example.trainlivelocation.databinding.ActivitySplashBinding
-import com.example.trainlivelocation.utli.toast
+import com.example.trainlivelocation.databinding.HeaderNavMenuLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= ActivityMainBinding.inflate(layoutInflater)
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.statusBarColor = resources.getColor(R.color.basicColor)
+        window.statusBarColor = resources.getColor(com.example.trainlivelocation.R.color.basicColor)
         setBottomBarIcons()
         binding.bottomNavigationBar.setTabSelectedListener(object :
             BottomNavigationBar.OnTabSelectedListener {
@@ -50,13 +50,58 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setObservers() {
+        mainActivityViewModel!!.menuBtnClicked.observe(this){
+            if (it==true){
+                Log.e(TAG,"menuBtnClicked")
+                binding.mainActivityDrwerLayout.openDrawer(GravityCompat.START)
+            }
+        }
+
         mainActivityViewModel!!.userData.observe(this){
             if (it!= null){
+
+                val menuHeader = binding.mainActivityNavigationView.getHeaderView(0)
+                val nametxt=menuHeader.findViewById(com.example.trainlivelocation.R.id.nav_menu_header_profile_name) as TextView
+                val joptxt=menuHeader.findViewById(com.example.trainlivelocation.R.id.nav_menu_header_profile_jop) as TextView
+
+                nametxt.setText(it!!.name)
+                joptxt.setText(it!!.jop)
                 binding.mainActivityCiProfileName.setText(it!!.name)
                 binding.mainActivityCiProfileJop.setText(it!!.jop)
+                mainActivityViewModel!!.getProfileImage("profileImages/+20${it.phone}")
             }
-
         }
+
+
+        mainActivityViewModel!!.userProfileImageUri.observe(this){
+            when(it){
+                is Resource.Loading->{
+                    binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
+                    binding.mainActivityLayoutBeforeLoading.setVisibility(View.VISIBLE)
+                }
+                is Resource.Success->{
+                    val menuHeader = binding.mainActivityNavigationView.getHeaderView(0)
+                    val ProfileImage=menuHeader.findViewById(com.example.trainlivelocation.R.id.nav_menu_header_profile_image) as ImageView
+
+                    binding.mainActivityLayoutAfterLoading.setVisibility(View.VISIBLE)
+                    binding.mainActivityLayoutBeforeLoading.setVisibility(View.GONE)
+                    Glide.with(this)
+                        .load(it.data)
+                        .into( binding.mainActivityCiProfileImage)
+                    Glide.with(this)
+                        .load(it.data)
+                        .into(ProfileImage)
+
+                }
+                is Resource.Failure->{
+                    Log.e(TAG,"Failure:On Loading profile Image -> ${it.error}")
+                }
+                else -> {
+                    Log.e(TAG,"Failure:On Loading profile Image -> else brunch${it}")
+                }
+            }
+        }
+
     }
 
     private fun setBottomBarIcons() {
@@ -68,5 +113,6 @@ class MainActivity : AppCompatActivity() {
             .setFirstSelectedPosition(1)
             .initialise()
     }
+
 
 }

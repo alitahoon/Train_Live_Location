@@ -143,7 +143,7 @@ class userRepoImpl(
         imageRef: String?,
         result: (Resource<Uri>) -> Unit
     ) {
-
+        firebaseService.getImageFromFireBaseStorage(imageRef,result)
     }
 
 

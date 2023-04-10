@@ -13,7 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.MainActivity"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:id="@+id/main_activity_drwer_layout">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:orientation="vertical"
@@ -60,6 +61,7 @@
                             app:layout_constraintTop_toTopOf="parent">
 
                             <RelativeLayout
+                                android:id="@+id/main_activity_layoutAfterLoading"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">
 
@@ -104,16 +106,22 @@
                                     android:textSize="12sp" />
 
                                 <ImageView
+                                    android:onClick="@{viewmodel::onMenuBtnClicked}"
+                                    android:id="@+id/main_activity_btn_drawer_menu"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:layout_alignParentStart="true"
                                     android:layout_alignParentTop="true"
                                     android:layout_alignParentBottom="true"
+                                    android:layout_marginStart="0dp"
+                                    android:layout_marginTop="-1dp"
+                                    android:layout_marginBottom="1dp"
                                     app:srcCompat="@drawable/menu" />
                             </RelativeLayout>
 
                             <com.facebook.shimmer.ShimmerFrameLayout
                                 android:visibility="gone"
+                                android:id="@+id/main_activity_layoutBeforeLoading"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent">
                                 <include layout="@layout/user_profile_shimmer"/>
@@ -166,10 +174,11 @@
 
 
         <com.google.android.material.navigation.NavigationView
-            android:id="@+id/home_navigation_view"
+            android:id="@+id/main_activity_navigation_view"
             android:layout_width="wrap_content"
             app:menu="@menu/home_menu"
-            android:backgroundTint="@color/basicColor"
+            app:headerLayout="@layout/header_nav_menu_layout"
+            android:backgroundTint="@color/btn_background"
             android:layout_height="match_parent"
             android:layout_gravity="start" />
     </androidx.drawerlayout.widget.DrawerLayout>

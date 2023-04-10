@@ -23,7 +23,7 @@ object FirebaseModule {
 
     @Provides
     fun ProvideStorageReference(firebaseStorage: FirebaseStorage): StorageReference {
-        return firebaseStorage.getReference()
+        return firebaseStorage.getReferenceFromUrl("gs://trainlivelocation-4df97.appspot.com/")
     }
     @Provides
     fun ProvideFirebaseAuth(): FirebaseAuth {
