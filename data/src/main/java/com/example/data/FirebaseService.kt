@@ -136,6 +136,14 @@ class FirebaseService(
         firebaseAuthActivity=activity
     }
 
+    fun getImageFromFireBaseStorage(imageRef:String?,result: (Resource<Uri>) -> Unit){
+        storageRef.child(imageRef+".jpg").downloadUrl.addOnSuccessListener {
+            result.invoke(Resource.Success(it))
+        }.addOnFailureListener{
+            result.invoke(Resource.Failure(it.message))
+        }
+    }
+
 
 
 

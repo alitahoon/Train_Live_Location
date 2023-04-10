@@ -139,6 +139,13 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun getImageFromFirebaseStorage(
+        imageRef: String?,
+        result: (Resource<Uri>) -> Unit
+    ) {
+
+    }
+
 
     override suspend fun getUserLocation(callback: (LocationDetails) -> Unit) =
         getUserLocation.getLocationWithLocationManger(callback)!!

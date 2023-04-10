@@ -105,6 +105,11 @@ object UserCaseModule  {
         return GetAllStations(userRepo)
     }
 
+    @Provides
+    fun provideGetImageFromFirebaseStorage(userRepo: UserRepo) :GetImageFromFirebaseStorage{
+        return GetImageFromFirebaseStorage(userRepo)
+    }
+
 
 
 

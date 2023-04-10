@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/main_activity_ci_profile_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="2dp"
+            android:src="@color/textHintColorFirst" />
+
+        <View
+            android:layout_marginTop="15dp"
+            android:id="@+id/main_activity_ci_profile_name"
+            android:layout_width="60dp"
+            android:layout_height="7dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="2dp"
+            android:layout_toStartOf="@+id/main_activity_ci_profile_image"
+            android:layout_toLeftOf="@id/main_activity_ci_profile_image"
+            android:text="@string/profile_name"
+            android:background="@color/textHintColorFirst"
+            android:textColor="@color/textHintColorFirst"
+            android:textSize="16sp" />
+
+        <View
+            android:id="@+id/main_activity_ci_profile_jop"
+            android:layout_width="50dp"
+            android:layout_height="7dp"
+            android:layout_alignTop="@id/main_activity_ci_profile_name"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="2dp"
+            android:background="@color/textHintColorFirst"
+            android:layout_toStartOf="@+id/main_activity_ci_profile_image"
+            android:layout_toLeftOf="@id/main_activity_ci_profile_image"
+            android:textSize="12sp" />
+
+
+    </RelativeLayout>
+
+</LinearLayout>

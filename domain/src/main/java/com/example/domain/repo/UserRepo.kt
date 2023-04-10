@@ -64,5 +64,5 @@ interface UserRepo {
 
     suspend fun getAllStations(result: (Resource<ArrayList<StationResponseItem>>) -> Unit)
 
-//    suspend fun getImageFromFirebaseStorage()
+    suspend fun getImageFromFirebaseStorage(imageRef:String?,result: (Resource<Uri>) -> Unit)
 }
