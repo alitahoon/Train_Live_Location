@@ -1,6 +1,8 @@
 package com.example.trainlivelocation.ui
 
 import Resource
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import android.view.View
 import android.widget.ScrollView
@@ -16,18 +18,20 @@ import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 @HiltViewModel
 class SignInViewModel @Inject constructor(
-    private val getUserData: GetUserData
+    private val getUserData: GetUserData,
+    private val context: Context
 ) : ViewModel() {
     private val TAG: String? = "SignInViewModel"
-    var userPhone: String? = null
-    var userPassword: String? = null
-    var signInListener: SignInListener? = null
+    var userPhone: String? = ""
+    var userPassword: String? = ""
     var signInBtnClicked = SingleLiveEvent<Boolean>()
     var signUpBtnClicked = SingleLiveEvent<Boolean>()
+    var PhoneNumberIsNotCorrect = SingleLiveEvent<Boolean>()
     var loginfialed = SingleLiveEvent<Boolean>()
 
     private val _userLoginDataMuta: MutableLiveData<Resource<userResponseItem>?> =
@@ -35,15 +39,14 @@ class SignInViewModel @Inject constructor(
     val userLoginDataLive: LiveData<Resource<userResponseItem>?> = _userLoginDataMuta
 
 
-    fun onLoginButtonClick(view: View) {
-
-        if (userPhone.isNullOrEmpty() || userPassword.isNullOrEmpty()) {
-            //view user error message
-            signInListener?.onLoginFailure("Please type your email && password...")
-            return
-        } else {
-            //get data from repo
-
+    fun onSignInBtnClicked(view: View) {
+        val REG = "r'/^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})\$/'"
+        var PATTERN: Pattern = Pattern.compile(REG)
+        fun CharSequence.isPhoneNumber() : Boolean = PATTERN.matcher(this).find()
+        if (userPhone!!.length==11){
+            signInBtnClicked.postValue(true)
+        }else{
+            PhoneNumberIsNotCorrect.postValue(true)
         }
     }
 
@@ -52,13 +55,31 @@ class SignInViewModel @Inject constructor(
         signUpBtnClicked.postValue(true)
     }
 
-    fun checkIfUserIsSignIn(phone: String?, password: String?) {
+    fun checkIfUserIsSignIn() {
         _userLoginDataMuta.value=Resource.Loading
         viewModelScope.launch {
-            getUserData(phone,password){
+            getUserData(userPhone,userPassword){
                 _userLoginDataMuta.value=it
             }
         }
+    }
+
+    fun saveUserTokenInSharedPreferences(userItem: userResponseItem){
+        val userSharedPreferences :SharedPreferences=context.getSharedPreferences("UserToken",Context.MODE_PRIVATE)
+        var editor=userSharedPreferences.edit()
+        editor.putString("userName",userItem.name)
+        editor.putString("userPhone",userItem.phone)
+        editor.putString("userBirthdate",userItem.birthDate)
+        editor.putString("userAddress",userItem.address)
+        editor.putString("userJop",userItem.jop)
+        editor.putString("userEmail",userItem.email)
+        editor.putString("userRole",userItem.role)
+        editor.putString("userGender",userItem.gender)
+        editor.putString("userPassword",userItem.password)
+        editor.putInt("userStationId",userItem.stationId)
+        editor.putInt("userId",userItem.id)
+        editor.apply()
+        editor.commit()
     }
 
 

@@ -2,6 +2,8 @@ package com.example.trainlivelocation.ui
 
 import Resource
 import android.Manifest
+import android.animation.Animator
+import android.animation.Animator.AnimatorListener
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
@@ -128,13 +130,36 @@ class SignUp : Fragment(), DatePickerListener,Station_Dialog_Listener {
                 signUpViewModel!!.sendingProfileImageResult.observe(viewLifecycleOwner, Observer {
                     when(it){
                         is Resource.Loading->{
+                            binding.signUpSuccessLoadingLotti.setVisibility(View.GONE)
                             binding.signUpLayoutProfileImage.setVisibility(View.GONE)
                             binding.signUpBtnNext.setVisibility(View.GONE)
                             binding.signUpLoadingLayout.setVisibility(View.VISIBLE)
                         }
                         is Resource.Success->{
                             Log.i(TAG,"Image Send Successfully")
-                            findNavController().navigate(SignUpDirections.actionSignUpToSplash())
+                            binding.signUpLoadingLotti.setVisibility(View.GONE)
+                            binding.signUpSuccessLoadingLotti.setVisibility(View.VISIBLE)
+                            binding.signUpSuccessLoadingLotti.playAnimation()
+                            binding.signUpSuccessLoadingLotti.addAnimatorListener(object : AnimatorListener{
+                                override fun onAnimationStart(p0: Animator) {
+                                    TODO("Not yet implemented")
+                                }
+
+                                override fun onAnimationEnd(p0: Animator) {
+                                    findNavController().navigate(SignUpDirections.actionSignUpToSplash())
+                                }
+
+                                override fun onAnimationCancel(p0: Animator) {
+                                    TODO("Not yet implemented")
+                                }
+
+                                override fun onAnimationRepeat(p0: Animator) {
+                                    TODO("Not yet implemented")
+                                }
+
+                            })
+
+
                         }
                         is Resource.Failure->{
                             Log.i(TAG,"Failed To send image to Fire base ${it.error}")

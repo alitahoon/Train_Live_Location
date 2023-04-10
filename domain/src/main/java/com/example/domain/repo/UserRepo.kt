@@ -63,4 +63,6 @@ interface UserRepo {
     suspend fun setFirebaseServiceActivity(activity: AppCompatActivity)
 
     suspend fun getAllStations(result: (Resource<ArrayList<StationResponseItem>>) -> Unit)
+
+//    suspend fun getImageFromFirebaseStorage()
 }

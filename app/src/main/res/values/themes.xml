@@ -72,4 +72,9 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowIsFloating">false</item>
     </style>
+    
+    <style name="LoadingDialogStyle" parent="Theme.AppCompat.Light.DialogWhenLarge">
+        <item name="windowNoTitle" >true</item>
+        <item name="android:statusBarColor">@color/basicColor</item>
+    </style>
 </resources>

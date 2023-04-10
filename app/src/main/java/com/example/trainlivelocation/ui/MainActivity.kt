@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.view.Window
 import android.view.WindowManager
+import androidx.activity.viewModels
 import com.ashokvarma.bottomnavigation.BottomNavigationBar
 import com.ashokvarma.bottomnavigation.BottomNavigationItem
 import com.example.trainlivelocation.R
@@ -21,6 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private val mainActivityViewModel:MainActivityViewModel? by viewModels()
     private val TAG:String?="MainActivity"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,10 +42,23 @@ class MainActivity : AppCompatActivity() {
 
             }
         })
+        mainActivityViewModel!!.getUserDataFromsharedPreference()
+        setObservers()
 
         setContentView(binding.root)
 
     }
+
+    private fun setObservers() {
+        mainActivityViewModel!!.userData.observe(this){
+            if (it!= null){
+                binding.mainActivityCiProfileName.setText(it!!.name)
+                binding.mainActivityCiProfileJop.setText(it!!.jop)
+            }
+
+        }
+    }
+
     private fun setBottomBarIcons() {
         binding.bottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC)
         binding.bottomNavigationBar

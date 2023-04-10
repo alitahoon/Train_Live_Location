@@ -57,7 +57,7 @@ class SignUpViewModel @Inject constructor(
     var stationTxtClicked = SingleLiveEvent<Boolean>()
 
     private var _sendingProfileImageResult:MutableLiveData<Resource<String>?> = MutableLiveData(null)
-    var sendingProfileImageResult:LiveData<Resource<String>?> = MutableLiveData(null)
+    var sendingProfileImageResult:LiveData<Resource<String>?> = _sendingProfileImageResult
     companion object {
         private var layoutCounter: Int? = 0
     }

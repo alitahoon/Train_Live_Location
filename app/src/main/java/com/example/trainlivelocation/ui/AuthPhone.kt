@@ -43,11 +43,11 @@ class AuthPhone : Fragment() {
     private fun setObservers() {
         authPhoneViewmodel?.sendCodebtn!!.observe(viewLifecycleOwner, Observer {
             if (it == true){
-//                binding!!.authPhoneFirstLayout.setVisibility(View.GONE)
-//                binding!!.authPhonesSecondLayout.setVisibility(View.GONE)
-//                binding!!.CodeVerficationDialogLoadingCodeSending.setVisibility(View.VISIBLE)
-//                authPhoneViewmodel?.sendOtb()
-                findNavController().navigate(AuthPhoneDirections.actionAuthPhoneToSignUp(binding!!.phone.text.toString()))
+                binding!!.authPhoneFirstLayout.setVisibility(View.GONE)
+                binding!!.authPhonesSecondLayout.setVisibility(View.GONE)
+                binding!!.CodeVerficationDialogLoadingCodeSending.setVisibility(View.VISIBLE)
+                authPhoneViewmodel?.sendOtb()
+//                findNavController().navigate(AuthPhoneDirections.actionAuthPhoneToSignUp(binding!!.phone.text.toString()))
             }
         })
         authPhoneViewmodel?.onCodeSent!!.observe(viewLifecycleOwner, Observer {

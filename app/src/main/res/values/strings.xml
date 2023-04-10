@@ -71,4 +71,5 @@
     <string name="critcal">critcal</string>
     <string name="nonCritcal">nonCritcal</string>
     <string name="share_location_para">Thank you for sharing your location. This helps us to provide a better service to assist passengers who are waiting for the train at different stations to know the location of the train. We wish you a happy trip</string>
+    <string name="please_wait">Please Wait...</string>
 </resources>

@@ -11,11 +11,11 @@
         android:label="fragment sign in"
         tools:layout="@layout/fragment_sign_in" >
         <action
-            android:id="@+id/action_sign_in_to_mainActivity"
-            app:destination="@id/mainActivity" />
-        <action
             android:id="@+id/action_signIn_to_authCheck"
             app:destination="@id/authCheck" />
+        <action
+            android:id="@+id/action_signIn_to_mainActivity"
+            app:destination="@id/mainActivity" />
     </fragment>
     <activity
         android:id="@+id/mainActivity"
