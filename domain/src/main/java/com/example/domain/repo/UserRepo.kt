@@ -54,8 +54,8 @@ interface UserRepo {
 
     suspend fun getUserLocation(callback: (LocationDetails) -> Unit)
 
-    suspend fun createPost(post: Post): Response<PostModelResponse>
-    suspend fun getAllPostsFromAPI(): Response<ArrayList<Post>>
+    suspend fun createPost(post: Post,result: (Resource<PostModelResponse>) -> Unit)
+    suspend fun getAllPostsFromAPI(result: (Resource<ArrayList<PostModelResponse>>)->Unit)
 
 
     suspend fun getUserDataById(userID: Int): Response<userResponseItem>

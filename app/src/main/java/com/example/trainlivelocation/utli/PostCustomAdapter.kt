@@ -4,16 +4,17 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.entity.Post
+import com.example.domain.entity.PostModelResponse
 import com.example.trainlivelocation.databinding.UserPostsRcvItemLayoutBinding
 
 class PostCustomAdapter(private val postListener: PostListener) :
-    RecyclerView.Adapter<PostAdapterViewHolder>(), BindableAdapter<List<Post>> {
+    RecyclerView.Adapter<PostAdapterViewHolder>(), BindableAdapter<ArrayList<PostModelResponse>> {
 
     private var binding: UserPostsRcvItemLayoutBinding? = null
-    lateinit var postArrayList: ArrayList<Post>
-    var postList = emptyList<Post>()
+    lateinit var postArrayList: ArrayList<PostModelResponse>
+    var postList = emptyList<PostModelResponse>()
 
-    public fun updateData(postList: ArrayList<Post>) {
+    public fun updateData(postList: ArrayList<PostModelResponse>) {
 
     }
 
@@ -33,7 +34,7 @@ class PostCustomAdapter(private val postListener: PostListener) :
         holder.bind(post)
     }
 
-    override fun setData(data: List<Post>) {
+    override fun setData(data: ArrayList<PostModelResponse>) {
         this.postList = data
         notifyDataSetChanged()
     }

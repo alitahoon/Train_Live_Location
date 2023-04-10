@@ -1,5 +1,6 @@
 package com.example.trainlivelocation.ui
 
+import Resource
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -17,7 +18,8 @@ class CriticalPostViewModel @Inject constructor(
 ):ViewModel(){
     private val TAG: String = "AllPostsViewModel"
     private val _postMutableData = MutableLiveData<List<Post>>()
-    val postLiveData: LiveData<List<Post>> = _postMutableData
+    private val _postLiveData: MutableLiveData<Resource<List<Post>>> = MutableLiveData(null)
+    val postLiveData: LiveData<Resource<List<Post>>> = _postLiveData
     val showProgressBar = MutableLiveData(false)
 
     init {
@@ -26,14 +28,14 @@ class CriticalPostViewModel @Inject constructor(
 
     private fun submitPostList() {
         viewModelScope.launch {
-            var result = getAllPostsFromAPI()
-            if (result.isSuccessful) {
-                if (result.body() != null) {
-                    _postMutableData.postValue(result.body())
-                }
-            } else {
-                Log.e(TAG, result.message())
-            }
+//            var result = getAllPostsFromAPI()
+//            if (result.isSuccessful) {
+//                if (result.body() != null) {
+//                    _postMutableData.postValue(result.body())
+//                }
+//            } else {
+//                Log.e(TAG, result.message())
+//            }
         }
     }
 }

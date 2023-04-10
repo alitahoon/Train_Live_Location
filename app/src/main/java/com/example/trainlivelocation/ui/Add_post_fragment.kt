@@ -1,31 +1,25 @@
 package com.example.trainlivelocation.ui
 
+import Resource
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.ImageDecoder
+import android.graphics.Color
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.domain.entity.Post
-import com.example.domain.entity.PostModelResponse
-import com.example.trainlivelocation.R
+import com.example.domain.entity.userResponseItem
 import com.example.trainlivelocation.databinding.FragmentAddPostFragmentBinding
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import java.io.InputStream
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.Snackbar.SnackbarLayout
+
 
 class Add_post_fragment : Fragment() {
     private val TAG: String? = "Add_post_fragment"
@@ -47,7 +41,9 @@ class Add_post_fragment : Fragment() {
             .apply {
                 this.viewModel = addPostFragmentViewmodel
             }
+        addPostFragmentViewmodel!!.getUserDataFromsharedPreference()
         setObserver()
+
         return binding.root
     }
 
@@ -55,43 +51,93 @@ class Add_post_fragment : Fragment() {
         addPostFragmentViewmodel?.btnSubmitClicked?.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 //add image to firebase
-
-
                 var imageUri = postImageUri
-                var imageName = "2"
-
-                addPostFragmentViewmodel?.sendPostImageToFirebase(imageUri!!,"/postImages/")
-
-                // TODO:send imageName to API -> Done
-                var critical:Boolean=true
-                addPostFragmentViewmodel?.post_redio_checked?.observe(viewLifecycleOwner, Observer {
-                    critical=it
-                })
 
 
 
-//                addPostFragmentViewmodel?.sendPostImageToFirebase(imageUri!!,imageName)
-                addPostFragmentViewmodel?.addPost(
-                    Post(
-                        binding.addPostTxtPostContent.text?.trim().toString(),
-                        binding.addPostTxtTrainId.text?.trim().toString().toInt(),
-                        critical,
-                        imageName,
-                        2,
-                        "01225137528",
-                        "Ali tahoon",
-                        null
-                    )
-                )
+
+                addPostFragmentViewmodel?.sendPostImageToFirebase(imageUri!!, "postsImages/${userModel!!.phone}/${userModel!!.id}")
+
+                addPostFragmentViewmodel?.sendPostImageToFirebase!!.observe(viewLifecycleOwner,
+                    Observer {
+                        binding.addPostProgressBar.setVisibility(View.VISIBLE)
+                    })
 
 
             }
         })
+
+        addPostFragmentViewmodel!!.sendPostImageToFirebase!!.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is Resource.Loading->{
+                    binding.addPostProgressBar.setVisibility(View.VISIBLE)
+                }
+                is Resource.Success->{
+                    binding.addPostProgressBar.setVisibility(View.INVISIBLE)
+
+                    var critical: Boolean = true
+                    addPostFragmentViewmodel?.post_redio_checked?.observe(viewLifecycleOwner, Observer {
+                        critical = it
+                    })
+
+                    addPostFragmentViewmodel?.addPost(
+                        Post(
+                            binding.addPostTxtPostContent.text?.trim().toString(),
+                            binding.addPostTxtTrainId.text?.trim().toString().toInt(),
+                            critical,
+                            "postsImages/${userModel!!.phone}/${userModel!!.id}",
+                            userModel!!.id,
+                            userModel!!.phone,
+                            userModel!!.name,
+                            "${userModel!!.id}"
+                        )
+                    )
+                }
+                is Resource.Failure->{
+                    binding.addPostProgressBar.setVisibility(View.INVISIBLE)
+                    getSnakbar(binding.addPostBtnSubmit,com.example.trainlivelocation.R.layout.custom_snake_bar_add_post_failed_layout).show()
+                }
+                else -> {
+                    Log.i(TAG, "Failed else brunch")
+                }
+            }
+        })
+
+        addPostFragmentViewmodel!!.post?.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is Resource.Loading->{
+                    binding.addPostProgressBar.setVisibility(View.VISIBLE)
+                }
+                is Resource.Success->{
+                    Log.e(TAG,"${it}")
+                    binding.addPostProgressBar.setVisibility(View.INVISIBLE)
+                    getSnakbar(binding.addPostBtnSubmit,com.example.trainlivelocation.R.layout.custom_snake_bar_add_post_success_layout).show()
+                }
+                is Resource.Failure->{
+                    Log.e(TAG,"${it.error}")
+                    binding.addPostProgressBar.setVisibility(View.INVISIBLE)
+                    getSnakbar(binding.addPostBtnSubmit,com.example.trainlivelocation.R.layout.custom_snake_bar_add_post_failed_layout).show()
+                }
+                else -> {
+                    binding.addPostProgressBar.setVisibility(View.INVISIBLE)
+                    Log.i(TAG, "Failed else brunch")
+                }
+            }
+        })
+
         addPostFragmentViewmodel?.btnChooseImageClicked?.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 //get image uri
                 getImageUri()
                 Log.i(TAG, "Add_post_fragment")
+            }
+        })
+
+        addPostFragmentViewmodel?.userData!!.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                userModel = it
+            } else {
+                Log.i(TAG, "Error while getting user shared preferences")
             }
         })
     }
@@ -112,8 +158,23 @@ class Add_post_fragment : Fragment() {
         }
     }
 
+    fun getSnakbar(view: View,layoutId:Int): Snackbar {
+        // create an instance of the snackbar
+        val snackbar = Snackbar.make(view, "", Snackbar.LENGTH_SHORT)
+        // inflate the custom_snackbar_view created previously
+        val customSnackView: View = layoutInflater.inflate(layoutId, null)
+        // set the background of the default snackbar as transparent
+        snackbar.view.setBackgroundColor(Color.TRANSPARENT)
+        // now change the layout of the snackbar
+        val snackbarLayout = snackbar.view as SnackbarLayout
+        snackbarLayout.setPadding(0, 0, 0, 0)
+        val trainId=customSnackView.findViewById(com.example.trainlivelocation.R.id.custom_snake_bar_txt_id_value) as TextView
+        trainId.setText(binding.addPostTxtTrainId.text)
+        snackbarLayout.addView(customSnackView, 0);
+        return snackbar
+    }
 
     companion object {
-
+        var userModel: userResponseItem? = null
     }
 }

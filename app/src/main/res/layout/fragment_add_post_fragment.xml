@@ -18,9 +18,9 @@
             android:layout_width="match_parent"
             android:id="@+id/add_post_progress_bar"
             android:layout_height="wrap_content"
+            android:visibility="invisible"
             android:indeterminate="true"
             style="@style/Widget.MaterialComponents.LinearProgressIndicator"/>
-        <!--            app:manageState="@{viewModel.showProgressBar}"-->
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
@@ -123,6 +123,7 @@
         <com.google.android.material.button.MaterialButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/add_post_btn_submit"
             android:text="@string/add_post_submit"
             android:textColor="@color/white"
             android:layout_marginHorizontal="120dp"

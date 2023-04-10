@@ -44,7 +44,6 @@ class MainActivity : AppCompatActivity() {
         })
         mainActivityViewModel!!.getUserDataFromsharedPreference()
         setObservers()
-
         setContentView(binding.root)
 
     }

@@ -71,7 +71,7 @@ interface ApiService {
 
     //Post
     @GET("/api/Post/GetAllPosts")
-    suspend fun GetAllPosts(): Response<ArrayList<Post>>
+    suspend fun GetAllPosts(): Response<ArrayList<PostModelResponse>>
 
     @GET("/api/Post/GetPost/{id}")
     suspend fun GetPost(@Path("id") postId: Int): Response<Post>

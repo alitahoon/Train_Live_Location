@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <data>
-        <variable
-            name="post"
-            type="com.example.domain.entity.PostModelResponse" />
-        <variable
-            name="listener"
-            type="com.example.trainlivelocation.utli.PostListener" />
-    </data>
-
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:orientation="vertical">
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="15dp"
-        android:backgroundTint="@color/thirdColor"
+        android:backgroundTint="@color/textHintColorSecond"
         app:strokeWidth="1dp"
         app:strokeColor="@color/white"
         android:layout_margin="15dp">
@@ -26,45 +21,31 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:layout_margin="15dp">
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginHorizontal="15dp">
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/post_rcv_item_profile_img"
                     android:layout_width="50dp"
-                    app:setUserProfileImage="@{post.userPhone}"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentBottom="true"
-                    android:src="@drawable/post_profile_icon"/>
+                    android:src="@color/textHintColorFirst"/>
 
                 <TextView
                     android:id="@+id/post_rcv_item_txt_profile_name"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{post.userName}"
+                    android:layout_height="10dp"
+                    android:text="Ali Tahoon"
                     android:layout_toEndOf="@+id/post_rcv_item_profile_img"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="5dp"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"/>
+                    android:textColor="@color/textHintColorFirst"
+                    android:textSize="10sp"
+                    android:background="@color/textHintColorFirst"/>
 
-                <ImageView
-                    android:id="@+id/post_rcv_item_more_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/more_icon"
-                    android:layout_toLeftOf="@+id/post_rcv_item_close_icon"
-                    />
-                <ImageView
-                    android:id="@+id/post_rcv_item_close_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/close_icon"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginHorizontal="5dp"/>
+
             </RelativeLayout>
 
             <LinearLayout
@@ -73,31 +54,25 @@
                 android:orientation="vertical"
                 android:layout_marginHorizontal="15dp">
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@{post.content}"
-                    android:textColor="@color/white"
-                    android:layout_marginBottom="10dp"
-                    android:textSize="18sp"/>
+
                 <ImageView
 
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
-                    setImage="@{post.img}"
-                    android:src="@drawable/emptyicon"/>
+                    android:layout_height="200dp"
+                    android:src="@color/textHintColorFirst"/>
 
             </LinearLayout>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/white"
+                android:background="@color/textHintColorFirst"
                 android:layout_margin="15dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="15dp"
+                android:layout_marginBottom="15dp"
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:layout_marginHorizontal="10dp">
@@ -109,21 +84,21 @@
                     android:textSize="12sp"
                     android:layout_marginEnd="15dp"
                     android:gravity="center|start"
-                    android:textColor="@color/white"
+                    android:textColor="@color/textHintColorFirst"
                     android:text="@string/comments"
-                    android:drawablePadding="5dp"
-                    android:drawableStart="@drawable/comment_icon"/>
+                    android:background="@drawable/post_shimmer_shape_reduis"
+                    android:onClick="@{() -> listener.OnCommentClickListener(post)}"/>
+
 
                 <TextView
                     android:id="@+id/posts_btn_post_time"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="5dp"
-                    android:drawableStart="@drawable/post_time"
-                    android:drawablePadding="5dp"
+                    android:background="@drawable/post_shimmer_shape_reduis"
                     android:gravity="center|start"
-                    android:text="2:32 AM"
-                    android:textColor="@color/white"
+                    android:text="@string/comments"
+                    android:textColor="@color/textHintColorFirst"
                     android:textSize="12sp" />
 
                 <TextView
@@ -132,11 +107,12 @@
                     android:layout_height="match_parent"
                     android:textSize="14sp"
                     android:gravity="center|start"
-                    android:drawablePadding="5dp"
+                    android:background="@drawable/post_shimmer_shape_reduis"
                     android:layout_marginStart="15dp"
-                    android:textColor="@color/white"
-                    android:text="@string/post_repot"
-                    android:drawableStart="@drawable/report_icon"/>
+                    android:textColor="@color/textHintColorFirst"
+                    android:text="@string/comments"
+                    android:onClick="@{() -> listener.OnReportClickListener(post)}"/>
+
             </LinearLayout>
 
         </LinearLayout>
@@ -144,4 +120,4 @@
     </com.google.android.material.card.MaterialCardView>
 
 
-</layout>
+</LinearLayout>

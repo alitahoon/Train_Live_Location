@@ -4,9 +4,9 @@ data class Post(
     val content: String,
     val trainNumber: Int,
     val critical: Boolean,
-    val img: String,
+    val imgName: String,
     val userid:Int,
     val userPhone: String,
     val userName:String,
-    val adminId:Int?
-)
+    val imgId: String,
+    )

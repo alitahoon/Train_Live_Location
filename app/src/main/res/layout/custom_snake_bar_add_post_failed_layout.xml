@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="15dp"
+    android:layout_margin="10dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="@color/secondColor"
+    android:elevation="20dp"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:background="@color/textAlarmColor">
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/custom_snake_bar_logo"
+            app:cardCornerRadius="10dp"
+            android:padding="5dp"
+            >
+
+            <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="@color/secondColor"
+                android:padding="5dp"
+                android:src="@drawable/app_logo"
+                app:tint="@color/white" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:id="@+id/custom_snake_bar_txt_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/custom_snake_bar_logo"
+            android:layout_alignBottom="@+id/custom_snake_bar_logo"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@+id/custom_snake_bar_logo"
+            android:gravity="center|top"
+            android:layout_margin="10dp"
+            android:text="Train Id"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/custom_snake_bar_txt_id_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/custom_snake_bar_txt_id"
+            android:layout_alignEnd="@+id/custom_snake_bar_txt_id"
+            android:layout_alignBottom="@+id/custom_snake_bar_txt_id"
+            android:layout_marginBottom="10dp"
+            android:layout_toEndOf="@+id/custom_snake_bar_logo"
+            android:gravity="center"
+            android:text="356"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:letterSpacing="0.1"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/custom_snake_bar_logo"
+            android:layout_alignBottom="@+id/custom_snake_bar_logo"
+            android:layout_toStartOf="@+id/custom_snake_bar_txt"
+            android:background="@color/white"
+            android:layout_marginHorizontal="5dp"/>
+
+        <TextView
+            android:id="@+id/custom_snake_bar_txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/custom_snake_bar_logo"
+            android:layout_alignBottom="@+id/custom_snake_bar_logo"
+            android:layout_alignParentEnd="true"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="Post Publish Failed !"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>

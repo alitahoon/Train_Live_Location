@@ -1,11 +1,15 @@
 package com.example.trainlivelocation.ui
 
+import Resource
+import android.content.Context
+import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.*
 import com.example.domain.entity.Post
 import com.example.domain.entity.PostModelResponse
+import com.example.domain.entity.userResponseItem
 import com.example.domain.usecase.CreatePost
 import com.example.domain.usecase.GetUserDataById
 import com.example.domain.usecase.SendImageToFirebaseStorage
@@ -21,62 +25,87 @@ import javax.inject.Inject
 class Add_post_fragment_ViewModel @Inject constructor(
     private val sendImageToFirebaseStorage: SendImageToFirebaseStorage,
     private val getUserDataById: GetUserDataById,
-    private val createPost: CreatePost
+    private val createPost: CreatePost,
+    private val context: Context
 ) : ViewModel() {
-    var IsProgressBarVisible:Boolean = false
+    var IsProgressBarVisible: Boolean = false
     private val _showProgressBar = MutableLiveData(false)
     val showProgressBar: LiveData<Boolean> = _showProgressBar
-    private val TAG:String?="Add_post_fragment_ViewModel"
-    var btnSubmitClicked=SingleLiveEvent<Boolean>()
-    var btnChooseImageClicked= SingleLiveEvent<Boolean>()
+    private val TAG: String? = "Add_post_fragment_ViewModel"
+    var btnSubmitClicked = SingleLiveEvent<Boolean>()
+    var btnChooseImageClicked = SingleLiveEvent<Boolean>()
     val postContent: String? = null
     val post_redio_checked = MutableLiveData<Boolean>()
-    val _trainId:String?=null
-    private var imageRefrence:StorageReference= Firebase.storage.reference
+    val _trainId: String? = null
+    private var imageRefrence: StorageReference = Firebase.storage.reference
+    private val sharedPrefFile = "UserToken"
 
-    private val _postMutableLiveData:MutableLiveData<PostModelResponse>? = MutableLiveData(null)
-    val _postLiveData:LiveData<PostModelResponse>?=_postMutableLiveData
+    private val _userData: MutableLiveData<userResponseItem?> = MutableLiveData(null)
+    val userData: LiveData<userResponseItem?> = _userData
 
 
-    fun setCritical(){
+    private val _post: MutableLiveData<Resource<PostModelResponse>>? = MutableLiveData(null)
+    val post: LiveData<Resource<PostModelResponse>>? = _post
+
+    private val _sendPostImageToFirebase: MutableLiveData<Resource<String>>? = MutableLiveData(null)
+    val sendPostImageToFirebase: LiveData<Resource<String>>? = _sendPostImageToFirebase
+
+
+    fun setCritical() {
         post_redio_checked.postValue(true)
     }
-    fun setNONCritical(){
+
+    fun setNONCritical() {
         post_redio_checked.postValue(false)
     }
-    fun onSubmitButtonClick(){
+
+    fun onSubmitButtonClick() {
         btnSubmitClicked.postValue(true)
     }
 
-    fun onBtnChooseImageclicked(view: View){
+    fun onBtnChooseImageclicked(view: View) {
         btnChooseImageClicked.postValue(true)
     }
 
-    fun sendPostImageToFirebase(postImageUri:Uri,imagePath:String){
+    fun sendPostImageToFirebase(postImageUri: Uri, imagePath: String) {
+        _sendPostImageToFirebase!!.value = Resource.Loading
         _showProgressBar.postValue(true)
         viewModelScope.launch {
-            sendImageToFirebaseStorage(postImageUri,imagePath){
-
+            sendImageToFirebaseStorage(postImageUri, imagePath) {
+                _sendPostImageToFirebase.value = it
             }
         }
     }
 
 
-    fun  addPost(post:Post){
-        _showProgressBar.postValue(true)
+    fun addPost(post: Post) {
+        Log.i(TAG,"${post}")
+        _post!!.value=Resource.Loading
         viewModelScope.launch {
-            var result=createPost(post)
-            if (result.isSuccessful){
-                if (result.body()!=null){
-                    Log.e(TAG,result.body().toString())
-                    _postMutableLiveData?.postValue(result.body())
-                    _showProgressBar.postValue(false)
-                }
-            }else{
-                _showProgressBar.postValue(false)
-                Log.e(TAG,result.message())
-            }
+           createPost(post){
+               _post!!.value=it
+           }
         }
+    }
+
+    fun getUserDataFromsharedPreference() {
+        val userSharedPreferences: SharedPreferences =
+            context.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
+        _userData.postValue(
+            userResponseItem(
+                userSharedPreferences.getString("address", "empty")!!,
+                userSharedPreferences.getString("userBirthdate", "empty")!!,
+                userSharedPreferences.getString("userEmail", "empty")!!,
+                userSharedPreferences.getString("userGender", "empty")!!,
+                userSharedPreferences.getInt("userId", 0),
+                userSharedPreferences.getString("userJop", "empty")!!,
+                userSharedPreferences.getString("userName", "empty")!!,
+                userSharedPreferences.getString("userPassword", "empty")!!,
+                userSharedPreferences.getString("userPhone", "empty")!!,
+                userSharedPreferences.getString("userRole", "empty")!!,
+                userSharedPreferences.getInt("userStationId", 0)
+            )
+        )
     }
 
 }

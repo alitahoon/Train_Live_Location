@@ -6,12 +6,14 @@
 
 package com.example.trainlivelocation.ui
 
+import Resource
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.example.domain.entity.Post
 import com.example.trainlivelocation.databinding.FragmentAllPostsBinding
 import com.example.trainlivelocation.utli.PostCustomAdapter
@@ -43,10 +45,35 @@ class AllPosts : Fragment() , PostListener {
     ): View? {
         binding= FragmentAllPostsBinding.inflate(inflater,container,false)
             .apply {
-                this.adapter= PostCustomAdapter(this@AllPosts)
                 this.viemodel=allPostFragmentViewmodel
             }
+        setObserver()
+        binding.adapter=setAdapterItems()
         return binding.root
+    }
+
+    private fun setObserver() {
+        TODO("Not yet implemented")
+    }
+    private fun setAdapterItems():PostCustomAdapter{
+        val adapter:PostCustomAdapter= PostCustomAdapter(this)
+        allPostFragmentViewmodel.allPosts!!.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is Resource.Loading->{
+                    binding.allPostsPostShimmerLayout.setVisibility(View.VISIBLE)
+                }
+                is Resource.Success->{
+                    adapter.setData(it.data!!)
+                }
+                is Resource.Failure->{
+
+                }
+                else -> {
+
+                }
+            }
+        })
+        return adapter
     }
 
     companion object {

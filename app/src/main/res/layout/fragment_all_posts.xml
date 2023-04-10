@@ -19,47 +19,8 @@
         android:layout_height="match_parent"
         android:background="@color/white"
         android:orientation="vertical"
-        android:backgroundTint="@color/dark_mode_background"
+        android:backgroundTint="@color/white"
         tools:context=".ui.AllPosts">
-
-
-        <!--    <LinearLayout-->
-        <!--        android:layout_width="match_parent"-->
-        <!--        android:layout_height="60dp"-->
-        <!--        android:orientation="horizontal"-->
-        <!--        android:layout_marginVertical="5dp"-->
-        <!--        android:padding="5dp"-->
-        <!--        android:gravity="center">-->
-        <!--      <de.hdodenhof.circleimageview.CircleImageView-->
-        <!--          android:layout_width="50dp"-->
-        <!--          android:layout_height="match_parent"-->
-        <!--        android:src="@drawable/account_circle_150"-->
-        <!--          android:layout_marginEnd="5dp"/>-->
-        <!--        <com.google.android.material.card.MaterialCardView-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            app:strokeColor="@color/white"-->
-        <!--            android:layout_marginVertical="5dp"-->
-        <!--            android:padding="5sp"-->
-        <!--            app:strokeWidth="1dp"-->
-        <!--            app:cardCornerRadius="30dp"-->
-        <!--            android:backgroundTint="@color/dark_mode_background">-->
-        <!--            <FrameLayout-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="match_parent">-->
-        <!--                <TextView-->
-        <!--                    android:layout_marginStart="10dp"-->
-        <!--                    android:textSize="16sp"-->
-        <!--                    android:layout_gravity="center|start"-->
-        <!--                    android:layout_width="wrap_content"-->
-        <!--                    android:layout_height="wrap_content"-->
-        <!--                    android:text="Do you want to share post ?"-->
-        <!--                    android:textColor="@color/white"/>-->
-        <!--            </FrameLayout>-->
-
-        <!--        </com.google.android.material.card.MaterialCardView>-->
-
-        <!--    </LinearLayout>-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
@@ -68,6 +29,20 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"
             app:setAdapter="@{adapter}"/>
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:visibility="gone"
+            android:id="@+id/all_posts_post_shimmer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <include layout="@layout/post_shimmer_layout"/>
+                <include layout="@layout/post_shimmer_layout"/>
+
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
     </LinearLayout>
 </layout>

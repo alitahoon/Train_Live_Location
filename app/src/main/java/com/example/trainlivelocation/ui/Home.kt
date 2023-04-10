@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.domain.entity.userResponseItem
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.DialogFragmentLocationLayoutBinding
 import com.example.trainlivelocation.databinding.FragmentHomeBinding
@@ -34,9 +35,13 @@ class Home : Fragment() {
                 this.viewmodel=homeViewModel
             }
         setObservers()
+
+        homeViewModel?.getUserDataFromsharedPreference()
+
         if (getDistance()!=null){
-            binding?.homeTxtTrainDistance?.setText(getDistance().toString()+"Meal")
+            binding?.homeTxtTrainDistance?.setText(getDistance().toString()+" Meal")
         }
+
         return binding!!.root
     }
 
@@ -47,15 +52,23 @@ class Home : Fragment() {
                 findNavController().navigate(action)
             }
         })
+
+
         homeViewModel?.postsBtn?.observe(viewLifecycleOwner, Observer {
             if (it==true){
-                findNavController().navigate(R.id.action_home_to_posts)
+                findNavController().navigate(HomeDirections.actionHomeToPosts())
             }
         })
+
+
         homeViewModel?.locationCardBtn?.observe(viewLifecycleOwner, Observer {
             if (it==true){
                 findNavController().navigate(R.id.action_home2_to_trainLocationInMap)
             }
+        })
+
+        homeViewModel?.userData!!.observe(viewLifecycleOwner, Observer {
+            userModel=it
         })
     }
     fun getDistance():Float?{
@@ -63,5 +76,6 @@ class Home : Fragment() {
     }
 
     companion object {
+        var userModel:userResponseItem?=null
     }
 }

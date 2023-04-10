@@ -42,7 +42,7 @@ class CriticalPost : Fragment() , PostListener {
         binding.crticalProgressBar.setVisibility(View.VISIBLE)
         val adapter:PostCustomAdapter= PostCustomAdapter(this)
         criticalpostsViewModel?.postLiveData?.observe(viewLifecycleOwner, Observer {
-            adapter.setData(it)
+//            adapter.setData(it)
             binding.crticalProgressBar.setVisibility(View.INVISIBLE)
         })
         return adapter

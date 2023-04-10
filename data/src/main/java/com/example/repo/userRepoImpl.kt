@@ -114,10 +114,36 @@ class userRepoImpl(
     override suspend fun getLiveLoctationFromApi(trainid: Int): Response<Location_Response> =
         apiService.GetLocation(trainid)
 
-    override suspend fun createPost(post: Post): Response<PostModelResponse> =
-        apiService.CreatePost(post)
+    override suspend fun createPost(post: Post, result: (Resource<PostModelResponse>) -> Unit) {
+        var res = apiService.CreatePost(post)
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke((Resource.Failure("createPost -> Error response body = null :${res.body()}")))
+            }
+        } else {
+            result.invoke((Resource.Failure("createPost -> ${res.message()}")))
+        }
 
-    override suspend fun getAllPostsFromAPI(): Response<ArrayList<Post>> = apiService.GetAllPosts()
+    }
+
+    override suspend fun getAllPostsFromAPI(result: (Resource<ArrayList<PostModelResponse>>)->Unit) {
+        var res = apiService.GetAllPosts()
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke((Resource.Failure("getAllPostsFromAPI -> Error response body = null :${res.body()}")))
+            }
+        } else {
+            result.invoke((Resource.Failure("getAllPostsFromAPI -> ${res.message()}")))
+        }
+
+    }
+
+
+
 
 
     override suspend fun getUserDataById(userID: Int): Response<userResponseItem> =
@@ -143,7 +169,7 @@ class userRepoImpl(
         imageRef: String?,
         result: (Resource<Uri>) -> Unit
     ) {
-        firebaseService.getImageFromFireBaseStorage(imageRef,result)
+        firebaseService.getImageFromFireBaseStorage(imageRef, result)
     }
 
 
