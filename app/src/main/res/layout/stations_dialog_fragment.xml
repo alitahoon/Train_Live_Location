@@ -14,7 +14,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:paddingTop="10dp"
+        android:paddingTop="@dimen/_10sdp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,11 +24,11 @@
             android:id="@+id/dialog_station_txt_search_station"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginBottom="20dp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
             android:textColorHint="@color/textHintColorFirst"
             app:boxStrokeColor="@color/basicColor"
-            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidth="@dimen/_1sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -40,12 +40,12 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
                 android:drawableStart="@drawable/search_24"
-                android:drawablePadding="10dp"
+                android:drawablePadding="@dimen/_10sdp"
                 android:hint="Find Station"
-                android:minHeight="48dp"
+                android:minHeight="@dimen/_48sdp"
                 android:textColor="@color/basicColor"
                 android:textColorHint="@color/textHintColorFirst"
-                android:textSize="18sp" />
+                android:textSize="@dimen/_18ssp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -53,7 +53,7 @@
             android:id="@+id/station_dialog_rcv"
             setStaionRCVAdapter="@{adapter}"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/_1sdp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -70,11 +70,11 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginHorizontal="15dp"
+            android:layout_marginHorizontal="@dimen/_15sdp"
             app:layout_constraintTop_toBottomOf="@+id/dialog_station_txt_search_station">
 
             <LinearLayout
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"

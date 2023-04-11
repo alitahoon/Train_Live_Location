@@ -13,11 +13,11 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="15dp"
+        app:cardCornerRadius="@dimen/_15sdp"
         android:backgroundTint="@color/thirdColor"
-        app:strokeWidth="1dp"
+        app:strokeWidth="@dimen/_1sdp"
         app:strokeColor="@color/white"
-        android:layout_margin="15dp">
+        android:layout_margin="@dimen/_15sdp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -25,11 +25,11 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_margin="15dp">
+                android:layout_height="@dimen/_60sdp"
+                android:layout_margin="@dimen/_15sdp">
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/post_rcv_item_profile_img"
-                    android:layout_width="50dp"
+                    android:layout_width="@dimen/_50sdp"
                     app:setUserProfileImage="@{post.userPhone}"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
@@ -44,9 +44,9 @@
                     android:text="@{post.userName}"
                     android:layout_toEndOf="@+id/post_rcv_item_profile_img"
                     android:layout_centerVertical="true"
-                    android:layout_marginLeft="5dp"
+                    android:layout_marginLeft="@dimen/_5sdp"
                     android:textColor="@color/white"
-                    android:textSize="16sp"/>
+                    android:textSize="@dimen/_16ssp"/>
 
                 <ImageView
                     android:id="@+id/post_rcv_item_more_icon"
@@ -64,26 +64,26 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentBottom="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginHorizontal="5dp"/>
+                    android:layout_marginHorizontal="@dimen/_5sdp"/>
             </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginHorizontal="15dp">
+                android:layout_marginHorizontal="@dimen/_15sdp">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@{post.content}"
                     android:textColor="@color/white"
-                    android:layout_marginBottom="10dp"
-                    android:textSize="18sp"/>
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:textSize="@dimen/_18ssp"/>
                 <ImageView
 
                     android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_height="@dimen/_150sdp"
                     setImage="@{post.img}"
                     android:src="@drawable/emptyicon"/>
 
@@ -91,49 +91,49 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="@dimen/_1sdp"
                 android:background="@color/white"
-                android:layout_margin="15dp"/>
+                android:layout_margin="@dimen/_15sdp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="@dimen/_50sdp"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_marginHorizontal="10dp">
+                android:layout_marginHorizontal="@dimen/_10sdp">
 
                 <TextView
                     android:id="@+id/posts_btn_comment"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:textSize="12sp"
-                    android:layout_marginEnd="15dp"
+                    android:textSize="@dimen/_12ssp"
+                    android:layout_marginEnd="@dimen/_15sdp"
                     android:gravity="center|start"
                     android:textColor="@color/white"
                     android:text="@string/comments"
-                    android:drawablePadding="5dp"
+                    android:drawablePadding="@dimen/_5sdp"
                     android:drawableStart="@drawable/comment_icon"/>
 
                 <TextView
                     android:id="@+id/posts_btn_post_time"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginHorizontal="5dp"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
                     android:drawableStart="@drawable/post_time"
-                    android:drawablePadding="5dp"
+                    android:drawablePadding="@dimen/_5sdp"
                     android:gravity="center|start"
                     android:text="2:32 AM"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/_12ssp" />
 
                 <TextView
                     android:id="@+id/posts_btn_report"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/_14ssp"
                     android:gravity="center|start"
-                    android:drawablePadding="5dp"
-                    android:layout_marginStart="15dp"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_15sdp"
                     android:textColor="@color/white"
                     android:text="@string/post_repot"
                     android:drawableStart="@drawable/report_icon"/>

@@ -33,7 +33,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="@dimen/_1sdp"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -45,9 +45,9 @@
 
         <ProgressBar
             android:id="@+id/progressBar"
-            android:layout_width="100dp"
+            android:layout_width="@dimen/_100sdp"
 
-            android:layout_height="100dp"
+            android:layout_height="@dimen/_100sdp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

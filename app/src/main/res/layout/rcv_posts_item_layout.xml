@@ -10,25 +10,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_margin="5dp"
+        android:layout_margin="@dimen/_5sdp"
         android:backgroundTint="@color/btn_background"
         app:strokeColor="@color/textHintColorFirst"
-        app:strokeWidth="1dp">
+        app:strokeWidth="@dimen/_1sdp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="15dp">
+            android:padding="@dimen/_15sdp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginHorizontal="10dp">
+                android:layout_height="@dimen/_60sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/post_rcv_item_profile_img"
-                    android:layout_width="50dp"
+                    android:layout_width="@dimen/_50sdp"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
@@ -42,16 +42,16 @@
                     android:gravity="center"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginStart="5dp"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="5dp"
+                    android:layout_marginEnd="@dimen/_5sdp"
                     android:layout_toEndOf="@+id/post_rcv_item_profile_img"
                     android:text="@string/post_profile_name"
                     android:textColor="@color/white" />
 
 
                 <ImageView
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginEnd="@dimen/_10sdp"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentBottom="true"
                     android:id="@+id/post_rcv_item_more_icon"
@@ -68,7 +68,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginHorizontal="5dp" />
+                    android:layout_marginHorizontal="@dimen/_5sdp" />
             </RelativeLayout>
 
             <TextView
@@ -76,29 +76,29 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
                 android:text="convenient. With new technological innovations, human beings have become more dependent on science and technology. We rely on technology for all our activities, and have become an integral part of our lives"
-                android:layout_marginHorizontal="20dp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
                 android:gravity="start" />
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginHorizontal="20dp"
+                android:layout_height="@dimen/_200sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
                 app:srcCompat="@drawable/train"
-                android:layout_marginVertical="5dp" />
+                android:layout_marginVertical="@dimen/_5sdp" />
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="@dimen/_1sdp"
                 android:background="@color/white"
-                android:layout_marginVertical="5dp"
-                android:layout_marginHorizontal="20dp" />
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="@dimen/_10sdp">
 
                 <TextView
                     android:gravity="center|start"
@@ -107,13 +107,13 @@
                     android:drawableLeft="@drawable/comments"
                     android:text="@string/comments"
                     android:textColor="@color/white"
-                    android:drawablePadding="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp" />
+                    android:drawablePadding="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp" />
 
                 <TextView
-                    android:drawablePadding="10dp"
-                    android:layout_marginStart="10dp"
+                    android:drawablePadding="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:drawableLeft="@drawable/time"
                     android:gravity="center|start"
                     android:id="@+id/post_rcv_item_txt_profile_time"
@@ -123,8 +123,8 @@
                     android:textColor="@color/white" />
 
                 <TextView
-                    android:drawablePadding="10dp"
-                    android:layout_marginStart="10dp"
+                    android:drawablePadding="@dimen/_10sdp"
+                    android:layout_marginStart="@dimen/_10sdp"
                     android:drawableLeft="@drawable/report_icon"
                     android:gravity="center|start"
                     android:id="@+id/post_rcv_item_txt_profile_likes"

@@ -27,26 +27,26 @@
                 android:layout_height="wrap_content">
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/signUp_imageView_proofileImage"
-                    android:layout_width="300dp"
+                    android:layout_width="@dimen/_300sdp"
                     android:visibility="visible"
                     android:onClick="@{viewmodel::onChooseImageBtnClicked}"
-                    android:layout_marginTop="100dp"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="@dimen/_100sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
                     app:civ_border_color="@color/textHintColorFirst"
-                    app:civ_border_width="1dp"
-                    android:layout_height="300dp"
+                    app:civ_border_width="@dimen/_1sdp"
+                    android:layout_height="@dimen/_300sdp"
                     android:src="@drawable/account_circle_200"
                     android:layout_gravity="center" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="10dp"
+                    android:layout_marginHorizontal="@dimen/_10sdp"
                     android:text="Please choose profile image"
-                    android:textSize="18sp"
+                    android:textSize="@dimen/_18ssp"
                     android:gravity="center"
                     android:letterSpacing="0.1"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="50dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_50sdp"
                     android:textColor="@color/textHintColorFirst"/>
 
             </LinearLayout>
@@ -67,11 +67,11 @@
                 <LinearLayout
                     android:id="@+id/spinner_jop_menu_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="55dp"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_height="@dimen/_55sdp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:orientation="horizontal"
-                    android:paddingHorizontal="10dp"
+                    android:paddingHorizontal="@dimen/_10sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/signUp_imageView_proofileImage">
@@ -81,11 +81,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:drawableLeft="@drawable/jop_icon"
-                        android:drawablePadding="5dp"
+                        android:drawablePadding="@dimen/_5sdp"
                         android:gravity="center"
                         android:text="Jop"
                         android:textColor="@color/textHintColorFirst"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/_16ssp" />
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -93,7 +93,7 @@
                         android:background="@drawable/register_spinner_background_shape"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:paddingHorizontal="5dp">
+                        android:paddingHorizontal="@dimen/_5sdp">
                         <Spinner
                             android:id="@+id/Register_spinner_jobs"
                             android:layout_width="match_parent"
@@ -122,12 +122,12 @@
                     android:id="@+id/signUp_txt_station_tablayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginVertical="20dp"
-                    android:layout_marginTop="28dp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginVertical="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_28sdp"
                     android:textColorHint="@color/textHintColorFirst"
                     app:boxStrokeColor="@color/basicColor"
-                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidth="@dimen/_1sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.4"
                     app:layout_constraintStart_toStartOf="parent"
@@ -140,26 +140,26 @@
                         android:backgroundTint="@color/white"
                         android:focusable="false"
                         android:drawableLeft="@drawable/sation"
-                        android:drawablePadding="10dp"
+                        android:drawablePadding="@dimen/_10sdp"
                         android:hint="Station"
                         android:onClick="@{viewmodel::onStationTxtClicked}"
-                        android:minHeight="48dp"
+                        android:minHeight="@dimen/_48sdp"
                         android:text="@={viewmodel.userStation}"
                         android:textColor="@color/basicColor"
                         android:textColorHint="@color/textHintColorFirst"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/_18ssp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/signUp_txt_birthdate_tablayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginVertical="20dp"
-                    android:layout_marginTop="28dp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginVertical="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_28sdp"
                     android:textColorHint="@color/textHintColorFirst"
                     app:boxStrokeColor="@color/basicColor"
-                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidth="@dimen/_1sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.4"
                     app:layout_constraintStart_toStartOf="parent"
@@ -172,14 +172,14 @@
                         android:backgroundTint="@color/white"
                         android:focusable="false"
                         android:drawableLeft="@drawable/date_icon"
-                        android:drawablePadding="10dp"
+                        android:drawablePadding="@dimen/_10sdp"
                         android:hint="Birthdate"
                         android:onClick="@{viewmodel::onDatePickerTxtClicked}"
-                        android:minHeight="48dp"
+                        android:minHeight="@dimen/_48sdp"
                         android:text="@={viewmodel.userBirthDate}"
                         android:textColor="@color/basicColor"
                         android:textColorHint="@color/textHintColorFirst"
-                        android:textSize="18sp" />
+                        android:textSize="@dimen/_18ssp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -188,11 +188,11 @@
                     android:id="@+id/signUp_txt_name_input_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginVertical="24dp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginVertical="@dimen/_24sdp"
                     android:textColorHint="@color/textHintColorFirst"
                     app:boxStrokeColor="@color/basicColor"
-                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidth="@dimen/_1sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -203,11 +203,11 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/white"
                         android:drawableLeft="@drawable/name_icon"
-                        android:drawablePadding="10dp"
+                        android:drawablePadding="@dimen/_10sdp"
                         android:hint="Name"
                         android:text="@={viewmodel.userName}"
                         android:textColor="@color/basicColor"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/_16ssp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -216,11 +216,11 @@
                     android:id="@+id/signUp_txt_email_input_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_24sdp"
                     android:textColorHint="@color/textHintColorFirst"
                     app:boxStrokeColor="@color/basicColor"
-                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidth="@dimen/_1sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -233,13 +233,13 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/white"
                         android:drawableLeft="@drawable/email_icon"
-                        android:drawablePadding="10dp"
+                        android:drawablePadding="@dimen/_10sdp"
                         android:hint="Email"
                         android:inputType="textEmailAddress"
-                        android:minHeight="48dp"
+                        android:minHeight="@dimen/_48sdp"
                         android:text="@={viewmodel.userEmail}"
                         android:textColor="@color/basicColor"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/_16ssp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -247,11 +247,11 @@
                     android:id="@+id/signUp_txt_password_input_Layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="20dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginHorizontal="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_24sdp"
                     android:textColorHint="@color/textHintColorFirst"
                     app:boxStrokeColor="@color/basicColor"
-                    app:boxStrokeWidth="1dp"
+                    app:boxStrokeWidth="@dimen/_1sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:passwordToggleDrawable="@drawable/txt_password_selector"
                     app:passwordToggleEnabled="true"
@@ -264,17 +264,17 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/white"
                         android:drawableStart="@drawable/password_icon"
-                        android:drawablePadding="10dp"
+                        android:drawablePadding="@dimen/_10sdp"
                         android:hint="Password"
                         android:inputType="textPassword"
                         android:text="@={viewmodel.userPassword}"
                         android:textColor="@color/basicColor"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/_16ssp" />
                     <RadioGroup
                         android:id="@+id/radioGroup"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="@dimen/_20sdp"
                         android:gravity="left"
                         android:orientation="horizontal"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -285,8 +285,8 @@
                             android:id="@+id/male"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
                             android:layout_weight="1"
                             android:buttonTint="@color/basicColor"
                             android:checked="false"
@@ -296,24 +296,24 @@
                             android:text="Male"
                             android:textAlignment="center"
                             android:textColor="@color/basicColor"
-                            android:textSize="14sp" />
+                            android:textSize="@dimen/_14ssp" />
 
                         <RadioButton
                             android:id="@+id/female"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
+                            android:layout_marginLeft="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
                             android:layout_weight="1"
                             android:buttonTint="@color/basicColor"
                             android:checked="false"
                             android:drawableRight="@drawable/ic_baseline_female_24"
                             android:onClick="@{()->viewmodel.onClickFemale()}"
-                            android:padding="4dp"
+                            android:padding="@dimen/_4sdp"
                             android:text="Female"
                             android:textAlignment="center"
                             android:textColor="@color/basicColor"
-                            android:textSize="14sp" />
+                            android:textSize="@dimen/_14ssp" />
 
                     </RadioGroup>
 
@@ -325,15 +325,15 @@
                 android:id="@+id/sign_up_btn_next"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="80dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginHorizontal="@dimen/_80sdp"
+                android:layout_marginBottom="@dimen/_20sdp"
                 android:backgroundTint="@color/btn_background"
                 android:drawableRight="@drawable/next_icon"
                 android:onClick="@{viewmodel::onNextBtnClicked}"
                 android:text="@string/next"
                 android:textColor="@color/white"
-                android:textSize="16sp"
-                app:cornerRadius="30dp" />
+                android:textSize="@dimen/_16ssp"
+                app:cornerRadius="@dimen/_30sdp" />
             <LinearLayout
                 android:visibility="gone"
                 android:id="@+id/sign_up_loading_layout"
@@ -343,15 +343,15 @@
                 android:gravity="center">
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/sign_up_loading_lotti"
-                    android:layout_width="300dp"
-                    android:layout_height="300dp"
+                    android:layout_width="@dimen/_300sdp"
+                    android:layout_height="@dimen/_300sdp"
                     app:lottie_rawRes="@raw/loading_sign_in"
                     app:lottie_autoPlay="true"
                     app:lottie_loop="true"/>
                 <com.airbnb.lottie.LottieAnimationView
                     android:id="@+id/sign_up_success_loading_lotti"
-                    android:layout_width="300dp"
-                    android:layout_height="300dp"
+                    android:layout_width="@dimen/_300sdp"
+                    android:layout_height="@dimen/_300sdp"
                     app:lottie_rawRes="@raw/sign_user_success"
                     app:lottie_autoPlay="false"
                     app:lottie_loop="false"/>

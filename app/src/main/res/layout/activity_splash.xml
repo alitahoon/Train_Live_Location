@@ -12,7 +12,7 @@
         android:id="@+id/splash_appBar_layout"
         android:stateListAnimator="@null"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
+        android:layout_height="@dimen/_280sdp"
         android:fitsSystemWindows="true"
         android:theme="@style/Theme.TrainLiveLocation">
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -30,9 +30,9 @@
 
             <ImageView
                 android:id="@+id/imageView2"
-                android:layout_marginBottom="20dp"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_150sdp"
                 android:layout_gravity="center"
                 app:srcCompat="@drawable/logo_icon_white"
                 app:layout_constraintEnd_toEndOf="parent"
