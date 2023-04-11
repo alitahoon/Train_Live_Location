@@ -49,8 +49,8 @@ interface UserRepo {
     suspend fun getLocationTrackBackgroundService(trainid: Int, userid: Int): LifecycleService
     suspend fun getLocationTrackForegroundService(trainid: Int): LifecycleService
 
-    suspend fun addLiveLoctationToApi(locationRequest: Location_Request): Response<Location_Request_with_id>
-    suspend fun getLiveLoctationFromApi(trainid: Int): Response<Location_Response>
+    suspend fun addLiveLoctationToApi(locationRequest: Location_Request,result: (Resource<Location_Request_with_id>) -> Unit)
+    suspend fun getLiveLoctationFromApi(trainid: Int,result: (Resource<Location_Response>) -> Unit)
 
     suspend fun getUserLocation(callback: (LocationDetails) -> Unit)
 
@@ -58,7 +58,7 @@ interface UserRepo {
     suspend fun getAllPostsFromAPI(result: (Resource<ArrayList<PostModelResponse>>)->Unit)
 
 
-    suspend fun getUserDataById(userID: Int): Response<userResponseItem>
+    suspend fun getUserDataById(userID: Int, result: (Resource<userResponseItem>) -> Unit)
 
     suspend fun setFirebaseServiceActivity(activity: AppCompatActivity)
 

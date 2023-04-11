@@ -108,11 +108,31 @@ class userRepoImpl(
         return getLocationService
     }
 
-    override suspend fun addLiveLoctationToApi(locationRequest: Location_Request): Response<Location_Request_with_id> =
-        apiService.AddLocation(locationRequest)
+    override suspend fun addLiveLoctationToApi(locationRequest: Location_Request,result: (Resource<Location_Request_with_id>) -> Unit){
+        var res = apiService.AddLocation(locationRequest)
+        if(res.isSuccessful){
+            if(res.body() != null){
+                result.invoke(Resource.Success(res.body()!!))
+            }else{
+                result.invoke(Resource.Failure("addLiveLoctationToApi -> Failure body is ${res.body()}"))
+            }
+        }else{
+            result.invoke(Resource.Failure("addLiveLoctationToApi -> ${res.message()}"))
+        }
+    }
 
-    override suspend fun getLiveLoctationFromApi(trainid: Int): Response<Location_Response> =
-        apiService.GetLocation(trainid)
+    override suspend fun getLiveLoctationFromApi(trainid: Int,result: (Resource<Location_Response>) -> Unit){
+        var res = apiService.GetLocation(trainid)
+        if(res.isSuccessful){
+            if(res.body() != null){
+                result.invoke(Resource.Success(res.body()!!))
+            }else{
+                result.invoke(Resource.Failure("getLiveLoctationFromApi -> Failure body is ${res.body()}"))
+            }
+        }else{
+            result.invoke(Resource.Failure("getLiveLoctationFromApi -> ${res.message()}"))
+        }
+    }
 
     override suspend fun createPost(post: Post, result: (Resource<PostModelResponse>) -> Unit) {
         var res = apiService.CreatePost(post)
@@ -146,8 +166,18 @@ class userRepoImpl(
 
 
 
-    override suspend fun getUserDataById(userID: Int): Response<userResponseItem> =
-        apiService.GetUserById(userID)
+    override suspend fun getUserDataById(userID: Int, result: (Resource<userResponseItem>) -> Unit){
+        var res = apiService.GetUserById(userID)
+        if(res.isSuccessful){
+            if(res.body() != null){
+                result.invoke(Resource.Success(res.body()!!))
+            }else{
+                result.invoke(Resource.Failure("getUserDataById -> Failure body is ${res.body()}"))
+            }
+        }else{
+            result.invoke(Resource.Failure("getUserDataById -> ${res.message()}"))
+        }
+    }
 
     override suspend fun setFirebaseServiceActivity(activity: AppCompatActivity) {
         Log.i(TAG, "setFirebaseServiceActivity")
