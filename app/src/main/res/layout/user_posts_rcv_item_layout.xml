@@ -29,7 +29,7 @@
                 android:layout_margin="15dp">
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/post_rcv_item_profile_img"
-                    android:layout_width="50dp"
+                    android:layout_width="wrap_content"
                     app:setUserProfileImage="@{post.userPhone}"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
@@ -81,10 +81,10 @@
                     android:layout_marginBottom="10dp"
                     android:textSize="18sp"/>
                 <ImageView
-
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
-                    setImage="@{post.img}"
+                    app:userphone="@{post.userPhone}"
+                    app:imageId="@{post.imgId}"
                     android:src="@drawable/emptyicon"/>
 
             </LinearLayout>

@@ -1,6 +1,5 @@
 package com.example.data
 
-import Resource
 import com.example.domain.entity.*
 import retrofit2.Response
 import retrofit2.http.Body
@@ -89,6 +88,10 @@ interface ApiService {
     //Station
     @GET("/api/station/GetAllStation")
     suspend fun GetAllStation(): Response<ArrayList<StationResponseItem>>
+
+    //Trains
+    @GET("/api/train/GetTrains")
+    suspend fun GetAllTrains(): Response<ArrayList<TrainResponseItem>>
 
 //    @GET("/api/station/GetStationsForOneTrain")
 //    suspend fun GetStationsForOneTrain(@Query("trainId") trainId:Int):Response<List<Station>>

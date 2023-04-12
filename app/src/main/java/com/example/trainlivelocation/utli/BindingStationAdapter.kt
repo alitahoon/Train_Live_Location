@@ -26,3 +26,12 @@ fun setAdapter(
         recyclerView.adapter = it
     }
 }
+@BindingAdapter("setTrainRCVAdapter")
+fun setAdapter(
+    recyclerView: RecyclerView,
+    adapter: TrainCustomAdapter
+) {
+    adapter?.let {
+        recyclerView.adapter = it
+    }
+}

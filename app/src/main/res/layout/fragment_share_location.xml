@@ -29,6 +29,8 @@
                 android:id="@+id/Register_btn_date_picker"
                 android:layout_width="match_parent"
                 android:gravity="center|start"
+                android:focusable="false"
+                android:onClick=""
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
                 android:drawableLeft="@drawable/train_id_txt"

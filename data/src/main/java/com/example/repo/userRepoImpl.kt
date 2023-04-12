@@ -47,6 +47,8 @@ class userRepoImpl(
         if (res.isSuccessful) {
             if (res.body() != null) {
                 result.invoke(Resource.Success(res.body()!!))
+            }else{
+                result.invoke(Resource.Failure("Error Body is null:${res.body()}"))
             }
         } else {
             result.invoke(Resource.Failure("${res.message()}:${res.errorBody()}"))
@@ -146,8 +148,19 @@ class userRepoImpl(
 
 
 
-    override suspend fun getUserDataById(userID: Int): Response<userResponseItem> =
-        apiService.GetUserById(userID)
+    override suspend fun getUserDataById(userID: Int,result: (Resource<userResponseItem>) -> Unit) {
+        var res =apiService.GetUserById(userID)
+        if (res.isSuccessful){
+            if (res.body()!=null){
+                result.invoke(Resource.Success(res.body()!!))
+            }else{
+                result.invoke(Resource.Failure("getUserDataById -> Failer body is  ${res.body()}"))
+            }
+        }else{
+            result.invoke(Resource.Failure("getUserDataById -> Failer ${res.message()}"))
+        }
+    }
+
 
     override suspend fun setFirebaseServiceActivity(activity: AppCompatActivity) {
         Log.i(TAG, "setFirebaseServiceActivity")
@@ -156,6 +169,17 @@ class userRepoImpl(
 
     override suspend fun getAllStations(result: (Resource<ArrayList<StationResponseItem>>) -> Unit) {
         var res = apiService.GetAllStation()
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            }
+        } else {
+            result.invoke(Resource.Failure(res.message()))
+        }
+    }
+
+    override suspend fun getAllTrains(result: (Resource<ArrayList<TrainResponseItem>>) -> Unit) {
+        var res = apiService.GetAllTrains()
         if (res.isSuccessful) {
             if (res.body() != null) {
                 result.invoke(Resource.Success(res.body()!!))

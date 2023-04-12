@@ -35,16 +35,18 @@
             >
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/Register_btn_date_picker"
+                android:id="@+id/track_location_txt_train_id"
                 android:layout_width="match_parent"
                 android:gravity="center|start"
+                android:text="@{viewmodel.trainid}"
+                android:focusable="false"
+                android:onClick="@{viewmodel::onTxtChooseTrainIdClicked}"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
                 android:drawableLeft="@drawable/train_id_txt"
                 android:drawablePadding="10dp"
                 android:hint="Train Id"
                 android:minHeight="48dp"
-                android:text="@={viewmodel.trainid}"
                 android:textColor="@color/textAlarmColor"
                 android:textColorHint="@color/textHintColorFirst"
                 android:textSize="18sp" />

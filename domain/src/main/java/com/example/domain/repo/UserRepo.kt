@@ -58,11 +58,12 @@ interface UserRepo {
     suspend fun getAllPostsFromAPI(result: (Resource<ArrayList<PostModelResponse>>)->Unit)
 
 
-    suspend fun getUserDataById(userID: Int): Response<userResponseItem>
+    suspend fun getUserDataById(userID: Int,result: (Resource<userResponseItem>) -> Unit)
 
     suspend fun setFirebaseServiceActivity(activity: AppCompatActivity)
 
     suspend fun getAllStations(result: (Resource<ArrayList<StationResponseItem>>) -> Unit)
+    suspend fun getAllTrains(result: (Resource<ArrayList<TrainResponseItem>>) -> Unit)
 
     suspend fun getImageFromFirebaseStorage(imageRef:String?,result: (Resource<Uri>) -> Unit)
 }

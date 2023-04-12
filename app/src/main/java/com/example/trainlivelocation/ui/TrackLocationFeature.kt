@@ -18,6 +18,7 @@ import com.example.domain.entity.LocationDetails
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentTrackLocationFeatureBinding
 import com.example.trainlivelocation.utli.TrackLocationListener
+import com.example.trainlivelocation.utli.Train_Dialog_Listener
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.SphericalUtil
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,7 +39,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class TrackLocationFeature : Fragment(), TrackLocationListener {
+class TrackLocationFeature : Fragment(), TrackLocationListener ,Train_Dialog_Listener{
     private val _userLocationMuta: MutableLiveData<LocationDetails?> = MutableLiveData(null)
     private val trackLocationFeatureViewModel: TrackLocationFeatureViewModel? by activityViewModels()
     private var binding: FragmentTrackLocationFeatureBinding? = null
@@ -105,6 +106,16 @@ class TrackLocationFeature : Fragment(), TrackLocationListener {
     }
 
     fun setObservers() {
+        trackLocationFeatureViewModel?.txtChooseTrainIdClicked?.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it == true) {
+                    var dialog = ChooseTrainDialogFragment(this)
+                    var childFragmentManager = getChildFragmentManager()
+                    dialog.show(childFragmentManager, "ChooseTrainDialogFragment")
+                }
+            })
+
         trackLocationFeatureViewModel?.btnTrackLocationFeature?.observe(
             viewLifecycleOwner,
             Observer {
@@ -282,6 +293,10 @@ class TrackLocationFeature : Fragment(), TrackLocationListener {
         Location.distanceBetween(startLat, startLon, endLat, endLon, results)
         Log.e(TAG, "distanceInMeter ${results[0]}")
         return results[0].toDouble()
+    }
+
+    override fun onTrainSelected(trainId: Int?, trainDegree: String?) {
+            binding!!.trackLocationTxtTrainId.setText("${trainId}")
     }
 
 }

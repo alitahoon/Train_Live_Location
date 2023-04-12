@@ -26,13 +26,15 @@ class TrackLocationFeatureViewModel @Inject constructor(
     private val getUserLocation: GetUserLocation,
     private val startLocationUpdate: StartLocationUpdate,
     private val stopLocationUpdate: StopLocationUpdate
-) :ViewModel(){
-    private var TAG:String?="TrackLocationFeatureViewModel"
-    private val _userLocationMuta:MutableLiveData<LocationDetails?> = MutableLiveData(null)
-    val userLocation:LiveData<LocationDetails?> = _userLocationMuta
+) : ViewModel() {
+    private var TAG: String? = "TrackLocationFeatureViewModel"
 
-    val _distanceMuta:MutableLiveData<Double?> = MutableLiveData(null)
-    val distanceLiveData:LiveData<Double?> = _distanceMuta
+
+    private val _userLocationMuta: MutableLiveData<LocationDetails?> = MutableLiveData(null)
+    val userLocation: LiveData<LocationDetails?> = _userLocationMuta
+
+    val _distanceMuta: MutableLiveData<Double?> = MutableLiveData(null)
+    val distanceLiveData: LiveData<Double?> = _distanceMuta
 
     lateinit var trackLocationListener: TrackLocationListener
     val _trainLocationMuta: MutableLiveData<Location_Response?> =
@@ -40,53 +42,64 @@ class TrackLocationFeatureViewModel @Inject constructor(
 
     val trainLocationLive: LiveData<Location_Response?> =
         _trainLocationMuta
-    var btnTrackLocationFeature= SingleLiveEvent<Boolean>()
-    var trainid:String?=null
+
+    var btnTrackLocationFeature = SingleLiveEvent<Boolean>()
+    var txtChooseTrainIdClicked = SingleLiveEvent<Boolean>()
+    var trainid: String? = null
+
     private lateinit var activity: Activity
     var locationForegrondservice: Intent? = null
 
     fun setbaseActivity(baseActivity: Activity) {
         activity = baseActivity
     }
-    public fun onBtnTrackTrainLocationClicked(view: View){
+
+    public fun onBtnTrackTrainLocationClicked(view: View) {
         btnTrackLocationFeature.postValue(true)
     }
+    fun onTxtChooseTrainIdClicked(view: View){
+        txtChooseTrainIdClicked.postValue(true)
+    }
+
     fun setLocationForgroundServices() {
         viewModelScope.launch {
-            Log.e(TAG,"setLocationForgroundServices")
+            Log.e(TAG, "setLocationForgroundServices")
             getLocationTrackForegroundService(trainid?.toInt())
             locationForegrondservice =
                 Intent(activity, getLocationTrackForegroundService::class.java)
         }
     }
 
-    public fun getTrainLocationFromApi(){
+    public fun getTrainLocationFromApi() {
         viewModelScope.launch {
-           var result=getLiveLoctationFromApi(trainid!!.toInt())
-            if (result.isSuccessful){
-                if (result.body()!=null){
-                    Log.e(TAG,"success")
+            var result = getLiveLoctationFromApi(trainid!!.toInt())
+            if (result.isSuccessful) {
+                if (result.body() != null) {
+                    Log.e(TAG, "success")
                     _trainLocationMuta.postValue(result.body())
-                }else{
-                    Log.e(TAG,result.errorBody().toString())
-                    Toast.makeText(activity, result.errorBody().toString(), Toast.LENGTH_SHORT).show()
+                } else {
+                    Log.e(TAG, result.errorBody().toString())
+                    Toast.makeText(activity, result.errorBody().toString(), Toast.LENGTH_SHORT)
+                        .show()
                 }
-            }else{
+            } else {
                 Toast.makeText(activity, result.message(), Toast.LENGTH_SHORT).show()
-                Log.e(TAG,result.message())
+                Log.e(TAG, result.message())
             }
         }
     }
-    fun startTrackLocationForgroundService(){
-        Log.e(TAG,"startTrackLocationForgroundService")
+
+    fun startTrackLocationForgroundService() {
+        Log.e(TAG, "startTrackLocationForgroundService")
         setLocationForgroundServices()
         activity.startService(locationForegrondservice)
     }
-    fun stopTrackLocationForgroundService(){
+
+    fun stopTrackLocationForgroundService() {
         activity.stopService(locationForegrondservice)
     }
 
-    fun getUserCurrantLocation(){
+    fun getUserCurrantLocation() {
         viewModelScope.launch {
 //            getUserLocation(){
 //                location ->
@@ -95,11 +108,6 @@ class TrackLocationFeatureViewModel @Inject constructor(
             startLocationUpdate(6000)
         }
     }
-
-
-
-
-
 
 
 }

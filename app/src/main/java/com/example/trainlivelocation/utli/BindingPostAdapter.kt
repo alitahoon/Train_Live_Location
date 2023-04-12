@@ -14,7 +14,9 @@ import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.domain.entity.Post
+import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.UserPostsRcvItemLayoutBinding
+import com.example.trainlivelocation.ui.Add_post_fragment
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.firebase.storage.FirebaseStorage
 
@@ -36,14 +38,16 @@ fun <T> setRecyclerViewProperties(recyclerView: RecyclerView, data: T) {
     }
 }
 
-@BindingAdapter("setImage")
-fun setImage(imageView: ImageView, urlString: String) {
+@BindingAdapter("userphone","imageId")
+fun setImage(imageView: ImageView, userphone: String?,imageId:String?) {
     val storage: FirebaseStorage = FirebaseStorage.getInstance()
     // Create a storage reference from our app
     val storageRef = storage.reference
     Glide.with(imageView.context)
-        .load("${storageRef}/${urlString}")
+        .load("${storageRef}postsImages/${userphone}/${imageId}")
+        .placeholder(R.drawable.emptyicon)
         .into(imageView)
+
 }
 
 
@@ -52,8 +56,10 @@ fun setUserProfileImage(imageView: ImageView, userphone: String?) {
     val storage: FirebaseStorage = FirebaseStorage.getInstance()
     // Create a storage reference from our app
     val storageRef = storage.reference
+    Log.i("setUserProfileImage","${storageRef}ProfileImages/+20${userphone}")
     Glide.with(imageView.context)
         .load("${storageRef}/ProfileImages/${userphone}")
+        .placeholder(R.drawable.post_profile_icon)
         .into(imageView)
 
 }

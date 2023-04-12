@@ -19,7 +19,7 @@ class AllPostsViewModel @Inject constructor(
 )  : ViewModel() {
 
     private val _allPosts:MutableLiveData<Resource<ArrayList<PostModelResponse>>>?= MutableLiveData(null)
-    val allPosts:MutableLiveData<Resource<ArrayList<PostModelResponse>>>?= MutableLiveData(null)
+    val allPosts:MutableLiveData<Resource<ArrayList<PostModelResponse>>>?= _allPosts
 
 
     fun getPosts(){

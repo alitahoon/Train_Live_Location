@@ -54,8 +54,8 @@
                             android:layout_height="?actionBarSize"
                             android:gravity="center"
                             android:orientation="horizontal"
-                            android:paddingStart="15dp"
-                            android:paddingEnd="15dp"
+                            android:paddingStart="@dimen/_15ssp"
+                            android:paddingEnd="@dimen/_15ssp"
                             app:layout_constraintLeft_toLeftOf="parent"
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
@@ -69,8 +69,8 @@
 
                                 <de.hdodenhof.circleimageview.CircleImageView
                                     android:id="@+id/main_activity_ci_profile_image"
-                                    android:layout_width="60dp"
-                                    android:layout_height="60dp"
+                                    android:layout_width="@dimen/_60ssp"
+                                    android:layout_height="@dimen/_60ssp"
                                     android:layout_alignParentTop="true"
                                     android:layout_alignParentEnd="true"
                                     android:layout_alignParentBottom="true"

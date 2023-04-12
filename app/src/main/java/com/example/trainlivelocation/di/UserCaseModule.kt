@@ -111,6 +111,11 @@ object UserCaseModule  {
     }
 
 
+    @Provides
+    fun provideGetAllTrains(userRepo: UserRepo) :GetAllTrains{
+        return GetAllTrains(userRepo)
+    }
+
 
 
 
