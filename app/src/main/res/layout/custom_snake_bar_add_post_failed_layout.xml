@@ -3,30 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="15dp"
-    android:layout_margin="10dp"
-    app:strokeWidth="1dp"
+    app:cardCornerRadius="@dimen/_15sdp"
+    android:layout_margin="@dimen/_10sdp"
+    app:strokeWidth="@dimen/_1sdp"
     app:strokeColor="@color/secondColor"
-    android:elevation="20dp"
+    android:elevation="@dimen/_20sdp"
     >
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="@dimen/_10sdp"
         android:background="@color/textAlarmColor">
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/custom_snake_bar_logo"
-            app:cardCornerRadius="10dp"
-            android:padding="5dp"
+            app:cardCornerRadius="@dimen/_10sdp"
+            android:padding="@dimen/_5sdp"
             >
 
             <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_80sdp"
                 android:background="@color/secondColor"
-                android:padding="5dp"
+                android:padding="@dimen/_5sdp"
                 android:src="@drawable/app_logo"
                 app:tint="@color/white" />
         </com.google.android.material.card.MaterialCardView>
@@ -38,13 +38,13 @@
             android:layout_alignTop="@+id/custom_snake_bar_logo"
             android:layout_alignBottom="@+id/custom_snake_bar_logo"
             android:layout_centerInParent="true"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="@dimen/_5sdp"
             android:layout_toEndOf="@+id/custom_snake_bar_logo"
             android:gravity="center|top"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/_10sdp"
             android:text="Train Id"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="@dimen/_16ssp"
             android:textStyle="bold" />
 
         <TextView
@@ -54,23 +54,23 @@
             android:layout_alignStart="@+id/custom_snake_bar_txt_id"
             android:layout_alignEnd="@+id/custom_snake_bar_txt_id"
             android:layout_alignBottom="@+id/custom_snake_bar_txt_id"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:layout_toEndOf="@+id/custom_snake_bar_logo"
             android:gravity="center"
             android:text="356"
             android:textColor="@color/white"
-            android:textSize="14sp"
+            android:textSize="@dimen/_14ssp"
             android:letterSpacing="0.1"
             android:textStyle="bold" />
 
         <View
-            android:layout_width="1dp"
+            android:layout_width="@dimen/_1sdp"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/custom_snake_bar_logo"
             android:layout_alignBottom="@+id/custom_snake_bar_logo"
             android:layout_toStartOf="@+id/custom_snake_bar_txt"
             android:background="@color/white"
-            android:layout_marginHorizontal="5dp"/>
+            android:layout_marginHorizontal="@dimen/_5sdp"/>
 
         <TextView
             android:id="@+id/custom_snake_bar_txt"
@@ -83,7 +83,7 @@
             android:gravity="center"
             android:text="Post Publish Failed !"
             android:textColor="@color/white"
-            android:textSize="14sp"
+            android:textSize="@dimen/_14ssp"
             android:textStyle="bold" />
     </RelativeLayout>
 

@@ -25,12 +25,12 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:textColorHint="@color/textHintColorFirst"
             >
             <com.google.android.material.textfield.TextInputEditText
-                android:textSize="15dp"
+                android:textSize="@dimen/_15sdp"
                 android:lines="5"
                 android:textColor="@color/black"
                 android:background="#340AA1DD"
@@ -47,7 +47,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
             android:textColorHint="@color/textHintColorFirst">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -56,12 +56,12 @@
                 android:gravity="center|start|bottom"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/train_id_txt_add_post_fragment"
-                android:drawablePadding="10dp"
+                android:drawablePadding="@dimen/_10sdp"
                 android:text="@{viewModel._trainId}"
                 android:hint="Train Id"
                 android:textColor="@color/black"
                 android:background="#340AA1DD"
-                android:textSize="16sp" />
+                android:textSize="@dimen/_16ssp" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -71,20 +71,20 @@
             android:id="@+id/add_post_imageView_postImage"
             android:layout_width="match_parent"
             android:onClick="@{viewModel::onBtnChooseImageclicked}"
-            android:layout_height="200dp"
+            android:layout_height="@dimen/_200sdp"
             android:background="#340AA1DD"
             android:src="@drawable/add_photo_icon"
-            android:layout_marginHorizontal="20dp"/>
+            android:layout_marginHorizontal="@dimen/_20sdp"/>
         <View
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="@dimen/_1sdp"
             android:background="@color/white"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="15dp"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:layout_marginHorizontal="@dimen/_20sdp"
             android:gravity="center"
             android:background="#340AA1DD">
 
@@ -96,14 +96,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:gravity="start"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="@dimen/_10sdp"
                 >
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColorHint="@color/textHintColorFirst"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/_14ssp"
                     android:hint="@string/add_critical_post_content"
                     android:onClick="@{()->viewModel.setCritical()}"
                     />
@@ -112,7 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColorHint="@color/textHintColorFirst"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/_14ssp"
                     android:hint="@string/add_non_critical_post_content"
                     android:onClick="@{()->viewModel.setNONCritical()}"/>
 
@@ -126,8 +126,8 @@
             android:id="@+id/add_post_btn_submit"
             android:text="@string/add_post_submit"
             android:textColor="@color/white"
-            android:layout_marginHorizontal="120dp"
-            app:cornerRadius="30dp"
+            android:layout_marginHorizontal="@dimen/_120sdp"
+            app:cornerRadius="@dimen/_30sdp"
             android:onClick="@{()->viewModel.onSubmitButtonClick()}"/>
 
     </LinearLayout>
