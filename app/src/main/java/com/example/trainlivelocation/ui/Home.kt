@@ -8,15 +8,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.domain.entity.Train
 import com.example.domain.entity.userResponseItem
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.DialogFragmentLocationLayoutBinding
 import com.example.trainlivelocation.databinding.FragmentHomeBinding
+import com.example.trainlivelocation.utli.Train_Dialog_Listener
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class Home : Fragment() {
+class Home : Fragment() ,Train_Dialog_Listener{
 
 
     private val homeViewModel:HomeViewModel? by activityViewModels()
@@ -70,6 +72,14 @@ class Home : Fragment() {
         homeViewModel?.userData!!.observe(viewLifecycleOwner, Observer {
             userModel=it
         })
+
+        homeViewModel?.chooseTrainTxtClicked!!.observe(viewLifecycleOwner, Observer {
+            if (it==true){
+                var dialog = ChooseTrainDialogFragment(this)
+                var childFragmentManager = getChildFragmentManager()
+                dialog.show(childFragmentManager, "ChooseTrainDialogFragment")
+            }
+        })
     }
     fun getDistance():Float?{
         return arguments?.getFloat("distance")!!
@@ -77,5 +87,9 @@ class Home : Fragment() {
 
     companion object {
         var userModel:userResponseItem?=null
+    }
+
+    override fun onTrainSelected(trainId: Int?, trainDegree: String?) {
+        binding!!.homeTrackTrainTxt.setText(trainId!!)
     }
 }

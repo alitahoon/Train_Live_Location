@@ -17,7 +17,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/splash_fragment_background">
+        android:background="@drawable/choose_dialog_fragment_background">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/SignUp_txt_station"
@@ -59,32 +59,32 @@
             android:id="@+id/station_dialog_shimmer_loading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="15dp"
+            android:layout_marginHorizontal="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dialog_station_txt_search_station">
+            app:layout_constraintTop_toBottomOf="@+id/SignUp_txt_station" >
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-                <include layout="@layout/facbook_shimmer_train_rcv" />
+            <include layout="@layout/facbook_shimmer_train_rcv" />
 
-                <include layout="@layout/facbook_shimmer_train_rcv" />
 
-                <include layout="@layout/facbook_shimmer_train_rcv" />
+            <include layout="@layout/facbook_shimmer_train_rcv" />
 
-                <include layout="@layout/facbook_shimmer_train_rcv" />
 
-                <include layout="@layout/facbook_shimmer_train_rcv" />
+            <include layout="@layout/facbook_shimmer_train_rcv" />
 
-                <include layout="@layout/facbook_shimmer_train_rcv" />
+            <include layout="@layout/facbook_shimmer_train_rcv" />
 
-            </LinearLayout>
+            <include layout="@layout/facbook_shimmer_train_rcv" />
+
+            <include layout="@layout/facbook_shimmer_train_rcv" />
+        </LinearLayout>
         </com.facebook.shimmer.ShimmerFrameLayout>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

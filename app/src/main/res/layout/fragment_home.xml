@@ -73,10 +73,12 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <EditText
-            android:hint="Type Train Id To Track"
+            android:hint="Choose Train To Track"
             android:textColorHint="@color/PrimaryColor"
             android:padding="@dimen/_10sdp"
             android:elevation="@dimen/_15sdp"
+            android:onClick="@{viewmodel::onChooseTrainTxtClicked}"
+            android:text="@{viewmodel.trainId}"
             android:drawablePadding="@dimen/_5sdp"
             android:drawableLeft="@drawable/train_id_txt"
             android:textSize="@dimen/_12ssp"

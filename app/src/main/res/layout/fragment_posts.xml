@@ -28,7 +28,7 @@
             android:id="@+id/posts_tablayout_tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/fourth"
+            android:background="@color/PrimaryColor"
             bind:tabSelectedTextColor="@color/white"
             android:nestedScrollingEnabled="false"/>
 
@@ -36,7 +36,7 @@
             android:id="@+id/posts_tablayout_viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/thirdColor" />
+            android:background="@color/DarkPrimaryColor" />
     </LinearLayout>
 
 </layout>

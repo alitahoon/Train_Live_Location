@@ -18,7 +18,7 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/splash_fragment_background">
+        android:background="@drawable/choose_dialog_fragment_background">
 
 
         <com.google.android.material.textfield.TextInputEditText
@@ -35,9 +35,9 @@
             android:drawablePadding="@dimen/_10sdp"
             android:hint="Find Station"
             android:minHeight="@dimen/_48sdp"
-            android:textColor="@color/basicColor"
+            android:textColor="@color/TextIcons"
             android:textColorHint="@color/textHintColorFirst"
-            android:textSize="@dimen/_12ssp" />s
+            android:textSize="@dimen/_12ssp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_marginTop="@dimen/_15sdp"
@@ -55,11 +55,10 @@
 
 
         <com.facebook.shimmer.ShimmerFrameLayout
-            android:visibility="gone"
             android:id="@+id/station_dialog_shimmer_loading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:layout_marginHorizontal="@dimen/_5sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -71,22 +70,6 @@
                 android:layout_marginTop="@dimen/_10sdp"
                 android:orientation="vertical"
                 >
-
-                <include layout="@layout/facbook_shimmer_station_rcv" />
-
-                <include layout="@layout/facbook_shimmer_station_rcv" />
-
-                <include layout="@layout/facbook_shimmer_station_rcv" />
-
-                <include layout="@layout/facbook_shimmer_station_rcv" />
-
-                <include layout="@layout/facbook_shimmer_station_rcv" />
-
-                <include layout="@layout/facbook_shimmer_station_rcv" />
-
-                <include layout="@layout/facbook_shimmer_station_rcv" />
-
-                <include layout="@layout/facbook_shimmer_station_rcv" />
 
                 <include layout="@layout/facbook_shimmer_station_rcv" />
 

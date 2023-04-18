@@ -19,11 +19,18 @@ class HomeViewModel @Inject constructor(
     var locationBtn= SingleLiveEvent<Boolean>()
     var postsBtn= SingleLiveEvent<Boolean>()
     var locationCardBtn= SingleLiveEvent<Boolean>()
+    var chooseTrainTxtClicked= SingleLiveEvent<Boolean>()
+
+    var trainId:String?=null
 
     private val _userData: MutableLiveData<userResponseItem?> = MutableLiveData(null)
     val userData: LiveData<userResponseItem?> = _userData
     public fun onLocationBtn(view: View){
         locationBtn.postValue(true)
+    }
+
+    fun onChooseTrainTxtClicked(view: View){
+        chooseTrainTxtClicked.postValue(true)
     }
     public fun onPostsBtn(view: View){
         postsBtn.postValue(true)

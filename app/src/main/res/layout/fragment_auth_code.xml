@@ -9,67 +9,149 @@
             type="com.example.trainlivelocation.ui.AuthCodeViewmodel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:id="@+id/auth_code_first_layout"
         android:layout_height="match_parent"
-        android:background="@color/fourth"
+        android:background="@color/DarkPrimaryColor"
         tools:context=".ui.AuthCode">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/auth_code_firstLayout"
+            android:stateListAnimator="@null"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
-            app:layout_constraintBottom_toTopOf="@+id/auth_code_second_layout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/mobile_otb"
-                app:layout_constraintBottom_toTopOf="@+id/textView2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.918" />
-
-            <TextView
-                android:id="@+id/textView2"
+            android:layout_height="@dimen/_280sdp"
+            android:fitsSystemWindows="true"
+            android:background="@color/DarkPrimaryColor"
+            android:theme="@style/Theme.TrainLiveLocation">
+            <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_50sdp"
-                android:layout_marginTop="@dimen/_20sdp"
-                android:gravity="center"
-                android:letterSpacing="0.1"
-                android:lineHeight="@dimen/_20sdp"
-                android:text="OTB CODE"
-                android:textColor="#E6FFFCFC"
-                android:textSize="@dimen/_18ssp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/textView3"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:layout_height="match_parent">
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
 
-            <TextView
-                android:id="@+id/textView3"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/mobile_otb"
+                            app:layout_constraintBottom_toTopOf="@+id/textView2"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_50sdp"
+                            android:layout_marginTop="@dimen/_20sdp"
+                            android:gravity="center"
+                            android:letterSpacing="0.1"
+                            android:lineHeight="@dimen/_20sdp"
+                            android:text="OTB CODE"
+                            android:textColor="#E6FFFCFC"
+                            android:textSize="@dimen/_16ssp"
+                            android:textStyle="bold"
+                            app:layout_constraintBottom_toTopOf="@id/textView3"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="@dimen/_50sdp"
+                            android:layout_marginVertical="@dimen/_20sdp"
+                            android:gravity="center"
+                            android:lineHeight="@dimen/_20sdp"
+                            android:text="Please enter the OTB Code you have received in message"
+                            android:textColor="#E6FFFCFC"
+                            android:textSize="@dimen/_12ssp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/auth_code_second_layout"
+            android:fillViewport="true"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_50sdp"
-                android:layout_marginVertical="@dimen/_20sdp"
-                android:gravity="center"
-                android:lineHeight="@dimen/_20sdp"
-                android:text="Please enter the OTB Code you have received in message"
-                android:textColor="#E6FFFCFC"
-                android:textSize="@dimen/_14ssp"
+                android:layout_height="@dimen/_400sdp"
+                android:background="@drawable/phone_auth_background"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.chaos.view.PinView
+                    android:id="@+id/firstPinView"
+                    style="@style/PinWidget.PinView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_30sdp"
+                    android:layout_marginTop="@dimen/_80sdp"
+                    android:cursorVisible="true"
+                    android:hint="0"
+                    android:textColorHint="@color/textHintColorFirst"
+                    android:inputType="number"
+                    android:itemBackground="@color/white"
+                    android:textColor="@color/PrimaryColor"
+                    android:textSize="@dimen/_18ssp"
+                    android:textStyle="bold"
+                    app:cursorColor="@color/PrimaryColor"
+                    app:cursorWidth="@dimen/_1sdp"
+                    app:hideLineWhenFilled="false"
+                    app:itemCount="6"
+                    android:textColorLink="@color/DarkPrimaryColor"
+                    app:itemHeight="@dimen/_40sdp"
+                    app:itemSpacing="@dimen/_15sdp"
+                    app:itemWidth="@dimen/_30sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:lineColor="@color/DarkPrimaryColor"
+                    app:lineWidth="@dimen/_2sdp"
+                    app:viewType="line" />
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sign_btn_sign_in"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_60sdp"
+                    android:backgroundTint="@color/PrimaryColor"
+                    android:padding="@dimen/_10sdp"
+                    android:text="Submit"
+                    android:onClick="@{viewmodel::onBtnSubmitClicked}"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_14ssp"
+                    app:cornerRadius="@dimen/_30sdp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/firstPinView"
+                    app:layout_constraintVertical_bias="0.212" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
         <LinearLayout
             android:visibility="gone"
             android:id="@+id/auth_code_dialogLoading_code_sending"
@@ -96,7 +178,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="Please wait..."
-                android:textColor="@color/basicColor"
+                android:textColor="@color/PrimaryColor"
                 android:textSize="@dimen/_18ssp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -107,65 +189,6 @@
                 app:layout_constraintVertical_bias="0.0" />
         </LinearLayout>
 
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/auth_code_second_layout"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_400sdp"
-            android:background="@drawable/phone_auth_background"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
-
-            <com.chaos.view.PinView
-                android:id="@+id/firstPinView"
-                style="@style/PinWidget.PinView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_30sdp"
-                android:layout_marginTop="@dimen/_80sdp"
-                android:cursorVisible="true"
-                android:hint="0"
-                android:textColorHint="@color/textHintColorFirst"
-                android:inputType="number"
-                android:itemBackground="@color/white"
-                android:textColor="@color/fourth"
-                android:textSize="@dimen/_18ssp"
-                android:textStyle="bold"
-                app:cursorColor="@color/pinViewCursorColor"
-                app:cursorWidth="@dimen/_1sdp"
-                app:hideLineWhenFilled="false"
-                app:itemCount="6"
-                android:textColorLink="@color/basicColor"
-                app:itemHeight="@dimen/_40sdp"
-                app:itemSpacing="@dimen/_10sdp"
-                app:itemWidth="@dimen/_40sdp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:lineColor="@color/basicColor"
-                app:lineWidth="@dimen/_2sdp"
-                app:viewType="line" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/sign_btn_sign_in"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="@dimen/_100sdp"
-                android:backgroundTint="@color/basicColor"
-                android:padding="@dimen/_15sdp"
-                android:text="Submit"
-                android:onClick="@{viewmodel::onBtnSubmitClicked}"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_14ssp"
-                app:cornerRadius="@dimen/_30sdp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/firstPinView"
-                app:layout_constraintVertical_bias="0.212" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

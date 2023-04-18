@@ -13,14 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.AuthPhone"
-        android:background="@color/basicColor">
+        android:background="@color/DarkPrimaryColor">
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/auth_phone_firstLayout"
             android:stateListAnimator="@null"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_280sdp"
             android:fitsSystemWindows="true"
-            android:background="@color/basicColor"
+            android:background="@color/DarkPrimaryColor"
             android:theme="@style/Theme.TrainLiveLocation">
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
@@ -34,47 +34,44 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
+                        android:layout_marginTop="@dimen/_30sdp"
+                        android:id="@+id/imageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/mobile_auth"
-                        app:layout_constraintBottom_toTopOf="@+id/textView2"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.498"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.898" />
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
                         android:id="@+id/textView2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_50sdp"
-                        android:layout_marginTop="@dimen/_20sdp"
                         android:gravity="center"
-                        android:textStyle="bold"
                         android:letterSpacing="0.1"
                         android:lineHeight="@dimen/_20sdp"
                         android:text="Mobile Number"
                         android:textColor="#E6FFFCFC"
-                        android:textSize="@dimen/_18ssp"
-                        app:layout_constraintBottom_toTopOf="@id/textView3"
+                        android:textSize="@dimen/_16ssp"
+                        android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
                     <TextView
                         android:id="@+id/textView3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="@dimen/_50sdp"
-                        android:layout_marginVertical="@dimen/_20sdp"
                         android:gravity="center"
                         android:lineHeight="@dimen/_20sdp"
                         android:text="You will need to enter your number to send OTB Code"
                         android:textColor="#E6FFFCFC"
-                        android:textSize="@dimen/_14ssp"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:textSize="@dimen/_12ssp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
                 <androidx.appcompat.widget.Toolbar
@@ -126,7 +123,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/sending_code"
-                android:textColor="@color/basicColor"
+                android:textColor="@color/PrimaryColor"
                 android:textSize="@dimen/_18ssp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -151,16 +148,35 @@
                 android:background="@drawable/phone_auth_background"
            >
 
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/sign_btn_sign_in"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_60sdp"
+                    android:backgroundTint="@color/PrimaryColor"
+                    android:onClick="@{viewmodel::onSendCodebtnClicked}"
+                    android:padding="@dimen/_10sdp"
+                    android:text="Send Code"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp"
+                    app:cornerRadius="@dimen/_30sdp"
+                    android:layout_marginTop="@dimen/_30sdp"
+                    app:layout_anchorGravity="center"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/signUp_txt_phone_input_layout" />
+
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/signUp_txt_phone_input_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_100sdp"
-                    android:backgroundTint="@color/basicColor"
+                    android:layout_marginTop="@dimen/_40sdp"
+                    android:backgroundTint="@color/PrimaryColor"
                     android:textColorHint="@color/textHintColorFirst"
-                    app:boxStrokeColor="@color/basicColor"
+                    app:boxStrokeColor="@color/PrimaryColor"
                     app:boxStrokeWidth="@dimen/_1sdp"
+                    android:textSize="@dimen/_14ssp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -175,31 +191,15 @@
                         android:hint="Phone"
                         android:inputType="phone"
                         android:text="@={viewmodel.userPhone}"
-                        android:textColor="@color/fourth"
-                        android:textSize="@dimen/_16ssp" />
+                        android:textColor="@color/PrimaryColor"
+                        android:textSize="@dimen/_14ssp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/sign_btn_sign_in"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="@dimen/_100sdp"
-                    android:backgroundTint="@color/basicColor"
-                    android:onClick="@{viewmodel::onSendCodebtnClicked}"
-                    android:padding="@dimen/_15sdp"
-                    android:text="Send Code"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_14ssp"
-                    app:cornerRadius="@dimen/_30sdp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/signUp_txt_phone_input_layout"
-                    app:layout_constraintVertical_bias="0.212" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
+
+
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

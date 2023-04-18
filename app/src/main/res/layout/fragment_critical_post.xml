@@ -17,7 +17,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/thirdColor"
+        android:background="@color/dark_mode_background"
         tools:context=".ui.CriticalPost">
 
         <com.google.android.material.progressindicator.LinearProgressIndicator
@@ -33,13 +33,13 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/add_post_progress_bar"
+            app:layout_constraintTop_toBottomOf="@+id/crtical_progress_bar"
             app:setAdapter="@{adapter}"
             tools:listitem="@layout/user_posts_rcv_item_layout" />
 

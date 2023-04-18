@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:backgroundTint="@color/white">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:backgroundTint="@color/DarkPrimaryColor">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="3dp">
-        <View
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/textHintColorFirst"/>
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginVertical="@dimen/_5sdp"
+            android:layout_height="@dimen/_65sdp"
+            android:backgroundTint="@color/textHintColorFirst"
+            app:cardCornerRadius="@dimen/_50sdp"/>
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
