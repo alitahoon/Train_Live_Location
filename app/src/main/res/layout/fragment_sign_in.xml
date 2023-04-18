@@ -35,7 +35,7 @@
                     app:layout_constraintHorizontal_bias="0.233"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:boxStrokeColor="@color/basicColor"
+                    app:boxStrokeColor="@color/PrimaryColor"
                     app:boxStrokeWidth="@dimen/_1sdp"
                     android:textColorHint="@color/textHintColorFirst">
                     <com.google.android.material.textfield.TextInputEditText
@@ -49,8 +49,8 @@
                         android:drawablePadding="@dimen/_5sdp"
                         android:hint="@string/phone"
                         android:text="@={viewmodel.userPhone}"
-                        android:textColor="@color/textAlarmColor"
-                        android:textColorHint="@color/fourth"
+                        android:textColor="@color/PrimaryColor"
+                        android:textColorHint="@color/PrimaryColor"
                         />
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
@@ -72,7 +72,7 @@
                     app:layout_constraintVertical_bias="0.0"
                     app:passwordToggleDrawable="@drawable/txt_password_selector"
                     app:passwordToggleEnabled="true"
-                    app:passwordToggleTint="@color/basicColor">
+                    app:passwordToggleTint="@color/PrimaryColor">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
@@ -83,8 +83,8 @@
                         android:hint="@string/password"
                         android:inputType="textPassword"
                         android:text="@={viewmodel.userPassword}"
-                        android:textColor="@color/textAlarmColor"
-                        android:textColorHint="@color/fourth" />
+                        android:textColor="@color/PrimaryColor"
+                        android:textColorHint="@color/PrimaryColor" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -96,7 +96,7 @@
                     android:layout_marginTop="@dimen/_12sdp"
                     android:text="@string/forget_password"
                     android:textAllCaps="true"
-                    android:textColor="@color/basicColor"
+                    android:textColor="@color/PrimaryColor"
                     android:textSize="@dimen/_10ssp"
                     app:layout_constraintEnd_toEndOf="@+id/signin_txt_password"
                     app:layout_constraintHorizontal_bias="0.938"
@@ -112,7 +112,7 @@
                     app:cornerRadius="@dimen/_30sdp"
                     android:textSize="@dimen/_12ssp"
                     android:padding="@dimen/_10sdp"
-                    android:backgroundTint="@color/btn_background"
+                    android:backgroundTint="@color/PrimaryColor"
                     android:text="@string/sign_in_without_underScore"
                     android:textColor="@color/white"
                     android:onClick="@{ viewmodel::onSignInBtnClicked}"
@@ -149,7 +149,7 @@
                         android:layout_weight="1"
                         android:onClick="@{viewmodel::onSignUpBtnClicked}"
                         android:text="@string/sign_up"
-                        android:textColor="@color/basicColor"
+                        android:textColor="@color/PrimaryColor"
                         android:textSize="@dimen/_10sdp"
                         android:textStyle="bold" />
                 </LinearLayout>

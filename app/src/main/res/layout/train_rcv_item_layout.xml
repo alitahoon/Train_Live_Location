@@ -12,79 +12,87 @@
             type="com.example.trainlivelocation.utli.Train_Dialog_Listener" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:padding="5dp"
-        android:layout_margin="15dp"
-        android:id="@+id/station_RCV_irem_Color"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/basicColor">
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="5dp"
-            android:drawableStart="@drawable/train_degree"
-            android:drawablePadding="5dp"
-            android:gravity="center"
-            android:text="Train Degree :"
-            android:textColor="@color/white"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/train_layout_degree"
-            android:layout_width="wrap_content"
+        app:cardCornerRadius="@dimen/_30sdp"
+        android:layout_margin="@dimen/_15sdp"
+        android:backgroundTint="@color/PrimaryColor">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:padding="@dimen/_5sdp"
+            android:id="@+id/station_RCV_irem_Color"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:padding="10dp"
-            android:text="@{train.degree}"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@+id/textView5"
-            app:layout_constraintStart_toEndOf="@+id/textView5"
-            app:layout_constraintTop_toTopOf="parent" />
+            >
 
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="5dp"
-            android:drawableStart="@drawable/train_id"
-            android:drawablePadding="5dp"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="Train Number :"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:drawableStart="@drawable/train_degree"
+                android:drawablePadding="@dimen/_5sdp"
+                android:gravity="center"
+                android:text="Train Degree :"
+                android:textColor="@color/white"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/train_layout_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:padding="10dp"
-            android:text="@{train.trainNumber}"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView7"
-            app:layout_constraintTop_toTopOf="@+id/textView7" />
+            <TextView
+                android:id="@+id/train_layout_degree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:padding="10dp"
+                android:text="@{train.degree}"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@+id/textView5"
+                app:layout_constraintStart_toEndOf="@+id/textView5"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/staion_dialog_btn_ok"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_marginHorizontal="5dp"
-            android:backgroundTint="@color/btn_background"
-            android:text="OK"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="@dimen/_120sdp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:drawableStart="@drawable/train_id"
+                android:drawablePadding="@dimen/_5sdp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Train Number :"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+            <TextView
+                android:id="@+id/train_layout_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:padding="10dp"
+                android:text="@{train.trainNumber}"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textView7"
+                app:layout_constraintTop_toTopOf="@+id/textView7" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/staion_dialog_btn_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginHorizontal="5dp"
+                android:backgroundTint="@color/PrimaryColor"
+                android:text="OK"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
 </layout>

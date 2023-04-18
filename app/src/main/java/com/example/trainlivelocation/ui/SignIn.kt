@@ -82,14 +82,12 @@ class SignIn : Fragment() {
 
                             is Resource.Failure -> {
                                 resetDiffultDesign()
-                                binding.signBtnSignIn.setBackgroundColor(requireContext().getColor(R.color.btn_background))
                                 binding.signBtnSignIn.isEnabled = true
                                 Log.e(TAG, it.error!!)
                             }
 
                             else -> {
                                 resetDiffultDesign()
-                                binding.signBtnSignIn.setBackgroundColor(requireContext().getColor(R.color.btn_background))
                                 binding.signBtnSignIn.isEnabled = true
                                 Log.e(TAG, "sign in when else brunch")
                             }
@@ -115,7 +113,7 @@ class SignIn : Fragment() {
         binding.signInLoadingLayout.setVisibility(View.GONE)
         binding.signInInputLayout.setVisibility(View.VISIBLE)
         binding.signBtnSignIn.isEnabled=true
-        binding.signBtnSignIn.setBackgroundColor(requireContext().getColor(R.color.btn_background))
+        binding.signBtnSignIn.setBackgroundColor(requireContext().getColor(R.color.PrimaryColor))
 
     }
 

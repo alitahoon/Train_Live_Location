@@ -47,7 +47,7 @@
                     android:letterSpacing="0.1"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginBottom="@dimen/_50sdp"
-                    android:textColor="@color/textHintColorFirst"/>
+                    android:textColor="@color/PrimaryColor"/>
 
             </LinearLayout>
 
@@ -125,7 +125,7 @@
                     android:layout_marginHorizontal="@dimen/_20sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:textColorHint="@color/textHintColorFirst"
-                    app:boxStrokeColor="@color/basicColor"
+                    app:boxStrokeColor="@color/PrimaryColor"
                     app:boxStrokeWidth="@dimen/_1sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.4"
@@ -138,12 +138,12 @@
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/white"
                         android:focusable="false"
-                        android:drawableLeft="@drawable/sation"
+                        android:drawableLeft="@drawable/staion"
                         android:drawablePadding="@dimen/_10sdp"
                         android:hint="Station"
                         android:onClick="@{viewmodel::onStationTxtClicked}"
                         android:text="@={viewmodel.userStation}"
-                        android:textColor="@color/basicColor"
+                        android:textColor="@color/PrimaryColor"
                         android:textColorHint="@color/textHintColorFirst"
                         android:textSize="@dimen/_12ssp" />
 
@@ -155,7 +155,7 @@
                     android:layout_marginHorizontal="@dimen/_20sdp"
                     android:layout_marginVertical="@dimen/_10sdp"
                     android:textColorHint="@color/textHintColorFirst"
-                    app:boxStrokeColor="@color/basicColor"
+                    app:boxStrokeColor="@color/PrimaryColor"
                     app:boxStrokeWidth="@dimen/_1sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.4"
@@ -174,7 +174,7 @@
                         android:onClick="@{viewmodel::onDatePickerTxtClicked}"
                         android:minHeight="@dimen/_48sdp"
                         android:text="@={viewmodel.userBirthDate}"
-                        android:textColor="@color/basicColor"
+                        android:textColor="@color/PrimaryColor"
                         android:textColorHint="@color/textHintColorFirst"
                         android:textSize="@dimen/_12ssp" />
 
@@ -188,7 +188,7 @@
                     android:layout_marginHorizontal="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:textColorHint="@color/textHintColorFirst"
-                    app:boxStrokeColor="@color/basicColor"
+                    app:boxStrokeColor="@color/PrimaryColor"
                     app:boxStrokeWidth="@dimen/_1sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -203,7 +203,7 @@
                         android:drawablePadding="@dimen/_10sdp"
                         android:hint="Name"
                         android:text="@={viewmodel.userName}"
-                        android:textColor="@color/basicColor"
+                        android:textColor="@color/PrimaryColor"
                         android:textSize="@dimen/_12ssp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -216,7 +216,7 @@
                     android:layout_marginHorizontal="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:textColorHint="@color/textHintColorFirst"
-                    app:boxStrokeColor="@color/basicColor"
+                    app:boxStrokeColor="@color/PrimaryColor"
                     app:boxStrokeWidth="@dimen/_1sdp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -235,7 +235,7 @@
                         android:inputType="textEmailAddress"
                         android:minHeight="@dimen/_48sdp"
                         android:text="@={viewmodel.userEmail}"
-                        android:textColor="@color/basicColor"
+                        android:textColor="@color/PrimaryColor"
                         android:textSize="@dimen/_12ssp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -247,12 +247,12 @@
                     android:layout_marginHorizontal="@dimen/_20sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:textColorHint="@color/textHintColorFirst"
-                    app:boxStrokeColor="@color/basicColor"
+                    app:boxStrokeColor="@color/PrimaryColor"
                     app:boxStrokeWidth="@dimen/_1sdp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:passwordToggleDrawable="@drawable/txt_password_selector"
                     app:passwordToggleEnabled="true"
-                    app:passwordToggleTint="@color/basicColor">
+                    app:passwordToggleTint="@color/PrimaryColor">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/signUp_txt_pass"
@@ -265,7 +265,7 @@
                         android:hint="Password"
                         android:inputType="textPassword"
                         android:text="@={viewmodel.userPassword}"
-                        android:textColor="@color/basicColor"
+                        android:textColor="@color/PrimaryColor"
                         android:textSize="@dimen/_12ssp" />
                     <RadioGroup
                         android:id="@+id/radioGroup"
@@ -285,14 +285,14 @@
                             android:layout_marginLeft="@dimen/_10sdp"
                             android:layout_marginRight="@dimen/_10sdp"
                             android:layout_weight="1"
-                            android:buttonTint="@color/basicColor"
+                            android:buttonTint="@color/PrimaryColor"
                             android:checked="false"
                             android:drawableRight="@drawable/ic_baseline_male_24"
                             android:padding="4dp"
                             android:onClick="@{()->viewmodel.onClickMale()}"
                             android:text="Male"
                             android:textAlignment="center"
-                            android:textColor="@color/basicColor"
+                            android:textColor="@color/PrimaryColor"
                             android:textSize="@dimen/_12ssp" />
 
                         <RadioButton
@@ -302,14 +302,14 @@
                             android:layout_marginLeft="@dimen/_10sdp"
                             android:layout_marginRight="@dimen/_10sdp"
                             android:layout_weight="1"
-                            android:buttonTint="@color/basicColor"
+                            android:buttonTint="@color/PrimaryColor"
                             android:checked="false"
                             android:drawableRight="@drawable/ic_baseline_female_24"
                             android:onClick="@{()->viewmodel.onClickFemale()}"
                             android:padding="@dimen/_4sdp"
                             android:text="Female"
                             android:textAlignment="center"
-                            android:textColor="@color/basicColor"
+                            android:textColor="@color/PrimaryColor"
                             android:textSize="@dimen/_12ssp" />
 
                     </RadioGroup>
@@ -324,7 +324,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_80sdp"
                 android:layout_marginBottom="@dimen/_20sdp"
-                android:backgroundTint="@color/btn_background"
+                android:backgroundTint="@color/PrimaryColor"
                 android:drawableRight="@drawable/next_icon"
                 android:onClick="@{viewmodel::onNextBtnClicked}"
                 android:text="@string/next"

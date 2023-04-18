@@ -20,83 +20,92 @@
         android:layout_height="match_parent"
         android:background="@drawable/splash_fragment_background">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/dialog_station_txt_search_station"
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/SignUp_txt_station"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_20sdp"
-            android:layout_marginBottom="@dimen/_20sdp"
-            android:textColorHint="@color/textHintColorFirst"
-            app:boxStrokeColor="@color/basicColor"
-            app:boxStrokeWidth="@dimen/_1sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/SignUp_txt_station"
-                android:layout_width="match_parent"
-                android:text="@={viewmodel.staionName}"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                android:drawableStart="@drawable/search_24"
-                android:drawablePadding="@dimen/_10sdp"
-                android:hint="Find Station"
-                android:minHeight="@dimen/_48sdp"
-                android:textColor="@color/basicColor"
-                android:textColorHint="@color/textHintColorFirst"
-                android:textSize="@dimen/_18ssp" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@={viewmodel.staionName}"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:drawableStart="@drawable/search_24"
+            android:drawablePadding="@dimen/_10sdp"
+            android:hint="Find Station"
+            android:minHeight="@dimen/_48sdp"
+            android:textColor="@color/basicColor"
+            android:textColorHint="@color/textHintColorFirst"
+            android:textSize="@dimen/_12ssp" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="@dimen/_15sdp"
             android:id="@+id/station_dialog_rcv"
             setStaionRCVAdapter="@{adapter}"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dialog_station_txt_search_station"
+            app:layout_constraintTop_toBottomOf="@+id/SignUp_txt_station"
             tools:listitem="@layout/station_rcv_item_layout" />
 
 
         <com.facebook.shimmer.ShimmerFrameLayout
+            android:visibility="gone"
             android:id="@+id/station_dialog_shimmer_loading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_15sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginHorizontal="@dimen/_15sdp"
-            app:layout_constraintTop_toBottomOf="@+id/dialog_station_txt_search_station">
+            app:layout_constraintTop_toBottomOf="@+id/SignUp_txt_station">
 
             <LinearLayout
-                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:orientation="vertical"
                 >
 
                 <include layout="@layout/facbook_shimmer_station_rcv" />
+
                 <include layout="@layout/facbook_shimmer_station_rcv" />
+
                 <include layout="@layout/facbook_shimmer_station_rcv" />
+
                 <include layout="@layout/facbook_shimmer_station_rcv" />
+
                 <include layout="@layout/facbook_shimmer_station_rcv" />
+
                 <include layout="@layout/facbook_shimmer_station_rcv" />
+
                 <include layout="@layout/facbook_shimmer_station_rcv" />
+
                 <include layout="@layout/facbook_shimmer_station_rcv" />
+
                 <include layout="@layout/facbook_shimmer_station_rcv" />
+
                 <include layout="@layout/facbook_shimmer_station_rcv" />
+
                 <include layout="@layout/facbook_shimmer_station_rcv" />
+
                 <include layout="@layout/facbook_shimmer_station_rcv" />
+
                 <include layout="@layout/facbook_shimmer_station_rcv" />
+
                 <include layout="@layout/facbook_shimmer_station_rcv" />
+
                 <include layout="@layout/facbook_shimmer_station_rcv" />
+
                 <include layout="@layout/facbook_shimmer_station_rcv" />
+
                 <include layout="@layout/facbook_shimmer_station_rcv" />
+
                 <include layout="@layout/facbook_shimmer_station_rcv" />
             </LinearLayout>
         </com.facebook.shimmer.ShimmerFrameLayout>
