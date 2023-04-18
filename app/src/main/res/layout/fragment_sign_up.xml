@@ -85,7 +85,7 @@
                         android:gravity="center"
                         android:text="Jop"
                         android:textColor="@color/textHintColorFirst"
-                        android:textSize="@dimen/_16ssp" />
+                        android:textSize="@dimen/_12ssp" />
 
                     <FrameLayout
                         android:layout_width="match_parent"
@@ -123,8 +123,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_20sdp"
-                    android:layout_marginVertical="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_28sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:textColorHint="@color/textHintColorFirst"
                     app:boxStrokeColor="@color/basicColor"
                     app:boxStrokeWidth="@dimen/_1sdp"
@@ -143,11 +142,10 @@
                         android:drawablePadding="@dimen/_10sdp"
                         android:hint="Station"
                         android:onClick="@{viewmodel::onStationTxtClicked}"
-                        android:minHeight="@dimen/_48sdp"
                         android:text="@={viewmodel.userStation}"
                         android:textColor="@color/basicColor"
                         android:textColorHint="@color/textHintColorFirst"
-                        android:textSize="@dimen/_18ssp" />
+                        android:textSize="@dimen/_12ssp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
                 <com.google.android.material.textfield.TextInputLayout
@@ -155,8 +153,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_20sdp"
-                    android:layout_marginVertical="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_28sdp"
+                    android:layout_marginVertical="@dimen/_10sdp"
                     android:textColorHint="@color/textHintColorFirst"
                     app:boxStrokeColor="@color/basicColor"
                     app:boxStrokeWidth="@dimen/_1sdp"
@@ -179,7 +176,7 @@
                         android:text="@={viewmodel.userBirthDate}"
                         android:textColor="@color/basicColor"
                         android:textColorHint="@color/textHintColorFirst"
-                        android:textSize="@dimen/_18ssp" />
+                        android:textSize="@dimen/_12ssp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -189,7 +186,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_20sdp"
-                    android:layout_marginVertical="@dimen/_24sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
                     android:textColorHint="@color/textHintColorFirst"
                     app:boxStrokeColor="@color/basicColor"
                     app:boxStrokeWidth="@dimen/_1sdp"
@@ -207,7 +204,7 @@
                         android:hint="Name"
                         android:text="@={viewmodel.userName}"
                         android:textColor="@color/basicColor"
-                        android:textSize="@dimen/_16ssp" />
+                        android:textSize="@dimen/_12ssp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -217,7 +214,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_24sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
                     android:textColorHint="@color/textHintColorFirst"
                     app:boxStrokeColor="@color/basicColor"
                     app:boxStrokeWidth="@dimen/_1sdp"
@@ -239,7 +236,7 @@
                         android:minHeight="@dimen/_48sdp"
                         android:text="@={viewmodel.userEmail}"
                         android:textColor="@color/basicColor"
-                        android:textSize="@dimen/_16ssp" />
+                        android:textSize="@dimen/_12ssp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -248,7 +245,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="@dimen/_20sdp"
-                    android:layout_marginTop="@dimen/_24sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
                     android:textColorHint="@color/textHintColorFirst"
                     app:boxStrokeColor="@color/basicColor"
                     app:boxStrokeWidth="@dimen/_1sdp"
@@ -269,7 +266,7 @@
                         android:inputType="textPassword"
                         android:text="@={viewmodel.userPassword}"
                         android:textColor="@color/basicColor"
-                        android:textSize="@dimen/_16ssp" />
+                        android:textSize="@dimen/_12ssp" />
                     <RadioGroup
                         android:id="@+id/radioGroup"
                         android:layout_width="match_parent"
@@ -296,7 +293,7 @@
                             android:text="Male"
                             android:textAlignment="center"
                             android:textColor="@color/basicColor"
-                            android:textSize="@dimen/_14ssp" />
+                            android:textSize="@dimen/_12ssp" />
 
                         <RadioButton
                             android:id="@+id/female"
@@ -313,7 +310,7 @@
                             android:text="Female"
                             android:textAlignment="center"
                             android:textColor="@color/basicColor"
-                            android:textSize="@dimen/_14ssp" />
+                            android:textSize="@dimen/_12ssp" />
 
                     </RadioGroup>
 

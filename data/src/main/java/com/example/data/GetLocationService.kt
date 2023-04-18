@@ -65,21 +65,21 @@ class GetLocationService : LifecycleService() {
 
         val serviceJob = lifecycleScope.launch{
             Log.e(TAG, "hh")
-            var result = getLiveLoctationFromApi(trainid!!)
-            if (result.isSuccessful) {
-                if (result.body() != null) {
-                    loction = result.body()
-                    Log.e(
-                        TAG,
-                        "longitude " + loction?.longitude?.longitude.toString() +
-                                " latitude" + loction?.latitude?.latitude.toString()
-                    )
-                }
-                startForeground(NOTIFICATION_ID!!, getNotification())
-
-            } else {
-                Log.e(TAG, result.message())
-            }
+//            var result = getLiveLoctationFromApi(trainid!!)
+//            if (result.isSuccessful) {
+//                if (result.body() != null) {
+//                    loction = result.body()
+//                    Log.e(
+//                        TAG,
+//                        "longitude " + loction?.longitude?.longitude.toString() +
+//                                " latitude" + loction?.latitude?.latitude.toString()
+//                    )
+//                }
+//                startForeground(NOTIFICATION_ID!!, getNotification())
+//
+//            } else {
+//                Log.e(TAG, result.message())
+//            }
         }
 //        scope.launch {
 //

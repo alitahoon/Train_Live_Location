@@ -24,7 +24,7 @@
 
             <ImageView
                 android:layout_width="@dimen/_60sdp"
-                android:layout_height="@dimen/_60sdp"
+                android:layout_height= "@dimen/_60sdp"
                 android:background="@color/secondColor"
                 android:padding="@dimen/_5sdp"
                 android:src="@drawable/app_logo"
@@ -45,7 +45,7 @@
             android:gravity="center"
             android:text="Train Id"
             android:textColor="@color/white"
-            android:textSize="@dimen/_12ssp"
+            android:textSize="@dimen/_10ssp"
             android:textStyle="bold" />
 
         <TextView
@@ -64,13 +64,14 @@
             android:textStyle="bold" />
 
         <View
+            android:id="@+id/spliter"
             android:layout_width="@dimen/_1sdp"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/custom_snake_bar_logo"
             android:layout_alignBottom="@+id/custom_snake_bar_logo"
-            android:layout_toStartOf="@+id/custom_snake_bar_txt"
-            android:background="@color/white"
-            android:layout_marginHorizontal="@dimen/_5sdp"/>
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_toEndOf="@+id/custom_snake_bar_txt_id"
+            android:background="@color/white" />
 
         <TextView
             android:id="@+id/custom_snake_bar_txt"
@@ -79,7 +80,7 @@
             android:layout_alignTop="@+id/custom_snake_bar_logo"
             android:layout_alignBottom="@+id/custom_snake_bar_logo"
             android:layout_alignParentEnd="true"
-            android:layout_centerHorizontal="true"
+            android:layout_toEndOf="@+id/spliter"
             android:gravity="center"
             android:text="Post Publish Successfully"
             android:textColor="@color/white"

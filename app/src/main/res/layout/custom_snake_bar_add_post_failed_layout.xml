@@ -23,8 +23,8 @@
             >
 
             <ImageView
-                android:layout_width="@dimen/_80sdp"
-                android:layout_height="@dimen/_80sdp"
+                android:layout_width="@dimen/_60sdp"
+                android:layout_height="@dimen/_60sdp"
                 android:background="@color/secondColor"
                 android:padding="@dimen/_5sdp"
                 android:src="@drawable/app_logo"
@@ -38,13 +38,15 @@
             android:layout_alignTop="@+id/custom_snake_bar_logo"
             android:layout_alignBottom="@+id/custom_snake_bar_logo"
             android:layout_centerInParent="true"
-            android:layout_marginStart="@dimen/_5sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:layout_toEndOf="@+id/custom_snake_bar_logo"
-            android:gravity="center|top"
-            android:layout_margin="@dimen/_10sdp"
+            android:gravity="center"
             android:text="Train Id"
             android:textColor="@color/white"
-            android:textSize="@dimen/_16ssp"
+            android:textSize="@dimen/_10ssp"
             android:textStyle="bold" />
 
         <TextView
@@ -54,23 +56,23 @@
             android:layout_alignStart="@+id/custom_snake_bar_txt_id"
             android:layout_alignEnd="@+id/custom_snake_bar_txt_id"
             android:layout_alignBottom="@+id/custom_snake_bar_txt_id"
-            android:layout_marginBottom="@dimen/_10sdp"
             android:layout_toEndOf="@+id/custom_snake_bar_logo"
             android:gravity="center"
             android:text="356"
             android:textColor="@color/white"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_10ssp"
             android:letterSpacing="0.1"
             android:textStyle="bold" />
 
         <View
             android:layout_width="@dimen/_1sdp"
+            android:id="@+id/spiltter"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/custom_snake_bar_logo"
             android:layout_alignBottom="@+id/custom_snake_bar_logo"
-            android:layout_toStartOf="@+id/custom_snake_bar_txt"
-            android:background="@color/white"
-            android:layout_marginHorizontal="@dimen/_5sdp"/>
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            android:layout_toEndOf="@+id/custom_snake_bar_txt_id"
+            android:background="@color/white" />
 
         <TextView
             android:id="@+id/custom_snake_bar_txt"
@@ -79,11 +81,11 @@
             android:layout_alignTop="@+id/custom_snake_bar_logo"
             android:layout_alignBottom="@+id/custom_snake_bar_logo"
             android:layout_alignParentEnd="true"
-            android:layout_centerHorizontal="true"
+            android:layout_toEndOf="@+id/spiltter"
             android:gravity="center"
             android:text="Post Publish Failed !"
             android:textColor="@color/white"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_12ssp"
             android:textStyle="bold" />
     </RelativeLayout>
 

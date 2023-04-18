@@ -21,7 +21,8 @@ object RepoModule {
         locationTrackBackgroundService: LocationTrackBackgroundService,
         getLocationService: GetLocationService,
         location: userLocation,
-        firebaseService: FirebaseService
+        firebaseService: FirebaseService,
+        locationServices: LocationServices
     ): UserRepo {
         return userRepoImpl(
             apiService,
@@ -29,7 +30,8 @@ object RepoModule {
             locationTrackBackgroundService,
             getLocationService,
             location,
-            firebaseService
+            firebaseService,
+            locationServices
         )
     }
 

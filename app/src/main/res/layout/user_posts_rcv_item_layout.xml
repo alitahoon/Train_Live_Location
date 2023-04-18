@@ -28,6 +28,8 @@
                 android:layout_height="60dp"
                 android:layout_margin="15dp">
                 <de.hdodenhof.circleimageview.CircleImageView
+                    app:civ_border_width="@dimen/_1sdp"
+                    app:civ_border_color="@color/white"
                     android:id="@+id/post_rcv_item_profile_img"
                     android:layout_width="wrap_content"
                     app:setUserProfileImage="@{post.userPhone}"
@@ -81,10 +83,10 @@
                     android:layout_marginBottom="10dp"
                     android:textSize="18sp"/>
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
+                    android:layout_width="@dimen/_270sdp"
+                    android:layout_height="@dimen/_270sdp"
                     app:userphone="@{post.userPhone}"
-                    app:imageId="@{post.imgId}"
+                    app:imageId="@{post.id}"
                     android:src="@drawable/emptyicon"/>
 
             </LinearLayout>

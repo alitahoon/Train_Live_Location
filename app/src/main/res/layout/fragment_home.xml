@@ -14,83 +14,95 @@
         android:layout_height="match_parent"
         tools:context=".ui.Home"
         android:background="@color/white">
-        <androidx.cardview.widget.CardView
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/home_card_view"
-            android:onClick="@{viewmodel::onLocationCardBtn}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/_15sdp"
-            android:backgroundTint="@color/basicColor"
-            app:cardCornerRadius="@dimen/_50sdp"
-            app:cardElevation="@dimen/_20sdp"
+            android:background="@drawable/home_top_shape"
+            android:padding="@dimen/_40sdp"
+            android:elevation="@dimen/_15sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="@dimen/_15sdp">
+            <ImageView
+                android:id="@+id/home_card_train_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/home_card_train_icon" />
 
-                <ImageView
-                    android:id="@+id/home_card_train_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/home_card_train_icon"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.533" />
+            <TextView
+                android:id="@+id/home_card_train_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_40sdp"
+                android:drawableStart="@drawable/train_id"
+                android:drawablePadding="@dimen/_10sdp"
+                android:gravity="center"
+                android:text="Train ID"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_16ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/home_card_train_icon"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/home_card_train_id"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_40sdp"
-                    android:drawableStart="@drawable/train_id"
-                    android:drawablePadding="@dimen/_10sdp"
-                    android:gravity="center"
-                    android:text="Train ID"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_22ssp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@id/home_card_train_icon"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/home_txt_train_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/train_location"
+                android:drawablePadding="@dimen/_10sdp"
+                android:gravity="center"
+                android:text="80 KM"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/home_card_train_icon"
+                app:layout_constraintTop_toBottomOf="@id/home_card_train_id"
+                app:layout_constraintVertical_bias="0.461" />
 
-                <TextView
-                    android:id="@+id/home_txt_train_distance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/timer"
-                    android:drawablePadding="@dimen/_10sdp"
-                    android:gravity="center"
-                    android:text="2:13:30"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/_22ssp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@id/home_card_train_icon"
-                    app:layout_constraintTop_toBottomOf="@id/home_card_train_id"
-                    app:layout_constraintVertical_bias="0.461" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <EditText
+            android:hint="Type Train Id To Track"
+            android:textColorHint="@color/PrimaryColor"
+            android:padding="@dimen/_10sdp"
+            android:elevation="@dimen/_15sdp"
+            android:drawablePadding="@dimen/_5sdp"
+            android:drawableLeft="@drawable/train_id_txt"
+            android:textSize="@dimen/_12ssp"
+            android:layout_marginTop="-30dp"
+            android:id="@+id/home_track_train_txt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_50sdp"
+            android:background="@drawable/home_text_reduis"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/home_card_view" />
 
 
         <com.google.android.material.card.MaterialCardView
             android:onClick="@{viewmodel::onLocationBtn}"
             android:id="@+id/home_btn_location"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_100sdp"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
             android:layout_margin="@dimen/_15sdp"
             android:background="@color/white"
-            android:backgroundTint="@color/basicColor"
+            android:backgroundTint="@color/DarkPrimaryColor"
             app:cardCornerRadius="@dimen/_30sdp"
             app:cardElevation="@dimen/_20sdp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/home_card_view">
+            app:layout_constraintTop_toBottomOf="@+id/home_track_train_txt">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -100,7 +112,7 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_70sdp"
+                    android:layout_height="@dimen/_60sdp"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/location_home" />
 
@@ -108,14 +120,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_70sdp"
                     android:layout_weight="1"
-                    android:background="@color/white"
+                    android:background="@color/PrimaryColor"
                     android:gravity="center"
                     android:letterSpacing="0.1"
                     android:lineHeight="@dimen/_20sdp"
                     android:padding="@dimen/_10sdp"
                     android:text="@string/location"
-                    android:textColor="@color/basicColor"
-                    android:textSize="@dimen/_10ssp"
+                    android:textColor="@color/TextIcons"
+                    android:textSize="@dimen/_8ssp"
                     android:textStyle="bold" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -123,16 +135,16 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/home_btn_emergency"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_100sdp"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
             android:layout_margin="@dimen/_15sdp"
             android:background="@color/white"
-            android:backgroundTint="@color/basicColor"
+            android:backgroundTint="@color/DarkPrimaryColor"
             app:cardCornerRadius="@dimen/_30sdp"
             app:cardElevation="@dimen/_20sdp"
             app:layout_constraintLeft_toRightOf="@id/home_btn_location"
             app:layout_constraintRight_toLeftOf="@id/home_btn_posts"
-            app:layout_constraintTop_toBottomOf="@+id/home_card_view">
+            app:layout_constraintTop_toBottomOf="@+id/home_track_train_txt">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -141,8 +153,8 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_70sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_60sdp"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/groups" />
 
@@ -150,13 +162,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_70sdp"
                     android:layout_weight="1"
-                    android:background="@color/white"
+                    android:background="@color/PrimaryColor"
                     android:gravity="center"
                     android:letterSpacing="0.1"
                     android:lineHeight="@dimen/_20sdp"
                     android:padding="@dimen/_10sdp"
                     android:text="@string/passengers"
-                    android:textColor="@color/basicColor"
+                    android:textColor="@color/TextIcons"
                     android:textSize="@dimen/_10ssp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -165,15 +177,15 @@
         <com.google.android.material.card.MaterialCardView
             android:onClick="@{viewmodel::onPostsBtn}"
             android:id="@+id/home_btn_posts"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_100sdp"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
             android:layout_margin="@dimen/_15sdp"
             android:background="@color/white"
-            android:backgroundTint="@color/basicColor"
+            android:backgroundTint="@color/DarkPrimaryColor"
             app:cardCornerRadius="@dimen/_30sdp"
             app:cardElevation="@dimen/_20sdp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/home_card_view">
+            app:layout_constraintTop_toBottomOf="@+id/home_track_train_txt">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -183,7 +195,7 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_70sdp"
+                    android:layout_height="@dimen/_60sdp"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/posts" />
 
@@ -191,13 +203,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_70sdp"
                     android:layout_weight="1"
-                    android:background="@color/white"
+                    android:background="@color/PrimaryColor"
                     android:gravity="center"
                     android:letterSpacing="0.1"
                     android:lineHeight="@dimen/_20sdp"
                     android:padding="@dimen/_10sdp"
                     android:text="@string/posts"
-                    android:textColor="@color/basicColor"
+                    android:textColor="@color/TextIcons"
                     android:textSize="@dimen/_10ssp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -205,11 +217,11 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/home_btn_tickets"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_100sdp"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
             android:layout_margin="@dimen/_15sdp"
             android:background="@color/white"
-            android:backgroundTint="@color/basicColor"
+            android:backgroundTint="@color/DarkPrimaryColor"
             app:cardCornerRadius="@dimen/_30sdp"
             app:cardElevation="@dimen/_20sdp"
             app:layout_constraintStart_toStartOf="parent"
@@ -223,7 +235,7 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_70sdp"
+                    android:layout_height="@dimen/_60sdp"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/ticket" />
 
@@ -231,13 +243,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_70sdp"
                     android:layout_weight="1"
-                    android:background="@color/white"
+                    android:background="@color/PrimaryColor"
                     android:gravity="center"
                     android:letterSpacing="0.1"
                     android:lineHeight="@dimen/_20sdp"
                     android:padding="@dimen/_10sdp"
                     android:text="@string/tickets"
-                    android:textColor="@color/basicColor"
+                    android:textColor="@color/TextIcons"
                     android:textSize="@dimen/_10ssp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -245,11 +257,11 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/home_btn_chat"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_100sdp"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
             android:layout_margin="@dimen/_15sdp"
             android:background="@color/white"
-            android:backgroundTint="@color/basicColor"
+            android:backgroundTint="@color/DarkPrimaryColor"
             app:cardCornerRadius="@dimen/_30sdp"
             app:cardElevation="@dimen/_20sdp"
             app:layout_constraintEnd_toStartOf="@id/home_btn_explore_good_path"
@@ -264,7 +276,7 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_70sdp"
+                    android:layout_height="@dimen/_60sdp"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/chat_icon" />
 
@@ -272,13 +284,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_70sdp"
                     android:layout_weight="1"
-                    android:background="@color/white"
+                    android:background="@color/PrimaryColor"
                     android:gravity="center"
                     android:letterSpacing="0.1"
                     android:lineHeight="@dimen/_20sdp"
                     android:padding="@dimen/_10sdp"
                     android:text="@string/chat"
-                    android:textColor="@color/basicColor"
+                    android:textColor="@color/TextIcons"
                     android:textSize="@dimen/_10ssp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -286,11 +298,11 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/home_btn_explore_good_path"
-            android:layout_width="@dimen/_100sdp"
-            android:layout_height="@dimen/_100sdp"
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
             android:layout_margin="@dimen/_15sdp"
             android:background="@color/white"
-            android:backgroundTint="@color/basicColor"
+            android:backgroundTint="@color/DarkPrimaryColor"
             app:cardCornerRadius="@dimen/_30sdp"
             app:cardElevation="@dimen/_20sdp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -304,7 +316,7 @@
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_70sdp"
+                    android:layout_height="@dimen/_60sdp"
                     android:layout_weight="1"
                     app:srcCompat="@drawable/explore" />
 
@@ -312,13 +324,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_70sdp"
                     android:layout_weight="1"
-                    android:background="@color/white"
+                    android:background="@color/PrimaryColor"
                     android:gravity="center"
                     android:letterSpacing="0.1"
                     android:lineHeight="@dimen/_20sdp"
                     android:padding="@dimen/_10sdp"
                     android:text="@string/abbreviation"
-                    android:textColor="@color/basicColor"
+                    android:textColor="@color/TextIcons"
                     android:textSize="@dimen/_10ssp"
                     android:textStyle="bold" />
             </LinearLayout>

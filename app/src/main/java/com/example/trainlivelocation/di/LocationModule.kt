@@ -33,7 +33,10 @@ object LocationModule {
     fun ProvideUserLocation(context: Context): userLocation {
         return userLocation(context)
     }
-
+    @Provides
+    fun ProvideLocationServices(context: Context): LocationServices {
+        return LocationServices(context)
+    }
 
 
 }

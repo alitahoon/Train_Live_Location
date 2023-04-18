@@ -8,12 +8,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.trainlivelocation.databinding.DialogFragmentLocationLayoutBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LocationDialogFragment : BottomSheetDialogFragment() {
+    private val args by navArgs<LocationDialogFragmentArgs>()
     private val locationDialogFragmentViewModel:LocationDialogFragmentViewModel? by activityViewModels()
     private var _binding: DialogFragmentLocationLayoutBinding? = null
     private val binding get() = _binding!!
@@ -48,7 +50,7 @@ class LocationDialogFragment : BottomSheetDialogFragment() {
         locationDialogFragmentViewModel?.shareLocationBtn?.observe(viewLifecycleOwner, Observer {
             if (it==true){
                 //btn ShareLocationBtn clicked
-                val action=LocationDialogFragmentDirections.actionLocationDialogFragmentToShareLocationFeature()
+                val action=LocationDialogFragmentDirections.actionLocationDialogFragmentToShareLocationFeature(args.userModel)
                 findNavController().navigate(action)
 
             }

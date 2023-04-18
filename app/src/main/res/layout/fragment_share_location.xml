@@ -26,34 +26,34 @@
             app:boxStrokeWidth="@dimen/_1sdp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/Register_btn_date_picker"
+                android:id="@+id/share_location_txt_train_id"
                 android:layout_width="match_parent"
-                android:gravity="center|start"
-                android:focusable="false"
-                android:onClick=""
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/white"
                 android:drawableLeft="@drawable/train_id_txt"
                 android:drawablePadding="@dimen/_10sdp"
+                android:focusable="false"
+                android:gravity="center|start"
                 android:hint="Train Id"
                 android:minHeight="@dimen/_48sdp"
+                android:onClick="@{viewmodel.onTxtTrainIdClicked}"
                 android:text="@={viewmodel.trainId}"
                 android:textColor="@color/textAlarmColor"
                 android:textColorHint="@color/textHintColorFirst"
-                android:textSize="@dimen/_18ssp" />
+                android:textSize="@dimen/_14ssp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/liveLocation_ShareTrainLocation"
+            android:id="@+id/shareLocation_btn_ShareTrainLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_80sdp"
             android:onClick="@{viewmodel::onBtnShareTrainLocationClicked}"
-            android:padding="@dimen/_15sdp"
+            android:padding="@dimen/_10sdp"
             android:text="Share Location"
-            android:textSize="@dimen/_14ssp"
+            android:textSize="@dimen/_12ssp"
             android:textColor="@color/white"
-            app:cornerRadius="@dimen/_30sdp" />
+            app:cornerRadius="@dimen/_15sdp" />
 
         <TextView
             android:id="@+id/shareLocation_txt_para"

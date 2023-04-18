@@ -48,7 +48,7 @@ class Home : Fragment() {
     private fun setObservers() {
         homeViewModel?.locationBtn?.observe(viewLifecycleOwner, Observer {
             if (it==true){
-                val action= HomeDirections.actionHomeToLocationDialogFragment()
+                val action= HomeDirections.actionHomeToLocationDialogFragment(userModel!!)
                 findNavController().navigate(action)
             }
         })

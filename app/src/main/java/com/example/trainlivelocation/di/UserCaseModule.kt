@@ -38,8 +38,8 @@ object UserCaseModule  {
         return SendImageToFirebaseStorage(userRepo)
     }
     @Provides
-    fun provideGetLocationLive(userRepo: UserRepo):GetLocationLive{
-        return GetLocationLive(userRepo)
+    fun provideGetLocationLive(userRepo: UserRepo):GetUserLocationLive{
+        return GetUserLocationLive(userRepo)
     }
 
     @Provides

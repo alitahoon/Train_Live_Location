@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -17,6 +18,7 @@ import com.example.domain.entity.Post
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.UserPostsRcvItemLayoutBinding
 import com.example.trainlivelocation.ui.Add_post_fragment
+import com.facebook.shimmer.Shimmer
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.firebase.storage.FirebaseStorage
 
@@ -39,16 +41,23 @@ fun <T> setRecyclerViewProperties(recyclerView: RecyclerView, data: T) {
 }
 
 @BindingAdapter("userphone","imageId")
-fun setImage(imageView: ImageView, userphone: String?,imageId:String?) {
+fun setImage(imageView: ImageView, userphone: String?,imageId:Int?) {
     val storage: FirebaseStorage = FirebaseStorage.getInstance()
     // Create a storage reference from our app
     val storageRef = storage.reference
-    Glide.with(imageView.context)
-        .load("${storageRef}postsImages/${userphone}/${imageId}")
-        .placeholder(R.drawable.emptyicon)
-        .into(imageView)
+    Log.i("setImage","${storageRef}postsImages/${userphone}/${imageId}")
+    storageRef.child("postsImages/${userphone}/${imageId}").downloadUrl.addOnSuccessListener {
+        Glide.with(imageView.context)
+            .load(it)
+            .placeholder(R.drawable.emptyicon)
+            .into(imageView)
+
+    }.addOnFailureListener{
+        Log.i("setImageAdapterBinding","addOnFailureListener ${it.message}")
+    }
 
 }
+
 
 
 @BindingAdapter("setUserProfileImage")
@@ -57,9 +66,16 @@ fun setUserProfileImage(imageView: ImageView, userphone: String?) {
     // Create a storage reference from our app
     val storageRef = storage.reference
     Log.i("setUserProfileImage","${storageRef}ProfileImages/+20${userphone}")
-    Glide.with(imageView.context)
-        .load("${storageRef}/ProfileImages/${userphone}")
-        .placeholder(R.drawable.post_profile_icon)
-        .into(imageView)
+    storageRef.child("/profileImages/+20${userphone}").downloadUrl.addOnSuccessListener {
+        Glide.with(imageView.context)
+            .load(it)
+            .placeholder(R.drawable.post_profile_icon)
+            .into(imageView)
+
+    }.addOnFailureListener{
+        Log.i("setUserProfileImage","addOnFailureListener ${it.message}")
+    }
+
+
 
 }

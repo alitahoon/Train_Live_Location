@@ -36,11 +36,18 @@
         <action
             android:id="@+id/action_locationDialogFragment_to_trackLocationFeature"
             app:destination="@id/trackLocationFeature" />
+        <argument
+            android:name="userModel"
+            app:argType="com.example.domain.entity.userResponseItem" />
     </dialog>
     <fragment
         android:id="@+id/shareLocationFeature"
         android:name="com.example.trainlivelocation.ui.ShareLocationFeature"
-        android:label="ShareLocationFeature" />
+        android:label="ShareLocationFeature" >
+        <argument
+            android:name="userModel"
+            app:argType="com.example.domain.entity.userResponseItem" />
+    </fragment>
     <fragment
         android:id="@+id/trackLocationFeature"
         android:name="com.example.trainlivelocation.ui.TrackLocationFeature"

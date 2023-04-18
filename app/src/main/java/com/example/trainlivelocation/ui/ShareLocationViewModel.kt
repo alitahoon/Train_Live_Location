@@ -1,5 +1,6 @@
 package com.example.trainlivelocation.ui
 
+import Resource
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -10,13 +11,14 @@ import androidx.lifecycle.*
 import com.example.domain.entity.*
 import com.example.domain.usecase.*
 import com.example.trainlivelocation.utli.LiveLocationListener
+import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ShareLocationViewModel @Inject constructor(
-    private val getLocationLive: GetLocationLive,
+    private val getUserLocationLive: GetUserLocationLive,
     private val addLiveLoctationToApi: AddLiveLoctationToApi,
     private val startLocationUpdate: StartLocationUpdate,
     private val stopLocationUpdate: StopLocationUpdate,
@@ -29,10 +31,11 @@ class ShareLocationViewModel @Inject constructor(
     lateinit var locationLiveData: LiveData<LocationDetails>
     private val TAG: String? = "ShareLocationViewModel"
     private lateinit var activity: Activity
-    lateinit var liveLocationListener: LiveLocationListener
+    var btnShareTrainLocationClicked= SingleLiveEvent<Boolean>()
+    var txtTrainIdClicked= SingleLiveEvent<Boolean>()
 
-    private val _trainLocationMeta: MutableLiveData<Location_Request_with_id?> = MutableLiveData(null)
-    val trainLocationLive: LiveData<Location_Request_with_id?> = _trainLocationMeta
+    private val _sharedTrainLocation: MutableLiveData<Resource<Location_Request_with_id>?> = MutableLiveData(null)
+    val sharedTrainLocation: LiveData<Resource<Location_Request_with_id>?> = _sharedTrainLocation
 
     //get activity context from fragment
     fun setbaseActivity(baseActivity: Activity) {
@@ -40,12 +43,17 @@ class ShareLocationViewModel @Inject constructor(
     }
 
     //handle share train Location
+    fun onTxtTrainIdClicked(view: View) {
+        txtTrainIdClicked.postValue(true)
+    }
     fun onBtnShareTrainLocationClicked(view: View) {
-        liveLocationListener.onBtnShareTrainLocationClicked()
+        btnShareTrainLocationClicked.postValue(true)
     }
     fun setLiveLocation(){
         viewModelScope.launch {
-            locationLiveData=getLocationLive()
+            getUserLocationLive{
+                locationLiveData=it
+            }
         }
     }
 
@@ -75,18 +83,14 @@ class ShareLocationViewModel @Inject constructor(
         activity.stopService(locationBackgroundservice)
     }
 
-    fun uplaodLocationToApi(longtude: Float, latitude: Float) {
+    fun uplaodLocationToApi(longtude: Float, latitude: Float,userId:Int?) {
         Log.e(TAG,"uplaodLocationToApi")
         Log.e(TAG,longtude.toString()+" "+latitude.toString())
+        _sharedTrainLocation.value=Resource.Loading
         viewModelScope.launch {
-           var result=addLiveLoctationToApi(Location_Request(longtude, latitude,trainId!!.toInt(),2))
-            if (result.isSuccessful){
-                if (result.body()!=null){
-                    _trainLocationMeta.postValue(result.body())
-                }
-            }else{
-                Log.e(TAG,result.message())
-            }
+           addLiveLoctationToApi(Location_Request(latitude,longtude,trainId!!.toInt(),userId!!)){
+               _sharedTrainLocation.value=it
+           }
         }
     }
 

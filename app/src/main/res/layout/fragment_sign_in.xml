@@ -97,7 +97,7 @@
                     android:text="@string/forget_password"
                     android:textAllCaps="true"
                     android:textColor="@color/basicColor"
-                    android:textSize="@dimen/_14ssp"
+                    android:textSize="@dimen/_10ssp"
                     app:layout_constraintEnd_toEndOf="@+id/signin_txt_password"
                     app:layout_constraintHorizontal_bias="0.938"
                     app:layout_constraintStart_toStartOf="parent"
@@ -106,12 +106,12 @@
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/sign_btn_sign_in"
                     android:layout_width="match_parent"
-                    android:layout_marginHorizontal="@dimen/_80sdp"
+                    android:layout_marginHorizontal="@dimen/_90sdp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_30sdp"
                     app:cornerRadius="@dimen/_30sdp"
-                    android:textSize="@dimen/_16ssp"
-                    android:padding="@dimen/_15sdp"
+                    android:textSize="@dimen/_12ssp"
+                    android:padding="@dimen/_10sdp"
                     android:backgroundTint="@color/btn_background"
                     android:text="@string/sign_in_without_underScore"
                     android:textColor="@color/white"
@@ -124,7 +124,7 @@
                     android:id="@+id/linearLayout4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/_24sdp"
+                    android:layout_margin="@dimen/_15sdp"
                     android:gravity="center"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -137,7 +137,7 @@
                         android:layout_gravity="right"
                         android:text="Don't have account ?"
                         android:textColor="@color/textHintColorSecond"
-                        android:textSize="@dimen/_16ssp"
+                        android:textSize="@dimen/_10ssp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -150,7 +150,7 @@
                         android:onClick="@{viewmodel::onSignUpBtnClicked}"
                         android:text="@string/sign_up"
                         android:textColor="@color/basicColor"
-                        android:textSize="@dimen/_16sdp"
+                        android:textSize="@dimen/_10sdp"
                         android:textStyle="bold" />
                 </LinearLayout>
 
@@ -180,7 +180,7 @@
                     android:gravity="center"
                     android:letterSpacing="0.1"
                     android:text="@string/please_wait"
-                    android:textSize="@dimen/_16ssp"
+                    android:textSize="@dimen/_12ssp"
                     android:textStyle="bold"
                     android:textColor="@color/basicColor" />
             </LinearLayout>

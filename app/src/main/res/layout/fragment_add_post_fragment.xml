@@ -125,8 +125,11 @@
             android:layout_height="wrap_content"
             android:id="@+id/add_post_btn_submit"
             android:text="@string/add_post_submit"
+            android:textSize="@dimen/_10ssp"
+            android:padding="@dimen/_5sdp"
+            android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/white"
-            android:layout_marginHorizontal="@dimen/_120sdp"
+            android:layout_marginHorizontal="@dimen/_100sdp"
             app:cornerRadius="@dimen/_30sdp"
             android:onClick="@{()->viewModel.onSubmitButtonClick()}"/>
 

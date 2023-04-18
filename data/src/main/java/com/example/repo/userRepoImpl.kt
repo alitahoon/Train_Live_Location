@@ -11,7 +11,6 @@ import com.example.domain.entity.*
 import com.example.domain.repo.UserRepo
 import com.google.android.gms.location.LocationRequest
 import com.google.firebase.auth.*
-import retrofit2.Response
 
 class userRepoImpl(
     private val apiService: ApiService,
@@ -19,7 +18,8 @@ class userRepoImpl(
     private val locationTrackBackgroundService: LocationTrackBackgroundService,
     private val getLocationService: GetLocationService,
     private val getUserLocation: userLocation,
-    private val firebaseService: FirebaseService
+    private val firebaseService: FirebaseService,
+    private val locationServices: LocationServices
 ) : UserRepo {
     private val TAG: String? = "userRepoImpl"
     override suspend fun getUserData(
@@ -93,8 +93,8 @@ class userRepoImpl(
         locationLive.startLocationUpdate(locationRequest)
     }
 
-    override suspend fun GetUserLocationLive(): LiveData<LocationDetails> {
-        return locationLive
+    override suspend fun GetUserLocationLive(result:(LiveData<LocationDetails>)->Unit) {
+        result.invoke(locationLive)
     }
 
     override suspend fun getLocationTrackBackgroundService(
@@ -110,12 +110,32 @@ class userRepoImpl(
         return getLocationService
     }
 
-    override suspend fun addLiveLoctationToApi(locationRequest: Location_Request): Response<Location_Request_with_id> =
-        apiService.AddLocation(locationRequest)
+    override suspend fun addLiveLoctationToApi(locationRequest: Location_Request,result: (Resource<Location_Request_with_id>) -> Unit){
+        var res=apiService.AddLocation(locationRequest)
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke((Resource.Failure("addLiveLoctationToApi -> Error response body = null :${res.body()}")))
+            }
+        } else {
+            result.invoke((Resource.Failure("addLiveLoctationToApi -> ${res.message()}")))
+        }
 
-    override suspend fun getLiveLoctationFromApi(trainid: Int): Response<Location_Response> =
-        apiService.GetLocation(trainid)
+    }
 
+    override suspend fun getLiveLoctationFromApi(trainid: Int,result:(Resource<Location_Response>)->Unit){
+        var res=apiService.GetLocation(trainid)
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke((Resource.Failure("getLiveLoctationFromApi -> Error response body = null :${res.body()}")))
+            }
+        } else {
+            result.invoke((Resource.Failure("getLiveLoctationFromApi -> ${res.message()}")))
+        }
+    }
     override suspend fun createPost(post: Post, result: (Resource<PostModelResponse>) -> Unit) {
         var res = apiService.CreatePost(post)
         if (res.isSuccessful) {

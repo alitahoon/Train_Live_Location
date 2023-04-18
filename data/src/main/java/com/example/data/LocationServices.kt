@@ -1,5 +1,6 @@
 package com.example.data
 
+import Resource
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
@@ -8,6 +9,7 @@ import android.os.Looper
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.domain.entity.LocationDetails
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -15,13 +17,17 @@ import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import org.greenrobot.eventbus.EventBus
 
-class LocationLive(private val context: Context) : LiveData<LocationDetails>() {
-    private val TAG:String?="LocationLive"
+class LocationServices(private  val context: Context) {
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+    private val TAG:String?="LocationLive"
     //    private var locationRequest: com.google.android.gms.location.LocationRequest? = null
-    private var interval:Long?=null
-    override fun onActive() {
-        super.onActive()
+    private var interval: Long? = null
+
+    private var _locationResource: MutableLiveData<Resource<LocationDetails>>? =
+        MutableLiveData(null)
+    var locationResource: LiveData<Resource<LocationDetails>>? = _locationResource
+
+    internal fun init(){
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -30,24 +36,40 @@ class LocationLive(private val context: Context) : LiveData<LocationDetails>() {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            return
         }
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
             location.also {
                 setLocationData(it)
+                _locationResource!!.value =
+                    Resource.Success(LocationDetails(it.longitude.toFloat(), it.latitude.toFloat()))
             }
+        }.addOnFailureListener {
+            _locationResource!!.value =
+                Resource.Failure("Failed to get User Location -> ${it.message}")
         }
     }
 
     private fun setLocationData(location: Location?) {
         location?.let { location ->
-            value = LocationDetails(location.longitude.toFloat(), location.latitude.toFloat())
-            EventBus.getDefault().post(LocationDetails(location.longitude.toFloat(), location.latitude.toFloat()))
-            Log.i("Location is", location.longitude.toString() +"***"+location.latitude.toString())
+             val value = LocationDetails(location.longitude.toFloat(), location.latitude.toFloat())
+            EventBus.getDefault()
+                .post(LocationDetails(location.longitude.toFloat(), location.latitude.toFloat()))
+            Log.i(
+                TAG,
+                location.longitude.toString() + "***" + location.latitude.toString()
+            )
         }
     }
+    fun setInterVal(interval: Long) {
+        this.interval = interval
+    }
 
-    internal  fun startLocationUpdate(locationRequest: LocationRequest) {
+    internal fun getUserLiveLocation(): Resource<LocationDetails>{
+        return locationResource!!.value!!
+    }
+
+    internal fun startLocationUpdate(locationRequest: LocationRequest) {
+        Log.i(TAG,"startLocationUpdate")
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -65,8 +87,7 @@ class LocationLive(private val context: Context) : LiveData<LocationDetails>() {
             Looper.getMainLooper()
         )
     }
-    internal fun stopLocationLiveUpdate(){
-        Log.i(TAG,"stopLocationLiveUpdate")
+    internal fun stopLocationLiveUpdate() {
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
@@ -79,21 +100,4 @@ class LocationLive(private val context: Context) : LiveData<LocationDetails>() {
             }
         }
     }
-
-
-    override fun onInactive() {
-        super.onInactive()
-        fusedLocationClient.removeLocationUpdates(locationCallback)
-    }
-    fun setInterVal(interval:Long){
-        this.interval=interval
-    }
-
-//    private fun createLocationRequest() {
-//        locationRequest = LocationRequest.create()
-//        locationRequest?.interval = interval!!
-//        locationRequest?.fastestInterval = interval!!/4
-//        locationRequest?.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-//    }
-
 }

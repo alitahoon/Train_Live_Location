@@ -53,15 +53,23 @@ class Add_post_fragment : Fragment() {
                 //add image to firebase
                 var imageUri = postImageUri
 
+                var critical: Boolean = true
+                addPostFragmentViewmodel?.post_redio_checked?.observe(viewLifecycleOwner, Observer {
+                    critical = it
+                })
 
-
-
-                addPostFragmentViewmodel?.sendPostImageToFirebase(imageUri!!, "postsImages/${userModel!!.phone}/${userModel!!.id}")
-
-                addPostFragmentViewmodel?.sendPostImageToFirebase!!.observe(viewLifecycleOwner,
-                    Observer {
-                        binding.addPostProgressBar.setVisibility(View.VISIBLE)
-                    })
+                addPostFragmentViewmodel?.addPost(
+                    Post(
+                        binding.addPostTxtPostContent.text?.trim().toString(),
+                        binding.addPostTxtTrainId.text?.trim().toString().toInt(),
+                        critical,
+                        "postsImages/${userModel!!.phone}/${userModel!!.id}",
+                        userModel!!.id,
+                        userModel!!.phone,
+                        userModel!!.name,
+                        "${userModel!!.id}"
+                    )
+                )
 
 
             }
@@ -74,24 +82,7 @@ class Add_post_fragment : Fragment() {
                 }
                 is Resource.Success->{
                     binding.addPostProgressBar.setVisibility(View.INVISIBLE)
-
-                    var critical: Boolean = true
-                    addPostFragmentViewmodel?.post_redio_checked?.observe(viewLifecycleOwner, Observer {
-                        critical = it
-                    })
-
-                    addPostFragmentViewmodel?.addPost(
-                        Post(
-                            binding.addPostTxtPostContent.text?.trim().toString(),
-                            binding.addPostTxtTrainId.text?.trim().toString().toInt(),
-                            critical,
-                            "postsImages/${userModel!!.phone}/${userModel!!.id}",
-                            userModel!!.id,
-                            userModel!!.phone,
-                            userModel!!.name,
-                            "${userModel!!.id}"
-                        )
-                    )
+                    getSnakbar(binding.addPostBtnSubmit,com.example.trainlivelocation.R.layout.custom_snake_bar_add_post_success_layout).show()
                 }
                 is Resource.Failure->{
                     binding.addPostProgressBar.setVisibility(View.INVISIBLE)
@@ -110,8 +101,7 @@ class Add_post_fragment : Fragment() {
                 }
                 is Resource.Success->{
                     Log.e(TAG,"${it}")
-                    binding.addPostProgressBar.setVisibility(View.INVISIBLE)
-                    getSnakbar(binding.addPostBtnSubmit,com.example.trainlivelocation.R.layout.custom_snake_bar_add_post_success_layout).show()
+                    addPostFragmentViewmodel?.sendPostImageToFirebase(postImageUri!!, "postsImages/${userModel!!.phone}/${it.data.id}")
                 }
                 is Resource.Failure->{
                     Log.e(TAG,"${it.error}")
