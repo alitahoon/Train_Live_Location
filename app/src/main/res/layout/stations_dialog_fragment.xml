@@ -37,7 +37,7 @@
             android:minHeight="@dimen/_48sdp"
             android:textColor="@color/basicColor"
             android:textColorHint="@color/textHintColorFirst"
-            android:textSize="@dimen/_12ssp" />
+            android:textSize="@dimen/_12ssp" />s
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_marginTop="@dimen/_15sdp"

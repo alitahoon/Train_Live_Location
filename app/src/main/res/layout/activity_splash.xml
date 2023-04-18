@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.splash"
-    android:background="#187498">
+    android:background="@color/DarkPrimaryColor">
 
 
     <com.google.android.material.appbar.AppBarLayout
@@ -19,10 +19,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="@color/btn_background"
+            app:contentScrim="@color/DarkPrimaryColor"
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
             android:id="@+id/splash_CollapsingToolbarLayout"
-            android:background="@color/btn_background"
+            android:background="@color/DarkPrimaryColor"
             app:title="@string/app_name"
             app:expandedTitleGravity="center|bottom"
             app:expandedTitleTextAppearance="@style/ExpandedAppBarTextStyle"
@@ -79,9 +79,9 @@
 
 
     <androidx.core.widget.NestedScrollView
-        android:fillViewport="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fillViewport="true"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <androidx.fragment.app.FragmentContainerView
@@ -98,12 +98,6 @@
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
             app:navGraph="@navigation/user_sign_nav_graph" />
     </androidx.core.widget.NestedScrollView>
-
-
-
-
-
-
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

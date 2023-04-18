@@ -61,7 +61,7 @@
                     android:layout_marginVertical="@dimen/_24sdp"
                     android:layout_marginStart="@dimen/_49sdp"
                     android:layout_marginEnd="@dimen/_49sdp"
-                    app:boxStrokeColor="@color/basicColor"
+                    app:boxStrokeColor="@color/PrimaryColor"
                     app:boxStrokeWidth="@dimen/_1sdp"
                     android:layout_marginBottom="@dimen/_560sdp"
                     android:textColorHint="@color/textHintColorFirst"
