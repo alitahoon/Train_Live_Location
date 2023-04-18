@@ -6,13 +6,14 @@
     app:cardCornerRadius="@dimen/_15sdp"
     android:layout_margin="@dimen/_10sdp"
     app:strokeWidth="@dimen/_1sdp"
-    app:strokeColor="@color/secondColor"
+    app:strokeColor="@color/PrimaryColor"
     android:elevation="@dimen/_20sdp"
     >
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/_10sdp"
+        android:orientation="horizontal"
         android:background="@color/textAlarmColor">
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
@@ -23,9 +24,9 @@
             >
 
             <ImageView
-                android:layout_width="@dimen/_60sdp"
-                android:layout_height="@dimen/_60sdp"
-                android:background="@color/secondColor"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:background="@color/textHintColorFirst"
                 android:padding="@dimen/_5sdp"
                 android:src="@drawable/app_logo"
                 app:tint="@color/white" />
@@ -52,11 +53,7 @@
         <TextView
             android:id="@+id/custom_snake_bar_txt_id_value"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/custom_snake_bar_txt_id"
-            android:layout_alignEnd="@+id/custom_snake_bar_txt_id"
-            android:layout_alignBottom="@+id/custom_snake_bar_txt_id"
-            android:layout_toEndOf="@+id/custom_snake_bar_logo"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:text="356"
             android:textColor="@color/white"
@@ -67,9 +64,7 @@
         <View
             android:layout_width="@dimen/_1sdp"
             android:id="@+id/spiltter"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/custom_snake_bar_logo"
-            android:layout_alignBottom="@+id/custom_snake_bar_logo"
+            android:layout_height="match_parent"
             android:layout_marginHorizontal="@dimen/_5sdp"
             android:layout_toEndOf="@+id/custom_snake_bar_txt_id"
             android:background="@color/white" />
@@ -77,16 +72,12 @@
         <TextView
             android:id="@+id/custom_snake_bar_txt"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/custom_snake_bar_logo"
-            android:layout_alignBottom="@+id/custom_snake_bar_logo"
-            android:layout_alignParentEnd="true"
-            android:layout_toEndOf="@+id/spiltter"
+            android:layout_height="match_parent"
             android:gravity="center"
             android:text="Post Publish Failed !"
             android:textColor="@color/white"
             android:textSize="@dimen/_12ssp"
             android:textStyle="bold" />
-    </RelativeLayout>
+    </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

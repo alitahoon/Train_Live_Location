@@ -6,15 +6,16 @@
     app:cardCornerRadius="@dimen/_15sdp"
     android:layout_margin="@dimen/_10sdp"
     app:strokeWidth="@dimen/_1sdp"
-    app:strokeColor="@color/secondColor"
+    app:strokeColor="@color/PrimaryColor"
     android:elevation="@dimen/_20sdp"
     >
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/custom_type_snake_bar_root_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/_10sdp"
-        android:background="@color/basicColor">
+        android:orientation="horizontal"
+        android:background="@color/DarkPrimaryColor">
         <com.google.android.material.card.MaterialCardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,42 +25,34 @@
             >
 
             <ImageView
-                android:layout_width="@dimen/_60sdp"
-                android:layout_height="@dimen/_60sdp"
-                android:background="@color/secondColor"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:background="@color/PrimaryColor"
                 android:padding="@dimen/_5sdp"
                 android:src="@drawable/app_logo"
                 app:tint="@color/white" />
         </com.google.android.material.card.MaterialCardView>
 
 
-
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/custom_type_snake_bar_lotti"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginHorizontal="@dimen/_5sdp"
             app:lottie_autoPlay="true"
             app:lottie_loop="false"
-            android:layout_width="@dimen/_1sdp"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/custom_type_snake_bar_logo"
-            android:layout_alignBottom="@+id/custom_type_snake_bar_logo"
-            android:layout_marginHorizontal="@dimen/_5sdp"
-            android:layout_toStartOf="@+id/custom_type_snake_bar_txt"
-            android:layout_toEndOf="@+id/custom_type_snake_bar_logo"
-            app:lottie_rawRes="@raw/location_share_success"/>
+            app:lottie_rawRes="@raw/location_shared_success" />
 
         <TextView
             android:id="@+id/custom_type_snake_bar_txt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/custom_type_snake_bar_logo"
-            android:layout_alignBottom="@+id/custom_type_snake_bar_logo"
-            android:layout_alignParentEnd="true"
-            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
             android:gravity="center"
             android:text="Location Shared Successfully"
             android:textColor="@color/white"
             android:textSize="@dimen/_12ssp"
             android:textStyle="bold" />
-    </RelativeLayout>
+    </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>
