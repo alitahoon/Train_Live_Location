@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.domain.entity.Post
+import com.example.domain.entity.PostModelResponse
 import com.example.trainlivelocation.databinding.FragmentAllPostsBinding
 import com.example.trainlivelocation.utli.FragmentLifecycle
 import com.example.trainlivelocation.utli.PostCustomAdapter
@@ -94,19 +95,21 @@ class AllPosts : Fragment() , PostListener, FragmentLifecycle {
 
     }
 
-    override fun OnCommentClickListener(post: Post) {
+    override fun OnCommentClickListener(post: PostModelResponse) {
+        var dialog = Add_post_comment(post)
+        var childFragmentManager = getChildFragmentManager()
+        dialog.show(childFragmentManager, "Add_post_comment")
+    }
+
+    override fun OnReportClickListener(post: PostModelResponse) {
         TODO("Not yet implemented")
     }
 
-    override fun OnReportClickListener(post: Post) {
+    override fun OnDeleteClickListener(post: PostModelResponse) {
         TODO("Not yet implemented")
     }
 
-    override fun OnDeleteClickListener(post: Post) {
-        TODO("Not yet implemented")
-    }
-
-    override fun OnSettingClickListener(post: Post) {
+    override fun OnSettingClickListener(post: PostModelResponse) {
         TODO("Not yet implemented")
     }
 

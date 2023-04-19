@@ -68,4 +68,5 @@ interface UserRepo {
     suspend fun getImageFromFirebaseStorage(imageRef:String?,result: (Resource<Uri>) -> Unit)
 
     suspend fun createPostComment(commentRequest: CommentRequest,result: (Resource<CommentResponse>) -> Unit)
+    suspend fun getCommentsForPostUsingId(postId:Int?,result: (Resource<ArrayList<PostCommentsResponseItem>>)->Unit)
 }

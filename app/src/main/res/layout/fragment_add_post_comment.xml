@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewmodel"
-            type="com.example.trainlivelocation.ui.add_post_comment_viewModel" />
+            type="com.example.trainlivelocation.ui.Add_post_comment_viewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,7 +22,7 @@
             tools:listitem="@layout/post_comment_item_layout"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toTopOf="@+id/editText"
+            app:layout_constraintBottom_toTopOf="@+id/add_post_txt_add_comment_linear_layout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -43,21 +43,40 @@
                 <include layout="@layout/post_comment_item_layout_shimmer"/>
             </LinearLayout>
         </com.facebook.shimmer.ShimmerFrameLayout>
-
-        <EditText
-            android:id="@+id/add_post_txt_comment"
+        <LinearLayout
+            android:gravity="center"
+            android:id="@+id/add_post_txt_add_comment_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_15sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:background="@drawable/txt_input_train_id_train_item"
-            android:hint="Write a comment"
-            android:padding="@dimen/_10sdp"
-            android:textColorHint="@color/textHintColorFirst"
-            android:textSize="@dimen/_14ssp"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginBottom="@dimen/_5sdp">
+            <EditText
+                android:id="@+id/add_post_txt_comment"
+                android:layout_width="match_parent"
+                android:layout_weight="0.2"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:background="@drawable/txt_input_train_id_train_item"
+                android:hint="Write a comment"
+                android:padding="@dimen/_10sdp"
+                android:textColorHint="@color/textHintColorFirst"
+                android:textSize="@dimen/_14ssp"
+             />
+            <ImageView
+                android:onClick="@{viewmodel::onbtnSendCommentClicked}"
+                android:id="@+id/add_post_comment_btn_send_comment"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_gravity="center"
+                android:layout_weight="1.8"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_30sdp"
+                android:src="@drawable/send_30"/>
+        </LinearLayout>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

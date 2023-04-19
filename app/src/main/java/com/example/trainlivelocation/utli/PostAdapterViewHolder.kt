@@ -12,5 +12,8 @@ class PostAdapterViewHolder(
     fun bind(post:PostModelResponse) {
         binding.post = post
         binding.listener=postListener
+//        binding.postsBtnComment.setOnClickListener {
+//            postListener.OnCommentClickListener()
+//        }
     }
 }

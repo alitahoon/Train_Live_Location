@@ -111,6 +111,7 @@
                     android:gravity="center|start"
                     android:textColor="@color/white"
                     android:text="@string/comments"
+                    android:onClick="@{() -> listener.OnCommentClickListener(post)}"
                     android:drawablePadding="5dp"
                     android:drawableStart="@drawable/comment_icon"/>
 
@@ -119,10 +120,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="5dp"
-                    android:drawableStart="@drawable/post_time"
+                    android:drawableStart="@drawable/train_id"
                     android:drawablePadding="5dp"
                     android:gravity="center|start"
-                    android:text="2:32 AM"
+                    android:text="@{post.trainNumber}"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10ssp" />
 
