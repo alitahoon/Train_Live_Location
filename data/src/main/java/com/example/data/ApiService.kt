@@ -37,8 +37,8 @@ interface ApiService {
 
 
     //Comments
-    @GET("/api/Comment/GetAllComments")
-    suspend fun GetAllComments(): Response<List<Comment>>
+    @GET("/api/Comment/GetCommentsForPost/{PostId}")
+    suspend fun GetPostComments(@Path("PostId") postId:Int?): Response<ArrayList<PostCommentsResponseItem>>
 
     @GET("/api/Comment/GetComment/{id}")
     suspend fun GetComment(@Path("id") commentId: Int): Response<Comment>

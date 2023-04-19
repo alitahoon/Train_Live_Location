@@ -35,3 +35,13 @@ fun setAdapter(
         recyclerView.adapter = it
     }
 }
+
+@BindingAdapter("setCommentRCVAdapter")
+fun setAdapter(
+    recyclerView: RecyclerView,
+    adapter: CommentCustomAdapter
+) {
+    adapter?.let {
+        recyclerView.adapter = it
+    }
+}

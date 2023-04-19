@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.ActivityMainBinding
 import com.example.trainlivelocation.databinding.HeaderNavMenuLayoutBinding
+import com.example.trainlivelocation.utli.toast
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -44,6 +45,9 @@ class MainActivity : AppCompatActivity() {
         })
         mainActivityViewModel!!.getUserDataFromsharedPreference()
         setObservers()
+        binding.mainActivityBtnDrawerMenu.setOnClickListener{
+            binding.mainActivityDrwerLayout.openDrawer(GravityCompat.START)
+        }
         setContentView(binding.root)
 
     }
@@ -51,7 +55,7 @@ class MainActivity : AppCompatActivity() {
     private fun setObservers() {
         mainActivityViewModel!!.menuBtnClicked.observe(this){
             if (it==true){
-                Log.e(TAG,"menuBtnClicked")
+                toast("hhhh")
                 binding.mainActivityDrwerLayout.openDrawer(GravityCompat.START)
             }
         }

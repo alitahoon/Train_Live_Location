@@ -5,26 +5,25 @@
     android:background="@color/white">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_60sdp">
+        android:layout_height="wrap_content"
+        android:background="@color/DarkPrimaryColor"
+        android:padding="@dimen/_5sdp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/main_activity_ci_profile_image"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_50sdp"
+            android:layout_width="@dimen/_40sdp"
+            android:layout_height="@dimen/_40sdp"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
             android:layout_marginStart="@dimen/_2sdp"
-            android:layout_marginTop="@dimen/_2sdp"
             android:layout_marginEnd="@dimen/_2sdp"
-            android:layout_marginBottom="@dimen/_2sdp"
             android:src="@color/textHintColorFirst" />
 
         <View
-            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:id="@+id/main_activity_ci_profile_name"
             android:layout_width="@dimen/_60sdp"
-            android:layout_height="@dimen/_7sdp"
+            android:layout_height="@dimen/_4sdp"
             android:layout_alignParentTop="true"
             android:layout_marginEnd="@dimen/_2sdp"
             android:layout_toStartOf="@+id/main_activity_ci_profile_image"
@@ -37,9 +36,9 @@
         <View
             android:id="@+id/main_activity_ci_profile_jop"
             android:layout_width="@dimen/_50sdp"
-            android:layout_height="@dimen/_7sdp"
+            android:layout_height="@dimen/_4sdp"
             android:layout_alignTop="@id/main_activity_ci_profile_name"
-            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginTop="@dimen/_15sdp"
             android:layout_marginEnd="@dimen/_2sdp"
             android:background="@color/textHintColorFirst"
             android:layout_toStartOf="@+id/main_activity_ci_profile_image"

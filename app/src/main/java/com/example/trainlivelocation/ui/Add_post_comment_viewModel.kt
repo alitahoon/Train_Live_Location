@@ -10,8 +10,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.CommentRequest
 import com.example.domain.entity.CommentResponse
+import com.example.domain.entity.PostCommentsResponseItem
 import com.example.domain.entity.userResponseItem
 import com.example.domain.usecase.CreatePostComment
+import com.example.domain.usecase.GetCommentsForPostUsingId
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,30 +21,43 @@ import javax.inject.Inject
 @HiltViewModel
 class Add_post_comment_viewModel @Inject constructor(
     private val createPostComment: CreatePostComment,
+    private val getCommentsForPostUsingId: GetCommentsForPostUsingId,
     private val context: Context
 ) : ViewModel(){
 
     var btnSendCommentClicked= SingleLiveEvent<Boolean>()
     private val sharedPrefFile = "UserToken"
 
-    private val _postComment: MutableLiveData<Resource<CommentResponse>>? = MutableLiveData(null)
-    val postComment: LiveData<Resource<CommentResponse>>? = _postComment
+    private val _uploadComment: MutableLiveData<Resource<CommentResponse>>? = MutableLiveData(null)
+    val uploadComment: LiveData<Resource<CommentResponse>>? = _uploadComment
+
+    private val _postComments: MutableLiveData<Resource<ArrayList<PostCommentsResponseItem>>>? = MutableLiveData(null)
+    val postComments: LiveData<Resource<ArrayList<PostCommentsResponseItem>>>? = _postComments
 
     private val _userData: MutableLiveData<userResponseItem?> = MutableLiveData(null)
     val userData: LiveData<userResponseItem?> = _userData
 
 
     fun sendPostCommentToApi(commentRequest: CommentRequest){
-        _postComment!!.value=Resource.Loading
+        _uploadComment!!.value=Resource.Loading
         viewModelScope.launch {
             createPostComment(commentRequest){
-                _postComment.value=it
+                _uploadComment!!.value=it
             }
         }
     }
 
     fun onbtnSendCommentClicked(view: View){
         btnSendCommentClicked.postValue(true)
+    }
+
+    fun getPostComments(postId:Int?){
+        _postComments!!.value=Resource.Loading
+        viewModelScope.launch {
+            getCommentsForPostUsingId(postId){
+                _postComments!!.value=it
+            }
+        }
     }
 
     fun getUserDataFromsharedPreference() {

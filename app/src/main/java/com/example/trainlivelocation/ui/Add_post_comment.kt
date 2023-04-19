@@ -1,25 +1,31 @@
 package com.example.trainlivelocation.ui
 
 import Resource
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.domain.entity.CommentRequest
+import com.example.domain.entity.PostCommentsResponseItem
 import com.example.domain.entity.PostModelResponse
 import com.example.domain.entity.userResponseItem
 import com.example.trainlivelocation.databinding.FragmentAddPostCommentBinding
+import com.example.trainlivelocation.utli.CommentCustomAdapter
+import com.example.trainlivelocation.utli.CommentListener
 import com.example.trainlivelocation.utli.toast
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
+
 
 @AndroidEntryPoint
-class Add_post_comment(var post:PostModelResponse) : BottomSheetDialogFragment() {
+class Add_post_comment(var post:PostModelResponse) : BottomSheetDialogFragment() ,CommentListener{
 
     private val TAG: String? = "Add_post_comment"
     private lateinit var binding: FragmentAddPostCommentBinding
@@ -37,8 +43,11 @@ class Add_post_comment(var post:PostModelResponse) : BottomSheetDialogFragment()
             .apply {
                 this.viewmodel = addPostCommentFragmentViewModel
             }
+        txtCommentFocus()
         addPostCommentFragmentViewModel.getUserDataFromsharedPreference()
+        addPostCommentFragmentViewModel.getPostComments(post.id)
         setObservers()
+        binding.adapter=setAdapterItems()
 
         return binding.root
     }
@@ -59,17 +68,16 @@ class Add_post_comment(var post:PostModelResponse) : BottomSheetDialogFragment()
                         )
                 )
 
-                addPostCommentFragmentViewModel.postComment!!.observe(viewLifecycleOwner, Observer {
+                addPostCommentFragmentViewModel.uploadComment!!.observe(viewLifecycleOwner, Observer {
                     when(it){
                         is Resource.Loading->{
                             toast("Sending Comment...")
                         }
                         is Resource.Success->{
-//                            binding.addPostRCVComment.visibility=View.INVISIBLE
-//                            binding.addPostCommentShimmer.visibility=View.VISIBLE
                             toast("Comment send Successfully")
                             binding.addPostTxtComment.setText("")
                             Log.i(TAG,"${it.data}")
+                            addPostCommentFragmentViewModel.getPostComments(post.id)
                         }
                         is Resource.Failure->{
                             toast("Comment send Failure")
@@ -87,8 +95,57 @@ class Add_post_comment(var post:PostModelResponse) : BottomSheetDialogFragment()
             userModel = it
         })
     }
+    private fun setAdapterItems(): CommentCustomAdapter {
+        val adapter= CommentCustomAdapter(this)
+        addPostCommentFragmentViewModel.postComments!!.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is Resource.Loading->{
+                    binding.addPostRCVComment.setVisibility(View.INVISIBLE)
+                    binding.addPostCommentShimmer.setVisibility(View.VISIBLE)
+                }
+                is Resource.Success->{
+                    binding.addPostRCVComment.setVisibility(View.VISIBLE)
+                    binding.addPostCommentShimmer.setVisibility(View.INVISIBLE)
+                    Log.i(TAG,"${it.data}")
+                    adapter.setData(it.data)
+                }
+                is Resource.Failure->{
+                    binding.addPostRCVComment.setVisibility(View.VISIBLE)
+                    binding.addPostCommentShimmer.setVisibility(View.INVISIBLE)
+                    Log.e(TAG,"${it.error}")
+                }
+                else -> {
+
+                }
+            }
+        })
+        return adapter
+    }
 
     companion object {
         var userModel: userResponseItem? = null
+    }
+
+    override fun OnReportClickListener(post: PostCommentsResponseItem) {
+        TODO("Not yet implemented")
+    }
+
+    override fun OnDeleteClickListener(post: PostCommentsResponseItem) {
+        TODO("Not yet implemented")
+    }
+
+    override fun OnChatClickListener(post: PostCommentsResponseItem) {
+        toast("chat clicked")
+    }
+    fun txtCommentFocus(){
+        binding.addPostTxtComment.requestFocus()
+        binding.addPostTxtComment.setSelection(binding.addPostTxtComment.text.length)
+        binding.addPostTxtComment.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                val imm: InputMethodManager? =
+                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+                imm!!.showSoftInput(binding.addPostTxtComment, InputMethodManager.SHOW_IMPLICIT)
+            }
+        })
     }
 }

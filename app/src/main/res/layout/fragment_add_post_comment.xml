@@ -5,6 +5,9 @@
 
     <data>
         <variable
+            name="adapter"
+            type="com.example.trainlivelocation.utli.CommentCustomAdapter" />
+        <variable
             name="viewmodel"
             type="com.example.trainlivelocation.ui.Add_post_comment_viewModel" />
     </data>
@@ -16,8 +19,10 @@
         android:background="@color/DarkPrimaryColor">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:paddingTop="@dimen/_30sdp"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            setCommentRCVAdapter="@{adapter}"
             android:id="@+id/add_post_RCV_comment"
             tools:listitem="@layout/post_comment_item_layout"
             android:orientation="vertical"
@@ -54,6 +59,9 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginBottom="@dimen/_5sdp">
             <EditText
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:id="@+id/add_post_txt_comment"
                 android:layout_width="match_parent"
                 android:layout_weight="0.2"

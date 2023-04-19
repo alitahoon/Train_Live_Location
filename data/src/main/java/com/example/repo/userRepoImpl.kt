@@ -232,6 +232,22 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun getCommentsForPostUsingId(
+        postId: Int?,
+        result: (Resource<ArrayList<PostCommentsResponseItem>>) -> Unit
+    ) {
+        var res=apiService.GetPostComments(postId)
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke((Resource.Failure("getCommentsForPostUsingId -> Error response body = null :${res.body()}")))
+            }
+        } else {
+            result.invoke((Resource.Failure("getCommentsForPostUsingId -> ${res.message()}")))
+        }
+    }
+
 
     override suspend fun getUserLocation(callback: (LocationDetails) -> Unit) =
         getUserLocation.getLocationWithLocationManger(callback)!!

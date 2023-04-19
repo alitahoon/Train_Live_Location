@@ -4,6 +4,7 @@ import Resource
 import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
+import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -22,6 +23,7 @@ class MainActivityViewModel @Inject constructor(
     private val context: Context,
     private val getImageFromFirebaseStorage: GetImageFromFirebaseStorage
 ) :ViewModel(){
+    private val TAG:String?="MainActivityViewModel"
     private val sharedPrefFile = "UserToken"
     var menuBtnClicked= SingleLiveEvent<Boolean>()
 
@@ -62,6 +64,7 @@ class MainActivityViewModel @Inject constructor(
     }
 
     fun onMenuBtnClicked(view: View){
+        Log.i(TAG,"hhhh")
         menuBtnClicked.postValue(true)
     }
 }

@@ -120,6 +120,10 @@ object UserCaseModule  {
     fun providCreatePostComment(userRepo: UserRepo) :CreatePostComment{
         return CreatePostComment(userRepo)
     }
+    @Provides
+    fun providGetCommentsForPostUsingId(userRepo: UserRepo) :GetCommentsForPostUsingId{
+        return GetCommentsForPostUsingId(userRepo)
+    }
 
 
 

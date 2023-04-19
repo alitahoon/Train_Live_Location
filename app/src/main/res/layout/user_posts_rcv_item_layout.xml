@@ -116,14 +116,14 @@
                     android:drawableStart="@drawable/comment_icon"/>
 
                 <TextView
-                    android:id="@+id/posts_btn_post_time"
+                    android:id="@+id/posts_btn_post_trainId"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginHorizontal="5dp"
                     android:drawableStart="@drawable/train_id"
                     android:drawablePadding="5dp"
                     android:gravity="center|start"
-                    android:text="@{post.trainNumber}"
+                    android:text="912"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10ssp" />
 

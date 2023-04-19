@@ -4,22 +4,23 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewmodel"
             type="com.example.trainlivelocation.ui.MainActivityViewModel" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/main_activity_drwer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.MainActivity"
         android:background="@color/white"
-        android:id="@+id/main_activity_drwer_layout">
+        tools:context=".ui.MainActivity">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <com.google.android.material.appbar.AppBarLayout
                 android:id="@+id/home_appBar_layout"
@@ -43,27 +44,30 @@
                     app:expandedTitleGravity="center|bottom"
                     app:expandedTitleTextAppearance="@style/ExpandedAppBarTextStyle"
                     app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
+
                     <LinearLayout
                         android:id="@+id/home_action_bar"
                         android:layout_width="match_parent"
                         android:layout_height="?actionBarSize"
-                        android:gravity="center"
-                        android:orientation="horizontal"
-                        android:paddingStart="@dimen/_15sdp"
-                        android:paddingEnd="@dimen/_15sdp"
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:background="@color/DarkPrimaryColor"
+                        android:gravity="center"
+                        android:orientation="horizontal"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:onClick="@{viewmodel::onMenuBtnClicked}"
-                        >
-
+                        app:layout_constraintTop_toTopOf="parent">
+                        <ImageView
+                            android:id="@+id/main_activity_btn_drawer_menu"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            app:srcCompat="@drawable/menu"
+                            android:layout_marginStart="@dimen/_10sdp"/>
                         <RelativeLayout
                             android:id="@+id/main_activity_layoutAfterLoading"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:background="@color/DarkPrimaryColor">
+                            android:background="@color/DarkPrimaryColor"
+                            android:paddingHorizontal="@dimen/_10sdp">
 
                             <de.hdodenhof.circleimageview.CircleImageView
                                 android:id="@+id/main_activity_ci_profile_image"
@@ -74,18 +78,18 @@
                                 android:layout_alignParentBottom="true"
                                 android:layout_marginStart="2dp"
                                 android:layout_marginTop="2dp"
-                                app:civ_border_width="@dimen/_1sdp"
-                                app:civ_border_color="@color/TextIcons"
                                 android:layout_marginEnd="2dp"
                                 android:layout_marginBottom="2dp"
-                                android:src="@drawable/profile_image" />
+                                android:src="@drawable/profile_image"
+                                app:civ_border_color="@color/TextIcons"
+                                app:civ_border_width="@dimen/_1sdp" />
 
                             <TextView
-                                android:layout_marginTop="10dp"
                                 android:id="@+id/main_activity_ci_profile_name"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:layout_alignParentTop="true"
+                                android:layout_marginTop="10dp"
                                 android:layout_marginEnd="2dp"
                                 android:layout_toStartOf="@+id/main_activity_ci_profile_image"
                                 android:layout_toLeftOf="@id/main_activity_ci_profile_image"
@@ -106,19 +110,6 @@
                                 android:text="@string/profile_jop"
                                 android:textColor="@color/TextIcons"
                                 android:textSize="12sp" />
-
-                            <ImageView
-                                android:onClick="@{viewmodel::onMenuBtnClicked}"
-                                android:id="@+id/main_activity_btn_drawer_menu"
-                                android:layout_width="wrap_content"
-                                android:layout_height="match_parent"
-                                android:layout_alignParentStart="true"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentBottom="true"
-                                android:layout_marginStart="0dp"
-                                android:layout_marginTop="-1dp"
-                                android:layout_marginBottom="1dp"
-                                app:srcCompat="@drawable/menu" />
                         </RelativeLayout>
 
                         <com.facebook.shimmer.ShimmerFrameLayout
@@ -126,7 +117,14 @@
                             android:id="@+id/main_activity_layoutBeforeLoading"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
-                            <include layout="@layout/user_profile_shimmer"/>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
+
+                                <include layout="@layout/user_profile_shimmer" />
+                            </LinearLayout>
                         </com.facebook.shimmer.ShimmerFrameLayout>
 
 
@@ -137,10 +135,10 @@
             </com.google.android.material.appbar.AppBarLayout>
 
             <androidx.core.widget.NestedScrollView
-                android:layout_weight="1"
                 android:id="@+id/nestedScrollView2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:fillViewport="true"
                 app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -162,22 +160,22 @@
             </androidx.core.widget.NestedScrollView>
 
             <com.ashokvarma.bottomnavigation.BottomNavigationBar
-                android:layout_width="match_parent"
-                android:background="@color/PrimaryColor"
-                app:bnbBackgroundColor="@color/PrimaryColor"
                 android:id="@+id/bottom_navigation_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:layout_height="wrap_content" />
+                android:background="@color/PrimaryColor"
+                app:bnbBackgroundColor="@color/PrimaryColor" />
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/main_activity_navigation_view"
             android:layout_width="wrap_content"
-            app:menu="@menu/home_menu"
-            app:headerLayout="@layout/header_nav_menu_layout"
-            android:backgroundTint="@color/PrimaryColor"
             android:layout_height="match_parent"
-            android:layout_gravity="start" />
+            android:layout_gravity="start"
+            android:backgroundTint="@color/PrimaryColor"
+            app:headerLayout="@layout/header_nav_menu_layout"
+            app:menu="@menu/home_menu" />
     </androidx.drawerlayout.widget.DrawerLayout>
 </layout>
