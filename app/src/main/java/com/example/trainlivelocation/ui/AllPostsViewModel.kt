@@ -21,7 +21,9 @@ class AllPostsViewModel @Inject constructor(
     private val _allPosts:MutableLiveData<Resource<ArrayList<PostModelResponse>>>?= MutableLiveData(null)
     val allPosts:MutableLiveData<Resource<ArrayList<PostModelResponse>>>?= _allPosts
 
-
+    init {
+        getPosts()
+    }
     fun getPosts(){
         _allPosts!!.value=Resource.Loading
         viewModelScope.launch {

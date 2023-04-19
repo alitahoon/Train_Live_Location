@@ -90,6 +90,6 @@ class Home : Fragment() ,Train_Dialog_Listener{
     }
 
     override fun onTrainSelected(trainId: Int?, trainDegree: String?) {
-        binding!!.homeTrackTrainTxt.setText(trainId!!)
+        binding!!.homeTrackTrainTxt.setText(trainId!!.toString())
     }
 }

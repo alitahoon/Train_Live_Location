@@ -22,7 +22,7 @@
             android:layout_marginVertical="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_28sdp"
             android:textColorHint="@color/textHintColorFirst"
-            app:boxStrokeColor="@color/basicColor"
+            app:boxStrokeColor="@color/PrimaryColor"
             app:boxStrokeWidth="@dimen/_1sdp">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -47,13 +47,15 @@
             android:id="@+id/shareLocation_btn_ShareTrainLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_80sdp"
+            android:backgroundTint="@color/PrimaryColor"
+            android:layout_marginHorizontal="@dimen/_70sdp"
             android:onClick="@{viewmodel::onBtnShareTrainLocationClicked}"
             android:padding="@dimen/_10sdp"
             android:text="Share Location"
+            android:textAllCaps="false"
             android:textSize="@dimen/_12ssp"
             android:textColor="@color/white"
-            app:cornerRadius="@dimen/_15sdp" />
+            app:cornerRadius="@dimen/_20sdp" />
 
         <TextView
             android:id="@+id/shareLocation_txt_para"
@@ -63,7 +65,7 @@
             android:layout_marginVertical="@dimen/_20sdp"
             android:visibility="gone"
             android:gravity="start"
-            android:background="@color/fourth"
+            android:background="@color/PrimaryColor"
             android:padding="@dimen/_10sdp"
             android:lineHeight="@dimen/_30sdp"
             android:text="@string/share_location_para"

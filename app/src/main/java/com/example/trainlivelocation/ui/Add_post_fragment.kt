@@ -17,11 +17,13 @@ import androidx.lifecycle.Observer
 import com.example.domain.entity.Post
 import com.example.domain.entity.userResponseItem
 import com.example.trainlivelocation.databinding.FragmentAddPostFragmentBinding
+import com.example.trainlivelocation.utli.FragmentLifecycle
+import com.example.trainlivelocation.utli.toast
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.SnackbarLayout
 
 
-class Add_post_fragment : Fragment() {
+class Add_post_fragment : Fragment(),FragmentLifecycle {
     private val TAG: String? = "Add_post_fragment"
     private lateinit var binding: FragmentAddPostFragmentBinding
     private val addPostFragmentViewmodel: Add_post_fragment_ViewModel by activityViewModels()
@@ -71,49 +73,49 @@ class Add_post_fragment : Fragment() {
                     )
                 )
 
+                addPostFragmentViewmodel!!.sendPostImageToFirebase!!.observe(viewLifecycleOwner, Observer {
+                    when(it){
+                        is Resource.Loading->{
+                            binding.addPostProgressBar.setVisibility(View.VISIBLE)
+                        }
+                        is Resource.Success->{
+                            binding.addPostProgressBar.setVisibility(View.INVISIBLE)
+                            getSnakbar(binding.addPostBtnSubmit,com.example.trainlivelocation.R.layout.custom_snake_bar_add_post_success_layout).show()
+                        }
+                        is Resource.Failure->{
+                            binding.addPostProgressBar.setVisibility(View.INVISIBLE)
+                            getSnakbar(binding.addPostBtnSubmit,com.example.trainlivelocation.R.layout.custom_snake_bar_add_post_failed_layout).show()
+                        }
+                        else -> {
+                            Log.i(TAG, "Failed else brunch")
+                        }
+                    }
+                })
+
+                addPostFragmentViewmodel!!.post?.observe(viewLifecycleOwner, Observer {
+                    when(it){
+                        is Resource.Loading->{
+                            binding.addPostProgressBar.setVisibility(View.VISIBLE)
+                        }
+                        is Resource.Success->{
+                            Log.e(TAG,"${it}")
+                            addPostFragmentViewmodel?.sendPostImageToFirebase(postImageUri!!, "postsImages/${userModel!!.phone}/${it.data.id}")
+                        }
+                        is Resource.Failure->{
+                            Log.e(TAG,"${it.error}")
+                            binding.addPostProgressBar.setVisibility(View.INVISIBLE)
+                            getSnakbar(binding.addPostBtnSubmit,com.example.trainlivelocation.R.layout.custom_snake_bar_add_post_failed_layout).show()
+                        }
+                        else -> {
+                            binding.addPostProgressBar.setVisibility(View.INVISIBLE)
+                            Log.i(TAG, "Failed else brunch")
+                        }
+                    }
+                })
 
             }
         })
 
-        addPostFragmentViewmodel!!.sendPostImageToFirebase!!.observe(viewLifecycleOwner, Observer {
-            when(it){
-                is Resource.Loading->{
-                    binding.addPostProgressBar.setVisibility(View.VISIBLE)
-                }
-                is Resource.Success->{
-                    binding.addPostProgressBar.setVisibility(View.INVISIBLE)
-                    getSnakbar(binding.addPostBtnSubmit,com.example.trainlivelocation.R.layout.custom_snake_bar_add_post_success_layout).show()
-                }
-                is Resource.Failure->{
-                    binding.addPostProgressBar.setVisibility(View.INVISIBLE)
-                    getSnakbar(binding.addPostBtnSubmit,com.example.trainlivelocation.R.layout.custom_snake_bar_add_post_failed_layout).show()
-                }
-                else -> {
-                    Log.i(TAG, "Failed else brunch")
-                }
-            }
-        })
-
-        addPostFragmentViewmodel!!.post?.observe(viewLifecycleOwner, Observer {
-            when(it){
-                is Resource.Loading->{
-                    binding.addPostProgressBar.setVisibility(View.VISIBLE)
-                }
-                is Resource.Success->{
-                    Log.e(TAG,"${it}")
-                    addPostFragmentViewmodel?.sendPostImageToFirebase(postImageUri!!, "postsImages/${userModel!!.phone}/${it.data.id}")
-                }
-                is Resource.Failure->{
-                    Log.e(TAG,"${it.error}")
-                    binding.addPostProgressBar.setVisibility(View.INVISIBLE)
-                    getSnakbar(binding.addPostBtnSubmit,com.example.trainlivelocation.R.layout.custom_snake_bar_add_post_failed_layout).show()
-                }
-                else -> {
-                    binding.addPostProgressBar.setVisibility(View.INVISIBLE)
-                    Log.i(TAG, "Failed else brunch")
-                }
-            }
-        })
 
         addPostFragmentViewmodel?.btnChooseImageClicked?.observe(viewLifecycleOwner, Observer {
             if (it == true) {
@@ -166,5 +168,13 @@ class Add_post_fragment : Fragment() {
 
     companion object {
         var userModel: userResponseItem? = null
+    }
+
+    override fun onPauseFragment() {
+        toast("onPauseFragment")
+    }
+
+    override fun onResumeFragment() {
+        toast("onResumeFragment")
     }
 }

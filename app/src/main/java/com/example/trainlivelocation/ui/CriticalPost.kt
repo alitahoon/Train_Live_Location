@@ -9,13 +9,16 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.domain.entity.Post
 import com.example.trainlivelocation.databinding.FragmentCriticalPostBinding
+import com.example.trainlivelocation.utli.FragmentLifecycle
 import com.example.trainlivelocation.utli.PostCustomAdapter
 import com.example.trainlivelocation.utli.PostListener
+import com.example.trainlivelocation.utli.toast
 
 
-class CriticalPost : Fragment() , PostListener {
+class CriticalPost : Fragment() , PostListener ,FragmentLifecycle {
 
     private lateinit var binding:FragmentCriticalPostBinding
+    private var flagFirstTimeRunning:Boolean=false
     private val criticalpostsViewModel:CriticalPostViewModel? by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,6 +37,7 @@ class CriticalPost : Fragment() , PostListener {
         binding.adapter=setAdapterItems()
 
         setObservers()
+        flagFirstTimeRunning=true
 
         return binding!!.root
     }
@@ -72,4 +76,15 @@ class CriticalPost : Fragment() , PostListener {
     override fun OnSettingClickListener(post: Post) {
         TODO("Not yet implemented")
     }
+
+    override fun onPauseFragment() {
+        if (flagFirstTimeRunning){
+            toast("onPauseFragment")
+        }
+    }
+
+    override fun onResumeFragment() {
+        if (flagFirstTimeRunning){
+            toast("onPauseFragment")
+        }    }
 }

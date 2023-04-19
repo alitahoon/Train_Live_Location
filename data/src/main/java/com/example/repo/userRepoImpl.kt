@@ -216,6 +216,22 @@ class userRepoImpl(
         firebaseService.getImageFromFireBaseStorage(imageRef, result)
     }
 
+    override suspend fun createPostComment(
+        commentRequest: CommentRequest,
+        result: (Resource<CommentResponse>) -> Unit
+    ) {
+        var res=apiService.CreateComment(commentRequest)
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke((Resource.Failure("createPostComment -> Error response body = null :${res.body()}")))
+            }
+        } else {
+            result.invoke((Resource.Failure("createPostComment -> ${res.message()}")))
+        }
+    }
+
 
     override suspend fun getUserLocation(callback: (LocationDetails) -> Unit) =
         getUserLocation.getLocationWithLocationManger(callback)!!

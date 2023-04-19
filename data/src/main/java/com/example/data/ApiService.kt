@@ -44,13 +44,12 @@ interface ApiService {
     suspend fun GetComment(@Path("id") commentId: Int): Response<Comment>
 
     @POST("/api/Comment/CreateComment")
-    suspend fun CreateComment(): Response<Comment>
+    suspend fun CreateComment(@Body commentRequest: CommentRequest): Response<CommentResponse>
 
     @DELETE("/api/Comment/DeleteComment/{Id}")
     suspend fun DeleteComment(@Path("Id") commentId: Int): Response<Comment>
 
-    @PUT("/api/Comment/UpdateComment/{Id}")
-    suspend fun UpdateComment(@Path("Id") commentId: Int): Response<UpComment>
+
 
     //Payment
     @GET("/api/Payment/GetPayments")

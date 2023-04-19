@@ -70,9 +70,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginHorizontal="15dp">
+                >
 
                 <TextView
+                    android:layout_marginHorizontal="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@{post.content}"
@@ -80,7 +81,7 @@
                     android:layout_marginBottom="10dp"
                     android:textSize="18sp"/>
                 <ImageView
-                    android:layout_width="@dimen/_270sdp"
+                    android:layout_width="match_parent"
                     android:layout_height="@dimen/_270sdp"
                     app:userphone="@{post.userPhone}"
                     app:imageId="@{post.id}"
@@ -105,7 +106,7 @@
                     android:id="@+id/posts_btn_comment"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:textSize="12sp"
+                    android:textSize="@dimen/_10ssp"
                     android:layout_marginEnd="15dp"
                     android:gravity="center|start"
                     android:textColor="@color/white"
@@ -123,13 +124,13 @@
                     android:gravity="center|start"
                     android:text="2:32 AM"
                     android:textColor="@color/white"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/_10ssp" />
 
                 <TextView
                     android:id="@+id/posts_btn_report"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/_10ssp"
                     android:gravity="center|start"
                     android:drawablePadding="5dp"
                     android:layout_marginStart="15dp"

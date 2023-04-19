@@ -66,4 +66,6 @@ interface UserRepo {
     suspend fun getAllTrains(result: (Resource<ArrayList<TrainResponseItem>>) -> Unit)
 
     suspend fun getImageFromFirebaseStorage(imageRef:String?,result: (Resource<Uri>) -> Unit)
+
+    suspend fun createPostComment(commentRequest: CommentRequest,result: (Resource<CommentResponse>) -> Unit)
 }

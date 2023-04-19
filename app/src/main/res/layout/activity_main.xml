@@ -36,108 +36,101 @@
                     android:id="@+id/splash_CollapsingToolbarLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/white"
+                    android:background="@color/DarkPrimaryColor"
                     android:fitsSystemWindows="true"
                     app:collapsedTitleTextAppearance="@style/CollapsedAppBarTextStyle"
-                    app:contentScrim="@color/basicColor"
+                    app:contentScrim="@color/DarkPrimaryColor"
                     app:expandedTitleGravity="center|bottom"
                     app:expandedTitleTextAppearance="@style/ExpandedAppBarTextStyle"
                     app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                    <LinearLayout
+                        android:id="@+id/home_action_bar"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="?actionBarSize"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingStart="@dimen/_15sdp"
+                        android:paddingEnd="@dimen/_15sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:background="@color/DarkPrimaryColor"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:onClick="@{viewmodel::onMenuBtnClicked}"
+                        >
 
-                        <LinearLayout
-                            android:id="@+id/home_action_bar"
+                        <RelativeLayout
+                            android:id="@+id/main_activity_layoutAfterLoading"
                             android:layout_width="match_parent"
-                            android:layout_height="?actionBarSize"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:paddingStart="@dimen/_15sdp"
-                            android:paddingEnd="@dimen/_15sdp"
-                            android:background="@color/DarkPrimaryColor"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintRight_toRightOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            android:onClick="@{viewmodel::onMenuBtnClicked}"
-                            >
+                            android:layout_height="match_parent"
+                            android:background="@color/DarkPrimaryColor">
 
-                            <RelativeLayout
-                                android:id="@+id/main_activity_layoutAfterLoading"
-                                android:layout_width="match_parent"
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/main_activity_ci_profile_image"
+                                android:layout_width="@dimen/_60ssp"
+                                android:layout_height="@dimen/_60ssp"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentBottom="true"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginTop="2dp"
+                                app:civ_border_width="@dimen/_1sdp"
+                                app:civ_border_color="@color/TextIcons"
+                                android:layout_marginEnd="2dp"
+                                android:layout_marginBottom="2dp"
+                                android:src="@drawable/profile_image" />
+
+                            <TextView
+                                android:layout_marginTop="10dp"
+                                android:id="@+id/main_activity_ci_profile_name"
+                                android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:background="@color/DarkPrimaryColor">
+                                android:layout_alignParentTop="true"
+                                android:layout_marginEnd="2dp"
+                                android:layout_toStartOf="@+id/main_activity_ci_profile_image"
+                                android:layout_toLeftOf="@id/main_activity_ci_profile_image"
+                                android:text="@string/profile_name"
+                                android:textColor="@color/TextIcons"
+                                android:textSize="16sp" />
 
-                                <de.hdodenhof.circleimageview.CircleImageView
-                                    android:id="@+id/main_activity_ci_profile_image"
-                                    android:layout_width="@dimen/_60ssp"
-                                    android:layout_height="@dimen/_60ssp"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_alignParentBottom="true"
-                                    android:layout_marginStart="2dp"
-                                    android:layout_marginTop="2dp"
-                                    app:civ_border_width="@dimen/_1sdp"
-                                    app:civ_border_color="@color/TextIcons"
-                                    android:layout_marginEnd="2dp"
-                                    android:layout_marginBottom="2dp"
-                                    android:src="@drawable/profile_image" />
+                            <TextView
+                                android:id="@+id/main_activity_ci_profile_jop"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_alignTop="@id/main_activity_ci_profile_name"
+                                android:layout_alignParentBottom="true"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginEnd="2dp"
+                                android:layout_toStartOf="@+id/main_activity_ci_profile_image"
+                                android:layout_toLeftOf="@id/main_activity_ci_profile_image"
+                                android:text="@string/profile_jop"
+                                android:textColor="@color/TextIcons"
+                                android:textSize="12sp" />
 
-                                <TextView
-                                    android:layout_marginTop="10dp"
-                                    android:id="@+id/main_activity_ci_profile_name"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_marginEnd="2dp"
-                                    android:layout_toStartOf="@+id/main_activity_ci_profile_image"
-                                    android:layout_toLeftOf="@id/main_activity_ci_profile_image"
-                                    android:text="@string/profile_name"
-                                    android:textColor="@color/TextIcons"
-                                    android:textSize="16sp" />
+                            <ImageView
+                                android:onClick="@{viewmodel::onMenuBtnClicked}"
+                                android:id="@+id/main_activity_btn_drawer_menu"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentBottom="true"
+                                android:layout_marginStart="0dp"
+                                android:layout_marginTop="-1dp"
+                                android:layout_marginBottom="1dp"
+                                app:srcCompat="@drawable/menu" />
+                        </RelativeLayout>
 
-                                <TextView
-                                    android:id="@+id/main_activity_ci_profile_jop"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:layout_alignTop="@id/main_activity_ci_profile_name"
-                                    android:layout_alignParentBottom="true"
-                                    android:layout_marginTop="20dp"
-                                    android:layout_marginEnd="2dp"
-                                    android:layout_toStartOf="@+id/main_activity_ci_profile_image"
-                                    android:layout_toLeftOf="@id/main_activity_ci_profile_image"
-                                    android:text="@string/profile_jop"
-                                    android:textColor="@color/TextIcons"
-                                    android:textSize="12sp" />
-
-                                <ImageView
-                                    android:onClick="@{viewmodel::onMenuBtnClicked}"
-                                    android:id="@+id/main_activity_btn_drawer_menu"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:layout_alignParentStart="true"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_alignParentBottom="true"
-                                    android:layout_marginStart="0dp"
-                                    android:layout_marginTop="-1dp"
-                                    android:layout_marginBottom="1dp"
-                                    app:srcCompat="@drawable/menu" />
-                            </RelativeLayout>
-
-                            <com.facebook.shimmer.ShimmerFrameLayout
-                                android:visibility="gone"
-                                android:id="@+id/main_activity_layoutBeforeLoading"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-                                <include layout="@layout/user_profile_shimmer"/>
-                            </com.facebook.shimmer.ShimmerFrameLayout>
+                        <com.facebook.shimmer.ShimmerFrameLayout
+                            android:visibility="gone"
+                            android:id="@+id/main_activity_layoutBeforeLoading"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <include layout="@layout/user_profile_shimmer"/>
+                        </com.facebook.shimmer.ShimmerFrameLayout>
 
 
-                        </LinearLayout>
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
 
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -170,9 +163,8 @@
 
             <com.ashokvarma.bottomnavigation.BottomNavigationBar
                 android:layout_width="match_parent"
-                android:backgroundTint="@color/PrimaryColor"
                 android:background="@color/PrimaryColor"
-                app:bnbBackgroundColor="@color/TextIcons"
+                app:bnbBackgroundColor="@color/PrimaryColor"
                 android:id="@+id/bottom_navigation_bar"
                 android:layout_gravity="bottom"
                 android:layout_height="wrap_content" />

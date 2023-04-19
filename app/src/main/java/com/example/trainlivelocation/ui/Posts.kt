@@ -12,10 +12,12 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentPostsBinding
 import com.example.trainlivelocation.databinding.PostCustomTabBinding
+import com.example.trainlivelocation.utli.FragmentLifecycle
 import com.google.android.material.tabs.TabLayoutMediator
 
-class Posts : Fragment() {
 
+class Posts : Fragment() {
+    var adapter :ViewPagerAdapter?=null
     private val postsViewModel:PostsViewModel? by activityViewModels()
     private var binding: FragmentPostsBinding? = null
     private lateinit var customLayoutBinding: PostCustomTabBinding
@@ -24,6 +26,7 @@ class Posts : Fragment() {
         super.onCreate(savedInstanceState)
 
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,6 +37,7 @@ class Posts : Fragment() {
             .apply {
                 this.viewmodel=postsViewModel
             }
+        binding!!.postsTablayoutViewPager.isUserInputEnabled=false
         customLayoutBinding= PostCustomTabBinding.inflate(layoutInflater)
         createViewPager(binding?.postsTablayoutViewPager!!)
         TabLayoutMediator(binding?.postsTablayoutTabs!!,binding?.postsTablayoutViewPager!!){
@@ -45,6 +49,20 @@ class Posts : Fragment() {
 
             }
         }.attach()
+
+        binding!!.postsTablayoutViewPager.registerOnPageChangeCallback(object :ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(newPosition: Int) {
+                super.onPageSelected(newPosition)
+                var currentPosition=0
+                var fragmentToShow = adapter!!.createFragment(newPosition) as FragmentLifecycle
+                fragmentToShow.onResumeFragment()
+                var fragmentToHide = adapter!!.createFragment(currentPosition) as FragmentLifecycle
+                fragmentToHide.onPauseFragment()
+
+                currentPosition = newPosition
+            }
+        })
+
 //        createTabIcons()
         return binding?.root
     }
@@ -63,14 +81,14 @@ class Posts : Fragment() {
     }
 
     private fun createViewPager(viewPager: ViewPager2) {
-        val adapter :ViewPagerAdapter= ViewPagerAdapter(activity)
-        adapter.addFrag(Add_post_fragment(),"Add Post")
-        adapter.addFrag(AllPosts(),"All Posts")
-        adapter.addFrag(CriticalPost(),"Critical")
+        adapter=ViewPagerAdapter(activity)
+        adapter!!.addFrag(Add_post_fragment(),"Add Post")
+        adapter!!.addFrag(AllPosts(),"All Posts")
+        adapter!!.addFrag(CriticalPost(),"Critical")
         viewPager.adapter = adapter
     }
 
-    internal class ViewPagerAdapter(fragment: FragmentActivity?) :
+    class ViewPagerAdapter(fragment: FragmentActivity?) :
         FragmentStateAdapter(fragment!!) {
         private val mFragmentList: MutableList<Fragment> = ArrayList()
         private val mFragmentTitleList: MutableList<String> = ArrayList()
@@ -78,6 +96,7 @@ class Posts : Fragment() {
             mFragmentList.add(fragment!!)
             mFragmentTitleList.add(title!!)
         }
+
         override fun getItemCount(): Int =mFragmentList.size
 
         override fun createFragment(position: Int): Fragment =mFragmentList.get(position)

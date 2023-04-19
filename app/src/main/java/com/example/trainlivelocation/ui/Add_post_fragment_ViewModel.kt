@@ -51,6 +51,8 @@ class Add_post_fragment_ViewModel @Inject constructor(
     val sendPostImageToFirebase: LiveData<Resource<String>>? = _sendPostImageToFirebase
 
 
+
+
     fun setCritical() {
         post_redio_checked.postValue(true)
     }

@@ -169,7 +169,7 @@
 
                 <com.airbnb.lottie.LottieAnimationView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_300sdp"
+                    android:layout_height="@dimen/_250sdp"
                     app:lottie_autoPlay="true"
                     app:lottie_loop="true"
                     app:lottie_rawRes="@raw/loading_sign_in" />
@@ -182,7 +182,7 @@
                     android:text="@string/please_wait"
                     android:textSize="@dimen/_12ssp"
                     android:textStyle="bold"
-                    android:textColor="@color/basicColor" />
+                    android:textColor="@color/PrimaryColor" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 

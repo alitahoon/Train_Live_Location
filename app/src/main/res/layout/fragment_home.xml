@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/home_top_shape"
-            android:padding="@dimen/_40sdp"
+            android:paddingVertical="@dimen/_40sdp"
             android:elevation="@dimen/_15sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,6 +32,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.256"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/home_card_train_icon" />
@@ -75,8 +77,10 @@
         <EditText
             android:hint="Choose Train To Track"
             android:textColorHint="@color/PrimaryColor"
+            android:focusable="false"
             android:padding="@dimen/_10sdp"
             android:elevation="@dimen/_15sdp"
+            android:textColor="@color/PrimaryColor"
             android:onClick="@{viewmodel::onChooseTrainTxtClicked}"
             android:text="@{viewmodel.trainId}"
             android:drawablePadding="@dimen/_5sdp"

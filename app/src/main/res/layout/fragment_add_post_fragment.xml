@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/post_cover_color"
+        android:background="@color/DarkPrimaryColor"
         android:orientation="vertical">
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:layout_width="match_parent"
@@ -53,14 +53,14 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/add_post_txt_train_id"
                 android:layout_width="match_parent"
-                android:gravity="center|start|bottom"
                 android:layout_height="wrap_content"
+                android:background="#340AA1DD"
                 android:drawableLeft="@drawable/train_id_txt_add_post_fragment"
                 android:drawablePadding="@dimen/_10sdp"
-                android:text="@{viewModel._trainId}"
+                android:gravity="center|start|bottom"
                 android:hint="Train Id"
+                android:text="@{viewModel._trainId}"
                 android:textColor="@color/black"
-                android:background="#340AA1DD"
                 android:textSize="@dimen/_16ssp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,7 +78,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/_1sdp"
-            android:background="@color/white"/>
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:background="@color/textHintColorFirst"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -125,12 +126,13 @@
             android:layout_height="wrap_content"
             android:id="@+id/add_post_btn_submit"
             android:text="@string/add_post_submit"
+            android:backgroundTint="@color/PrimaryColor"
             android:textSize="@dimen/_10ssp"
             android:padding="@dimen/_5sdp"
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/white"
             android:layout_marginHorizontal="@dimen/_100sdp"
-            app:cornerRadius="@dimen/_30sdp"
+            app:cornerRadius="@dimen/_15sdp"
             android:onClick="@{()->viewModel.onSubmitButtonClick()}"/>
 
     </LinearLayout>

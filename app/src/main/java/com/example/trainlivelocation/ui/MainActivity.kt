@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding= ActivityMainBinding.inflate(layoutInflater)
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.statusBarColor = resources.getColor(com.example.trainlivelocation.R.color.basicColor)
+        window.statusBarColor = resources.getColor(com.example.trainlivelocation.R.color.DarkPrimaryColor)
         setBottomBarIcons()
         binding.bottomNavigationBar.setTabSelectedListener(object :
             BottomNavigationBar.OnTabSelectedListener {

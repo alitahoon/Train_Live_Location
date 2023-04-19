@@ -116,6 +116,12 @@ object UserCaseModule  {
         return GetAllTrains(userRepo)
     }
 
+    @Provides
+    fun providCreatePostComment(userRepo: UserRepo) :CreatePostComment{
+        return CreatePostComment(userRepo)
+    }
+
+
 
 
 
