@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat.getSystemService
@@ -149,14 +148,18 @@ class Add_post_comment(var post:PostModelResponse) : BottomSheetDialogFragment()
         toast("chat clicked")
     }
     fun txtCommentFocus(){
+        binding.addPostTxtComment.setOnFocusChangeListener(object  :View.OnFocusChangeListener{
+            override fun onFocusChange(view: View?, hasFocus: Boolean) {
+                if (hasFocus){
+                    val imm = requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
+                    imm!!.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)                }
+            }
+
+        })
         binding.addPostTxtComment.requestFocus()
         binding.addPostTxtComment.setSelection(binding.addPostTxtComment.text.length)
-        binding.addPostTxtComment.setOnFocusChangeListener(OnFocusChangeListener { v, hasFocus ->
-            if (hasFocus) {
-                val imm: InputMethodManager? =
-                    requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager?
-                imm!!.showSoftInput(binding.addPostTxtComment, InputMethodManager.SHOW_IMPLICIT)
-            }
-        })
+
     }
+
+
 }

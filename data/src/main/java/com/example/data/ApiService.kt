@@ -1,6 +1,9 @@
 package com.example.data
 
 import com.example.domain.entity.*
+import com.google.gson.Gson
+import okhttp3.ResponseBody
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -78,7 +81,7 @@ interface ApiService {
     suspend fun CreatePost(@Body post: Post): Response<PostModelResponse>
 
     @DELETE("/api/Post/DeletePost/{Id}")
-    suspend fun DeletePost(@Path("Id") postId: Int): Response<PostModelResponse>
+    suspend fun DeletePost(@Path("Id") postId: Int):Response<ResponseBody>
 
     @PUT("/api/Post/UpdatePost/{Id}")
     suspend fun UpdatePost(@Path("Id") postId: Int): Response<UpPost>

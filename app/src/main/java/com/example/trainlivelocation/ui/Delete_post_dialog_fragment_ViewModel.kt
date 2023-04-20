@@ -25,8 +25,8 @@ class Delete_post_dialog_fragment_ViewModel @Inject constructor(
     var btnYesClicked = SingleLiveEvent<Boolean>()
     var btnNoClicked = SingleLiveEvent<Boolean>()
 
-    private val _postDeleted: MutableLiveData<Resource<PostModelResponse?>> = MutableLiveData(null)
-    val postDeleted: LiveData<Resource<PostModelResponse?>> = _postDeleted
+    private val _postDeleted: MutableLiveData<Resource<String?>> = MutableLiveData(null)
+    val postDeleted: LiveData<Resource<String?>> = _postDeleted
 
     fun onbtnYesClicked(view: View){
         btnYesClicked.postValue(true)

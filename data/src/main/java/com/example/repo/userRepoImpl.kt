@@ -248,11 +248,11 @@ class userRepoImpl(
         }
     }
 
-    override suspend fun deletePostWithID(postId: Int?, result: (Resource<PostModelResponse>) -> Unit) {
+    override suspend fun deletePostWithID(postId: Int?, result: (Resource<String>) -> Unit) {
         var res=apiService.DeletePost(postId!!)
         if (res.isSuccessful) {
             if (res.body() != null) {
-                result.invoke(Resource.Success(res.body()!!))
+                result.invoke(Resource.Success("${res.body()!!}"))
             } else {
                 result.invoke((Resource.Failure("deletePostWithID -> Error response body = null :${res.body()}")))
             }

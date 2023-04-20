@@ -29,6 +29,13 @@
         <argument
             android:name="distance"
             app:argType="float" />
+        <action
+            android:id="@+id/action_home2_to_userProfile"
+            app:destination="@id/userProfile"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
     </fragment>
     <dialog
         android:id="@+id/locationDialogFragment"
@@ -94,6 +101,15 @@
         <argument
             android:name="trainLocation"
             app:argType="com.example.domain.entity.LocationDetails" />
+    </fragment>
+    <fragment
+        android:id="@+id/userProfile"
+        android:name="com.example.trainlivelocation.ui.UserProfile"
+        android:label="fragment_user_profile"
+        tools:layout="@layout/fragment_user_profile" >
+        <argument
+            android:name="userModel"
+            app:argType="com.example.domain.entity.userResponseItem" />
     </fragment>
 
 </navigation>

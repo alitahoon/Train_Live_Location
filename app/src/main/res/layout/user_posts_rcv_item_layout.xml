@@ -124,7 +124,7 @@
                     android:drawableStart="@drawable/train_id"
                     android:drawablePadding="5dp"
                     android:gravity="center|start"
-                    android:text="912"
+                    setTrainNumber="@{post.trainNumber}"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10ssp" />
 
@@ -140,6 +140,12 @@
                     android:text="@string/post_repot"
                     android:drawableStart="@drawable/report_icon"/>
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_3sdp"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:background="@color/dark_mode_background"/>
 
         </LinearLayout>
 

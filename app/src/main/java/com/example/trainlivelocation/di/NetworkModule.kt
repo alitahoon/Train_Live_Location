@@ -2,6 +2,7 @@ package com.example.trainlivelocation.di
 
 import com.example.data.ApiService
 import com.example.trainlivelocation.utli.constant.Companion.BASE_URL
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,7 +32,9 @@ object NetworkModule {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(GsonBuilder()
+                .setLenient()
+                .create()))
             .build()
 
     }

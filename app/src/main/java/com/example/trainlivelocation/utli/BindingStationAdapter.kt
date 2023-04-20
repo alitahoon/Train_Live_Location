@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -44,4 +45,12 @@ fun setAdapter(
     adapter?.let {
         recyclerView.adapter = it
     }
+}
+
+@BindingAdapter("setTrainNumber")
+fun setAdapter(
+    textview:TextView,
+    trainNumber: Int
+) {
+    textview.setText("${trainNumber}")
 }

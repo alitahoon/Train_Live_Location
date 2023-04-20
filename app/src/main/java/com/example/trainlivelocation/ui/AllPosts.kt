@@ -44,6 +44,7 @@ class AllPosts : Fragment() , PostListener, FragmentLifecycle,DeletePostListener
         Log.i(TAG,"from all posts")
         allPostFragmentViewmodel.getPosts()
         binding.adapter=setAdapterItems()
+        allPostFragmentViewmodel.getUserDataFromsharedPreference()
         setObserver()
         flagFirstTimeRunning=true
         return binding.root
@@ -77,12 +78,23 @@ class AllPosts : Fragment() , PostListener, FragmentLifecycle,DeletePostListener
                     binding.allPostsPostShimmerLayout.setVisibility(View.VISIBLE)
                 }
                 is Resource.Success->{
-                    binding.allPostsPostShimmerLayout.setVisibility(View.INVISIBLE)
-                    Log.i(TAG,"${it.data}")
-                    adapter.setData(it.data!!)
+
+                    if (it.data.isEmpty()){
+                        binding.allPostsPostShimmerLayout.setVisibility(View.GONE)
+                        binding.allPostsRCVPosts.setVisibility(View.GONE)
+                        binding.allPostsEmptyPostLayout.setVisibility(View.VISIBLE)
+                        Log.i(TAG,"${it.data}")
+                        adapter.setData(it.data!!)
+                    }else{
+                        binding.allPostsPostShimmerLayout.setVisibility(View.GONE)
+                        binding.allPostsEmptyPostLayout.setVisibility(View.GONE)
+                        binding.allPostsRCVPosts.setVisibility(View.VISIBLE)
+                        Log.i(TAG,"${it.data}")
+                        adapter.setData(it.data!!)
+                    }
                 }
                 is Resource.Failure->{
-                    binding.allPostsPostShimmerLayout.setVisibility(View.INVISIBLE)
+                    binding.allPostsPostShimmerLayout.setVisibility(View.GONE)
                     Log.e(TAG,"${it.error}")
                 }
                 else -> {

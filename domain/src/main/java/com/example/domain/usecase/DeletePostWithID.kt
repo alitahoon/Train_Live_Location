@@ -6,5 +6,5 @@ import com.example.domain.entity.PostModelResponse
 import com.example.domain.repo.UserRepo
 
 class DeletePostWithID (private val userRepo: UserRepo) {
-    suspend operator fun invoke(postID:Int?,result: (Resource<PostModelResponse>)->Unit)=userRepo.deletePostWithID(postID,result)
+    suspend operator fun invoke(postID:Int?,result: (Resource<String>)->Unit)=userRepo.deletePostWithID(postID,result)
 }

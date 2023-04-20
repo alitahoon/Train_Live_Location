@@ -69,5 +69,5 @@ interface UserRepo {
 
     suspend fun createPostComment(commentRequest: CommentRequest,result: (Resource<CommentResponse>) -> Unit)
     suspend fun getCommentsForPostUsingId(postId:Int?,result: (Resource<ArrayList<PostCommentsResponseItem>>)->Unit)
-    suspend fun deletePostWithID(postId:Int?,result: (Resource<PostModelResponse>)->Unit)
+    suspend fun deletePostWithID(postId:Int?,result: (Resource<String>)->Unit)
 }

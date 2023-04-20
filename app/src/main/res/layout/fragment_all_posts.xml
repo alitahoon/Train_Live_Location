@@ -17,14 +17,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/dark_mode_background"
+        android:background="@color/DarkPrimaryColor"
         android:orientation="vertical"
-        tools:context=".ui.AllPosts">
+        tools:context=".ui.AllPosts"
+        >
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/all_posts_RCV_Posts"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:listitem="@layout/rcv_posts_item_layout"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/user_posts_rcv_item_layout"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"
             app:setAdapter="@{adapter}"/>
@@ -42,6 +44,41 @@
 
             </LinearLayout>
         </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@color/DarkPrimaryColor"
+            android:id="@+id/all_posts_empty_post_layout">
+            <ImageView
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_150sdp"
+                android:src="@drawable/emptyicon"
+                android:layout_marginHorizontal="@dimen/_30sdp"
+                android:layout_gravity="center" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/para_empty_post2"
+                android:layout_gravity="center"
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:gravity="center"
+                android:textSize="@dimen/_14ssp"
+                android:textColor="@color/textHintColorFirst"
+                android:layout_marginHorizontal="@dimen/_40sdp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/para_empty_post"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginHorizontal="@dimen/_50sdp"
+                android:textColor="@color/textHintColorFirst"/>
+        </LinearLayout>
 
     </LinearLayout>
 </layout>

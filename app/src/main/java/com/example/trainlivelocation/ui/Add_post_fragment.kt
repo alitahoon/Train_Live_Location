@@ -16,6 +16,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.domain.entity.Post
 import com.example.domain.entity.userResponseItem
+import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentAddPostFragmentBinding
 import com.example.trainlivelocation.utli.FragmentLifecycle
 import com.example.trainlivelocation.utli.Train_Dialog_Listener
@@ -180,14 +181,20 @@ class Add_post_fragment : Fragment(),FragmentLifecycle ,Train_Dialog_Listener{
     }
 
     override fun onPauseFragment() {
-        toast("onPauseFragment")
+        Log.i(TAG,"onPauseFragment")
     }
 
     override fun onResumeFragment() {
-        toast("onResumeFragment")
+        Log.i(TAG,"onResumeFragment")
     }
 
     override fun onTrainSelected(trainId: Int?, trainDegree: String?) {
         binding.addPostTxtTrainId.setText("${trainId}")
+    }
+
+    fun clearFields(){
+        binding.addPostTxtPostContent.setText("")
+        binding.addPostTxtTrainId.setText("")
+        binding.addPostImageViewPostImage.setImageDrawable(requireActivity().getDrawable(R.drawable.add_photo_icon))
     }
 }

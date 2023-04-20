@@ -35,6 +35,7 @@
                 <com.google.android.material.button.MaterialButton
                     android:layout_width="wrap_content"
                     android:padding="@dimen/_5sdp"
+                    android:onClick="@{viewmodel::onbtnNoClicked}"
                     android:layout_height="wrap_content"
                     android:text="No"
                     android:id="@+id/delete_post_btn_no"
@@ -44,6 +45,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:layout_width="wrap_content"
+                    android:onClick="@{viewmodel::onbtnYesClicked}"
                     android:id="@+id/delete_post_btn_yes"
                     android:padding="@dimen/_5sdp"
                     android:layout_height="wrap_content"
