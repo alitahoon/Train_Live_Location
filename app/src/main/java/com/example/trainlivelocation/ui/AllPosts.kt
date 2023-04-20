@@ -17,14 +17,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.domain.entity.Post
 import com.example.domain.entity.PostModelResponse
+import com.example.domain.entity.userResponseItem
 import com.example.trainlivelocation.databinding.FragmentAllPostsBinding
-import com.example.trainlivelocation.utli.FragmentLifecycle
-import com.example.trainlivelocation.utli.PostCustomAdapter
-import com.example.trainlivelocation.utli.PostListener
-import com.example.trainlivelocation.utli.toast
+import com.example.trainlivelocation.utli.*
 
 
-class AllPosts : Fragment() , PostListener, FragmentLifecycle {
+class AllPosts : Fragment() , PostListener, FragmentLifecycle,DeletePostListener {
     private val TAG:String?="AllPostsFragment"
     private var flagFirstTimeRunning:Boolean=false
     private lateinit var binding: FragmentAllPostsBinding
@@ -66,6 +64,10 @@ class AllPosts : Fragment() , PostListener, FragmentLifecycle {
     }
 
     private fun setObserver() {
+        allPostFragmentViewmodel?.userData!!.observe(viewLifecycleOwner, Observer {
+            userModel =it
+        })
+
     }
     private fun setAdapterItems():PostCustomAdapter{
         val adapter= PostCustomAdapter(this)
@@ -92,7 +94,7 @@ class AllPosts : Fragment() , PostListener, FragmentLifecycle {
     }
 
     companion object {
-
+        var userModel: userResponseItem?=null
     }
 
     override fun OnCommentClickListener(post: PostModelResponse) {
@@ -106,7 +108,14 @@ class AllPosts : Fragment() , PostListener, FragmentLifecycle {
     }
 
     override fun OnDeleteClickListener(post: PostModelResponse) {
-        TODO("Not yet implemented")
+        if (userModel!!.id==post.userId){
+            var dialog = Delete_post_dialog_fragment(post,this)
+            var childFragmentManager = getChildFragmentManager()
+            dialog.show(childFragmentManager, "Delete_post_dialog_fragment")
+        }else{
+            toast("You Are not post Owner...")
+        }
+
     }
 
     override fun OnSettingClickListener(post: PostModelResponse) {
@@ -115,13 +124,21 @@ class AllPosts : Fragment() , PostListener, FragmentLifecycle {
 
     override fun onPauseFragment() {
         if (flagFirstTimeRunning){
-            toast("onPauseFragment")
+            Log.i(TAG,"onPauseFragment")
         }
     }
 
     override fun onResumeFragment() {
         if (flagFirstTimeRunning){
             allPostFragmentViewmodel.getPosts()
+        }
+    }
+
+    override fun onPostDeleted(isDeleted: Boolean) {
+        if (isDeleted){
+            allPostFragmentViewmodel.getPosts()
+        }else{
+            toast("Failed To Delete The Post")
         }
     }
 }

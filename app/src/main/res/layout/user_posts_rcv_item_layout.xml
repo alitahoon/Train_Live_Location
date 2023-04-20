@@ -55,7 +55,7 @@
                     android:layout_toLeftOf="@+id/post_rcv_item_close_icon"
                     />
                 <ImageView
-                    android:onClick="@{() -> listener.OnDeleteClickListener()}"
+                    android:onClick="@{() -> listener.OnDeleteClickListener(post)}"
                     android:id="@+id/post_rcv_item_close_icon"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"

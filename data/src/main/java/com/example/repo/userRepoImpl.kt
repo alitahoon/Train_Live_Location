@@ -248,7 +248,7 @@ class userRepoImpl(
         }
     }
 
-    override suspend fun deletePostWithID(postId: Int?, result: (Resource<PostCommentsResponseItem>) -> Unit) {
+    override suspend fun deletePostWithID(postId: Int?, result: (Resource<PostModelResponse>) -> Unit) {
         var res=apiService.DeletePost(postId!!)
         if (res.isSuccessful) {
             if (res.body() != null) {

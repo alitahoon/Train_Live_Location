@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.example.trainlivelocation.ui.Delete_post_dialog_fragment_ViewModel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/PrimaryColor">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/_15sdp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Are you shore you want to remove this post..?"
+                android:textSize="@dimen/_14sdp"
+                android:lines="2" />
+
+            <LinearLayout
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end">
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:padding="@dimen/_5sdp"
+                    android:layout_height="wrap_content"
+                    android:text="No"
+                    android:id="@+id/delete_post_btn_no"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/textAlarmColor"
+                    android:layout_marginEnd="@dimen/_10sdp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:id="@+id/delete_post_btn_yes"
+                    android:padding="@dimen/_5sdp"
+                    android:layout_height="wrap_content"
+                    android:text="Yes"
+                    android:textColor="@color/white"
+                    android:backgroundTint="@color/DarkPrimaryColor" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

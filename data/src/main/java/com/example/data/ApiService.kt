@@ -78,7 +78,7 @@ interface ApiService {
     suspend fun CreatePost(@Body post: Post): Response<PostModelResponse>
 
     @DELETE("/api/Post/DeletePost/{Id}")
-    suspend fun DeletePost(@Path("Id") postId: Int): Response<PostCommentsResponseItem>
+    suspend fun DeletePost(@Path("Id") postId: Int): Response<PostModelResponse>
 
     @PUT("/api/Post/UpdatePost/{Id}")
     suspend fun UpdatePost(@Path("Id") postId: Int): Response<UpPost>
