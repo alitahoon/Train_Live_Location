@@ -18,12 +18,13 @@ import com.example.domain.entity.Post
 import com.example.domain.entity.userResponseItem
 import com.example.trainlivelocation.databinding.FragmentAddPostFragmentBinding
 import com.example.trainlivelocation.utli.FragmentLifecycle
+import com.example.trainlivelocation.utli.Train_Dialog_Listener
 import com.example.trainlivelocation.utli.toast
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.SnackbarLayout
 
 
-class Add_post_fragment : Fragment(),FragmentLifecycle {
+class Add_post_fragment : Fragment(),FragmentLifecycle ,Train_Dialog_Listener{
     private val TAG: String? = "Add_post_fragment"
     private lateinit var binding: FragmentAddPostFragmentBinding
     private val addPostFragmentViewmodel: Add_post_fragment_ViewModel by activityViewModels()
@@ -64,7 +65,7 @@ class Add_post_fragment : Fragment(),FragmentLifecycle {
                     Post(
                         binding.addPostTxtPostContent.text?.trim().toString(),
                         binding.addPostTxtTrainId.text?.trim().toString().toInt(),
-                        critical,
+                        true,
                         "postsImages/${userModel!!.phone}/${userModel!!.id}",
                         userModel!!.id,
                         userModel!!.phone,
@@ -125,6 +126,14 @@ class Add_post_fragment : Fragment(),FragmentLifecycle {
             }
         })
 
+        addPostFragmentViewmodel.btnChooseTrainClicked.observe(viewLifecycleOwner, Observer {
+            if (it==true){
+                var dialog = ChooseTrainDialogFragment(this)
+                var childFragmentManager = getChildFragmentManager()
+                dialog.show(childFragmentManager, "ChooseTrainDialogFragment")
+            }
+        })
+
         addPostFragmentViewmodel?.userData!!.observe(viewLifecycleOwner, Observer {
             if (it != null) {
                 userModel = it
@@ -176,5 +185,9 @@ class Add_post_fragment : Fragment(),FragmentLifecycle {
 
     override fun onResumeFragment() {
         toast("onResumeFragment")
+    }
+
+    override fun onTrainSelected(trainId: Int?, trainDegree: String?) {
+        binding.addPostTxtTrainId.setText("${trainId}")
     }
 }

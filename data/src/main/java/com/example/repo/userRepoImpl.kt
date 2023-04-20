@@ -248,6 +248,19 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun deletePostWithID(postId: Int?, result: (Resource<PostCommentsResponseItem>) -> Unit) {
+        var res=apiService.DeletePost(postId!!)
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke((Resource.Failure("deletePostWithID -> Error response body = null :${res.body()}")))
+            }
+        } else {
+            result.invoke((Resource.Failure("deletePostWithID -> ${res.message()}")))
+        }
+    }
+
 
     override suspend fun getUserLocation(callback: (LocationDetails) -> Unit) =
         getUserLocation.getLocationWithLocationManger(callback)!!

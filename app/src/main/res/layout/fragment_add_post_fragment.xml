@@ -32,8 +32,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:textSize="@dimen/_15sdp"
                 android:lines="5"
-                android:textColor="@color/black"
-                android:background="#340AA1DD"
+                android:textColor="@color/white"
+                android:background="@color/PrimaryColor"
                 android:hint="Enter New Post ?"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,15 +52,17 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/add_post_txt_train_id"
+                android:focusable="false"
+                android:onClick="@{viewModel::onBtnChooseTrainclicked}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#340AA1DD"
+                android:background="@color/PrimaryColor"
                 android:drawableLeft="@drawable/train_id_txt_add_post_fragment"
                 android:drawablePadding="@dimen/_10sdp"
                 android:gravity="center|start|bottom"
                 android:hint="Train Id"
                 android:text="@{viewModel._trainId}"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="@dimen/_16ssp" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,7 +74,7 @@
             android:layout_width="match_parent"
             android:onClick="@{viewModel::onBtnChooseImageclicked}"
             android:layout_height="@dimen/_200sdp"
-            android:background="#340AA1DD"
+            android:background="@color/PrimaryColor"
             android:src="@drawable/add_photo_icon"
             android:layout_marginHorizontal="@dimen/_20sdp"/>
         <View
@@ -92,6 +94,7 @@
 
 
             <RadioGroup
+                android:visibility="gone"
                 android:id="@+id/add_post_rcv_item_radio_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -63,6 +63,47 @@
                             app:srcCompat="@drawable/menu"
                             android:layout_marginStart="@dimen/_10sdp"/>
                         <RelativeLayout
+                            android:visibility="gone"
+                            android:id="@+id/main_activity_fragment_header_nav"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/DarkPrimaryColor"
+                            android:paddingHorizontal="@dimen/_10sdp">
+                            <TextView
+                                android:id="@+id/main_activity_fragment_header_nav_fr_name"
+                                android:textColor="@color/white"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:text="Posts"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentBottom="true"
+                                android:textStyle="bold"
+                                android:gravity="center"
+                                android:letterSpacing="0.1"
+                                android:textSize="@dimen/_14ssp"/>
+
+                            <ImageView
+                                android:id="@+id/main_activity_fragment_header_nav_btn_back"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentBottom="true"
+                                android:src="@drawable/baseline_keyboard_backspace_24" />
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentBottom="true"
+                                android:src="@drawable/app_icon"/>
+
+
+
+                        </RelativeLayout>
+                        <RelativeLayout
                             android:id="@+id/main_activity_layoutAfterLoading"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"

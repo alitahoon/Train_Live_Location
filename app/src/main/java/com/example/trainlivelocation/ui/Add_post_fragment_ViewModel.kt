@@ -34,6 +34,7 @@ class Add_post_fragment_ViewModel @Inject constructor(
     private val TAG: String? = "Add_post_fragment_ViewModel"
     var btnSubmitClicked = SingleLiveEvent<Boolean>()
     var btnChooseImageClicked = SingleLiveEvent<Boolean>()
+    var btnChooseTrainClicked = SingleLiveEvent<Boolean>()
     val postContent: String? = null
     val post_redio_checked = MutableLiveData<Boolean>()
     val _trainId: String? = null
@@ -67,6 +68,9 @@ class Add_post_fragment_ViewModel @Inject constructor(
 
     fun onBtnChooseImageclicked(view: View) {
         btnChooseImageClicked.postValue(true)
+    }
+    fun onBtnChooseTrainclicked(view: View) {
+        btnChooseTrainClicked.postValue(true)
     }
 
     fun sendPostImageToFirebase(postImageUri: Uri, imagePath: String) {

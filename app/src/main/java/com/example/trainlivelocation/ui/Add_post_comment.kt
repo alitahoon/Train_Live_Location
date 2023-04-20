@@ -94,20 +94,31 @@ class Add_post_comment(var post:PostModelResponse) : BottomSheetDialogFragment()
         addPostCommentFragmentViewModel.userData!!.observe(viewLifecycleOwner, Observer {
             userModel = it
         })
+
     }
     private fun setAdapterItems(): CommentCustomAdapter {
         val adapter= CommentCustomAdapter(this)
         addPostCommentFragmentViewModel.postComments!!.observe(viewLifecycleOwner, Observer {
             when(it){
                 is Resource.Loading->{
+                    binding.addCommentLayoutNoComments.setVisibility(View.INVISIBLE)
                     binding.addPostRCVComment.setVisibility(View.INVISIBLE)
                     binding.addPostCommentShimmer.setVisibility(View.VISIBLE)
                 }
                 is Resource.Success->{
-                    binding.addPostRCVComment.setVisibility(View.VISIBLE)
-                    binding.addPostCommentShimmer.setVisibility(View.INVISIBLE)
-                    Log.i(TAG,"${it.data}")
-                    adapter.setData(it.data)
+                    if (it.data.isEmpty()){
+                        binding.addCommentLayoutNoComments.setVisibility(View.VISIBLE)
+                        binding.addPostRCVComment.setVisibility(View.INVISIBLE)
+                        binding.addPostCommentShimmer.setVisibility(View.INVISIBLE)
+                        Log.i(TAG,"${it.data}")
+                        adapter.setData(it.data)
+                    }else{
+                        binding.addPostRCVComment.setVisibility(View.VISIBLE)
+                        binding.addPostCommentShimmer.setVisibility(View.INVISIBLE)
+                        binding.addCommentLayoutNoComments.setVisibility(View.INVISIBLE)
+                        Log.i(TAG,"${it.data}")
+                        adapter.setData(it.data)
+                    }
                 }
                 is Resource.Failure->{
                     binding.addPostRCVComment.setVisibility(View.VISIBLE)

@@ -16,9 +16,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.Add_post_comment"
-        android:background="@color/DarkPrimaryColor">
+        android:background="@drawable/choose_dialog_fragment_background">
+
+        <LinearLayout
+            android:id="@+id/add_comment_layout_no_comments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toTopOf="@+id/add_post_txt_add_comment_linear_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/no_comment"/>
+            <TextView
+                android:textSize="@dimen/_14ssp"
+                android:textColor="@color/textHintColorFirst"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Comments Yet"/>
+            <TextView
+                android:textSize="@dimen/_14ssp"
+                android:textColor="@color/textHintColorFirst"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Be the first to comment"/>
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
             android:paddingTop="@dimen/_30sdp"
             android:layout_width="match_parent"
             android:layout_height="0dp"

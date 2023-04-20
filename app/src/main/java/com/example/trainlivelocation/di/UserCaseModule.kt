@@ -125,7 +125,10 @@ object UserCaseModule  {
         return GetCommentsForPostUsingId(userRepo)
     }
 
-
+    @Provides
+    fun providDeletePostWithID(userRepo: UserRepo) :DeletePostWithID{
+        return DeletePostWithID(userRepo)
+    }
 
 
 

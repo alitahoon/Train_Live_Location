@@ -30,7 +30,8 @@
             android:layout_height="wrap_content"
             android:background="@color/PrimaryColor"
             bind:tabSelectedTextColor="@color/white"
-            android:nestedScrollingEnabled="false"/>
+            android:nestedScrollingEnabled="false"
+            android:isScrollContainer="true"/>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/posts_tablayout_viewPager"

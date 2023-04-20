@@ -14,10 +14,18 @@
             app:destination="@id/locationDialogFragment" />
         <action
             android:id="@+id/action_home_to_posts"
-            app:destination="@id/posts2" />
+            app:destination="@id/posts2"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
         <action
             android:id="@+id/action_home2_to_trainLocationInMap"
-            app:destination="@id/trainLocationInMap" />
+            app:destination="@id/trainLocationInMap"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
         <argument
             android:name="distance"
             app:argType="float" />
@@ -35,7 +43,11 @@
             app:popExitAnim="@anim/pop_exit" />
         <action
             android:id="@+id/action_locationDialogFragment_to_trackLocationFeature"
-            app:destination="@id/trackLocationFeature" />
+            app:destination="@id/trackLocationFeature"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
         <argument
             android:name="userModel"
             app:argType="com.example.domain.entity.userResponseItem" />
@@ -55,10 +67,18 @@
         tools:layout="@layout/fragment_track_location_feature" >
         <action
             android:id="@+id/action_trackLocationFeature_to_home2"
-            app:destination="@id/home2" />
+            app:destination="@id/home2"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
         <action
             android:id="@+id/action_trackLocationFeature_to_trainLocationInMap"
-            app:destination="@id/trainLocationInMap" />
+            app:destination="@id/trainLocationInMap"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
     </fragment>
     <fragment
         android:id="@+id/posts2"
