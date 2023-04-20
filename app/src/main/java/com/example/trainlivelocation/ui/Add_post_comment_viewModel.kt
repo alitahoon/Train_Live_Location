@@ -11,7 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.CommentRequest
 import com.example.domain.entity.CommentResponse
 import com.example.domain.entity.PostCommentsResponseItem
-import com.example.domain.entity.userResponseItem
+import com.example.domain.entity.UserResponseItem
 import com.example.domain.usecase.CreatePostComment
 import com.example.domain.usecase.GetCommentsForPostUsingId
 import com.example.trainlivelocation.utli.SingleLiveEvent
@@ -34,8 +34,8 @@ class Add_post_comment_viewModel @Inject constructor(
     private val _postComments: MutableLiveData<Resource<ArrayList<PostCommentsResponseItem>>>? = MutableLiveData(null)
     val postComments: LiveData<Resource<ArrayList<PostCommentsResponseItem>>>? = _postComments
 
-    private val _userData: MutableLiveData<userResponseItem?> = MutableLiveData(null)
-    val userData: LiveData<userResponseItem?> = _userData
+    private val _userData: MutableLiveData<UserResponseItem?> = MutableLiveData(null)
+    val userData: LiveData<UserResponseItem?> = _userData
 
 
     fun sendPostCommentToApi(commentRequest: CommentRequest){
@@ -64,7 +64,7 @@ class Add_post_comment_viewModel @Inject constructor(
         val userSharedPreferences: SharedPreferences =
             context.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
         _userData.postValue(
-            userResponseItem(
+            UserResponseItem(
                 userSharedPreferences.getString("address","empty")!!,
                 userSharedPreferences.getString("userBirthdate","empty")!!,
                 userSharedPreferences.getString("userEmail","empty")!!,

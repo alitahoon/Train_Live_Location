@@ -9,7 +9,7 @@ import android.view.View
 import androidx.lifecycle.*
 import com.example.domain.entity.Post
 import com.example.domain.entity.PostModelResponse
-import com.example.domain.entity.userResponseItem
+import com.example.domain.entity.UserResponseItem
 import com.example.domain.usecase.CreatePost
 import com.example.domain.usecase.GetUserDataById
 import com.example.domain.usecase.SendImageToFirebaseStorage
@@ -41,8 +41,8 @@ class Add_post_fragment_ViewModel @Inject constructor(
     private var imageRefrence: StorageReference = Firebase.storage.reference
     private val sharedPrefFile = "UserToken"
 
-    private val _userData: MutableLiveData<userResponseItem?> = MutableLiveData(null)
-    val userData: LiveData<userResponseItem?> = _userData
+    private val _userData: MutableLiveData<UserResponseItem?> = MutableLiveData(null)
+    val userData: LiveData<UserResponseItem?> = _userData
 
 
     private val _post: MutableLiveData<Resource<PostModelResponse>>? = MutableLiveData(null)
@@ -98,7 +98,7 @@ class Add_post_fragment_ViewModel @Inject constructor(
         val userSharedPreferences: SharedPreferences =
             context.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
         _userData.postValue(
-            userResponseItem(
+            UserResponseItem(
                 userSharedPreferences.getString("address", "empty")!!,
                 userSharedPreferences.getString("userBirthdate", "empty")!!,
                 userSharedPreferences.getString("userEmail", "empty")!!,

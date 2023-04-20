@@ -7,7 +7,7 @@ import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.domain.entity.userResponseItem
+import com.example.domain.entity.UserResponseItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -23,8 +23,8 @@ class HomeViewModel @Inject constructor(
 
     var trainId:String?=null
 
-    private val _userData: MutableLiveData<userResponseItem?> = MutableLiveData(null)
-    val userData: LiveData<userResponseItem?> = _userData
+    private val _userData: MutableLiveData<UserResponseItem?> = MutableLiveData(null)
+    val userData: LiveData<UserResponseItem?> = _userData
     public fun onLocationBtn(view: View){
         locationBtn.postValue(true)
     }
@@ -42,7 +42,7 @@ class HomeViewModel @Inject constructor(
         val userSharedPreferences: SharedPreferences =
             context.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
         _userData.postValue(
-            userResponseItem(
+            UserResponseItem(
                 userSharedPreferences.getString("address","empty")!!,
                 userSharedPreferences.getString("userBirthdate","empty")!!,
                 userSharedPreferences.getString("userEmail","empty")!!,

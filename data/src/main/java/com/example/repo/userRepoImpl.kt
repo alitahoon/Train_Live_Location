@@ -25,7 +25,7 @@ class userRepoImpl(
     override suspend fun getUserData(
         userPhone: String?,
         userPassword: String?,
-        result: (Resource<userResponseItem>) -> Unit
+        result: (Resource<UserResponseItem>) -> Unit
     ) {
         val res = apiService.getUserData(userPhone!!, userPassword!!)
         if (res.isSuccessful) {
@@ -41,7 +41,7 @@ class userRepoImpl(
 
     override suspend fun addNewUser(
         user: RegisterUser?,
-        result: (Resource<userResponseItem>) -> Unit
+        result: (Resource<UserResponseItem>) -> Unit
     ) {
         var res = apiService.addNewUser(user)
         if (res.isSuccessful) {
@@ -168,7 +168,7 @@ class userRepoImpl(
 
 
 
-    override suspend fun getUserDataById(userID: Int,result: (Resource<userResponseItem>) -> Unit) {
+    override suspend fun getUserDataById(userID: Int,result: (Resource<UserResponseItem>) -> Unit) {
         var res =apiService.GetUserById(userID)
         if (res.isSuccessful){
             if (res.body()!=null){

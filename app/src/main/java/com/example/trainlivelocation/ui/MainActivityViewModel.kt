@@ -10,10 +10,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.entity.userResponseItem
+import com.example.domain.entity.UserResponseItem
 import com.example.domain.usecase.GetImageFromFirebaseStorage
 import com.example.trainlivelocation.utli.SingleLiveEvent
-import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,8 +26,8 @@ class MainActivityViewModel @Inject constructor(
     private val sharedPrefFile = "UserToken"
     var menuBtnClicked= SingleLiveEvent<Boolean>()
 
-    private val _userData: MutableLiveData<userResponseItem?> = MutableLiveData(null)
-    val userData: LiveData<userResponseItem?> = _userData
+    private val _userData: MutableLiveData<UserResponseItem?> = MutableLiveData(null)
+    val userData: LiveData<UserResponseItem?> = _userData
 
 
     private val _userProfileImageUri: MutableLiveData<Resource<Uri>?> = MutableLiveData(null)
@@ -39,7 +38,7 @@ class MainActivityViewModel @Inject constructor(
         val userSharedPreferences: SharedPreferences =
             context.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
         _userData.postValue(
-            userResponseItem(
+            UserResponseItem(
             userSharedPreferences.getString("address","empty")!!,
             userSharedPreferences.getString("userBirthdate","empty")!!,
             userSharedPreferences.getString("userEmail","empty")!!,

@@ -57,7 +57,7 @@
             app:popExitAnim="@anim/pop_exit" />
         <argument
             android:name="userModel"
-            app:argType="com.example.domain.entity.userResponseItem" />
+            app:argType="com.example.domain.entity.UserResponseItem" />
     </dialog>
     <fragment
         android:id="@+id/shareLocationFeature"
@@ -65,7 +65,7 @@
         android:label="ShareLocationFeature" >
         <argument
             android:name="userModel"
-            app:argType="com.example.domain.entity.userResponseItem" />
+            app:argType="com.example.domain.entity.UserResponseItem" />
     </fragment>
     <fragment
         android:id="@+id/trackLocationFeature"
@@ -109,7 +109,7 @@
         tools:layout="@layout/fragment_user_profile" >
         <argument
             android:name="userModel"
-            app:argType="com.example.domain.entity.userResponseItem" />
+            app:argType="com.example.domain.entity.UserResponseItem" />
     </fragment>
 
 </navigation>

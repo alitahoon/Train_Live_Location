@@ -2,15 +2,11 @@ package com.example.trainlivelocation.ui
 
 import Resource
 import android.content.Context
-import android.content.SharedPreferences
 import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.entity.PostModelResponse
-import com.example.domain.entity.StationResponseItem
-import com.example.domain.entity.userResponseItem
 import com.example.domain.usecase.DeletePostWithID
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel

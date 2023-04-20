@@ -7,15 +7,14 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.LiveData
 import com.example.domain.entity.*
 import com.google.firebase.auth.PhoneAuthCredential
-import retrofit2.Response
 
 interface UserRepo {
     suspend fun getUserData(
         userPhone: String?,
-        userPassword: String?, result: (Resource<userResponseItem>) -> Unit
+        userPassword: String?, result: (Resource<UserResponseItem>) -> Unit
     )
 
-    suspend fun addNewUser(user: RegisterUser?, result: (Resource<userResponseItem>) -> Unit)
+    suspend fun addNewUser(user: RegisterUser?, result: (Resource<UserResponseItem>) -> Unit)
     suspend fun sendOtpToPhone(
         phoneNumber: String?,
         callback: (result: String?) -> Unit
@@ -58,7 +57,7 @@ interface UserRepo {
     suspend fun getAllPostsFromAPI(result: (Resource<ArrayList<PostModelResponse>>)->Unit)
 
 
-    suspend fun getUserDataById(userID: Int,result: (Resource<userResponseItem>) -> Unit)
+    suspend fun getUserDataById(userID: Int,result: (Resource<UserResponseItem>) -> Unit)
 
     suspend fun setFirebaseServiceActivity(activity: AppCompatActivity)
 

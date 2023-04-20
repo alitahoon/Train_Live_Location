@@ -1,10 +1,7 @@
 package com.example.data
 
 import com.example.domain.entity.*
-import com.example.domain.usecase.GetStationById
-import com.google.gson.Gson
 import okhttp3.ResponseBody
-import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -92,8 +89,8 @@ interface ApiService {
     @GET("/api/station/GetAllStation")
     suspend fun GetAllStation(): Response<ArrayList<StationResponseItem>>
 
-    @GET("/api/station/GetAllStation/{stationId}")
-    suspend fun GetStationById(@Path("stationId") staionID:Int): Response<StationResponseItem>
+    @GET("/api/station/GetStationById")
+    suspend fun GetStationById(@Query("Id") staionID:Int): Response<StationResponseItem>
 
     //Trains
     @GET("/api/train/GetTrains")
@@ -153,21 +150,21 @@ interface ApiService {
     //User
 
     @GET("/api/user/GetUsers")
-    suspend fun GetUsers(): Response<List<userResponseItem>>
+    suspend fun GetUsers(): Response<List<UserResponseItem>>
 
     @GET("/api/user/GetUserById")
-    suspend fun GetUserById(@Query("Id") userId: Int): Response<userResponseItem>
+    suspend fun GetUserById(@Query("Id") userId: Int): Response<UserResponseItem>
 
     @GET("api/user/UserLogin")
     suspend fun getUserData(
         @Query("phone") userPhone: String, @Query("password") userPassword: String
-    ): Response<userResponseItem>
+    ): Response<UserResponseItem>
 
     @POST("api/user/CreateUser")
-    suspend fun addNewUser(@Body user: RegisterUser?): Response<userResponseItem>
+    suspend fun addNewUser(@Body user: RegisterUser?): Response<UserResponseItem>
 
     @DELETE("/api/user/DeleteUser")
-    suspend fun DeleteUser(@Query("Id") userId: Int): Response<userResponseItem>
+    suspend fun DeleteUser(@Query("Id") userId: Int): Response<UserResponseItem>
 
     @PUT("/api/user/UpdateUser")
     suspend fun UpdateUser(@Query("userId") userId: Int): Response<UpdateUser>

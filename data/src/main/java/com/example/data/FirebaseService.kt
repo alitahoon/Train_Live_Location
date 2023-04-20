@@ -1,13 +1,9 @@
 package com.example.data
 
 import Resource
-import android.app.Activity
-import android.net.Credentials
 import androidx.appcompat.app.AppCompatActivity
 import android.net.Uri
 import android.util.Log
-import com.example.domain.entity.userResponseItem
-import com.google.android.gms.auth.api.signin.internal.Storage
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*

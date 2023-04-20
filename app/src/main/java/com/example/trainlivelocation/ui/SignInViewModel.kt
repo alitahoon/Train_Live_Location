@@ -5,18 +5,14 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import android.view.View
-import android.widget.ScrollView
-import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.entity.userResponseItem
+import com.example.domain.entity.UserResponseItem
 import com.example.domain.usecase.GetUserData
-import com.example.trainlivelocation.utli.SignInListener
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.regex.Pattern
 import javax.inject.Inject
@@ -34,9 +30,9 @@ class SignInViewModel @Inject constructor(
     var PhoneNumberIsNotCorrect = SingleLiveEvent<Boolean>()
     var loginfialed = SingleLiveEvent<Boolean>()
 
-    private val _userLoginDataMuta: MutableLiveData<Resource<userResponseItem>?> =
+    private val _userLoginDataMuta: MutableLiveData<Resource<UserResponseItem>?> =
         MutableLiveData(null)
-    val userLoginDataLive: LiveData<Resource<userResponseItem>?> = _userLoginDataMuta
+    val userLoginDataLive: LiveData<Resource<UserResponseItem>?> = _userLoginDataMuta
 
 
     fun onSignInBtnClicked(view: View) {
@@ -64,7 +60,7 @@ class SignInViewModel @Inject constructor(
         }
     }
 
-    fun saveUserTokenInSharedPreferences(userItem: userResponseItem){
+    fun saveUserTokenInSharedPreferences(userItem: UserResponseItem){
         val userSharedPreferences :SharedPreferences=context.getSharedPreferences("UserToken",Context.MODE_PRIVATE)
         var editor=userSharedPreferences.edit()
         editor.putString("userName",userItem.name)

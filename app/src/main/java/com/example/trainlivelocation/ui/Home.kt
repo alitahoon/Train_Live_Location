@@ -8,10 +8,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.example.domain.entity.Train
-import com.example.domain.entity.userResponseItem
+import com.example.domain.entity.UserResponseItem
 import com.example.trainlivelocation.R
-import com.example.trainlivelocation.databinding.DialogFragmentLocationLayoutBinding
 import com.example.trainlivelocation.databinding.FragmentHomeBinding
 import com.example.trainlivelocation.utli.Train_Dialog_Listener
 import dagger.hilt.android.AndroidEntryPoint
@@ -86,7 +84,7 @@ class Home : Fragment() ,Train_Dialog_Listener{
     }
 
     companion object {
-        var userModel:userResponseItem?=null
+        var userModel:UserResponseItem?=null
     }
 
     override fun onTrainSelected(trainId: Int?, trainDegree: String?) {

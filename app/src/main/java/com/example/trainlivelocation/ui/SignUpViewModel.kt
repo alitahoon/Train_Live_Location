@@ -10,21 +10,12 @@ import android.net.Uri
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ScrollView
-import androidx.databinding.BindingAdapter
 import androidx.lifecycle.*
 import com.example.domain.entity.*
 import com.example.domain.usecase.*
 import com.example.trainlivelocation.R
-import com.example.trainlivelocation.utli.SignUpListener
 import com.example.trainlivelocation.utli.SingleLiveEvent
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.PhoneAuthProvider
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -101,8 +92,8 @@ class SignUpViewModel @Inject constructor(
         }
     }
 
-    private val _userDataMuta: MutableLiveData<Resource<userResponseItem>?> = MutableLiveData(null)
-    val userDataLive: LiveData<Resource<userResponseItem>?> = _userDataMuta
+    private val _userDataMuta: MutableLiveData<Resource<UserResponseItem>?> = MutableLiveData(null)
+    val userDataLive: LiveData<Resource<UserResponseItem>?> = _userDataMuta
 
     fun sendUserDataToApi(userPhone: String?,stationId:Int?) {
         //Start send user data to api

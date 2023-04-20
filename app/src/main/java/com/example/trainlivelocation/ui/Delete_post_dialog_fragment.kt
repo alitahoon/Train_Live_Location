@@ -3,7 +3,6 @@ package com.example.trainlivelocation.ui
 import Resource
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +10,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.domain.entity.PostModelResponse
-import com.example.domain.entity.userResponseItem
-import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentDeletePostDialogFragmentBinding
 import com.example.trainlivelocation.utli.DeletePostListener
 import com.example.trainlivelocation.utli.toast

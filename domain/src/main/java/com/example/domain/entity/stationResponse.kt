@@ -1,3 +1,3 @@
 package com.example.domain.entity
 
-class stationResponse : ArrayList<userResponseItem>()
+class stationResponse : ArrayList<UserResponseItem>()

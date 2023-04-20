@@ -15,9 +15,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.example.domain.entity.Post
 import com.example.domain.entity.PostModelResponse
-import com.example.domain.entity.userResponseItem
+import com.example.domain.entity.UserResponseItem
 import com.example.trainlivelocation.databinding.FragmentAllPostsBinding
 import com.example.trainlivelocation.utli.*
 
@@ -106,7 +105,7 @@ class AllPosts : Fragment() , PostListener, FragmentLifecycle,DeletePostListener
     }
 
     companion object {
-        var userModel: userResponseItem?=null
+        var userModel: UserResponseItem?=null
     }
 
     override fun OnCommentClickListener(post: PostModelResponse) {

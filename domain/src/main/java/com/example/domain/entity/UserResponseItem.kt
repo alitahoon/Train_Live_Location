@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class userResponseItem(
+data class UserResponseItem(
     val address: String,
     val birthDate: String,
     val email: String,

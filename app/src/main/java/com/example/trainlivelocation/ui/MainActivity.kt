@@ -3,6 +3,7 @@ package com.example.trainlivelocation.ui
 import Resource
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
@@ -12,15 +13,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.ashokvarma.bottomnavigation.BottomNavigationBar
 import com.ashokvarma.bottomnavigation.BottomNavigationItem
 import com.bumptech.glide.Glide
+import com.example.domain.entity.UserResponseItem
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.ActivityMainBinding
-import com.example.trainlivelocation.databinding.HeaderNavMenuLayoutBinding
 import com.example.trainlivelocation.utli.toast
+import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -55,40 +56,67 @@ class MainActivity : AppCompatActivity() {
         binding.mainActivityBtnDrawerMenu.setOnClickListener {
             binding.mainActivityDrwerLayout.openDrawer(GravityCompat.START)
         }
-        //handle navbar
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView2) as NavHostFragment
         val navController = navHostFragment.navController
-        navController.
-        addOnDestinationChangedListener(object :NavController.OnDestinationChangedListener{
+        //handle navView
+        binding.mainActivityNavigationView.setNavigationItemSelectedListener(object :
+            NavigationView.OnNavigationItemSelectedListener {
+            override fun onNavigationItemSelected(item: MenuItem): Boolean {
+                when (item.itemId) {
+                    R.id.home_menu_profile -> {
+                        val bundle = Bundle()
+                        bundle.putParcelable("userModel", userModel)
+                        navController.navigate(R.id.userProfile, bundle)
+                        binding.mainActivityDrwerLayout.closeDrawer(GravityCompat.START);
+
+                    }
+                }
+                return true
+            }
+        })
+
+
+        //handle navbar
+        navController.addOnDestinationChangedListener(object :
+            NavController.OnDestinationChangedListener {
             override fun onDestinationChanged(
                 controller: NavController,
                 destination: NavDestination,
                 arguments: Bundle?
             ) {
-                when(destination.id){
-                    R.id.trainLocationInMap->{
+                when (destination.id) {
+                    R.id.trainLocationInMap -> {
                         binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
                         binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
                         binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
                         binding.mainActivityFragmentHeaderNavFrName.setText("Train Location")
                     }
-                    R.id.posts2->{
+                    R.id.posts2 -> {
                         binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
                         binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
                         binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
-                        binding.mainActivityFragmentHeaderNavFrName.setText("Posts")                    }
-                    R.id.shareLocationFeature->{
+                        binding.mainActivityFragmentHeaderNavFrName.setText("Posts")
+                    }
+                    R.id.shareLocationFeature -> {
                         binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
                         binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
                         binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
-                        binding.mainActivityFragmentHeaderNavFrName.setText("Share Location")                    }
-                    R.id.trackLocationFeature->{
+                        binding.mainActivityFragmentHeaderNavFrName.setText("Share Location")
+                    }
+                    R.id.userProfile -> {
                         binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
                         binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
                         binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
-                        binding.mainActivityFragmentHeaderNavFrName.setText("Track Location")                    }
-                    R.id.home2->{
+                        binding.mainActivityFragmentHeaderNavFrName.setText("Profile")
+                    }
+                    R.id.trackLocationFeature -> {
+                        binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
+                        binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
+                        binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
+                        binding.mainActivityFragmentHeaderNavFrName.setText("Track Location")
+                    }
+                    R.id.home2 -> {
                         binding.mainActivityLayoutAfterLoading.setVisibility(View.VISIBLE)
                         binding.mainActivityBtnDrawerMenu.setVisibility(View.VISIBLE)
                         binding.mainActivityFragmentHeaderNav.setVisibility(View.GONE)
@@ -114,6 +142,7 @@ class MainActivity : AppCompatActivity() {
 
         mainActivityViewModel!!.userData.observe(this) {
             if (it != null) {
+                userModel = it
 
                 val menuHeader = binding.mainActivityNavigationView.getHeaderView(0)
                 val nametxt =
@@ -161,6 +190,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    companion object {
+        private var userModel: UserResponseItem? = null
     }
 
     private fun setBottomBarIcons() {

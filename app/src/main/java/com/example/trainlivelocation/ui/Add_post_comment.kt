@@ -8,13 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.domain.entity.CommentRequest
 import com.example.domain.entity.PostCommentsResponseItem
 import com.example.domain.entity.PostModelResponse
-import com.example.domain.entity.userResponseItem
+import com.example.domain.entity.UserResponseItem
 import com.example.trainlivelocation.databinding.FragmentAddPostCommentBinding
 import com.example.trainlivelocation.utli.CommentCustomAdapter
 import com.example.trainlivelocation.utli.CommentListener
@@ -133,7 +132,7 @@ class Add_post_comment(var post:PostModelResponse) : BottomSheetDialogFragment()
     }
 
     companion object {
-        var userModel: userResponseItem? = null
+        var userModel: UserResponseItem? = null
     }
 
     override fun OnReportClickListener(post: PostCommentsResponseItem) {
