@@ -277,6 +277,21 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun updateUserData(
+        userRequest: RegisterUser,
+        result: (Resource<UserResponseItem>) -> Unit
+    ) {
+        var res=apiService.UpdateUser(userRequest)
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke((Resource.Failure("updateUserData -> Error response body = null :${res.body()}")))
+            }
+        } else {
+            result.invoke((Resource.Failure("updateUserData -> ${res.message()}")))
+        }    }
+
 
     override suspend fun getUserLocation(callback: (LocationDetails) -> Unit) =
         getUserLocation.getLocationWithLocationManger(callback)!!

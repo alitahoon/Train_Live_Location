@@ -70,4 +70,5 @@ interface UserRepo {
     suspend fun getCommentsForPostUsingId(postId:Int?,result: (Resource<ArrayList<PostCommentsResponseItem>>)->Unit)
     suspend fun deletePostWithID(postId:Int?,result: (Resource<String>)->Unit)
     suspend fun getStationById(stationId:Int?,result: (Resource<StationResponseItem>)->Unit)
+    suspend fun updateUserData(userRequest:RegisterUser,result: (Resource<UserResponseItem>)->Unit)
 }

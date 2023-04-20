@@ -135,6 +135,11 @@ object UserCaseModule  {
         return GetStationById(userRepo)
     }
 
+    @Provides
+    fun providUpdateUserData(userRepo: UserRepo) :UpdateUserData{
+        return UpdateUserData(userRepo)
+    }
+
 
 
 

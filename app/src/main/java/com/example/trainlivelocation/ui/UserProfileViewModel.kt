@@ -5,12 +5,14 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.domain.entity.StationResponseItem
 import com.example.domain.usecase.GetStationById
+import com.example.domain.usecase.UpdateUserData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
 class UserProfileViewModel @Inject constructor(
-    private val getStationById: GetStationById
+    private val getStationById: GetStationById,
+    updateUserData: UpdateUserData
 ) : ViewModel() {
     private val TAG:String?="UserProfileViewModel"
 
@@ -27,6 +29,12 @@ class UserProfileViewModel @Inject constructor(
             getStationById(stationId) {
                 _stationName.value=it
             }
+        }
+    }
+
+    fun updateUserProfileData(){
+        viewModelScope.launch {
+
         }
     }
 
