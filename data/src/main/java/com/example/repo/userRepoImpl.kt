@@ -261,6 +261,22 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun getStationById(
+        stationId: Int?,
+        result: (Resource<StationResponseItem>) -> Unit
+    ) {
+        var res=apiService.GetStationById(stationId!!)
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke((Resource.Failure("getStationById -> Error response body = null :${res.body()}")))
+            }
+        } else {
+            result.invoke((Resource.Failure("getStationById -> ${res.message()}")))
+        }
+    }
+
 
     override suspend fun getUserLocation(callback: (LocationDetails) -> Unit) =
         getUserLocation.getLocationWithLocationManger(callback)!!

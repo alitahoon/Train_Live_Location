@@ -1,6 +1,7 @@
 package com.example.data
 
 import com.example.domain.entity.*
+import com.example.domain.usecase.GetStationById
 import com.google.gson.Gson
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -90,6 +91,9 @@ interface ApiService {
     //Station
     @GET("/api/station/GetAllStation")
     suspend fun GetAllStation(): Response<ArrayList<StationResponseItem>>
+
+    @GET("/api/station/GetAllStation/{stationId}")
+    suspend fun GetStationById(@Path("stationId") staionID:Int): Response<StationResponseItem>
 
     //Trains
     @GET("/api/train/GetTrains")

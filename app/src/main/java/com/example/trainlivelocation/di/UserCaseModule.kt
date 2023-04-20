@@ -130,6 +130,11 @@ object UserCaseModule  {
         return DeletePostWithID(userRepo)
     }
 
+    @Provides
+    fun providGetStationById(userRepo: UserRepo) :GetStationById{
+        return GetStationById(userRepo)
+    }
+
 
 
 
