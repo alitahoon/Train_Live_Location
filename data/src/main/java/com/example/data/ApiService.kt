@@ -166,8 +166,8 @@ interface ApiService {
     @DELETE("/api/user/DeleteUser")
     suspend fun DeleteUser(@Query("Id") userId: Int): Response<UserResponseItem>
 
-    @PUT("/api/user/UpdateUser")
-    suspend fun UpdateUser(@Body userRequest: RegisterUser): Response<UserResponseItem>
+    @PUT("/api/user/UpdateUser/{userId}")
+    suspend fun UpdateUser(@Body userRequest: RegisterUser,@Path("userId") userId:Int): Response<ResponseBody>
 
 
     //location

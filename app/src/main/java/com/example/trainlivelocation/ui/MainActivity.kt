@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity() {
                     R.id.home_menu_profile -> {
                         val bundle = Bundle()
                         bundle.putParcelable("userModel", userModel)
+                        Log.i(TAG,"$userModel")
                         navController.navigate(R.id.userProfile, bundle)
                         binding.mainActivityDrwerLayout.closeDrawer(GravityCompat.START);
 

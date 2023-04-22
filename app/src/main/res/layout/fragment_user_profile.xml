@@ -16,10 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.UserProfile"
-        android:background="@color/PrimaryColor">
+        android:background="@color/PrimaryColor"
+        android:id="@+id/profile_main_layout">
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/profile_top_shape"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_80sdp"
             android:src="@drawable/profile_top_shape"
@@ -28,19 +29,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/materialCardView2"
+            android:id="@+id/profile_data_layout"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_400sdp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_20sdp"
-            android:layout_marginTop="-65dp"
+            android:layout_marginTop="-60dp"
             android:backgroundTint="@color/white"
             android:elevation="@dimen/_30sdp"
             app:cardCornerRadius="@dimen/_30sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView3">
+            app:layout_constraintTop_toBottomOf="@+id/profile_top_shape">
 
 
             <LinearLayout
@@ -81,6 +81,7 @@
                 </RelativeLayout>
 
                 <TextView
+                    android:id="@+id/profile_txt_username"
                     android:layout_width="wrap_content"
                     android:drawableLeft="@drawable/edit"
                     android:layout_height="wrap_content"
@@ -93,6 +94,7 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/profile_txt_email"
                     android:layout_width="wrap_content"
                     android:drawableLeft="@drawable/edit"
                     android:layout_height="wrap_content"
@@ -103,29 +105,57 @@
                     android:textColor="@color/PrimaryColor"
                     android:textSize="14sp" />
 
-                <com.google.android.material.textfield.TextInputLayout
+                <LinearLayout
+                    android:id="@+id/spinner_jop_menu_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/_5sdp"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/signUp_imageView_proofileImage">
 
-                    <EditText
-                        android:background="@color/white"
-                        android:layout_width="match_parent"
-                        android:drawableLeft="@drawable/jop_icon"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:gravity="center|start"
-                        android:layout_marginHorizontal="@dimen/_5sdp"
-                        android:padding="@dimen/_5sdp"
-                        android:drawablePadding="@dimen/_10sdp"
-                        android:text="@{userModel.jop}"
-                        android:textColor="@color/PrimaryColor"
-                        android:textSize="14sp" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:drawableLeft="@drawable/jop_icon"
+                        android:drawablePadding="@dimen/_5sdp"
+                        android:gravity="center"
+                        android:textColor="@color/textHintColorFirst"
+                        android:textSize="@dimen/_12ssp" />
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:paddingHorizontal="@dimen/_5sdp">
+                        <Spinner
+                            android:id="@+id/profile_spinner_jobs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:spinnerMode="dropdown" />
+                    </FrameLayout>
+
+                    <ImageView
+                        android:id="@+id/spinner_drop_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/spinner_drop_icon" />
+
+
+
+                </LinearLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <EditText
+                        android:focusable="false"
                         android:id="@+id/profile_txt_station"
                         android:background="@color/white"
                         android:layout_width="match_parent"
@@ -145,6 +175,7 @@
                     android:layout_height="wrap_content">
 
                     <EditText
+                        android:id="@+id/profile_txt_phone"
                         android:background="@color/white"
                         android:layout_width="match_parent"
                         android:layout_weight="0.4"
@@ -168,6 +199,7 @@
                     app:passwordToggleTint="@color/PrimaryColor">
 
                     <EditText
+                        android:id="@+id/profile_txt_password"
                         android:background="@color/white"
                         android:layout_width="match_parent"
                         android:layout_weight="0.4"
@@ -188,6 +220,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="@dimen/_14sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:onClick="@{viewmodel::onBtnSaveUserDataClicked}"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:text="Save"
                     android:textColor="@color/white"
@@ -196,6 +230,31 @@
             </LinearLayout>
 
         </com.google.android.material.card.MaterialCardView>
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:visibility="gone"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="false"
+            android:layout_width="@dimen/_180sdp"
+            android:layout_height="@dimen/_180sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/profile_update_user_seuccess"
+            app:lottie_rawRes="@raw/sign_user_success" />
+        <com.airbnb.lottie.LottieAnimationView
+            android:visibility="gone"
+            android:id="@+id/profile_loading_lotti"
+            android:layout_width="@dimen/_180sdp"
+            android:layout_height="@dimen/_180sdp"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_rawRes="@raw/loading_sign_in" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

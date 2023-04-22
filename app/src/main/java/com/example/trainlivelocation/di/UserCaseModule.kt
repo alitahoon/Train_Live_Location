@@ -140,6 +140,12 @@ object UserCaseModule  {
         return UpdateUserData(userRepo)
     }
 
+    @Provides
+    fun providSendMessageToFirebasechat(userRepo: UserRepo) :SendMessageToFirebasechat{
+        return SendMessageToFirebasechat(userRepo)
+    }
+
+
 
 
 

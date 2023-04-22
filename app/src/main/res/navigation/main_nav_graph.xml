@@ -110,6 +110,9 @@
         <argument
             android:name="userModel"
             app:argType="com.example.domain.entity.UserResponseItem" />
+        <action
+            android:id="@+id/action_userProfile_to_home2"
+            app:destination="@id/home2" />
     </fragment>
 
 </navigation>

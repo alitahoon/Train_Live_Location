@@ -11,6 +11,7 @@ import com.example.domain.entity.*
 import com.example.domain.repo.UserRepo
 import com.google.android.gms.location.LocationRequest
 import com.google.firebase.auth.*
+import okhttp3.ResponseBody
 
 class userRepoImpl(
     private val apiService: ApiService,
@@ -278,23 +279,34 @@ class userRepoImpl(
     }
 
     override suspend fun updateUserData(
+        userID:Int?,
         userRequest: RegisterUser,
-        result: (Resource<UserResponseItem>) -> Unit
+        result: (Resource<String>) -> Unit
     ) {
-        var res=apiService.UpdateUser(userRequest)
+        var res=apiService.UpdateUser(userRequest,userID!!)
         if (res.isSuccessful) {
             if (res.body() != null) {
-                result.invoke(Resource.Success(res.body()!!))
+                result.invoke(Resource.Success("${res.body()!!}"))
             } else {
                 result.invoke((Resource.Failure("updateUserData -> Error response body = null :${res.body()}")))
             }
         } else {
+            Log.i(TAG,"${userRequest}->>>>>>>>>${userID}")
             result.invoke((Resource.Failure("updateUserData -> ${res.message()}")))
         }    }
 
+    override suspend fun sendMessageToFirebasechat(
+        message: String?,
+        senderPhone: String?,
+        reciverPhone: String?,
+        result: (Resource<String>) -> Unit
+    ) {
+        firebaseService.sendMessageToChat(message,senderPhone,reciverPhone,result)
+    }
+
 
     override suspend fun getUserLocation(callback: (LocationDetails) -> Unit) =
-        getUserLocation.getLocationWithLocationManger(callback)!!
+        getUserLocation.getLocationWithLocationManger(callback)
 
 
 }
