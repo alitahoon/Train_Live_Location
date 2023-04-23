@@ -1,14 +1,18 @@
 package com.example.data
 
 import Resource
-import androidx.appcompat.app.AppCompatActivity
 import android.net.Uri
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import com.example.domain.entity.Message
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
 import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.StorageReference
 import java.util.concurrent.TimeUnit
 
@@ -160,20 +164,59 @@ class FirebaseService(
         recieverPhone: String?,
         result: (Resource<String>) -> Unit
     ) {
-        val key=databaseRef.push().key
-        val map=HashMap<String,Any>()
-        map["sender"]=senderPhone!!
-        map["message"]=message!!
-        databaseRef.child(key!!).child("title").setValue(senderPhone+recieverPhone).addOnSuccessListener {
-            databaseRef.child(key!!).child("messages").child(senderPhone!!).setValue(map).addOnSuccessListener {
+
+        val key = databaseRef.push().key
+        val map = HashMap<String, Any>()
+        map["sender"] = senderPhone!!
+        map["message"] = message!!
+        Log.i(TAG, message)
+
+//        databaseRef.child(key!!).child("title").setValue(senderPhone+recieverPhone).addOnSuccessListener {
+//            databaseRef.child(key).child("messages").push().setValue(map).addOnSuccessListener {
+//                result.invoke(Resource.Success("Message Sent Successfully..."))
+//            }.addOnFailureListener {
+//                result.invoke(Resource.Failure("${it.message}"))
+//            }
+//
+//        }.addOnFailureListener {
+//            result.invoke(Resource.Failure("${it.message}"))
+//        }
+
+        databaseRef.push()
+            .setValue(Message(message, senderPhone, recieverPhone, senderPhone + recieverPhone)).addOnSuccessListener {
+                Log.i(TAG, "sent successfully...")
                 result.invoke(Resource.Success("Message Sent Successfully..."))
             }.addOnFailureListener {
-                result.invoke(Resource.Failure("${it.message}"))
+                Log.i(TAG, "Failed :${it.message}")
+                            result.invoke(Resource.Failure("${it.message}"))
             }
+    }
 
-        }.addOnFailureListener {
-            result.invoke(Resource.Failure("${it.message}"))
-        }
+
+    fun getChatMessagesFromFirebase(senderPhone: String?,recieverPhone: String?,result: (Resource<ArrayList<Message>>) -> Unit){
+        var oldChatKey=arrayListOf<String>()
+        //check if there is last chat
+        databaseRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                val messageList= arrayListOf<Message>()
+                for (snapshot in dataSnapshot.children) {
+                    val message = snapshot.getValue(Message::class.java)
+                    Log.i(TAG,"Title : ${message!!.title}")
+                    if (message.title.equals(senderPhone+recieverPhone)||message.title.equals(recieverPhone+senderPhone)){
+                        Log.e(TAG,"${snapshot.key}")
+                        messageList.add(message)
+                    }
+                }
+                result.invoke(Resource.Success(messageList))
+            }
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException())
+                result.invoke(Resource.Failure("${error.message}"))
+            }
+        })
     }
 
 

@@ -1,0 +1,29 @@
+package com.example.trainlivelocation.utli
+
+import android.graphics.Color
+import android.view.View
+import androidx.recyclerview.widget.RecyclerView
+import com.example.domain.entity.Message
+import com.example.domain.entity.Post
+import com.example.domain.entity.PostCommentsResponseItem
+import com.example.domain.entity.PostModelResponse
+import com.example.trainlivelocation.databinding.ChatMessageItemLayoutBinding
+import com.example.trainlivelocation.databinding.PostCommentItemLayoutBinding
+import com.example.trainlivelocation.databinding.UserPostsRcvItemLayoutBinding
+
+class MessageAdapterViewHolder(
+    private val binding:ChatMessageItemLayoutBinding,
+    private val MessageListener: MessageListener,
+    private val phone:String
+) :RecyclerView.ViewHolder(binding.root){
+    fun bind(message:Message) {
+        if (message.sender!!.equals(phone)){
+            binding.chatMessageItemTextView.setBackgroundColor(Color.BLUE)
+            binding.chatMessageItemLayout.layoutDirection= View.LAYOUT_DIRECTION_RTL
+        }
+        binding.message = message
+//        binding.postsBtnComment.setOnClickListener {
+//            postListener.OnCommentClickListener()
+//        }
+    }
+}

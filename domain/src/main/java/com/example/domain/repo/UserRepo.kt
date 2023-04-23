@@ -93,4 +93,6 @@ interface UserRepo {
         reciverPhone: String?,
         result: (Resource<String>) -> Unit
     )
+
+    suspend fun getChatFromFirebase(senderPhone: String?,recieverPhone: String?,result: (Resource<ArrayList<Message>>) -> Unit)
 }

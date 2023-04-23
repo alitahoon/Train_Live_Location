@@ -1,12 +1,14 @@
 package com.example.trainlivelocation.ui
 
 import Resource
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -18,6 +20,8 @@ import com.example.trainlivelocation.databinding.FragmentAddPostCommentBinding
 import com.example.trainlivelocation.utli.CommentCustomAdapter
 import com.example.trainlivelocation.utli.CommentListener
 import com.example.trainlivelocation.utli.toast
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,6 +35,28 @@ class Add_post_comment(var post:PostModelResponse) : BottomSheetDialogFragment()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = BottomSheetDialog(requireContext(), theme)
+        dialog.setOnShowListener {
+
+            val bottomSheetDialog = it as BottomSheetDialog
+            val parentLayout =
+                bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            parentLayout?.let { it ->
+                val behaviour = BottomSheetBehavior.from(it)
+                setupFullHeight(it)
+                behaviour.state = BottomSheetBehavior.STATE_EXPANDED
+            }
+        }
+        return dialog
+    }
+
+    private fun setupFullHeight(bottomSheet: View) {
+        val layoutParams = bottomSheet.layoutParams
+        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
+        bottomSheet.layoutParams = layoutParams
     }
 
     override fun onCreateView(
@@ -144,7 +170,9 @@ class Add_post_comment(var post:PostModelResponse) : BottomSheetDialogFragment()
     }
 
     override fun OnChatClickListener(post: PostCommentsResponseItem) {
-        toast("chat clicked")
+        var dialog = Chat(post.userPhone,post.userName, userModel!!)
+        var childFragmentManager = getChildFragmentManager()
+        dialog.show(childFragmentManager, "Chat")
     }
     fun txtCommentFocus(){
         binding.addPostTxtComment.setOnFocusChangeListener(object  :View.OnFocusChangeListener{

@@ -145,6 +145,11 @@ object UserCaseModule  {
         return SendMessageToFirebasechat(userRepo)
     }
 
+    @Provides
+    fun providGetChatFromFirebase(userRepo: UserRepo) :GetChatFromFirebase{
+        return GetChatFromFirebase(userRepo)
+    }
+
 
 
 

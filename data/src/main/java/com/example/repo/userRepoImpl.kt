@@ -304,6 +304,14 @@ class userRepoImpl(
         firebaseService.sendMessageToChat(message,senderPhone,reciverPhone,result)
     }
 
+    override suspend fun getChatFromFirebase(
+        senderPhone: String?,
+        recieverPhone: String?,
+        result: (Resource<ArrayList<Message>>) -> Unit
+    ) {
+        firebaseService.getChatMessagesFromFirebase(senderPhone,recieverPhone,result)
+    }
+
 
     override suspend fun getUserLocation(callback: (LocationDetails) -> Unit) =
         getUserLocation.getLocationWithLocationManger(callback)

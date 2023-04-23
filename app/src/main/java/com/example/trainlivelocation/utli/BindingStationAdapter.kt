@@ -54,3 +54,13 @@ fun setAdapter(
 ) {
     textview.setText("${trainNumber}")
 }
+
+@BindingAdapter("setMessageRCVAdapter")
+fun setAdapter(
+    recyclerView: RecyclerView,
+    adapter: MessageCustomAdapter
+) {
+    adapter?.let {
+        recyclerView.adapter = it
+    }
+}
