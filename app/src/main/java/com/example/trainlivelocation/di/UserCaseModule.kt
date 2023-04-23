@@ -151,6 +151,12 @@ object UserCaseModule  {
     }
 
 
+    @Provides
+    fun providGetInboxChatFromFirebase(userRepo: UserRepo) :GetInboxChatFromFirebase{
+        return GetInboxChatFromFirebase(userRepo)
+    }
+
+
 
 
 

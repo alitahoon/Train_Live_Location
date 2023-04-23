@@ -304,6 +304,13 @@ class userRepoImpl(
         firebaseService.sendMessageToChat(message,senderPhone,reciverPhone,result)
     }
 
+    override suspend fun getInboxChatFromFirebase(
+        phone: String?,
+        result: (Resource<ArrayList<Message>>) -> Unit
+    ) {
+
+    }
+
     override suspend fun getChatFromFirebase(
         senderPhone: String?,
         recieverPhone: String?,

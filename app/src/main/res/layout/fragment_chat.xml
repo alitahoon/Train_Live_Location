@@ -22,7 +22,7 @@
             type="String" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/DarkPrimaryColor"
@@ -30,6 +30,7 @@
         android:orientation="vertical">
 
         <RelativeLayout
+            android:nestedScrollingEnabled="false"
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
@@ -62,7 +63,7 @@
 
             <ImageView
                 android:id="@+id/chat_btn_more"
-                android:layout_width="@dimen/_30sdp"
+                android:layout_width="@dimen/_20sdp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
@@ -91,19 +92,26 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/_10ssp" />
         </RelativeLayout>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/chat_RCV_messages"
-            setMessageRCVAdapter="@{adapter}"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:layout_height="0dp"
+            android:fillViewport="true"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
-            tools:listitem="@layout/chat_message_item_layout" />
+            >
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/chat_RCV_messages"
+                setMessageRCVAdapter="@{adapter}"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+
+                tools:listitem="@layout/chat_message_item_layout" />
+        </androidx.core.widget.NestedScrollView>
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
@@ -181,5 +189,5 @@
 
 
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

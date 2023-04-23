@@ -37,20 +37,7 @@ class MainActivity : AppCompatActivity() {
         window.statusBarColor =
             resources.getColor(R.color.DarkPrimaryColor)
         setBottomBarIcons()
-        binding.bottomNavigationBar.setTabSelectedListener(object :
-            BottomNavigationBar.OnTabSelectedListener {
-            override fun onTabSelected(position: Int) {
-                Log.i(TAG, position.toString())
-            }
 
-            override fun onTabUnselected(position: Int) {
-
-            }
-
-            override fun onTabReselected(position: Int) {
-
-            }
-        })
         mainActivityViewModel!!.getUserDataFromsharedPreference()
         setObservers()
         binding.mainActivityBtnDrawerMenu.setOnClickListener {
@@ -67,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                     R.id.home_menu_profile -> {
                         val bundle = Bundle()
                         bundle.putParcelable("userModel", userModel)
-                        Log.i(TAG,"$userModel")
+                        Log.i(TAG, "$userModel")
                         navController.navigate(R.id.userProfile, bundle)
                         binding.mainActivityDrwerLayout.closeDrawer(GravityCompat.START);
 
@@ -127,6 +114,31 @@ class MainActivity : AppCompatActivity() {
 
         })
 
+        binding.bottomNavigationBar.setTabSelectedListener(object :
+            BottomNavigationBar.OnTabSelectedListener {
+            override fun onTabSelected(position: Int) {
+                when (position) {
+                    0 -> {
+                        toast("Inbox")
+
+                    }
+                    1 -> {
+                        toast("Home")
+                    }
+                    2 -> {
+                        toast("Notification")
+                    }
+                }
+            }
+
+            override fun onTabUnselected(position: Int) {
+
+            }
+
+            override fun onTabReselected(position: Int) {
+
+            }
+        })
 
 
         setContentView(binding.root)
@@ -203,7 +215,7 @@ class MainActivity : AppCompatActivity() {
             .addItem(BottomNavigationItem(R.drawable.notifications, "Notification"))
             .setActiveColor(R.color.white)
             .addItem(BottomNavigationItem(R.drawable.home, "Home")).setActiveColor(R.color.white)
-            .addItem(BottomNavigationItem(R.drawable.location_icon, "Location"))
+            .addItem(BottomNavigationItem(R.drawable.inbox, "Inbox"))
             .setActiveColor(R.color.white)
             .setFirstSelectedPosition(1)
             .initialise()
