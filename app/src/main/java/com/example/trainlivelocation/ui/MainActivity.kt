@@ -120,7 +120,10 @@ class MainActivity : AppCompatActivity() {
                 when (position) {
                     0 -> {
                         toast("Inbox")
-
+                        val bundle = Bundle()
+                        bundle.putParcelable("userModel", userModel)
+                        Log.i(TAG, "$userModel")
+                        navController.navigate(R.id.inbox, bundle)
                     }
                     1 -> {
                         toast("Home")

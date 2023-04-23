@@ -36,6 +36,9 @@
             app:exitAnim="@anim/exit"
             app:popEnterAnim="@anim/pop_enter"
             app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_home2_to_inbox"
+            app:destination="@id/inbox" />
     </fragment>
     <dialog
         android:id="@+id/locationDialogFragment"
@@ -113,6 +116,14 @@
         <action
             android:id="@+id/action_userProfile_to_home2"
             app:destination="@id/home2" />
+    </fragment>
+    <fragment
+        android:id="@+id/inbox"
+        android:name="com.example.trainlivelocation.ui.Inbox"
+        android:label="Inbox" >
+        <argument
+            android:name="userModel"
+            app:argType="com.example.domain.entity.UserResponseItem" />
     </fragment>
 
 </navigation>

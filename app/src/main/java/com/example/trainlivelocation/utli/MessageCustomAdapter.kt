@@ -9,13 +9,19 @@ import com.example.domain.entity.Post
 import com.example.domain.entity.PostCommentsResponseItem
 import com.example.domain.entity.PostModelResponse
 import com.example.trainlivelocation.databinding.ChatMessageItemLayoutBinding
+import com.example.trainlivelocation.databinding.InboxMessageItemLayoutBinding
 import com.example.trainlivelocation.databinding.PostCommentItemLayoutBinding
 import com.example.trainlivelocation.databinding.UserPostsRcvItemLayoutBinding
 
-class MessageCustomAdapter(private val messageListener: MessageListener,private val phone:String) :
+class MessageCustomAdapter(
+    private val layoutType: String?,
+    private val messageListener: MessageListener,
+    private val phone: String
+) :
     RecyclerView.Adapter<MessageAdapterViewHolder>(), BindableAdapter<ArrayList<Message>> {
-    private val TAG:String?="MessageCustomAdapter"
+    private val TAG: String? = "MessageCustomAdapter"
     private var binding: ChatMessageItemLayoutBinding? = null
+    private var bindingInbox: InboxMessageItemLayoutBinding? = null
     lateinit var messageArrayList: ArrayList<Message>
     var messageList = emptyList<Message>()
 
@@ -28,8 +34,15 @@ class MessageCustomAdapter(private val messageListener: MessageListener,private 
             LayoutInflater.from(parent.context),
             parent,
             false
+
         )
-        return MessageAdapterViewHolder(binding!!, messageListener,phone)
+        bindingInbox = InboxMessageItemLayoutBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+
+        return MessageAdapterViewHolder(binding!!, messageListener, phone,bindingInbox!!,layoutType!!)
     }
 
     override fun getItemCount(): Int = messageArrayList.size
@@ -40,7 +53,7 @@ class MessageCustomAdapter(private val messageListener: MessageListener,private 
     }
 
     override fun setData(data: ArrayList<Message>) {
-        Log.i(TAG,"data from adapter ---> ${data}")
+        Log.i(TAG, "data from adapter ---> ${data}")
         this.messageArrayList = data
         notifyDataSetChanged()
     }

@@ -12,6 +12,7 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import com.example.domain.entity.Message
 import com.example.domain.entity.PostCommentsResponseItem
 import com.example.domain.entity.UserResponseItem
 import com.example.trainlivelocation.R
@@ -118,7 +119,7 @@ class Chat(val reciver:String?,val reciverUserName:String?,val user:UserResponse
         })
     }
     private fun setAdapterItems(): MessageCustomAdapter {
-        val adapter= MessageCustomAdapter(this, user.phone)
+        val adapter= MessageCustomAdapter("message",this, user.phone)
         chatViewmodel.chatMessages.observe(viewLifecycleOwner, Observer {
             when(it){
                 is Resource.Loading->{
@@ -147,7 +148,11 @@ class Chat(val reciver:String?,val reciverUserName:String?,val user:UserResponse
     companion object {
     }
 
-    override fun OnDeleteClickListener(post: PostCommentsResponseItem) {
+    override fun OnDeleteClickListener(message: Message) {
+        TODO("Not yet implemented")
+    }
+
+    override fun OninboxItemClickListener(message: Message) {
         TODO("Not yet implemented")
     }
 }
