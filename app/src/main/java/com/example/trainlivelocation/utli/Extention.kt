@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -42,7 +43,7 @@ fun displaySnackbarSuccess(context: Context, view: View?, text: String?,lottiSrc
     val snakebarLotti =
         customSnackView.findViewById(R.id.custom_type_snake_bar_lotti) as LottieAnimationView
     val snakebarRootLayout =
-        customSnackView.findViewById(R.id.custom_type_snake_bar_root_layout) as RelativeLayout
+        customSnackView.findViewById(R.id.custom_type_snake_bar_root_layout) as LinearLayout
 
     snakebarRootLayout.setBackgroundColor(ContextCompat.getColor(context,snakeBackroundColor!!))
     snakebarTxt.setText(text)
