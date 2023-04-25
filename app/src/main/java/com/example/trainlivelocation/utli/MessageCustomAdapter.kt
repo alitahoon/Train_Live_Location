@@ -1,7 +1,9 @@
 package com.example.trainlivelocation.utli
 
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -34,7 +36,6 @@ class MessageCustomAdapter(
             LayoutInflater.from(parent.context),
             parent,
             false
-
         )
 
         return MessageAdapterViewHolder(binding!!, messageListener, phone,layoutType!!)
@@ -44,7 +45,12 @@ class MessageCustomAdapter(
 
     override fun onBindViewHolder(holder: MessageAdapterViewHolder, position: Int) {
         val message = messageArrayList.get(position)
+        if (layoutType.equals("message") && phone.equals(message.sender)){
+            binding!!.chatMessageItemTextView.setBackgroundColor(Color.parseColor("#0081C9"))
+            binding!!.chatMessageItemLayout.layoutDirection = View.LAYOUT_DIRECTION_RTL
+        }
         holder.bind(message)
+
     }
 
     override fun setData(data: ArrayList<Message>) {

@@ -161,6 +161,11 @@ object UserCaseModule  {
         return GetInboxSentChatFromFirebase(userRepo)
     }
 
+    @Provides
+    fun providGetDataFromSharedPrefrences(userRepo: UserRepo) :GetDataFromSharedPrefrences{
+        return GetDataFromSharedPrefrences(userRepo)
+    }
+
 
 
 

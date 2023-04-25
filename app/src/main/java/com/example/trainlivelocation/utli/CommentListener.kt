@@ -6,7 +6,7 @@ import com.example.domain.entity.PostCommentsResponseItem
 import com.example.domain.entity.PostModelResponse
 
 interface CommentListener {
-     fun OnReportClickListener(post:PostCommentsResponseItem)
-     fun OnDeleteClickListener(post:PostCommentsResponseItem)
-     fun OnChatClickListener(post:PostCommentsResponseItem)
+     fun OnReportClickListener(comment:PostCommentsResponseItem)
+     fun OnDeleteClickListener(comment:PostCommentsResponseItem)
+     fun OnChatClickListener(comment:PostCommentsResponseItem)
 }

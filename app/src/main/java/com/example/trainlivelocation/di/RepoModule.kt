@@ -22,7 +22,8 @@ object RepoModule {
         getLocationService: GetLocationService,
         location: userLocation,
         firebaseService: FirebaseService,
-        locationServices: LocationServices
+        locationServices: LocationServices,
+        sharedPreferencesService: SharedPreferencesService
     ): UserRepo {
         return userRepoImpl(
             apiService,
@@ -31,7 +32,8 @@ object RepoModule {
             getLocationService,
             location,
             firebaseService,
-            locationServices
+            locationServices,
+            sharedPreferencesService
         )
     }
 

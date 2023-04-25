@@ -36,6 +36,7 @@
                 android:background="@color/PrimaryColor"
                 android:hint="Enter New Post ?"
                 android:layout_width="match_parent"
+                android:maxHeight="@dimen/_250sdp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:gravity="top|start"

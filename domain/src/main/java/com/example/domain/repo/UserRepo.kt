@@ -91,6 +91,8 @@ interface UserRepo {
         message: String?,
         senderPhone: String?,
         reciverPhone: String?,
+        senderUsername: String?,
+        recieverUsername: String?,
         result: (Resource<String>) -> Unit
     )
 
@@ -98,4 +100,5 @@ interface UserRepo {
 
     suspend fun getInboxRecieveChatFromFirebase(phone: String?,result: (Resource<ArrayList<Message>>) -> Unit)
     suspend fun getInboxSentChatFromFirebase(phone: String?,result: (Resource<ArrayList<Message>>) -> Unit)
+    suspend fun getDataFromSharedPrefrences(sharedPrefFile: String?,result: (Resource<UserResponseItem>) -> Unit)
 }

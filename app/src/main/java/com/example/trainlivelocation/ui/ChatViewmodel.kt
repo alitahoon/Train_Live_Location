@@ -58,10 +58,10 @@ class ChatViewmodel @Inject constructor(
         )
     }
 
-    fun sendMessage(sender:String?,reciever:String?){
+    fun sendMessage(sender:String?,reciever:String?,senderUsername:String?,recieverUsername:String?){
         _messageSend.value=Resource.Loading
         viewModelScope.launch {
-            sendMessageToFirebasechat(message,sender,reciever){
+            sendMessageToFirebasechat(message,sender,reciever,senderUsername,recieverUsername){
                 _messageSend.value=it
             }
         }

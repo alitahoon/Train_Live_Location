@@ -20,7 +20,8 @@ class userRepoImpl(
     private val getLocationService: GetLocationService,
     private val getUserLocation: userLocation,
     private val firebaseService: FirebaseService,
-    private val locationServices: LocationServices
+    private val locationServices: LocationServices,
+    private val sharedPreferencesService: SharedPreferencesService
 ) : UserRepo {
     private val TAG: String? = "userRepoImpl"
     override suspend fun getUserData(
@@ -48,7 +49,7 @@ class userRepoImpl(
         if (res.isSuccessful) {
             if (res.body() != null) {
                 result.invoke(Resource.Success(res.body()!!))
-            }else{
+            } else {
                 result.invoke(Resource.Failure("Error Body is null:${res.body()}"))
             }
         } else {
@@ -94,7 +95,7 @@ class userRepoImpl(
         locationLive.startLocationUpdate(locationRequest)
     }
 
-    override suspend fun GetUserLocationLive(result:(LiveData<LocationDetails>)->Unit) {
+    override suspend fun GetUserLocationLive(result: (LiveData<LocationDetails>) -> Unit) {
         result.invoke(locationLive)
     }
 
@@ -111,8 +112,11 @@ class userRepoImpl(
         return getLocationService
     }
 
-    override suspend fun addLiveLoctationToApi(locationRequest: Location_Request,result: (Resource<Location_Request_with_id>) -> Unit){
-        var res=apiService.AddLocation(locationRequest)
+    override suspend fun addLiveLoctationToApi(
+        locationRequest: Location_Request,
+        result: (Resource<Location_Request_with_id>) -> Unit
+    ) {
+        var res = apiService.AddLocation(locationRequest)
         if (res.isSuccessful) {
             if (res.body() != null) {
                 result.invoke(Resource.Success(res.body()!!))
@@ -125,8 +129,11 @@ class userRepoImpl(
 
     }
 
-    override suspend fun getLiveLoctationFromApi(trainid: Int,result:(Resource<Location_Response>)->Unit){
-        var res=apiService.GetLocation(trainid)
+    override suspend fun getLiveLoctationFromApi(
+        trainid: Int,
+        result: (Resource<Location_Response>) -> Unit
+    ) {
+        var res = apiService.GetLocation(trainid)
         if (res.isSuccessful) {
             if (res.body() != null) {
                 result.invoke(Resource.Success(res.body()!!))
@@ -137,6 +144,7 @@ class userRepoImpl(
             result.invoke((Resource.Failure("getLiveLoctationFromApi -> ${res.message()}")))
         }
     }
+
     override suspend fun createPost(post: Post, result: (Resource<PostModelResponse>) -> Unit) {
         var res = apiService.CreatePost(post)
         if (res.isSuccessful) {
@@ -151,7 +159,7 @@ class userRepoImpl(
 
     }
 
-    override suspend fun getAllPostsFromAPI(result: (Resource<ArrayList<PostModelResponse>>)->Unit) {
+    override suspend fun getAllPostsFromAPI(result: (Resource<ArrayList<PostModelResponse>>) -> Unit) {
         var res = apiService.GetAllPosts()
         if (res.isSuccessful) {
             if (res.body() != null) {
@@ -166,18 +174,18 @@ class userRepoImpl(
     }
 
 
-
-
-
-    override suspend fun getUserDataById(userID: Int,result: (Resource<UserResponseItem>) -> Unit) {
-        var res =apiService.GetUserById(userID)
-        if (res.isSuccessful){
-            if (res.body()!=null){
+    override suspend fun getUserDataById(
+        userID: Int,
+        result: (Resource<UserResponseItem>) -> Unit
+    ) {
+        var res = apiService.GetUserById(userID)
+        if (res.isSuccessful) {
+            if (res.body() != null) {
                 result.invoke(Resource.Success(res.body()!!))
-            }else{
+            } else {
                 result.invoke(Resource.Failure("getUserDataById -> Failer body is  ${res.body()}"))
             }
-        }else{
+        } else {
             result.invoke(Resource.Failure("getUserDataById -> Failer ${res.message()}"))
         }
     }
@@ -221,7 +229,7 @@ class userRepoImpl(
         commentRequest: CommentRequest,
         result: (Resource<CommentResponse>) -> Unit
     ) {
-        var res=apiService.CreateComment(commentRequest)
+        var res = apiService.CreateComment(commentRequest)
         if (res.isSuccessful) {
             if (res.body() != null) {
                 result.invoke(Resource.Success(res.body()!!))
@@ -237,7 +245,7 @@ class userRepoImpl(
         postId: Int?,
         result: (Resource<ArrayList<PostCommentsResponseItem>>) -> Unit
     ) {
-        var res=apiService.GetPostComments(postId)
+        var res = apiService.GetPostComments(postId)
         if (res.isSuccessful) {
             if (res.body() != null) {
                 result.invoke(Resource.Success(res.body()!!))
@@ -250,7 +258,7 @@ class userRepoImpl(
     }
 
     override suspend fun deletePostWithID(postId: Int?, result: (Resource<String>) -> Unit) {
-        var res=apiService.DeletePost(postId!!)
+        var res = apiService.DeletePost(postId!!)
         if (res.isSuccessful) {
             if (res.body() != null) {
                 result.invoke(Resource.Success("${res.body()!!}"))
@@ -266,7 +274,7 @@ class userRepoImpl(
         stationId: Int?,
         result: (Resource<StationResponseItem>) -> Unit
     ) {
-        var res=apiService.GetStationById(stationId!!)
+        var res = apiService.GetStationById(stationId!!)
         if (res.isSuccessful) {
             if (res.body() != null) {
                 result.invoke(Resource.Success(res.body()!!))
@@ -279,11 +287,11 @@ class userRepoImpl(
     }
 
     override suspend fun updateUserData(
-        userID:Int?,
+        userID: Int?,
         userRequest: RegisterUser,
         result: (Resource<String>) -> Unit
     ) {
-        var res=apiService.UpdateUser(userRequest,userID!!)
+        var res = apiService.UpdateUser(userRequest, userID!!)
         if (res.isSuccessful) {
             if (res.body() != null) {
                 result.invoke(Resource.Success("${res.body()!!}"))
@@ -291,31 +299,41 @@ class userRepoImpl(
                 result.invoke((Resource.Failure("updateUserData -> Error response body = null :${res.body()}")))
             }
         } else {
-            Log.i(TAG,"${userRequest}->>>>>>>>>${userID}")
+            Log.i(TAG, "${userRequest}->>>>>>>>>${userID}")
             result.invoke((Resource.Failure("updateUserData -> ${res.message()}")))
-        }    }
+        }
+    }
 
     override suspend fun getInboxSentChatFromFirebase(
         phone: String?,
         result: (Resource<ArrayList<Message>>) -> Unit
     ) {
-        firebaseService.getInboxSentChatFromFirebase(phone,result)
+        firebaseService.getInboxSentChatFromFirebase(phone, result)
     }
 
     override suspend fun sendMessageToFirebasechat(
         message: String?,
         senderPhone: String?,
         reciverPhone: String?,
+        senderUsername: String?,
+        recieverUsername: String?,
         result: (Resource<String>) -> Unit
     ) {
-        firebaseService.sendMessageToChat(message,senderPhone,reciverPhone,result)
+        firebaseService.sendMessageToChat(message, senderPhone, reciverPhone,senderUsername,recieverUsername, result)
+    }
+
+    override suspend fun getDataFromSharedPrefrences(
+        sharedPrefFile: String?,
+        result: (Resource<UserResponseItem>) -> Unit
+    ) {
+        sharedPreferencesService.getUserData(sharedPrefFile, result)
     }
 
     override suspend fun getInboxRecieveChatFromFirebase(
         phone: String?,
         result: (Resource<ArrayList<Message>>) -> Unit
     ) {
-        firebaseService.getInboxRecieveChatFromFirebase(phone,result)
+        firebaseService.getInboxRecieveChatFromFirebase(phone, result)
     }
 
     override suspend fun getChatFromFirebase(
@@ -323,7 +341,7 @@ class userRepoImpl(
         recieverPhone: String?,
         result: (Resource<ArrayList<Message>>) -> Unit
     ) {
-        firebaseService.getChatMessagesFromFirebase(senderPhone,recieverPhone,result)
+        firebaseService.getChatMessagesFromFirebase(senderPhone, recieverPhone, result)
     }
 
 

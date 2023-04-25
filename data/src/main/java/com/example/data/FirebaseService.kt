@@ -163,15 +163,16 @@ class FirebaseService(
         message: String?,
         senderPhone: String?,
         recieverPhone: String?,
+        senderUsername: String?,
+        recieverUsername: String?,
         result: (Resource<String>) -> Unit
     ) {
 
-        val key = databaseRef.push().key
-        val map = HashMap<String, Any>()
-        map["sender"] = senderPhone!!
-        map["message"] = message!!
-        Log.i(TAG, message)
-
+//        val key = databaseRef.push().key
+//        val map = HashMap<String, Any>()
+//        map["sender"] = senderPhone!!
+//        map["message"] = message!!
+//        Log.i(TAG, message)
 //        databaseRef.child(key!!).child("title").setValue(senderPhone+recieverPhone).addOnSuccessListener {
 //            databaseRef.child(key).child("messages").push().setValue(map).addOnSuccessListener {
 //                result.invoke(Resource.Success("Message Sent Successfully..."))
@@ -184,7 +185,7 @@ class FirebaseService(
 //        }
 
         databaseRef.push()
-            .setValue(Message(message, senderPhone, recieverPhone, senderPhone + recieverPhone)).addOnSuccessListener {
+            .setValue(Message(message,senderUsername,recieverUsername,senderPhone, recieverPhone, senderPhone + recieverPhone)).addOnSuccessListener {
                 Log.i(TAG, "sent successfully...")
                 result.invoke(Resource.Success("Message Sent Successfully..."))
             }.addOnFailureListener {

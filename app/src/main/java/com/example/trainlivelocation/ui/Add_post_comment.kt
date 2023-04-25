@@ -166,17 +166,17 @@ class Add_post_comment(var post: PostModelResponse) : BottomSheetDialogFragment(
         var userModel: UserResponseItem? = null
     }
 
-    override fun OnReportClickListener(post: PostCommentsResponseItem) {
+    override fun OnReportClickListener(comment: PostCommentsResponseItem) {
         TODO("Not yet implemented")
     }
 
-    override fun OnDeleteClickListener(post: PostCommentsResponseItem) {
+    override fun OnDeleteClickListener(comment: PostCommentsResponseItem) {
         TODO("Not yet implemented")
     }
 
-    override fun OnChatClickListener(post: PostCommentsResponseItem) {
-        if (!post.userPhone.equals(userModel!!.phone)) {
-            var dialog = Chat(post.userPhone, post.userName, userModel!!)
+    override fun OnChatClickListener(comment: PostCommentsResponseItem) {
+        if (!comment.userPhone.equals(userModel!!.phone)) {
+            var dialog = Chat(comment.userPhone, comment.userName, userModel!!)
             var childFragmentManager = getChildFragmentManager()
             dialog.show(childFragmentManager, "Chat")
         } else {

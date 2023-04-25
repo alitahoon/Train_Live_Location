@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.entity.Message
 import com.example.domain.entity.UserResponseItem
 import com.example.trainlivelocation.databinding.FragmentChatBinding
@@ -65,6 +66,7 @@ class Chat(val reciver:String?,val reciverUserName:String?,val user:UserResponse
         Log.i(TAG,"${user}")
         chatViewmodel.getChat(user.phone,reciver)
         binding.adapter=setAdapterItems()
+        scrollToLastMessage()
         return binding.root
     }
 
@@ -91,7 +93,7 @@ class Chat(val reciver:String?,val reciverUserName:String?,val user:UserResponse
         chatViewmodel.btnSendMessageClicked.observe(viewLifecycleOwner, Observer {
             if (it==true){
                 Log.i(TAG,"${user!!.phone},${reciver}")
-                chatViewmodel.sendMessage(user!!.phone,reciver)
+                chatViewmodel.sendMessage(user!!.phone,reciver,user.name,reciverUserName)
                 chatViewmodel.getChat(user!!.phone,reciver)
 
                 chatViewmodel.messageSend.observe(viewLifecycleOwner, Observer {
@@ -102,6 +104,8 @@ class Chat(val reciver:String?,val reciverUserName:String?,val user:UserResponse
                         is Resource.Success->{
                             binding.chatTxtMessage.setText("")
                             binding.adapter=setAdapterItems()
+                            Log.e(TAG,"${binding.chatRCVMessages.adapter!!.itemCount-1}")
+                            binding.chatRCVMessages.layoutManager!!.smoothScrollToPosition(binding.chatRCVMessages,null,binding.chatRCVMessages.adapter!!.itemCount-1)
 
                         }
                         is Resource.Failure->{
@@ -143,6 +147,30 @@ class Chat(val reciver:String?,val reciverUserName:String?,val user:UserResponse
     }
 
     companion object {
+    }
+
+    fun scrollToLastMessage(){
+        binding.chatRCVMessages.addOnLayoutChangeListener(object :View.OnLayoutChangeListener{
+            override fun onLayoutChange(
+                v: View?,
+                left: Int,
+                top: Int,
+                right: Int,
+                bottom: Int,
+                oldLeft: Int,
+                oldTop: Int,
+                oldRight: Int,
+                oldBottom: Int
+            ) {
+                if (bottom <= oldBottom) {
+                    binding.chatRCVMessages.postDelayed(
+                        Runnable { binding.chatRCVMessages.smoothScrollToPosition(bottom) },
+                        100
+                    )
+                }
+            }
+
+        })
     }
 
     override fun OnDeleteClickListener(message: Message) {

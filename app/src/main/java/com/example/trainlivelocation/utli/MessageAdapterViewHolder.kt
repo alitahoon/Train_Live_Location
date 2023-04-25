@@ -24,12 +24,13 @@ class MessageAdapterViewHolder(
         when (layoutType) {
             "message" -> {
                 binding.inboxChatLayout.visibility=View.GONE
-                if (message.sender!!.equals(phone)) {
-                    binding.chatMessageItemTextView.setBackgroundColor(Color.parseColor("#0081C9"))
-                    binding.chatMessageItemLayout.layoutDirection = View.LAYOUT_DIRECTION_RTL
-                }
                 binding.message = message
                 binding.listener=MessageListener
+//                if (message.sender!!.equals(phone)) {
+//                    binding.chatMessageItemTextView.setBackgroundColor(Color.parseColor("#0081C9"))
+//                    binding.chatMessageItemLayout.layoutDirection = View.LAYOUT_DIRECTION_RTL
+//                }
+
 
             }
             "inbox" -> {
