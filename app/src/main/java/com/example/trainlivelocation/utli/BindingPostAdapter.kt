@@ -32,13 +32,13 @@ fun setAdapter(
     }
 }
 
-@Suppress("UNCHECKED_CAST")
-@BindingAdapter("data")
-fun <T> setRecyclerViewProperties(recyclerView: RecyclerView, data: T) {
-    if (recyclerView.adapter is BindableAdapter<*>) {
-        (recyclerView.adapter as BindableAdapter<T>).setData(data)
-    }
-}
+//@Suppress("UNCHECKED_CAST")
+//@BindingAdapter("data")
+//fun <T> setRecyclerViewProperties(recyclerView: RecyclerView, data: T) {
+//    if (recyclerView.adapter is BindableAdapter<*>) {
+//        (recyclerView.adapter as BindableAdapter<T>).setData(data)
+//    }
+//}
 
 @BindingAdapter("userphone","imageId")
 fun setImage(imageView: ImageView, userphone: String?,imageId:Int?) {

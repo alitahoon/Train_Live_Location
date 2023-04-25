@@ -295,6 +295,13 @@ class userRepoImpl(
             result.invoke((Resource.Failure("updateUserData -> ${res.message()}")))
         }    }
 
+    override suspend fun getInboxSentChatFromFirebase(
+        phone: String?,
+        result: (Resource<ArrayList<Message>>) -> Unit
+    ) {
+        firebaseService.getInboxSentChatFromFirebase(phone,result)
+    }
+
     override suspend fun sendMessageToFirebasechat(
         message: String?,
         senderPhone: String?,
@@ -304,11 +311,11 @@ class userRepoImpl(
         firebaseService.sendMessageToChat(message,senderPhone,reciverPhone,result)
     }
 
-    override suspend fun getInboxChatFromFirebase(
+    override suspend fun getInboxRecieveChatFromFirebase(
         phone: String?,
         result: (Resource<ArrayList<Message>>) -> Unit
     ) {
-
+        firebaseService.getInboxRecieveChatFromFirebase(phone,result)
     }
 
     override suspend fun getChatFromFirebase(

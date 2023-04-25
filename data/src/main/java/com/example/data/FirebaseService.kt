@@ -9,6 +9,7 @@ import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
 import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
+import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -219,7 +220,7 @@ class FirebaseService(
         })
     }
 
-    fun getInboxChat(phone: String?,result: (Resource<ArrayList<Message>>) -> Unit){
+    fun getInboxRecieveChatFromFirebase(phone: String?,result: (Resource<ArrayList<Message>>) -> Unit){
         databaseRef.addValueEventListener(object : ValueEventListener{
             val messageList= arrayListOf<Message>()
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -227,7 +228,7 @@ class FirebaseService(
                 for (Snapshot in snapshot.children) {
                     val message = Snapshot.getValue(Message::class.java)
                     Log.i(TAG, "Title : ${message!!.title}")
-                    if (message.sender.equals(phone) || message.reciever.equals(phone)) {
+                    if (message.reciever.equals(phone)) {
                         Log.e(TAG, "${snapshot.key}")
                         messageList.add(message)
                     }
@@ -242,6 +243,34 @@ class FirebaseService(
             }
 
         })
+
+
+    }
+    fun getInboxSentChatFromFirebase(phone: String?,result: (Resource<ArrayList<Message>>) -> Unit){
+        databaseRef.addValueEventListener(object : ValueEventListener{
+            val messageList= arrayListOf<Message>()
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val message = snapshot.getValue(Message::class.java)
+                for (Snapshot in snapshot.children) {
+                    val message = Snapshot.getValue(Message::class.java)
+                    Log.i(TAG, "Title : ${message!!.title}")
+                    if (message.sender.equals(phone)) {
+                        Log.e(TAG, "${snapshot.key}")
+                        messageList.add(message)
+                    }
+                }
+                result.invoke(Resource.Success(messageList))
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException())
+                result.invoke(Resource.Failure("${error.message}"))
+            }
+
+        })
+
+
     }
 
 

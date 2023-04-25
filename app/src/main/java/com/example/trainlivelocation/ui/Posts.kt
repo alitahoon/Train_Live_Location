@@ -13,14 +13,16 @@ import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentPostsBinding
 import com.example.trainlivelocation.databinding.PostCustomTabBinding
 import com.example.trainlivelocation.utli.FragmentLifecycle
+import com.example.trainlivelocation.utli.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 
 
 class Posts : Fragment() {
-    var adapter :ViewPagerAdapter?=null
     private val postsViewModel:PostsViewModel? by activityViewModels()
     private var binding: FragmentPostsBinding? = null
     private lateinit var customLayoutBinding: PostCustomTabBinding
+    var adapter :ViewPagerAdapter?=null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,28 +83,28 @@ class Posts : Fragment() {
     }
 
     private fun createViewPager(viewPager: ViewPager2) {
-        adapter=ViewPagerAdapter(activity)
+        adapter= ViewPagerAdapter(activity)
         adapter!!.addFrag(Add_post_fragment(),"Add Post")
         adapter!!.addFrag(AllPosts(),"All Posts")
         adapter!!.addFrag(CriticalPost(),"Critical")
         viewPager.adapter = adapter
     }
 
-    class ViewPagerAdapter(fragment: FragmentActivity?) :
-        FragmentStateAdapter(fragment!!) {
-        private val mFragmentList: MutableList<Fragment> = ArrayList()
-        private val mFragmentTitleList: MutableList<String> = ArrayList()
-        fun addFrag(fragment: Fragment?, title: String?) {
-            mFragmentList.add(fragment!!)
-            mFragmentTitleList.add(title!!)
-        }
-
-        override fun getItemCount(): Int =mFragmentList.size
-
-        override fun createFragment(position: Int): Fragment =mFragmentList.get(position)
-
-
-    }
+//    class ViewPagerAdapter(fragment: FragmentActivity?) :
+//        FragmentStateAdapter(fragment!!) {
+//        private val mFragmentList: MutableList<Fragment> = ArrayList()
+//        private val mFragmentTitleList: MutableList<String> = ArrayList()
+//        fun addFrag(fragment: Fragment?, title: String?) {
+//            mFragmentList.add(fragment!!)
+//            mFragmentTitleList.add(title!!)
+//        }
+//
+//        override fun getItemCount(): Int =mFragmentList.size
+//
+//        override fun createFragment(position: Int): Fragment =mFragmentList.get(position)
+//
+//
+//    }
 
 
 

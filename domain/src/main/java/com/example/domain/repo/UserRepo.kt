@@ -96,5 +96,6 @@ interface UserRepo {
 
     suspend fun getChatFromFirebase(senderPhone: String?,recieverPhone: String?,result: (Resource<ArrayList<Message>>) -> Unit)
 
-    suspend fun getInboxChatFromFirebase(phone: String?,result: (Resource<ArrayList<Message>>) -> Unit)
+    suspend fun getInboxRecieveChatFromFirebase(phone: String?,result: (Resource<ArrayList<Message>>) -> Unit)
+    suspend fun getInboxSentChatFromFirebase(phone: String?,result: (Resource<ArrayList<Message>>) -> Unit)
 }

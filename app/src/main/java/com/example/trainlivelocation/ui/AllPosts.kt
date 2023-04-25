@@ -75,6 +75,9 @@ class AllPosts : Fragment() , PostListener, FragmentLifecycle,DeletePostListener
             when(it){
                 is Resource.Loading->{
                     binding.allPostsPostShimmerLayout.setVisibility(View.VISIBLE)
+                    binding.allPostsEmptyPostLayout.setVisibility(View.GONE)
+                    binding.allPostsRCVPosts.setVisibility(View.GONE)
+
                 }
                 is Resource.Success->{
 

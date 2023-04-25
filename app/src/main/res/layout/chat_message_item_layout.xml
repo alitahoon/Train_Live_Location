@@ -6,46 +6,108 @@
         <variable
             name="message"
             type="com.example.domain.entity.Message" />
+        <variable
+            name="listener"
+            type="com.example.trainlivelocation.utli.MessageListener" />
     </data>
 
     <LinearLayout
-        android:id="@+id/chat_message_item_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="@dimen/_10sdp"
-        android:layout_margin="@dimen/_10sdp"
-        android:orientation="horizontal"
-        android:gravity="center|start">
+       android:orientation="vertical"
+  >
+        <RelativeLayout
+            android:id="@+id/inbox_chat_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_5sdp"
+            android:layout_margin="@dimen/_5sdp"
+            android:background="@color/DarkPrimaryColor"
+            android:onClick="@{() -> listener.OninboxItemClickListener(message)}">
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/inbox_profile_image"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                setUserProfileImage="@{message.reciever}"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:src="@drawable/profile_image" />
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/message_layout_sender_image"
-            android:layout_width="@dimen/_40sdp"
-            setUserProfileImage="@{message.sender}"
-            android:layout_height="@dimen/_40sdp"
-            android:src="@color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/inbox_profile_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toEndOf="@+id/inbox_profile_image"
+                android:text="@{message.reciever}"
+                android:textSize="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_marginStart="@dimen/_5sdp" />
 
-        <com.google.android.material.card.MaterialCardView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            <TextView
+                android:textSize="@dimen/_10sdp"
+                android:id="@+id/inbox_profile_lastMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inbox_profile_name"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_toEndOf="@+id/inbox_profile_image"
+                android:text="@{message.message}" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_2sdp"
+                android:layout_below="@+id/inbox_profile_lastMessage"
+                android:layout_alignStart="@+id/inbox_profile_lastMessage"
+                android:layout_alignEnd="@+id/inbox_profile_lastMessage"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@color/PrimaryColor" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/chat_message_item_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:cardCornerRadius="@dimen/_10sdp"
-            android:layout_marginStart="@dimen/_5sdp">
+            android:layout_margin="@dimen/_10sdp"
+            android:orientation="horizontal"
+            android:gravity="center|start">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/message_layout_sender_image"
+                android:layout_width="@dimen/_40sdp"
+                setUserProfileImage="@{message.sender}"
+                android:layout_height="@dimen/_40sdp"
+                android:src="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/chat_message_item_textView"
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:padding="@dimen/_10sdp"
-                android:layout_toEndOf="@+id/message_layout_sender_image"
-                android:background="@color/SeconderyText"
-                android:text="@{message.message}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/message_layout_sender_image"
-                app:layout_constraintTop_toTopOf="parent" />
-        </com.google.android.material.card.MaterialCardView>
+                app:cardCornerRadius="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_5sdp">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/chat_message_item_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/_10sdp"
+                    android:layout_toEndOf="@+id/message_layout_sender_image"
+                    android:background="@color/SeconderyText"
+                    android:text="@{message.message}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/message_layout_sender_image"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </com.google.android.material.card.MaterialCardView>
+            
+        </LinearLayout>
+
+
 
     </LinearLayout>
 </layout>

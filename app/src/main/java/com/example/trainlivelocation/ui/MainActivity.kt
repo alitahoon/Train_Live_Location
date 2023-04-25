@@ -118,7 +118,12 @@ class MainActivity : AppCompatActivity() {
             BottomNavigationBar.OnTabSelectedListener {
             override fun onTabSelected(position: Int) {
                 when (position) {
-                    0 -> {
+                    2 -> {
+                        binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
+                        binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
+                        binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
+                        binding.mainActivityFragmentHeaderNavFrName.setText("Inbox")
+
                         toast("Inbox")
                         val bundle = Bundle()
                         bundle.putParcelable("userModel", userModel)
@@ -128,7 +133,7 @@ class MainActivity : AppCompatActivity() {
                     1 -> {
                         toast("Home")
                     }
-                    2 -> {
+                    0 -> {
                         toast("Notification")
                     }
                 }

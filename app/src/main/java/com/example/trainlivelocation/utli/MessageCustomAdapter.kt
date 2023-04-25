@@ -3,6 +3,7 @@ package com.example.trainlivelocation.utli
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.entity.Message
 import com.example.domain.entity.Post
@@ -21,7 +22,6 @@ class MessageCustomAdapter(
     RecyclerView.Adapter<MessageAdapterViewHolder>(), BindableAdapter<ArrayList<Message>> {
     private val TAG: String? = "MessageCustomAdapter"
     private var binding: ChatMessageItemLayoutBinding? = null
-    private var bindingInbox: InboxMessageItemLayoutBinding? = null
     lateinit var messageArrayList: ArrayList<Message>
     var messageList = emptyList<Message>()
 
@@ -36,20 +36,15 @@ class MessageCustomAdapter(
             false
 
         )
-        bindingInbox = InboxMessageItemLayoutBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
 
-        return MessageAdapterViewHolder(binding!!, messageListener, phone,bindingInbox!!,layoutType!!)
+        return MessageAdapterViewHolder(binding!!, messageListener, phone,layoutType!!)
     }
 
     override fun getItemCount(): Int = messageArrayList.size
 
     override fun onBindViewHolder(holder: MessageAdapterViewHolder, position: Int) {
-        val comment = messageArrayList.get(position)
-        holder.bind(comment)
+        val message = messageArrayList.get(position)
+        holder.bind(message)
     }
 
     override fun setData(data: ArrayList<Message>) {
