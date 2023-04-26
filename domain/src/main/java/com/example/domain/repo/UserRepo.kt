@@ -101,4 +101,10 @@ interface UserRepo {
     suspend fun getInboxRecieveChatFromFirebase(phone: String?,result: (Resource<ArrayList<Message>>) -> Unit)
     suspend fun getInboxSentChatFromFirebase(phone: String?,result: (Resource<ArrayList<Message>>) -> Unit)
     suspend fun getDataFromSharedPrefrences(sharedPrefFile: String?,result: (Resource<UserResponseItem>) -> Unit)
+
+    suspend fun createTicket(
+        ticketResponseItem: TicketResponseItem,
+        result: (Resource<TicketResponseItem>) -> Unit
+    )
+
 }

@@ -120,7 +120,7 @@ class ShareLocationFeature : Fragment(), Train_Dialog_Listener {
                     binding.root,
                     "Successfully Sharing Loctaion ",
                     R.raw.location_share_success,
-                    R.color.basicColor
+                    R.color.PrimaryColor
                 )
             }
         })
