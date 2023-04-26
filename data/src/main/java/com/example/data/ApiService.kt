@@ -113,10 +113,10 @@ interface ApiService {
 
     //Ticket
     @GET("/api/ticket/GetTicketById")
-    suspend fun GetTicketById(@Query("Id") ticketId: Int): Response<Ticket>
+    suspend fun GetTicketById(@Query("Id") ticketId: Int): Response<TicketResponseItem>
 
     @POST("/api/ticket/CreateTicket")
-    suspend fun CreateTicket(): Response<Ticket>
+    suspend fun CreateTicket(): Response<TicketResponseItem>
 
     @PUT("/api/ticket/ScanTicket")
     suspend fun ScanTicket(@Query("ticketId") ticketId: Int): Response<ScanTicket>

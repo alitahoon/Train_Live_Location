@@ -5,9 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.example.trainlivelocation.R
+import com.example.trainlivelocation.databinding.FragmentInboxRecieveBinding
+import com.example.trainlivelocation.databinding.FragmentTicketsBinding
+
 class Tickets : Fragment() {
 
+    private val TAG: String? = "Tickets"
+    private lateinit var binding: FragmentTicketsBinding
+    private val TicketsViewModel: TicketsViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -38,7 +38,7 @@ class FirebaseService(
         Log.i(TAG, "${phoneNumber}")
         auth.setLanguageCode("ar")
         // Configure faking the auto-retrieval with the whitelisted numbers.
-        auth.firebaseAuthSettings.forceRecaptchaFlowForTesting(true)
+        auth.firebaseAuthSettings.forceRecaptchaFlowForTesting(false)
         val options = PhoneAuthOptions.newBuilder(auth)
             .setPhoneNumber(phoneNumber!!)
             .setTimeout(60L, TimeUnit.SECONDS)

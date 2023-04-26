@@ -167,6 +167,9 @@ object UserCaseModule  {
     }
 
 
-
+    @Provides
+    fun providCreateTicket(userRepo: UserRepo) :CreateTicket{
+        return CreateTicket(userRepo)
+    }
 
 }

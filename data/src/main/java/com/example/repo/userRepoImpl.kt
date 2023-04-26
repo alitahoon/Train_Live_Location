@@ -329,6 +329,13 @@ class userRepoImpl(
         sharedPreferencesService.getUserData(sharedPrefFile, result)
     }
 
+    override suspend fun createTicket(
+        ticketResponseItem: TicketResponseItem,
+        result: (Resource<TicketResponseItem>) -> Unit
+    ) {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun getInboxRecieveChatFromFirebase(
         phone: String?,
         result: (Resource<ArrayList<Message>>) -> Unit
