@@ -355,6 +355,10 @@ class userRepoImpl(
     override suspend fun getUserLocation(callback: (LocationDetails) -> Unit) =
         getUserLocation.getLocationWithLocationManger(callback)
 
-
-
+    override suspend fun createTicket(
+        ticketResponseItem: TicketResponseItem,
+        result: (Resource<TicketResponseItem>) -> Unit
+    ) {
+        
+    }
 }

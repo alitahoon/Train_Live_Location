@@ -46,7 +46,6 @@ class Add_post_fragment : Fragment(),FragmentLifecycle ,Train_Dialog_Listener{
             }
         addPostFragmentViewmodel!!.getUserDataFromsharedPreference()
         setObserver()
-
         return binding.root
     }
 

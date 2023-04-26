@@ -99,7 +99,7 @@ class Add_post_fragment_ViewModel @Inject constructor(
             context.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
         _userData.postValue(
             UserResponseItem(
-                userSharedPreferences.getString("address", "empty")!!,
+                userSharedPreferences.getString("userAddress", "empty")!!,
                 userSharedPreferences.getString("userBirthdate", "empty")!!,
                 userSharedPreferences.getString("userEmail", "empty")!!,
                 userSharedPreferences.getString("userGender", "empty")!!,
