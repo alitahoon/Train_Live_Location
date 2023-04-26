@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
+
+    <data>
+        <variable
+            name="adapter"
+            type="com.example.trainlivelocation.utli.StationCustomAdapter" />
+        <variable
+            name="viewmodel"
+            type="com.example.trainlivelocation.ui.ChooseArrivalStationFragmentViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:paddingTop="@dimen/_10sdp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/choose_dialog_fragment_background">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/SignUp_txt_station"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@={viewmodel.staionName}"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/white"
+            android:drawableStart="@drawable/search_24"
+            android:drawablePadding="@dimen/_10sdp"
+            android:hint="Find Station"
+            android:minHeight="@dimen/_48sdp"
+            android:textColor="@color/TextIcons"
+            android:textColorHint="@color/textHintColorFirst"
+            android:textSize="@dimen/_12ssp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="@dimen/_15sdp"
+            android:id="@+id/station_dialog_rcv"
+            setStaionRCVAdapter="@{adapter}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/SignUp_txt_station"
+            tools:listitem="@layout/station_rcv_item_layout" />
+
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/station_dialog_shimmer_loading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/_5sdp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/SignUp_txt_station">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="vertical"
+                >
+
+                <include layout="@layout/facbook_shimmer_station_rcv" />
+
+                <include layout="@layout/facbook_shimmer_station_rcv" />
+
+                <include layout="@layout/facbook_shimmer_station_rcv" />
+
+                <include layout="@layout/facbook_shimmer_station_rcv" />
+
+                <include layout="@layout/facbook_shimmer_station_rcv" />
+
+                <include layout="@layout/facbook_shimmer_station_rcv" />
+
+                <include layout="@layout/facbook_shimmer_station_rcv" />
+
+                <include layout="@layout/facbook_shimmer_station_rcv" />
+
+                <include layout="@layout/facbook_shimmer_station_rcv" />
+
+                <include layout="@layout/facbook_shimmer_station_rcv" />
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
