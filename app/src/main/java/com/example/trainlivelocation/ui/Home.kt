@@ -67,6 +67,13 @@ class Home : Fragment() ,Train_Dialog_Listener{
             }
         })
 
+        homeViewModel?.btnTicketClicked?.observe(viewLifecycleOwner, Observer {
+            if (it==true){
+                val action=HomeDirections.actionHome2ToTickets(userModel!!)
+                findNavController().navigate(action)
+            }
+        })
+
         homeViewModel?.userData!!.observe(viewLifecycleOwner, Observer {
             userModel=it
         })

@@ -96,7 +96,9 @@ class ChooseArrivalStationFragment(private val listener: Arrival_Station_Listene
         _binding = null
     }
 
-    override fun onArrivalStationSelected(
+
+
+    override fun onStationSelected(
         StationId: Int?,
         StationName: String?,
         longitude: Double?,

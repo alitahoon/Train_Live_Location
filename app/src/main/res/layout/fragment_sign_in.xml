@@ -135,7 +135,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="right"
-                        android:text="Don't have account ?"
+                        android:text="@string/don_t_have_account"
                         android:textColor="@color/textHintColorSecond"
                         android:textSize="@dimen/_10ssp"
                         android:textStyle="bold" />

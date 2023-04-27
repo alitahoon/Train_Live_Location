@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Train Live Location</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_name" translatable="false">Train Live Location</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="Wellcome_back">Wellcome back!</string>
     <string name="phone">Phone</string>
     <string name="password">Password</string>
@@ -22,20 +22,7 @@
         <item>Farmer</item>
         <item>Software Engineer</item>
     </array>
-    <array name="TrainID">
-        <item>44645</item>
-        <item>76766</item>
-        <item>56465</item>
-        <item>45646</item>
-        <item>68665</item>
-    </array>
-    <array name="stations">
-        <item>Shamma</item>
-        <item>Shieben</item>
-        <item>Shanawan</item>
-        <item>Ashmoun</item>
-        <item>Ramcec</item>
-    </array>
+
     <string name="title_activity_splash_new_ui">splash</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -75,4 +62,5 @@
     <string name="stop_sharing">Stop Sharing</string>
     <string name="para_empty_post">If you have something missing go to add post page and publish it now</string>
     <string name="para_empty_post2">No Posts Published on This Train</string>
+    <string name="don_t_have_account">Don\'t have account ?</string>
 </resources>

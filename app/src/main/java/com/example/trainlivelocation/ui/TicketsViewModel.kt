@@ -31,8 +31,7 @@ class TicketsViewModel @Inject constructor(
     private val _ticket:MutableLiveData<Resource<TicketResponseItem>> = MutableLiveData(null)
         val ticket:LiveData<Resource<TicketResponseItem>> = _ticket
 
-    private val _userData: MutableLiveData<Resource<UserResponseItem>?> = MutableLiveData(null)
-    val userData: LiveData<Resource<UserResponseItem>?> = _userData
+
 
     fun onTakroffStationTxtClicked(view: View){
         takroffStationTxtClicked.postValue(true)
@@ -58,14 +57,6 @@ class TicketsViewModel @Inject constructor(
         }
     }
 
-    fun getUserData(){
-        _userData.value=Resource.Loading
-        viewModelScope.launch (){
-            getDataFromSharedPrefrences("userToken"){
-                _userData.value=it
-            }
-        }
-    }
 
 
 

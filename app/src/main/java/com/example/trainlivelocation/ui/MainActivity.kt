@@ -104,6 +104,12 @@ class MainActivity : AppCompatActivity() {
                         binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
                         binding.mainActivityFragmentHeaderNavFrName.setText("Track Location")
                     }
+                    R.id.tickets -> {
+                        binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
+                        binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
+                        binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
+                        binding.mainActivityFragmentHeaderNavFrName.setText("Ticket")
+                    }
                     R.id.home2 -> {
                         binding.mainActivityLayoutAfterLoading.setVisibility(View.VISIBLE)
                         binding.mainActivityBtnDrawerMenu.setVisibility(View.VISIBLE)

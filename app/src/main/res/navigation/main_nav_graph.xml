@@ -39,6 +39,13 @@
         <action
             android:id="@+id/action_home2_to_inbox"
             app:destination="@id/inbox" />
+        <action
+            android:id="@+id/action_home2_to_tickets"
+            app:destination="@id/tickets"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
     </fragment>
     <dialog
         android:id="@+id/locationDialogFragment"
@@ -121,6 +128,14 @@
         android:id="@+id/inbox"
         android:name="com.example.trainlivelocation.ui.Inbox"
         android:label="Inbox" >
+        <argument
+            android:name="userModel"
+            app:argType="com.example.domain.entity.UserResponseItem" />
+    </fragment>
+    <fragment
+        android:id="@+id/tickets"
+        android:name="com.example.trainlivelocation.ui.Tickets"
+        android:label="Tickets" >
         <argument
             android:name="userModel"
             app:argType="com.example.domain.entity.UserResponseItem" />
