@@ -103,7 +103,7 @@ interface UserRepo {
     suspend fun getDataFromSharedPrefrences(sharedPrefFile: String?,result: (Resource<UserResponseItem>) -> Unit)
 
     suspend fun createTicket(
-        ticketResponseItem: TicketResponseItem,
+        ticketRequestItem: TicketRequestItem,
         result: (Resource<TicketResponseItem>) -> Unit
     )
 

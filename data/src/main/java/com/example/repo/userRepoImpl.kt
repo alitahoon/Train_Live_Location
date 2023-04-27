@@ -11,7 +11,6 @@ import com.example.domain.entity.*
 import com.example.domain.repo.UserRepo
 import com.google.android.gms.location.LocationRequest
 import com.google.firebase.auth.*
-import okhttp3.ResponseBody
 
 class userRepoImpl(
     private val apiService: ApiService,
@@ -330,10 +329,19 @@ class userRepoImpl(
     }
 
     override suspend fun createTicket(
-        ticketResponseItem: TicketResponseItem,
+        ticketRequestItem: TicketRequestItem,
         result: (Resource<TicketResponseItem>) -> Unit
     ) {
-        TODO("Not yet implemented")
+        var res = apiService.CreateTicket(ticketRequestItem)
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke((Resource.Failure("createTicket -> Error response body = null :${res.body()}")))
+            }
+        } else {
+            result.invoke((Resource.Failure("createTicket -> ${res.message()}")))
+        }
     }
 
     override suspend fun getInboxRecieveChatFromFirebase(
@@ -355,10 +363,5 @@ class userRepoImpl(
     override suspend fun getUserLocation(callback: (LocationDetails) -> Unit) =
         getUserLocation.getLocationWithLocationManger(callback)
 
-    override suspend fun createTicket(
-        ticketResponseItem: TicketResponseItem,
-        result: (Resource<TicketResponseItem>) -> Unit
-    ) {
-        
-    }
+
 }

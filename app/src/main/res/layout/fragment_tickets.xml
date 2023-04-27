@@ -5,7 +5,7 @@
 
     <data>
         <variable
-            name="viewmodle"
+            name="viewmodel"
             type="com.example.trainlivelocation.ui.TicketsViewModel" />
 
     </data>
@@ -41,7 +41,7 @@
                 android:drawableLeft="@drawable/staion"
                 android:drawablePadding="@dimen/_10sdp"
                 android:hint="Takeoff Station"
-                android:onClick="@{viewmodel::onStationTxtClicked}"
+                android:onClick="@{viewmodel::onTakroffStationTxtClicked}"
                 android:text="@={viewmodel.userStation}"
                 android:textColor="@color/PrimaryColor"
                 android:textColorHint="@color/textHintColorFirst"
@@ -72,7 +72,7 @@
                 android:drawableLeft="@drawable/staion"
                 android:drawablePadding="@dimen/_10sdp"
                 android:hint="Arrival Station"
-                android:onClick="@{viewmodel::onStationTxtClicked}"
+                android:onClick="@{viewmodel::onArrivalStationTxtClicked}"
                 android:text="@={viewmodel.userStation}"
                 android:textColor="@color/PrimaryColor"
                 android:textColorHint="@color/textHintColorFirst"
@@ -103,7 +103,7 @@
                 android:drawableLeft="@drawable/train_id_txt"
                 android:drawablePadding="@dimen/_10sdp"
                 android:hint="Train Id"
-                android:onClick="@{viewmodel::onStationTxtClicked}"
+                android:onClick="@{viewmodel::onTrainIdTxtClicked}"
                 android:text="@={viewmodel.userStation}"
                 android:textColor="@color/PrimaryColor"
                 android:textColorHint="@color/textHintColorFirst"
@@ -112,6 +112,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
+            android:onClick="@{viewmodel::onBtnAddTicketClicked}"
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -123,8 +124,7 @@
             android:paddingHorizontal="@dimen/_10sdp"
             android:textColor="@color/white"
             android:layout_marginHorizontal="@dimen/_100sdp"
-            app:cornerRadius="@dimen/_15sdp"
-            android:onClick="@{()->viewModel.onSubmitButtonClick()}"/>
+            app:cornerRadius="@dimen/_15sdp" />
 
 
 
