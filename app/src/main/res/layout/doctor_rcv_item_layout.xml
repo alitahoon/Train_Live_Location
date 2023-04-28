@@ -1,73 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:backgroundTint="@color/DarkPrimaryColor"
-    android:layout_margin="@dimen/_10sdp"
-    app:cardCornerRadius="@dimen/_15sdp">
 
-    <RelativeLayout
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="doctor"
+            type="com.example.domain.entity.DoctorResponseItem" />
+        <variable
+            name="listener"
+            type="com.example.trainlivelocation.utli.DoctorListener" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/_10sdp">
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/DarkPrimaryColor"
+        android:layout_margin="@dimen/_10sdp"
+        app:cardCornerRadius="@dimen/_15sdp">
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/doctor_rcv_item_doctor_img"
-            android:layout_width="@dimen/_40sdp"
-            android:layout_height="@dimen/_40sdp"
-            android:src="@color/white" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_10sdp">
 
-        <TextView
-            android:id="@+id/doctor_rcv_item_profile_name"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/doctor_rcv_item_doctor_img"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginTop="5dp"
-            android:layout_toRightOf="@id/doctor_rcv_item_doctor_img"
-            android:text="username"
-            android:textSize="@dimen/_10ssp" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/doctor_rcv_item_doctor_img"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:src="@color/white"
+                setUserProfileImage="@{doctor.userPhone}"/>
 
-        <TextView
-            android:id="@+id/doctor_rcv_item_profile_job"
-            android:layout_width="@dimen/_50sdp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/doctor_rcv_item_profile_name"
-            android:layout_marginLeft="13dp"
-            android:layout_toRightOf="@id/doctor_rcv_item_doctor_img"
-            android:text="doctor"
-            android:textSize="@dimen/_8ssp" />
+            <TextView
+                android:id="@+id/doctor_rcv_item_profile_name"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/doctor_rcv_item_doctor_img"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@id/doctor_rcv_item_doctor_img"
+                android:text="@{doctor.userName}"
+                android:textSize="@dimen/_10ssp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="@dimen/_80sdp"
-            android:layout_height="wrap_content"
-            android:id="@+id/doctor_btn_notifiy"
-            android:layout_alignTop="@+id/doctor_rcv_item_doctor_img"
-            android:layout_alignBottom="@+id/doctor_rcv_item_doctor_img"
-            android:layout_marginStart="0dp"
-            android:layout_marginLeft="@dimen/_100sdp"
-            android:layout_toEndOf="@+id/doctor_rcv_item_profile_name"
-            android:backgroundTint="@color/PrimaryColor"
-            android:text="notifiy"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_10ssp"
-            app:cornerRadius="@dimen/_20sdp" />
+            <TextView
+                android:id="@+id/doctor_rcv_item_profile_job"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/doctor_rcv_item_profile_name"
+                android:layout_marginLeft="13dp"
+                android:layout_toRightOf="@id/doctor_rcv_item_doctor_img"
+                android:text="@{doctor.userPhone}"
+                android:textSize="@dimen/_8ssp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/doctor_btn_chat"
-            android:layout_width="@dimen/_80sdp"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/doctor_rcv_item_doctor_img"
-            android:layout_alignBottom="@+id/doctor_rcv_item_doctor_img"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_toEndOf="@+id/doctor_btn_notifiy"
-            android:backgroundTint="@color/PrimaryColor"
-            android:text="chat"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_10ssp"
-            app:cornerRadius="@dimen/_20sdp" />
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="wrap_content"
+                android:id="@+id/doctor_btn_notifiy"
+                android:layout_alignTop="@+id/doctor_rcv_item_doctor_img"
+                android:layout_alignBottom="@+id/doctor_rcv_item_doctor_img"
+                android:layout_marginStart="0dp"
+                android:layout_marginLeft="@dimen/_100sdp"
+                android:layout_toEndOf="@+id/doctor_rcv_item_profile_name"
+                android:backgroundTint="@color/PrimaryColor"
+                android:text="notifiy"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10ssp"
+                app:cornerRadius="@dimen/_20sdp"
+                android:onClick="@{() -> listener.OnNotifyClickListener()}"/>
 
-    </RelativeLayout>
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/doctor_btn_chat"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/doctor_rcv_item_doctor_img"
+                android:layout_alignBottom="@+id/doctor_rcv_item_doctor_img"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_toEndOf="@+id/doctor_btn_notifiy"
+                android:backgroundTint="@color/PrimaryColor"
+                android:text="chat"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10ssp"
+                app:cornerRadius="@dimen/_20sdp"
+                android:onClick="@{() -> listener.OnChatClickListener()}"/>
 
-</com.google.android.material.card.MaterialCardView>
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>
