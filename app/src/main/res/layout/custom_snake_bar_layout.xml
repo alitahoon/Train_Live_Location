@@ -49,7 +49,7 @@
             android:layout_height="match_parent"
 
             android:gravity="center"
-            android:text="Location Shared Successfully"
+            android:text="@string/location_shared_successfully"
             android:textColor="@color/white"
             android:textSize="@dimen/_12ssp"
             android:textStyle="bold" />

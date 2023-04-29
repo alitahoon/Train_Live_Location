@@ -45,7 +45,7 @@
                 android:backgroundTint="@color/DarkPrimaryColor"
                 android:drawableLeft="@drawable/train_id_txt"
                 android:drawablePadding="10dp"
-                android:hint="Train Id"
+                android:hint="@string/train_id____"
                 android:minHeight="48dp"
                 android:textColor="@color/PrimaryColor"
                 android:textColorHint="@color/textHintColorFirst"
@@ -60,7 +60,7 @@
             android:onClick="@{viewmodel::onBtnTrackTrainLocationClicked}"
             android:padding="15dp"
             android:backgroundTint="@color/PrimaryColor"
-            android:text="Track Location"
+            android:text="@string/track_location_"
             android:textSize="@dimen/_12ssp"
             android:textColor="@color/white"
             app:cornerRadius="@dimen/_20sdp" />

@@ -27,7 +27,7 @@
         <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="OK"
+            android:text="@string/ok"
             android:backgroundTint="@color/PrimaryColor"
 
             android:id="@+id/date_picker_btn_ok"
@@ -36,7 +36,7 @@
         <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel"
+            android:text="@string/cancel"
             android:id="@+id/date_picker_btn_cancel"
             android:textColor="@color/white"
             android:backgroundTint="@color/textAlarmColor"

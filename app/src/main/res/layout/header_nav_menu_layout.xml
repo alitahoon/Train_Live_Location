@@ -28,7 +28,7 @@
         android:layout_below="@+id/nav_menu_header_profile_image"
         android:layout_alignStart="@+id/nav_menu_header_profile_image"
         android:layout_alignEnd="@+id/nav_menu_header_profile_image"
-        android:text="Profile Name"
+        android:text="@string/profile_name_"
         android:gravity="center"
         android:textSize="@dimen/_18ssp"
         android:letterSpacing="0.1"
@@ -43,7 +43,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:gravity="center"
-        android:text="Profile Jop"
+        android:text="@string/profile_jop_"
         android:textSize="@dimen/_14ssp" />
 
 </RelativeLayout>

@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:background="@drawable/txt_input_train_id_train_item"
-                android:hint="Write a comment"
+                android:hint="@string/write_a_comment"
                 android:padding="@dimen/_10sdp"
                 android:textColorHint="@color/textHintColorFirst"
                 android:textSize="@dimen/_14ssp"

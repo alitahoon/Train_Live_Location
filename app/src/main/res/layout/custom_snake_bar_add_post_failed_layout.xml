@@ -45,7 +45,7 @@
             android:layout_marginBottom="@dimen/_10sdp"
             android:layout_toEndOf="@+id/custom_snake_bar_logo"
             android:gravity="center"
-            android:text="Train Id"
+            android:text="@string/train_id"
             android:textColor="@color/white"
             android:textSize="@dimen/_10ssp"
             android:textStyle="bold" />
@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="356"
+            android:text="@string/_356"
             android:textColor="@color/white"
             android:textSize="@dimen/_10ssp"
             android:letterSpacing="0.1"
@@ -74,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Post Publish Failed !"
+            android:text="@string/post_publish_failed"
             android:textColor="@color/white"
             android:textSize="@dimen/_12ssp"
             android:textStyle="bold" />

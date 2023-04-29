@@ -37,7 +37,7 @@
                     android:id="@+id/post_rcv_item_txt_profile_name"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/_10sdp"
-                    android:text="Ali Tahoon"
+                    android:text="@string/ali_tahoon"
                     android:layout_toEndOf="@+id/post_rcv_item_profile_img"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/_5sdp"

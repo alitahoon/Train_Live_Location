@@ -1,66 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Train Live Location</string>
-    <string name="Wellcome_back">Wellcome back!</string>
-    <string name="phone">المحمول</string>
-    <string name="password">Password</string>
-    <string name="forget_password"><u>Forger Password?</u></string>
-    <string name="signIn"><u>Sign In?</u></string>
-    <string name="sign_in_without_underScore">Sign In</string>
-    <string name="sign_up"><u>Sign Up?</u></string>
-    <string name="submit"><u>submit?</u></string>
-    <string name="sending_code">Sending Code…</string>
-    <string name="post_repot">Report</string>
-    <string name="CriticalPosts">Critical Posts page</string>
-    <string name="NoneCriticalPosts">None Critical Posts page</string>
-    <string name="verification_done">verification done…</string>
+    <string name="app_name">موقع القطار مباشر</string>
+    <string name="Wellcome_back">مرحبا بعودتك</string>
+    <string name="phone">الهاتف</string>
+    <string name="password">كلمة المرور</string>
+    <string name="forget_password"><u>نسيت كلمة المرور</u></string>
+    <string name="signIn"><u>تسجيل الدخول ؟</u></string>
+    <string name="sign_in_without_underScore">تسجيل الدخول</string>
+    <string name="sign_up"><u>انشاء حساب؟</u></string>
+    <string name="submit"><u>تأكيد؟</u></string>
+    <string name="sending_code">أرسل الرمز…</string>
+    <string name="post_repot">تقرير</string>
+    <string name="CriticalPosts">صفحة المنشورات الهامة</string>
+    <string name="NoneCriticalPosts">لا توجد صفحة المنشورات الهامة</string>
+    <string name="verification_done">تم التحقق…</string>
     <array name="jopsArray">
-        <item>Doctor</item>
-        <item>Engineer</item>
-        <item>Police</item>
-        <item>Teacher</item>
-        <item>Farmer</item>
-        <item>Software Engineer</item>
+        <item>طبيب</item>
+        <item>مهندس</item>
+        <item>شرطي</item>
+        <item>معلم</item>
+        <item>مزارع</item>
+        <item>مهندس برمجيات</item>
     </array>
 
-    <string name="title_activity_splash_new_ui">splash</string>
+    <string name="title_activity_splash_new_ui">تحميل</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next"><u>Next</u></string>
-    <string name="previous">Previous</string>
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="profile_name">Profile Name</string>
-    <string name="features1">Track train live</string>
-    <string name="features2">Notify you before arriving to your station</string>
-    <string name="profile_jop">Profile Jop</string>
-    <string name="profile">Profile</string>
-    <string name="security">Security</string>
-    <string name="contact_us">Contact Us</string>
-    <string name="invite_friend">Invite Friend</string>
-    <string name="help">Help</string>
-    <string name="notification">Notification</string>
-    <string name="location">Location</string>
-    <string name="passengers">Passengers</string>
-    <string name="posts">Posts</string>
-    <string name="tickets">Tickets</string>
-    <string name="chat">Chat</string>
-    <string name="abbreviations">abbreviations</string>
-    <string name="abbreviation">Abbreviation</string>
-    <string name="post_profile_name">profile name</string>
-    <string name="post_time">post time</string>
-    <string name="comments">Comments</string>
-    <string name="post_Likes">post Likes</string>
-    <string name="post_content">Post Content</string>
-    <string name="add_critical_post_content">critical post</string>
-    <string name="add_non_critical_post_content">non critical post</string>
-    <string name="add_post_submit">Submit</string>
-    <string name="critcal">critcal</string>
-    <string name="nonCritcal">nonCritcal</string>
-    <string name="share_location_para">Thank you for sharing your location. This helps us to provide a better service to assist passengers who are waiting for the train at different stations to know the location of the train. We wish you a happy trip</string>
-    <string name="please_wait">Please Wait...</string>
-    <string name="stop_sharing">Stop Sharing</string>
-    <string name="para_empty_post">If you have something missing go to add post page and publish it now</string>
-    <string name="para_empty_post2">No Posts Published on This Train</string>
-    <string name="don_t_have_account">Don\'t have account ?</string>
+    <string name="first_fragment_label">الجزء الاول</string>
+    <string name="second_fragment_label">الجزء الثاني</string>
+    <string name="next"><u>التالي</u></string>
+    <string name="previous">السابق</string>
+    <string name="hello_first_fragment">مرحبا الجزء الأول</string>
+    <string name="profile_name">اسم الملف الشخصي</string>
+    <string name="features1">تتبع القطار مباشرة</string>
+    <string name="features2">إعلامك قبل الوصول إلى محطتك</string>
+    <string name="profile_jop">وظيفة الملف الشخصي</string>
+    <string name="profile">الحساب الشخصي </string>
+    <string name="security">الامان و الخصوصية</string>
+    <string name="contact_us">اتصل بنا</string>
+    <string name="invite_friend">قم بدعوة صديق</string>
+    <string name="help">المساعدة</string>
+    <string name="notification">الاشعارات</string>
+    <string name="location"> الموقع </string>
+    <string name="passengers">الركاب</string>
+    <string name="posts">منشورات </string>
+    <string name="tickets">تذاكر</string>
+    <string name="chat">محادثة</string>
+    <string name="abbreviations">الاختصارات</string>
+    <string name="abbreviation">اختصار</string>
+    <string name="post_profile_name">الحساب الشخصي </string>
+    <string name="post_time">وقت المنشور</string>
+    <string name="comments">تعليقات</string>
+    <string name="post_Likes"> اعجابات المنشور </string>
+    <string name="post_content">محتوي المنشور </string>
+    <string name="add_critical_post_content">منشور هام </string>
+    <string name="add_non_critical_post_content">منشور غير هام</string>
+    <string name="add_post_submit">تأكيد</string>
+    <string name="critcal">هام</string>
+    <string name="nonCritcal">غير هام</string>
+    <string name="share_location_para">
+        شكرا لمشاركة موقعك. هذا يساعدنا على تقديم خدمة أفضل لمساعدة الركاب الذين ينتظرون القطار في محطات مختلفة لمعرفة موقع القطار. نتمنى لك رحلة سعيدة
+    </string>
+    <string name="please_wait">انتظر من فضلك…</string>
+    <string name="stop_sharing">التوقف عن المشاركة</string>
+    <string name="para_empty_post">إذا كان لديك شيء مفقود ، فانتقل إلى إضافة صفحة المنشور وانشرها الآن</string>
+    <string name="para_empty_post2">لا توجد مشاركات منشورة في هذا القطار</string>
+    <string name="don_t_have_account">ليس لديك حساب؟</string>
+    <string name="train_id">رقم القطار التعريفي</string>
+    <string name="_356">356</string>
+    <string name="post_publish_failed">فشل نشر المنشور !</string>
+    <string name="train_id_">رقم القطار التعريفي :</string>
+    <string name="_356_">356</string>
+    <string name="post_publish_successfully">تم النشر المنشور بنجاح</string>
+    <string name="location_shared_successfully">تمت مشاركة الموقع بنجاح</string>
+    <string name="ok">تم</string>
+    <string name="cancel">الغاء</string>
+    <string name="please_choose_operation">الرجاء اختيار العملية …</string>
+    <string name="if_you_choose_to_track_location_you_will_be_you_will_be_able_to_track_train_location_but_if_you_choose_to_share_location_your_location_will_be_shared_as_train_location">
+        إذا اخترت تتبع الموقع ، فستكون قادرًا على تتبع موقع القطار ولكن إذا اخترت مشاركة الموقع ، فسيتم مشاركة موقعك كموقع قطار …
+    </string>
+    <string name="track_location">تتبع الموقع</string>
+    <string name="share_location">مشاركة الموقع</string>
+    <string name="write_a_comment">أكتب تعليقا</string>
+    <string name="submit_">تأكيد</string>
+    <string name="please_wait_">انتظر من فضلك…</string>
+    <string name="send_code">أرسل الرمز</string>
+    <string name="phone_">الهاتف</string>
+    <string name="online">متصل</string>
+    <string name="message">رسالة</string>
+    <string name="are_you_shore_you_want_to_remove_this_post">هل انت متأكد انك تريد حذف هذا المنشور ..؟</string>
+    <string name="no">لا</string>
+    <string name="yes">نعم</string>
+    <string name="train_id__">رقم القطار التعريفي</string>
+    <string name="share_location_">مشاركة الموقع</string>
+    <string name="takeoff_station">محطة المغادرة</string>
+    <string name="arrival_station">محطة الوصول</string>
+    <string name="train_id___">رقم القطار التعريفي</string>
+    <string name="train_id____">رقم القطار التعريفي</string>
+    <string name="track_location_">تتبع الموقع</string>
+    <string name="train_distance">مسافة القطار</string>
+    <string name="_5_km">5 كم</string>
+    <string name="address">عنوان</string>
+    <string name="shamma_ashmoun_menofia">شما ، اشمون ، المنوفية</string>
+    <string name="profile_name_">اسم الملف الشخصي</string>
+    <string name="profile_jop_">وظيفة الملف الشخصي</string>
+    <string name="profile_name__">اسم الملف الشخصي</string>
+    <string name="profile_comment">تعليق الملف الشخصي</string>
+    <string name="text_title">عنوان النص</string>
+    <string name="ali_tahoon">علي طاحون</string>
+    <string name="text_title_">عنوان النص</string>
+    <string name="convenient_with_new_technological_innovations_human_beings_have_become_more_dependent_on_science_and_technology_we_rely_on_technology_for_all_our_activities_and_have_become_an_integral_part_of_our_lives">convenient. With new technological innovations, human beings have become more dependent on science and technology. We rely on technology for all our activities, and have become an integral part of our lives</string>
+    <string name="ok_">تم</string>
+    <string name="find_station">ابحث عن المحطة</string>
+    <string name="find_train_by_id">البحث عن القطار بواسطة الرقم التعريفي</string>
+    <string name="train_degree">درجة القطار:</string>
+    <string name="train_number">رقم القطار:</string>
 </resources>

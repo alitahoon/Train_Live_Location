@@ -76,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:text="convenient. With new technological innovations, human beings have become more dependent on science and technology. We rely on technology for all our activities, and have become an integral part of our lives"
+                android:text="@string/convenient_with_new_technological_innovations_human_beings_have_become_more_dependent_on_science_and_technology_we_rely_on_technology_for_all_our_activities_and_have_become_an_integral_part_of_our_lives"
                 android:layout_marginHorizontal="@dimen/_5sdp"
                 android:gravity="start" />
 

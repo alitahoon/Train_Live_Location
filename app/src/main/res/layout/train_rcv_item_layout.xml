@@ -34,7 +34,7 @@
                 android:drawableStart="@drawable/train_degree"
                 android:drawablePadding="@dimen/_5sdp"
                 android:gravity="center"
-                android:text="Train Degree :"
+                android:text="@string/train_degree"
                 android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -62,7 +62,7 @@
                 android:drawablePadding="@dimen/_5sdp"
                 android:gravity="center"
                 android:padding="10dp"
-                android:text="Train Number :"
+                android:text="@string/train_number"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

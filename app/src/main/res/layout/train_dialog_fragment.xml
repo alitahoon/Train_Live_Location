@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/search_24"
             android:drawablePadding="10dp"
-            android:hint="Find Train By Id"
+            android:hint="@string/find_train_by_id"
             android:minHeight="48dp"
             android:backgroundTint="@color/TextIcons"
             android:padding="@dimen/_10sdp"

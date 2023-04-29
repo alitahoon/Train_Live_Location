@@ -36,7 +36,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="profile name"
+                android:text="@string/profile_name__"
                 android:textColor="@color/textHintColorFirst"
                 android:id="@+id/post_comment_profile_name"
                 android:textSize="@dimen/_12ssp"
@@ -46,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/textHintColorFirst"
-                android:text="profile commentttttttttttt"
+                android:text="@string/profile_comment"
                 android:id="@+id/post_comment_profile_comment"
                 android:textSize="@dimen/_10ssp"
                 android:letterSpacing="0.1"

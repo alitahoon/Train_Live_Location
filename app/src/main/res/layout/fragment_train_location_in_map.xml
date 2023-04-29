@@ -67,7 +67,7 @@
                         android:drawableLeft="@drawable/train_id"
                         android:drawablePadding="@dimen/_5sdp"
                         android:gravity="center"
-                        android:text="Train Distance"
+                        android:text="@string/train_distance"
                         android:textColor="@color/white" />
 
                     <com.google.android.material.textview.MaterialTextView
@@ -75,7 +75,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_10sdp"
-                        android:text="5 KM"
+                        android:text="@string/_5_km"
                         android:textColor="@color/white" />
                 </LinearLayout>
 
@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/_10sdp"
                     android:layout_marginLeft="@dimen/_20sdp"
-                    android:text="Address"
+                    android:text="@string/address"
                     android:textColor="@color/white"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/view" />
@@ -106,7 +106,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="@dimen/_10sdp"
                     android:layout_marginLeft="@dimen/_20sdp"
-                    android:text="Shamma,ashmoun,menofia"
+                    android:text="@string/shamma_ashmoun_menofia"
                     android:textColor="@color/white"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/trainLocation_txt_train_address"

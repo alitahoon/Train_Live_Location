@@ -47,7 +47,7 @@
                 android:visibility="gone"
                 android:layout_marginHorizontal="@dimen/_5sdp"
                 android:backgroundTint="@color/btn_background"
-                android:text="OK"
+                android:text="@string/ok_"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

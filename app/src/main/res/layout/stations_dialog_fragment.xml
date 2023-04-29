@@ -33,7 +33,7 @@
             android:backgroundTint="@color/white"
             android:drawableStart="@drawable/search_24"
             android:drawablePadding="@dimen/_10sdp"
-            android:hint="Find Station"
+            android:hint="@string/find_station"
             android:minHeight="@dimen/_48sdp"
             android:textColor="@color/TextIcons"
             android:textColorHint="@color/textHintColorFirst"

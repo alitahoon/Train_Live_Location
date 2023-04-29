@@ -93,7 +93,7 @@
                     android:layout_below="@+id/chat_Profile_reciver"
                     android:layout_marginStart="@dimen/_5sdp"
                     android:layout_toEndOf="@+id/chat_profile_reciver_image"
-                    android:text="Online"
+                    android:text="@string/online"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10ssp" />
             </RelativeLayout>
@@ -186,7 +186,7 @@
                     android:layout_marginHorizontal="@dimen/_10sdp"
                     android:layout_weight="1.4"
                     android:background="@drawable/txt_input_train_id_train_item"
-                    android:hint="Message"
+                    android:hint="@string/message"
                     android:paddingHorizontal="@dimen/_10sdp"
                     android:paddingVertical="@dimen/_5sdp"
                     android:text="@={viewmodel.message}"

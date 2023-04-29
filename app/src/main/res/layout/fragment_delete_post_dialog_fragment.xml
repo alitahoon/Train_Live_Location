@@ -21,7 +21,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Are you shore you want to remove this post..?"
+                android:text="@string/are_you_shore_you_want_to_remove_this_post"
                 android:textSize="@dimen/_14sdp"
                 android:lines="2" />
 
@@ -37,7 +37,7 @@
                     android:padding="@dimen/_5sdp"
                     android:onClick="@{viewmodel::onbtnNoClicked}"
                     android:layout_height="wrap_content"
-                    android:text="No"
+                    android:text="@string/no"
                     android:id="@+id/delete_post_btn_no"
                     android:textColor="@color/white"
                     android:backgroundTint="@color/textAlarmColor"
@@ -49,7 +49,7 @@
                     android:id="@+id/delete_post_btn_yes"
                     android:padding="@dimen/_5sdp"
                     android:layout_height="wrap_content"
-                    android:text="Yes"
+                    android:text="@string/yes"
                     android:textColor="@color/white"
                     android:backgroundTint="@color/DarkPrimaryColor" />
 

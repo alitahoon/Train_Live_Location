@@ -38,7 +38,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/_10sdp"
             android:gravity="center"
-            android:text="Train Id: "
+            android:text="@string/train_id_"
             android:textColor="@color/white"
             android:textSize="@dimen/_10ssp"
             android:textStyle="bold" />
@@ -49,7 +49,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:letterSpacing="0.1"
-            android:text="356"
+            android:text="@string/_356_"
             android:textColor="@color/white"
             android:textSize="@dimen/_10ssp"
             android:textStyle="bold" />
@@ -69,7 +69,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="Post Publish Successfully"
+            android:text="@string/post_publish_successfully"
             android:textColor="@color/white"
             android:textSize="@dimen/_12ssp"
             android:textStyle="bold" />
