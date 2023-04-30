@@ -64,3 +64,14 @@ fun setAdapter(
         recyclerView.adapter = it
     }
 }
+
+
+@BindingAdapter("setDocotrRCVAdapter")
+fun setAdapter(
+    recyclerView: RecyclerView,
+    adapter: DoctorCustomAdapter
+) {
+    adapter?.let {
+        recyclerView.adapter = it
+    }
+}

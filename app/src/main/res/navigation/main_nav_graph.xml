@@ -46,6 +46,13 @@
             app:exitAnim="@anim/exit"
             app:popEnterAnim="@anim/pop_enter"
             app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_home2_to_emergency"
+            app:destination="@id/emergency"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
     </fragment>
     <dialog
         android:id="@+id/locationDialogFragment"
@@ -140,5 +147,9 @@
             android:name="userModel"
             app:argType="com.example.domain.entity.UserResponseItem" />
     </fragment>
+    <fragment
+        android:id="@+id/emergency"
+        android:name="com.example.trainlivelocation.ui.Emergency"
+        android:label="Emergency" />
 
 </navigation>

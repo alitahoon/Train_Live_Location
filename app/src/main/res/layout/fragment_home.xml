@@ -175,7 +175,7 @@
                     android:padding="@dimen/_10sdp"
                     android:text="@string/passengers"
                     android:textColor="@color/TextIcons"
-                    android:textSize="@dimen/_10ssp"
+                    android:textSize="@dimen/_8ssp"
                     android:textStyle="bold" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -216,7 +216,7 @@
                     android:padding="@dimen/_10sdp"
                     android:text="@string/posts"
                     android:textColor="@color/TextIcons"
-                    android:textSize="@dimen/_10ssp"
+                    android:textSize="@dimen/_8ssp"
                     android:textStyle="bold" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -257,7 +257,7 @@
                     android:padding="@dimen/_10sdp"
                     android:text="@string/tickets"
                     android:textColor="@color/TextIcons"
-                    android:textSize="@dimen/_10ssp"
+                    android:textSize="@dimen/_8ssp"
                     android:textStyle="bold" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -298,7 +298,7 @@
                     android:padding="@dimen/_10sdp"
                     android:text="@string/chat"
                     android:textColor="@color/TextIcons"
-                    android:textSize="@dimen/_10ssp"
+                    android:textSize="@dimen/_8ssp"
                     android:textStyle="bold" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -308,6 +308,7 @@
             android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_80sdp"
             android:layout_margin="@dimen/_15sdp"
+            android:onClick="@{viewmodel::onbtnEmergancyClicked}"
             android:background="@color/white"
             android:backgroundTint="@color/DarkPrimaryColor"
             app:cardCornerRadius="@dimen/_30sdp"
@@ -325,7 +326,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_60sdp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/explore" />
+                    app:srcCompat="@drawable/emergency_icon" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -336,9 +337,9 @@
                     android:letterSpacing="0.1"
                     android:lineHeight="@dimen/_20sdp"
                     android:padding="@dimen/_10sdp"
-                    android:text="@string/abbreviation"
+                    android:text="@string/emergancy"
                     android:textColor="@color/TextIcons"
-                    android:textSize="@dimen/_10ssp"
+                    android:textSize="@dimen/_8ssp"
                     android:textStyle="bold" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>

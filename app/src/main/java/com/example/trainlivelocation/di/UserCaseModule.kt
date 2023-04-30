@@ -172,4 +172,9 @@ object UserCaseModule  {
         return CreateTicket(userRepo)
     }
 
+    @Provides
+    fun providGetDoctorInTrain(userRepo: UserRepo) :GetDoctorInTrain{
+        return GetDoctorInTrain(userRepo)
+    }
+
 }

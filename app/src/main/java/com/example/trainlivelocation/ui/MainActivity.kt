@@ -75,45 +75,28 @@ class MainActivity : AppCompatActivity() {
             ) {
                 when (destination.id) {
                     R.id.trainLocationInMap -> {
-                        binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
-                        binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
-                        binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
-                        binding.mainActivityFragmentHeaderNavFrName.setText("Train Location")
+                        setHeader("Train Location")
                     }
                     R.id.posts2 -> {
-                        binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
-                        binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
-                        binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
-                        binding.mainActivityFragmentHeaderNavFrName.setText("Posts")
+                        setHeader("Posts")
                     }
                     R.id.shareLocationFeature -> {
-                        binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
-                        binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
-                        binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
-                        binding.mainActivityFragmentHeaderNavFrName.setText("Share Location")
+                        setHeader("Share Location")
                     }
                     R.id.userProfile -> {
-                        binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
-                        binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
-                        binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
-                        binding.mainActivityFragmentHeaderNavFrName.setText("Profile")
+                        setHeader("Profile")
                     }
                     R.id.trackLocationFeature -> {
-                        binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
-                        binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
-                        binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
-                        binding.mainActivityFragmentHeaderNavFrName.setText("Track Location")
+                        setHeader("Track Location")
                     }
                     R.id.tickets -> {
-                        binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
-                        binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
-                        binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
-                        binding.mainActivityFragmentHeaderNavFrName.setText("Ticket")
+                        setHeader("Ticket")
+                    }
+                    R.id.emergency -> {
+                        setHeader("Emergency")
                     }
                     R.id.home2 -> {
-                        binding.mainActivityLayoutAfterLoading.setVisibility(View.VISIBLE)
-                        binding.mainActivityBtnDrawerMenu.setVisibility(View.VISIBLE)
-                        binding.mainActivityFragmentHeaderNav.setVisibility(View.GONE)
+                        setHeader("home")
                     }
                 }
             }
@@ -179,8 +162,8 @@ class MainActivity : AppCompatActivity() {
 
                 nametxt.setText(it!!.name)
                 joptxt.setText(it!!.jop)
-                binding.mainActivityCiProfileName.setText(it!!.name)
-                binding.mainActivityCiProfileJop.setText(it!!.jop)
+                binding.mainActivityCiProfileName.setText(it.name)
+                binding.mainActivityCiProfileJop.setText(it.jop)
                 mainActivityViewModel!!.getProfileImage("profileImages/+20${it.phone}")
             }
         }
@@ -233,6 +216,37 @@ class MainActivity : AppCompatActivity() {
             .setActiveColor(R.color.white)
             .setFirstSelectedPosition(1)
             .initialise()
+    }
+
+    fun setHeader(title: String?) {
+        when (title) {
+            "home" -> {
+                binding.mainActivityLayoutAfterLoading.setVisibility(View.VISIBLE)
+                binding.mainActivityBtnDrawerMenu.setVisibility(View.VISIBLE)
+                binding.mainActivityFragmentHeaderNav.setVisibility(View.GONE)
+            }
+            "Ticket" -> {
+                binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
+                binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
+                binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
+                binding.mainActivityFragmentHeaderNav.setBackgroundColor(resources.getColor(R.color.PrimaryColor))
+                binding.mainActivityFragmentHeaderNavFrName.setText(title)
+            }
+            "Emergency" ->{
+                binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
+                binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
+                binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
+                binding.mainActivityFragmentHeaderNav.setBackgroundColor(resources.getColor(R.color.PrimaryColor))
+                binding.mainActivityFragmentHeaderNavFrName.setText(title)
+            }
+            else -> {
+                binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
+                binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
+                binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
+                binding.mainActivityFragmentHeaderNavFrName.setText(title)
+            }
+        }
+
     }
 
 

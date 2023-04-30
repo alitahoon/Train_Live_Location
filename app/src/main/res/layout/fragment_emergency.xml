@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
-            name="viewmode"
+            name="viewmodel"
             type="com.example.trainlivelocation.ui.EmergencyViewModel" />
+        <variable
+            name="adapter"
+            type="com.example.trainlivelocation.utli.DoctorCustomAdapter" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,6 +17,68 @@
         android:layout_height="match_parent"
         tools:context=".ui.Emergency"
         android:background="@color/DarkPrimaryColor">
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:padding="@dimen/_10sdp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/PrimaryColor"
+                app:hintTextColor="@color/textHintColorFirst">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/track_location_txt_train_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/train_id_txt"
+                    android:drawablePadding="10dp"
+                    android:focusable="false"
+                    android:gravity="center|start"
+                    android:hint="Train Id"
+                    android:minHeight="48dp"
+                    android:backgroundTint="@color/DarkPrimaryColor"
+                    android:onClick="@{viewmodel::ontxtChooseTrainIdClicked}"
+                    android:text="@{viewmodel.trainid}"
+                    android:textColor="@color/PrimaryColor"
+                    android:textColorHint="@color/textHintColorFirst"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/doctor_rcv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            tools:listitem="@layout/doctor_rcv_item_layout" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:id="@+id/doctor_fragment_loading"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            app:lottie_rawRes="@raw/doctor_fragment_loading"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"/>
 
 
 

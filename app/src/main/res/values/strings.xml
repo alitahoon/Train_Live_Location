@@ -63,4 +63,5 @@
     <string name="para_empty_post">If you have something missing go to add post page and publish it now</string>
     <string name="para_empty_post2">No Posts Published on This Train</string>
     <string name="don_t_have_account">Don\'t have account ?</string>
+    <string name="emergancy">Emergancy</string>
 </resources>

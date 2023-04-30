@@ -7,54 +7,47 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.entity.Message
-import com.example.domain.entity.Post
-import com.example.domain.entity.PostCommentsResponseItem
-import com.example.domain.entity.PostModelResponse
+import com.example.domain.entity.*
 import com.example.trainlivelocation.databinding.ChatMessageItemLayoutBinding
+import com.example.trainlivelocation.databinding.DoctorRcvItemLayoutBinding
 import com.example.trainlivelocation.databinding.InboxMessageItemLayoutBinding
 import com.example.trainlivelocation.databinding.PostCommentItemLayoutBinding
 import com.example.trainlivelocation.databinding.UserPostsRcvItemLayoutBinding
 
 class DoctorCustomAdapter(
-    private val layoutType: String?,
     private val doctorListener: DoctorListener
 ) :
-    RecyclerView.Adapter<MessageAdapterViewHolder>(), BindableAdapter<ArrayList<Message>> {
-    private val TAG: String? = "MessageCustomAdapter"
-    private var binding: ChatMessageItemLayoutBinding? = null
-    lateinit var messageArrayList: ArrayList<Message>
-    var messageList = emptyList<Message>()
+    RecyclerView.Adapter<DoctorAdapterViewHolder>(), BindableAdapter<ArrayList<DoctorResponseItem>> {
+    private val TAG: String? = "DoctorCustomAdapter"
+    private var binding: DoctorRcvItemLayoutBinding? = null
+    lateinit var doctorArrayList: ArrayList<DoctorResponseItem>
+    var messageList = emptyList<DoctorResponseItem>()
 
-    public fun updateData(postList: ArrayList<PostCommentsResponseItem>) {
+    public fun updateData(postList: ArrayList<DoctorResponseItem>) {
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageAdapterViewHolder {
-        binding = ChatMessageItemLayoutBinding.inflate(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DoctorAdapterViewHolder {
+        binding = DoctorRcvItemLayoutBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
 
-        return MessageAdapterViewHolder(binding!!, doctorListener, phone,layoutType!!)
+        return DoctorAdapterViewHolder(binding!!, doctorListener!!)
     }
 
-    override fun getItemCount(): Int = messageArrayList.size
+    override fun getItemCount(): Int = doctorArrayList.size
 
-    override fun onBindViewHolder(holder: MessageAdapterViewHolder, position: Int) {
-        val message = messageArrayList.get(position)
-        if (layoutType.equals("message") && phone.equals(message.sender)){
-            binding!!.chatMessageItemTextView.setBackgroundColor(Color.parseColor("#0081C9"))
-            binding!!.chatMessageItemLayout.layoutDirection = View.LAYOUT_DIRECTION_RTL
-        }
-        holder.bind(message)
+    override fun onBindViewHolder(holder: DoctorAdapterViewHolder, position: Int) {
+        val doctor = doctorArrayList.get(position)
+        holder.bind(doctor!!)
 
     }
 
-    override fun setData(data: ArrayList<Message>) {
+    override fun setData(data: ArrayList<DoctorResponseItem>) {
         Log.i(TAG, "data from adapter ---> ${data}")
-        this.messageArrayList = data
+        this.doctorArrayList = data!!
         notifyDataSetChanged()
     }
 }

@@ -15,117 +15,133 @@
         android:layout_height="match_parent"
         tools:context=".ui.Tickets"
         android:orientation="vertical"
-        android:background="@color/PrimaryColor"
-        android:gravity="center">
+        android:background="@color/DarkPrimaryColor"
+        >
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:layout_width="match_parent"
+            android:id="@+id/ticket_progress_bar"
+            android:layout_gravity="top"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            style="@style/Widget.MaterialComponents.LinearProgressIndicator"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/ticket_txt_takeoff_tablayout"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:textColorHint="@color/textHintColorFirst"
-            app:boxStrokeColor="@color/PrimaryColor"
-            app:boxStrokeWidth="@dimen/_1sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/radioGroup">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/Ticket_txt_takeoff"
+            android:orientation="vertical"
+            android:layout_weight="1.8"
+            android:gravity="center">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ticket_txt_takeoff_tablayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                android:focusable="false"
-                android:drawableLeft="@drawable/staion"
-                android:drawablePadding="@dimen/_10sdp"
-                android:hint="Takeoff Station"
-                android:onClick="@{viewmodel::onTakroffStationTxtClicked}"
-                android:text="@={viewmodel.userStation}"
-                android:textColor="@color/PrimaryColor"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:textColorHint="@color/textHintColorFirst"
-                android:textSize="@dimen/_12ssp" />
+                app:boxStrokeColor="@color/PrimaryColor"
+                app:boxStrokeWidth="@dimen/_1sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radioGroup">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/Ticket_txt_takeoff"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/PrimaryColor"
+                    android:drawableLeft="@drawable/station_white"
+                    android:drawablePadding="@dimen/_10sdp"
+                    android:focusable="false"
+                    android:hint="Takeoff Station"
+                    android:onClick="@{viewmodel::onTakroffStationTxtClicked}"
+                    android:text="@={viewmodel.userStation}"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/textHintColorFirst"
+                    android:textSize="@dimen/_12ssp" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/ticket_txt_arrival_tablayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:textColorHint="@color/textHintColorFirst"
-            app:boxStrokeColor="@color/PrimaryColor"
-            app:boxStrokeWidth="@dimen/_1sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/radioGroup">
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/ticket_txt_arrival"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ticket_txt_arrival_tablayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                android:focusable="false"
-                android:drawableLeft="@drawable/staion"
-                android:drawablePadding="@dimen/_10sdp"
-                android:hint="Arrival Station"
-                android:onClick="@{viewmodel::onArrivalStationTxtClicked}"
-                android:text="@={viewmodel.userStation}"
-                android:textColor="@color/PrimaryColor"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_1sdp"
                 android:textColorHint="@color/textHintColorFirst"
-                android:textSize="@dimen/_12ssp" />
+                app:boxStrokeColor="@color/PrimaryColor"
+                app:boxStrokeWidth="@dimen/_1sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radioGroup">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ticket_txt_arrival"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:background="@color/PrimaryColor"
+                    android:drawableLeft="@drawable/station_white"
+                    android:drawablePadding="@dimen/_10sdp"
+                    android:hint="Arrival Station"
+                    android:onClick="@{viewmodel::onArrivalStationTxtClicked}"
+                    android:text="@={viewmodel.userStation}"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/textHintColorFirst"
+                    android:textSize="@dimen/_12ssp" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/ticket_txt_trainId_tablayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:textColorHint="@color/textHintColorFirst"
-            app:boxStrokeColor="@color/PrimaryColor"
-            app:boxStrokeWidth="@dimen/_1sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.4"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/radioGroup">
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/ticket_txt_trainId"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/ticket_txt_trainId_tablayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                android:focusable="false"
-                android:drawableLeft="@drawable/train_id_txt"
-                android:drawablePadding="@dimen/_10sdp"
-                android:hint="Train Id"
-                android:onClick="@{viewmodel::onTrainIdTxtClicked}"
-                android:text="@={viewmodel.userStation}"
-                android:textColor="@color/PrimaryColor"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_1sdp"
                 android:textColorHint="@color/textHintColorFirst"
-                android:textSize="@dimen/_12ssp" />
+                app:boxStrokeColor="@color/PrimaryColor"
+                app:boxStrokeWidth="@dimen/_1sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/radioGroup">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/ticket_txt_trainId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:drawableLeft="@drawable/train_id"
+                    android:drawablePadding="@dimen/_10sdp"
+                    android:hint="Train Id"
+                    android:background="@color/PrimaryColor"
+                    android:onClick="@{viewmodel::onTrainIdTxtClicked}"
+                    android:text="@={viewmodel.userStation}"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/textHintColorFirst"
+                    android:textSize="@dimen/_12ssp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:onClick="@{viewmodel::onBtnAddTicketClicked}"
-            android:layout_marginTop="@dimen/_15sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/add_post_btn_submit"
-            android:text="@string/add_post_submit"
-            android:backgroundTint="@color/DarkPrimaryColor"
-            android:textSize="@dimen/_10ssp"
-            android:padding="@dimen/_5sdp"
-            android:paddingHorizontal="@dimen/_10sdp"
-            android:textColor="@color/white"
-            android:layout_marginHorizontal="@dimen/_100sdp"
-            app:cornerRadius="@dimen/_15sdp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.button.MaterialButton
+                android:onClick="@{viewmodel::onBtnAddTicketClicked}"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/add_post_btn_submit"
+                android:text="@string/add_post_submit"
+                android:backgroundTint="@color/PrimaryColor"
+                android:textSize="@dimen/_10ssp"
+                android:padding="@dimen/_5sdp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:textColor="@color/white"
+                android:layout_marginHorizontal="@dimen/_100sdp"
+                app:cornerRadius="@dimen/_15sdp" />
+
+
+        </LinearLayout>
 
 
     </LinearLayout>

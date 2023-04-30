@@ -1,12 +1,14 @@
 package com.example.trainlivelocation.ui
 
 import Resource
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
@@ -18,18 +20,20 @@ import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentInboxRecieveBinding
 import com.example.trainlivelocation.databinding.FragmentTicketsBinding
 import com.example.trainlivelocation.utli.*
+import java.time.LocalDate
 
-class Tickets : Fragment(), Station_Dialog_Listener, Train_Dialog_Listener,Arrival_Station_Listener {
+class Tickets : Fragment(), Station_Dialog_Listener, Train_Dialog_Listener,
+    Arrival_Station_Listener {
     private val args by navArgs<TicketsArgs>()
 
     private val TAG: String? = "Tickets"
     private lateinit var binding: FragmentTicketsBinding
     private val ticketsViewModel: TicketsViewModel by activityViewModels()
-    private var takeoffStation: String?=null
-    private var arrivalStation: String?=null
-    private var trainId: Int?=null
-    private var trainDegree: String?=null
-    private var trainNumber: String?=null
+    private var takeoffStation: String? = null
+    private var arrivalStation: String? = null
+    private var trainId: Int? = null
+    private var trainDegree: String? = null
+    private var trainNumber: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,33 +52,53 @@ class Tickets : Fragment(), Station_Dialog_Listener, Train_Dialog_Listener,Arriv
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setObserver() {
 
         ticketsViewModel.btnAddTicketClicked.observe(viewLifecycleOwner, Observer {
-            if (it==true){
-                Log.i(TAG,"btnAddTicketClicked")
-                val model=TicketRequestItem(
-                    arrivalStation!!,0.0,"2023-04-25T21:49:14.4",takeoffStation!!,trainDegree!!,trainId!!,trainNumber!!, args.userModel!!.id
+            if (it == true) {
+                Log.i(TAG, "btnAddTicketClicked")
+                val model = TicketRequestItem(
+                    arrivalStation!!,
+                    0.0,
+                    LocalDate.now().toString(),
+                    takeoffStation!!,
+                    trainDegree!!,
+                    trainId!!,
+                    trainNumber!!,
+                    args.userModel!!.id
                 )
 
                 ticketsViewModel.addTicketToApi(model)
-                Log.i(TAG,"${model}")
+                Log.i(TAG, "${model}")
 
                 ticketsViewModel.ticket.observe(viewLifecycleOwner, Observer {
-                    when(it){
-                        is Resource.Loading->{
-                            toast("Loading To book ticket")
+                    when (it) {
+                        is Resource.Loading -> {
+                            binding.ticketProgressBar.visibility = View.VISIBLE
                         }
-                        is Resource.Success->{
-                            toast("Success To book ticket--->{${it.data}}")
+                        is Resource.Success -> {
+                            binding.ticketProgressBar.visibility = View.INVISIBLE
+                            displaySnackbarSuccess(
+                                requireContext(),
+                                binding.root,
+                                "Ticket Booked Successfully...",
+                                R.raw.success_auth, R.color.PrimaryColor
+                            )
+                            Log.i(TAG,"Success To book ticket--->{${it.data}}")
                         }
-                        is Resource.Failure->{
-                            Log.e(TAG,"Error from else brunsh---->ticket ${it.error}")
-                            toast("Failed To book ticket")
+                        is Resource.Failure -> {
+                            Log.e(TAG, "Error from else brunsh---->ticket ${it.error}")
+                            displaySnackbarSuccess(
+                                requireContext(),
+                                binding.root,
+                                "Fialed to book ticket...",
+                                R.raw.failed, R.color.textAlarmColor
+                            )
                         }
 
                         else -> {
-                            Log.e(TAG,"Error from else brunsh---->ticket")
+                            Log.e(TAG, "Error from else brunsh---->ticket")
                         }
                     }
                 })
@@ -124,15 +148,15 @@ class Tickets : Fragment(), Station_Dialog_Listener, Train_Dialog_Listener,Arriv
         latitude: Double?
     ) {
         binding.TicketTxtTakeoff.setText(StationName)
-        takeoffStation=StationName
+        takeoffStation = StationName
 
     }
 
     override fun onTrainSelected(trainId: Int?, trainDegree: String?) {
         binding.ticketTxtTrainId.setText(trainId.toString())
-        this.trainId=trainId
-        this.trainDegree=trainDegree
-        this.trainNumber=trainId.toString()
+        this.trainId = trainId
+        this.trainDegree = trainDegree
+        this.trainNumber = trainId.toString()
     }
 
     override fun onArrivalStationSelected(
@@ -142,6 +166,6 @@ class Tickets : Fragment(), Station_Dialog_Listener, Train_Dialog_Listener,Arriv
         latitude: Double?
     ) {
         binding.ticketTxtArrival.setText(StationName)
-        arrivalStation=StationName
+        arrivalStation = StationName
     }
 }

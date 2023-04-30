@@ -96,15 +96,35 @@ interface UserRepo {
         result: (Resource<String>) -> Unit
     )
 
-    suspend fun getChatFromFirebase(senderPhone: String?,recieverPhone: String?,result: (Resource<ArrayList<Message>>) -> Unit)
+    suspend fun getChatFromFirebase(
+        senderPhone: String?,
+        recieverPhone: String?,
+        result: (Resource<ArrayList<Message>>) -> Unit
+    )
 
-    suspend fun getInboxRecieveChatFromFirebase(phone: String?,result: (Resource<ArrayList<Message>>) -> Unit)
-    suspend fun getInboxSentChatFromFirebase(phone: String?,result: (Resource<ArrayList<Message>>) -> Unit)
-    suspend fun getDataFromSharedPrefrences(sharedPrefFile: String?,result: (Resource<UserResponseItem>) -> Unit)
+    suspend fun getInboxRecieveChatFromFirebase(
+        phone: String?,
+        result: (Resource<ArrayList<Message>>) -> Unit
+    )
+
+    suspend fun getInboxSentChatFromFirebase(
+        phone: String?,
+        result: (Resource<ArrayList<Message>>) -> Unit
+    )
+
+    suspend fun getDataFromSharedPrefrences(
+        sharedPrefFile: String?,
+        result: (Resource<UserResponseItem>) -> Unit
+    )
 
     suspend fun createTicket(
         ticketRequestItem: TicketRequestItem,
         result: (Resource<TicketResponseItem>) -> Unit
+    )
+
+    suspend fun getDoctorInTrain(
+        trainId:Int?,
+        result: (Resource<ArrayList<DoctorResponseItem>>) -> Unit
     )
 
 }

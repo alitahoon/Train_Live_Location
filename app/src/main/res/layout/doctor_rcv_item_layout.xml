@@ -15,6 +15,9 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:strokeWidth="@dimen/_1sdp"
+        app:strokeColor="@color/PrimaryColor"
+        app:cardElevation="@dimen/_5sdp"
         android:backgroundTint="@color/DarkPrimaryColor"
         android:layout_margin="@dimen/_10sdp"
         app:cardCornerRadius="@dimen/_15sdp">
@@ -52,21 +55,21 @@
                 android:text="@{doctor.userPhone}"
                 android:textSize="@dimen/_8ssp" />
 
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="@dimen/_80sdp"
+            <ImageView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/doctor_btn_notifiy"
+                android:background="@color/PrimaryColor"
+                android:padding="@dimen/_5sdp"
                 android:layout_alignTop="@+id/doctor_rcv_item_doctor_img"
                 android:layout_alignBottom="@+id/doctor_rcv_item_doctor_img"
-                android:layout_marginStart="0dp"
-                android:layout_marginLeft="@dimen/_100sdp"
                 android:layout_toEndOf="@+id/doctor_rcv_item_profile_name"
-                android:backgroundTint="@color/PrimaryColor"
-                android:text="notifiy"
+                android:cropToPadding="true"
+                android:src="@drawable/notification"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_10ssp"
                 app:cornerRadius="@dimen/_20sdp"
-                android:onClick="@{() -> listener.OnNotifyClickListener()}"/>
+                android:onClick="@{() -> listener.OnNotifyClickListener(doctor)}"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/doctor_btn_chat"
@@ -74,14 +77,15 @@
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/doctor_rcv_item_doctor_img"
                 android:layout_alignBottom="@+id/doctor_rcv_item_doctor_img"
-                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginHorizontal="@dimen/_15sdp"
                 android:layout_toEndOf="@+id/doctor_btn_notifiy"
                 android:backgroundTint="@color/PrimaryColor"
+                android:onClick="@{() -> listener.OnChatClickListener(doctor)}"
                 android:text="chat"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_10ssp"
-                app:cornerRadius="@dimen/_20sdp"
-                android:onClick="@{() -> listener.OnChatClickListener()}"/>
+                app:cornerRadius="@dimen/_20sdp" />
 
         </RelativeLayout>
 

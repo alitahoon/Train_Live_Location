@@ -344,6 +344,19 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun getDoctorInTrain(trainId:Int?,result: (Resource<ArrayList<DoctorResponseItem>>) -> Unit) {
+        var res = apiService.GetDoctors(trainId!!)
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke((Resource.Failure("getDoctorInTrain -> Error response body = null :${res.body()}")))
+            }
+        } else {
+            result.invoke((Resource.Failure("getDoctorInTrain -> ${res.message()}")))
+        }
+    }
+
     override suspend fun getInboxRecieveChatFromFirebase(
         phone: String?,
         result: (Resource<ArrayList<Message>>) -> Unit

@@ -166,8 +166,8 @@ interface ApiService {
     @DELETE("/api/user/DeleteUser")
     suspend fun DeleteUser(@Query("Id") userId: Int): Response<UserResponseItem>
 
-    @PUT("/api/user/UpdateUser/{userId}")
-    suspend fun UpdateUser(@Body userRequest: RegisterUser,@Path("userId") userId:Int): Response<ResponseBody>
+    @PUT("/api/user/UpdateUser")
+    suspend fun UpdateUser(@Body userRequest: RegisterUser,@Query("userId") userId:Int): Response<ResponseBody>
 
 
     //location
@@ -176,6 +176,9 @@ interface ApiService {
 
     @GET("/api/LiveLocation/GetLocation")
     suspend fun GetLocation(@Query("trainid") trainid: Int): Response<Location_Response>
+
+    @GET("/api/user/DoctorsInTrain")
+    suspend fun GetDoctors(@Query("trainId") trainId:Int): Response<ArrayList<DoctorResponseItem>>
 
 
 }

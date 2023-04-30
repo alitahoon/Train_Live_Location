@@ -20,6 +20,7 @@ class HomeViewModel @Inject constructor(
     var postsBtn= SingleLiveEvent<Boolean>()
     var locationCardBtn= SingleLiveEvent<Boolean>()
     var btnTicketClicked= SingleLiveEvent<Boolean>()
+    var btnEmergancyClicked= SingleLiveEvent<Boolean>()
     var chooseTrainTxtClicked= SingleLiveEvent<Boolean>()
 
     var trainId:String?=null
@@ -32,6 +33,9 @@ class HomeViewModel @Inject constructor(
 
     fun onChooseTrainTxtClicked(view: View){
         chooseTrainTxtClicked.postValue(true)
+    }
+    fun onbtnEmergancyClicked(view: View){
+        btnEmergancyClicked.postValue(true)
     }
      fun onPostsBtn(view: View){
         postsBtn.postValue(true)
