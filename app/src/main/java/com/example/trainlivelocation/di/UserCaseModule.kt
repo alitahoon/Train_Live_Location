@@ -185,5 +185,9 @@ object UserCaseModule  {
     fun ProvideGetSendDoctorNotificationToFirebase(userRepo: UserRepo): SendDoctorNotificationToFirebase {
         return SendDoctorNotificationToFirebase(userRepo)
     }
+    @Provides
+    fun ProvideGetDoctorNotificationFromFirebase(userRepo: UserRepo): GetDoctorNotificationFromFirebase {
+        return GetDoctorNotificationFromFirebase(userRepo)
+    }
 
 }

@@ -390,6 +390,13 @@ class userRepoImpl(
         doctoreNotification: DoctorNotification,
         result: (Resource<String>) -> Unit
     ) {
-        TODO("Not yet implemented")
+        firebaseService.sendDoctorNotification(doctoreNotification,result)
+    }
+
+    override suspend fun getDoctorNotificationFromFirebase(
+        userPhone: String,
+        result: (Resource<ArrayList<DoctorNotification>>) -> Unit
+    ) {
+        firebaseService.getNotificationFromFirebase(userPhone,result)
     }
 }
