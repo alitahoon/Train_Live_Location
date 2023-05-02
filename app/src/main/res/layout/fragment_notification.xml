@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.Notification"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/PrimaryColor">
+
+        <ImageView
+            android:id="@+id/notification_doctor_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/doctor_icon_notifiction" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Doctor"
+            android:textSize="@dimen/_25ssp"
+            android:layout_toRightOf="@+id/notification_doctor_img"
+            android:layout_marginStart="@dimen/_10sdp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="time ago"
+            android:textSize="@dimen/_15ssp"
+            android:layout_toRightOf="@+id/notification_doctor_img"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginStart="@dimen/_10sdp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/PrimaryColor">
+
+        <ImageView
+            android:id="@+id/notification_alarm_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/alarm_icon_notifiction"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Station Alarm"
+            android:textSize="@dimen/_25ssp"
+            android:layout_toRightOf="@+id/notification_alarm_img"
+            android:layout_marginStart="@dimen/_10sdp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="time ago"
+            android:textSize="@dimen/_15ssp"
+            android:layout_toRightOf="@+id/notification_alarm_img"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginStart="@dimen/_10sdp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/PrimaryColor">
+
+        <ImageView
+            android:id="@+id/notification_history_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/history_icon_notifiction"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Station Alarm"
+            android:textSize="@dimen/_25ssp"
+            android:layout_toRightOf="@+id/notification_history_img"
+            android:layout_marginStart="@dimen/_10sdp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="time ago"
+            android:textSize="@dimen/_15ssp"
+            android:layout_toRightOf="@+id/notification_history_img"
+            android:layout_marginTop="@dimen/_30sdp"
+            android:layout_marginStart="@dimen/_10sdp"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
