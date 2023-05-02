@@ -13,7 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.trainlivelocation.R
 
-class splash_features : Fragment() {
+class splash_features : android.app.Fragment() {
     private val REQUSET_CODE_Camera:Int=102
     private val REQUSET_CODE_location:Int=103
     private val REQUSET_CODE_background_location:Int=104
@@ -33,12 +33,12 @@ class splash_features : Fragment() {
         return inflater.inflate(R.layout.fragment_splash_features, container, false)
     }
     private fun showDialog(permissions: String, name: String, requestCode: Int) {
-        val builder= AlertDialog.Builder(requireContext())
+        val builder= AlertDialog.Builder(activity)
         builder.apply {
             setMessage("Permission to access your $name is required to use this app ")
             setTitle("Permission required")
             setPositiveButton("OK"){dialog,which ->
-                ActivityCompat.requestPermissions(requireActivity(), arrayOf(permissions),requestCode)
+                ActivityCompat.requestPermissions(activity, arrayOf(permissions),requestCode)
             }
             val dialog=builder.create()
             dialog.show()
@@ -48,11 +48,11 @@ class splash_features : Fragment() {
     private fun checkSelfPermissions(permissions:String,name:String,requestCode: Int){
         if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.M){
             when{
-                ContextCompat.checkSelfPermission(requireActivity(),permissions)== PackageManager.PERMISSION_GRANTED->{
-                    Toast.makeText(requireContext(),"$name permissin granted", Toast.LENGTH_SHORT).show()
+                ContextCompat.checkSelfPermission(activity,permissions)== PackageManager.PERMISSION_GRANTED->{
+                    Toast.makeText(activity,"$name permissin granted", Toast.LENGTH_SHORT).show()
                 }
                 shouldShowRequestPermissionRationale(permissions)-> showDialog(permissions,name,requestCode)
-                else-> ActivityCompat.requestPermissions(requireActivity(), arrayOf(permissions),requestCode)
+                else-> ActivityCompat.requestPermissions(activity, arrayOf(permissions),requestCode)
             }
         }
     }
@@ -64,9 +64,9 @@ class splash_features : Fragment() {
     ) {
         fun innerCheck(name: String){
             if (grantResults.isNotEmpty()||grantResults[0]!=PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(requireContext(),"$name permission Refused",Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity,"$name permission Refused",Toast.LENGTH_SHORT).show()
             }else{
-                Toast.makeText(requireContext(),"$name permission Accepted",Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity,"$name permission Accepted",Toast.LENGTH_SHORT).show()
                 if (requestCode==REQUSET_CODE_IMAGE){
                 }
             }
