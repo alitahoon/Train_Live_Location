@@ -300,10 +300,34 @@ class FirebaseService(
     }
 
 
-    fun sendDoctorNotification(doctorNotification: DoctorNotification) {
-        databaseRef.child("Notifications").child("DoctorsNotification").setValue(doctorNotification).addOnSuccessListener {
+    fun sendDoctorNotification(
+        doctorNotification: DoctorNotification, result: (Resource<String>) -> Unit
+    ) {
+        databaseRef.child("Notifications").child("DoctorsNotification").push()
+            .setValue(doctorNotification)
+            .addOnSuccessListener {
+                result.invoke(Resource.Success("Notification sent Successfully"))
+            }.addOnFailureListener {
+                result.invoke(Resource.Success("Notification sent Failed ---> ${it.message}"))
+            }
+    }
 
-        }
+    fun getNotificationFromFirebase(userPhone: String, result: (Resource<ArrayList<DoctorNotification>>) -> Unit) {
+        databaseRef.child("Notifications").child("DoctorsNotification").orderByChild("doctorPhone")
+            .equalTo(userPhone).addValueEventListener(object  : ValueEventListener{
+                val doctorNotificationList = arrayListOf<DoctorNotification>()
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (doctorSnapshot in snapshot.children){
+                        doctorNotificationList.add(doctorSnapshot.getValue(DoctorNotification::class.java)!!)
+                    }
+                    result.invoke(Resource.Success(doctorNotificationList))
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    result.invoke(Resource.Failure("Failed on getting doctor Notification ----> ${error.message}"))
+                }
+
+            })
     }
 
 
