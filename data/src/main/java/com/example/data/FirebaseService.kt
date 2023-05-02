@@ -4,6 +4,7 @@ import Resource
 import android.net.Uri
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.example.domain.entity.DoctorNotification
 import com.example.domain.entity.Message
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
@@ -185,34 +186,51 @@ class FirebaseService(
 //        }
 
         databaseRef.push()
-            .setValue(Message(message,senderUsername,recieverUsername,senderPhone, recieverPhone, senderPhone + recieverPhone)).addOnSuccessListener {
+            .setValue(
+                Message(
+                    message,
+                    senderUsername,
+                    recieverUsername,
+                    senderPhone,
+                    recieverPhone,
+                    senderPhone + recieverPhone
+                )
+            ).addOnSuccessListener {
                 Log.i(TAG, "sent successfully...")
                 result.invoke(Resource.Success("Message Sent Successfully..."))
             }.addOnFailureListener {
                 Log.i(TAG, "Failed :${it.message}")
-                            result.invoke(Resource.Failure("${it.message}"))
+                result.invoke(Resource.Failure("${it.message}"))
             }
     }
 
 
-    fun getChatMessagesFromFirebase(senderPhone: String?,recieverPhone: String?,result: (Resource<ArrayList<Message>>) -> Unit){
-        var oldChatKey=arrayListOf<String>()
+    fun getChatMessagesFromFirebase(
+        senderPhone: String?,
+        recieverPhone: String?,
+        result: (Resource<ArrayList<Message>>) -> Unit
+    ) {
+        var oldChatKey = arrayListOf<String>()
         //check if there is last chat
         databaseRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
-                val messageList= arrayListOf<Message>()
+                val messageList = arrayListOf<Message>()
                 for (snapshot in dataSnapshot.children) {
                     val message = snapshot.getValue(Message::class.java)
-                    Log.i(TAG,"Title : ${message!!.title}")
-                    if (message.title.equals(senderPhone+recieverPhone)||message.title.equals(recieverPhone+senderPhone)){
-                        Log.e(TAG,"${snapshot.key}")
+                    Log.i(TAG, "Title : ${message!!.title}")
+                    if (message.title.equals(senderPhone + recieverPhone) || message.title.equals(
+                            recieverPhone + senderPhone
+                        )
+                    ) {
+                        Log.e(TAG, "${snapshot.key}")
                         messageList.add(message)
                     }
                 }
                 result.invoke(Resource.Success(messageList))
             }
+
             override fun onCancelled(error: DatabaseError) {
                 // Failed to read value
                 Log.w(TAG, "Failed to read value.", error.toException())
@@ -221,9 +239,12 @@ class FirebaseService(
         })
     }
 
-    fun getInboxRecieveChatFromFirebase(phone: String?,result: (Resource<ArrayList<Message>>) -> Unit){
-        databaseRef.addValueEventListener(object : ValueEventListener{
-            val messageList= arrayListOf<Message>()
+    fun getInboxRecieveChatFromFirebase(
+        phone: String?,
+        result: (Resource<ArrayList<Message>>) -> Unit
+    ) {
+        databaseRef.addValueEventListener(object : ValueEventListener {
+            val messageList = arrayListOf<Message>()
             override fun onDataChange(snapshot: DataSnapshot) {
                 val message = snapshot.getValue(Message::class.java)
                 for (Snapshot in snapshot.children) {
@@ -247,9 +268,13 @@ class FirebaseService(
 
 
     }
-    fun getInboxSentChatFromFirebase(phone: String?,result: (Resource<ArrayList<Message>>) -> Unit){
-        databaseRef.addValueEventListener(object : ValueEventListener{
-            val messageList= arrayListOf<Message>()
+
+    fun getInboxSentChatFromFirebase(
+        phone: String?,
+        result: (Resource<ArrayList<Message>>) -> Unit
+    ) {
+        databaseRef.addValueEventListener(object : ValueEventListener {
+            val messageList = arrayListOf<Message>()
             override fun onDataChange(snapshot: DataSnapshot) {
                 val message = snapshot.getValue(Message::class.java)
                 for (Snapshot in snapshot.children) {
@@ -275,8 +300,10 @@ class FirebaseService(
     }
 
 
-    fun sendNotification(dooct){
-        databaseRef.child("Notifications").
+    fun sendDoctorNotification(doctorNotification: DoctorNotification) {
+        databaseRef.child("Notifications").child("DoctorsNotification").setValue(doctorNotification).addOnSuccessListener {
+
+        }
     }
 
 
