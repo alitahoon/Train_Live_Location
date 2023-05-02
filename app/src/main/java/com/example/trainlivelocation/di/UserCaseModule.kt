@@ -177,4 +177,13 @@ object UserCaseModule  {
         return GetDoctorInTrain(userRepo)
     }
 
+    @Provides
+    fun ProvideGetTrainLocationInForgroundService(userRepo: UserRepo): GetTrainLocationInForgroundService {
+        return GetTrainLocationInForgroundService(userRepo)
+    }
+    @Provides
+    fun ProvideGetSendDoctorNotificationToFirebase(userRepo: UserRepo): SendDoctorNotificationToFirebase {
+        return SendDoctorNotificationToFirebase(userRepo)
+    }
+
 }

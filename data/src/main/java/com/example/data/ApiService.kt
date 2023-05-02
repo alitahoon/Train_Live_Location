@@ -1,5 +1,6 @@
 package com.example.data
 
+import android.database.Observable
 import com.example.domain.entity.*
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -172,7 +173,7 @@ interface ApiService {
 
     //location
     @POST("/api/LiveLocation/CreateLocation")
-    suspend fun AddLocation(@Body locationResponse: Location_Request): Response<Location_Request_with_id>
+    suspend fun AddLocation(@Body location_Request: Location_Request): Response<Location_Request_with_id>
 
     @GET("/api/LiveLocation/GetLocation")
     suspend fun GetLocation(@Query("trainid") trainid: Int): Response<Location_Response>

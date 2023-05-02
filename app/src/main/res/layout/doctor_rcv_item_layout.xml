@@ -39,8 +39,12 @@
                 android:layout_width="@dimen/_50sdp"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/doctor_rcv_item_doctor_img"
-                android:layout_marginLeft="@dimen/_10sdp"
+                android:layout_marginHorizontal="@dimen/_10sdp"
+                android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginTop="5dp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_toStartOf="@+id/doctor_btn_notifiy"
+                android:layout_toEndOf="@+id/doctor_rcv_item_doctor_img"
                 android:layout_toRightOf="@id/doctor_rcv_item_doctor_img"
                 android:text="@{doctor.userName}"
                 android:textSize="@dimen/_10ssp" />
@@ -50,26 +54,29 @@
                 android:layout_width="@dimen/_50sdp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/doctor_rcv_item_profile_name"
-                android:layout_marginLeft="13dp"
+                android:layout_marginHorizontal="13dp"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_toStartOf="@+id/doctor_btn_notifiy"
+                android:layout_toEndOf="@+id/doctor_rcv_item_doctor_img"
                 android:layout_toRightOf="@id/doctor_rcv_item_doctor_img"
                 android:text="@{doctor.userPhone}"
-                android:textSize="@dimen/_8ssp" />
+                android:textSize="@dimen/_7ssp" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/doctor_btn_notifiy"
-                android:background="@color/PrimaryColor"
-                android:padding="@dimen/_5sdp"
+                doctor="@{doctor}"
+                listener="@{listener}"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
                 android:layout_alignTop="@+id/doctor_rcv_item_doctor_img"
                 android:layout_alignBottom="@+id/doctor_rcv_item_doctor_img"
-                android:layout_toEndOf="@+id/doctor_rcv_item_profile_name"
-                android:cropToPadding="true"
-                android:src="@drawable/notification"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_10ssp"
-                app:cornerRadius="@dimen/_20sdp"
-                android:onClick="@{() -> listener.OnNotifyClickListener(doctor)}"/>
+                android:layout_marginEnd="@dimen/_5sdp"
+                android:layout_toStartOf="@+id/doctor_btn_chat"
+                android:background="@drawable/notification_circuler_background"
+                android:onClick="@{() -> listener.OnNotifyClickListener(doctor)}"
+                app:lottie_loop="false"
+                app:lottie_rawRes="@raw/notifiy" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/doctor_btn_chat"
@@ -79,7 +86,6 @@
                 android:layout_alignBottom="@+id/doctor_rcv_item_doctor_img"
                 android:layout_alignParentEnd="true"
                 android:layout_marginHorizontal="@dimen/_15sdp"
-                android:layout_toEndOf="@+id/doctor_btn_notifiy"
                 android:backgroundTint="@color/PrimaryColor"
                 android:onClick="@{() -> listener.OnChatClickListener(doctor)}"
                 android:text="chat"

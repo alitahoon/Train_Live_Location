@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.TrackLocationFeature"
-        android:background="@color/white"
+        android:background="@color/DarkPrimaryColor"
         android:orientation="vertical">
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:layout_width="match_parent"
@@ -30,7 +30,7 @@
             android:layout_marginVertical="20dp"
             android:layout_marginTop="28dp"
             android:textColorHint="@color/textHintColorFirst"
-            app:boxStrokeColor="@color/basicColor"
+            app:boxStrokeColor="@color/PrimaryColor"
             app:boxStrokeWidth="1dp"
             >
 
@@ -42,7 +42,7 @@
                 android:focusable="false"
                 android:onClick="@{viewmodel::onTxtChooseTrainIdClicked}"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
+                android:backgroundTint="@color/DarkPrimaryColor"
                 android:drawableLeft="@drawable/train_id_txt"
                 android:drawablePadding="10dp"
                 android:hint="Train Id"

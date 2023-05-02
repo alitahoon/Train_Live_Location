@@ -37,6 +37,9 @@ class ShareLocationViewModel @Inject constructor(
     private val _sharedTrainLocation: MutableLiveData<Resource<Location_Request_with_id>?> = MutableLiveData(null)
     val sharedTrainLocation: LiveData<Resource<Location_Request_with_id>?> = _sharedTrainLocation
 
+    private val _startSharingtrainLocation: MutableLiveData<Resource<LifecycleService>?> = MutableLiveData(null)
+    val startSharingtrainLocation: LiveData<Resource<LifecycleService>?> = _startSharingtrainLocation
+
     //get activity context from fragment
     fun setbaseActivity(baseActivity: Activity) {
         activity = baseActivity
@@ -64,23 +67,19 @@ class ShareLocationViewModel @Inject constructor(
             startLocationUpdate(6000)
         }
     }
-    fun setLocationBackgroundServices() {
+    fun startSharing(userId: Int?,trainId:Int?) {
+        _startSharingtrainLocation.value=Resource.Loading
         viewModelScope.launch {
-            locationBackgroundservice =
-                Intent(activity, getLocationTrackBackgroundService(trainId!!.toInt(), 2)::class.java)
+            getLocationTrackBackgroundService(trainId!!,userId!!){
+                _startSharingtrainLocation.value=it
+            }
         }
     }
 
-    fun startLocationService() {
-        setLocationBackgroundServices()
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
-            activity.startForegroundService(locationBackgroundservice)
-        }
-        activity.startService(locationBackgroundservice)
-    }
+
 
     fun stopLocationService(lifecycleOwner: LifecycleOwner) {
-        activity.stopService(locationBackgroundservice)
+
     }
 
     fun uplaodLocationToApi(longtude: Float, latitude: Float,userId:Int?) {

@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.ShareLocationFeature"
-        android:background="@color/white">
+        android:background="@color/DarkPrimaryColor">
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,14 +22,15 @@
             android:layout_marginVertical="@dimen/_20sdp"
             android:layout_marginTop="@dimen/_28sdp"
             android:textColorHint="@color/textHintColorFirst"
-            app:boxStrokeColor="@color/PrimaryColor"
+            app:boxStrokeColor="@color/DarkPrimaryColor"
+            android:background="@color/DarkPrimaryColor"
             app:boxStrokeWidth="@dimen/_1sdp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/share_location_txt_train_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
+                android:backgroundTint="@color/DarkPrimaryColor"
                 android:drawableLeft="@drawable/train_id_txt"
                 android:drawablePadding="@dimen/_10sdp"
                 android:focusable="false"
@@ -38,7 +39,8 @@
                 android:minHeight="@dimen/_48sdp"
                 android:onClick="@{viewmodel::onTxtTrainIdClicked}"
                 android:text="@={viewmodel.trainId}"
-                android:textColor="@color/textAlarmColor"
+                android:textColor="@color/textHintColorFirst"
+                android:background="@color/DarkPrimaryColor"
                 android:textColorHint="@color/textHintColorFirst"
                 android:textSize="@dimen/_14ssp" />
         </com.google.android.material.textfield.TextInputLayout>

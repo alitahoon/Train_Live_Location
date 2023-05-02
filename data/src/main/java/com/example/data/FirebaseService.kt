@@ -275,4 +275,9 @@ class FirebaseService(
     }
 
 
+    fun sendNotification(dooct){
+        databaseRef.child("Notifications").
+    }
+
+
 }

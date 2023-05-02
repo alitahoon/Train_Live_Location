@@ -13,7 +13,10 @@ import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.Lottie
+import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
+import com.example.domain.entity.DoctorResponseItem
 import com.example.domain.entity.Post
 import com.example.trainlivelocation.databinding.UserPostsRcvItemLayoutBinding
 import com.google.android.material.progressindicator.LinearProgressIndicator
@@ -73,5 +76,17 @@ fun setAdapter(
 ) {
     adapter?.let {
         recyclerView.adapter = it
+    }
+}
+
+@BindingAdapter("listener","doctor")
+fun onNotifiyClicked(
+    lotti: LottieAnimationView,
+    listenr: DoctorListener,
+    doctor:DoctorResponseItem
+) {
+    lotti.setOnClickListener{
+        listenr.OnNotifyClickListener(doctor)
+        lotti.playAnimation()
     }
 }

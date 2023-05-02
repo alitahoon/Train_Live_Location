@@ -3,6 +3,8 @@ package com.example.trainlivelocation.ui
 import Resource
 import android.animation.Animator
 import android.animation.Animator.AnimatorListener
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -20,6 +22,7 @@ import com.example.trainlivelocation.databinding.FragmentShareLocationBinding
 import com.example.trainlivelocation.utli.LiveLocationListener
 import com.example.trainlivelocation.utli.Train_Dialog_Listener
 import com.example.trainlivelocation.utli.displaySnackbarSuccess
+import com.example.trainlivelocation.utli.toast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
@@ -82,6 +85,25 @@ class ShareLocationFeature : Fragment(), Train_Dialog_Listener {
     }
     private fun setObservers() {
         //get user Location From GPS
+        shareLocationViewModel!!.startSharingtrainLocation.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is Resource.Loading->{
+                    toast("getting location service...")
+                }
+                is Resource.Success->{
+                    toast("getting location service successfully...")
+                    var locationbckgroundSharingService: Intent?= Intent(requireActivity(),it::class.java)
+                    if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
+                        toast("done")
+                        requireActivity().startForegroundService(locationbckgroundSharingService)
+                    }else{
+                        toast("done")
+                        requireActivity().startService(locationbckgroundSharingService)
+                    }
+                }
+                else -> {}
+            }
+        })
 
 
         shareLocationViewModel!!.sharedTrainLocation.observe(viewLifecycleOwner, Observer {
@@ -103,25 +125,28 @@ class ShareLocationFeature : Fragment(), Train_Dialog_Listener {
 
         shareLocationViewModel!!.btnShareTrainLocationClicked.observe(viewLifecycleOwner, Observer {
             if (it == true) {
-                shareLocationViewModel?.startUpdate()
-                shareLocationViewModel?.setLiveLocation()
-//        shareLocationViewModel?.startLocationService()
-                binding.shareLocationTxtPara.setVisibility(View.VISIBLE)
+
+                if ( binding.shareLocationBtnShareTrainLocation.text.equals("Share Location")){
+                    binding.shareLocationBtnShareTrainLocation.setBackgroundColor(resources.getColor(R.color.textAlarmColor))
+                    binding.shareLocationBtnShareTrainLocation.setText(R.string.stop_sharing)
+                    binding.shareLocationTxtPara.setVisibility(View.VISIBLE)
+                    displaySnackbarSuccess(
+                        requireContext(),
+                        binding.root,
+                        "Successfully Sharing Loctaion ",
+                        R.raw.location_share_success,
+                        R.color.PrimaryColor
+                    )
+                    shareLocationViewModel!!.startSharing(args.userModel.id,binding.shareLocationTxtTrainId.text.toString().toInt())
 //                Log.i(TAG, "Get user location -> Success ${it!!.longitude},${it!!.latitude}")
-                binding.shareLocationBtnShareTrainLocation.setBackgroundColor(resources.getColor(R.color.textAlarmColor))
-                binding.shareLocationBtnShareTrainLocation.setText(R.string.stop_sharing)
-//            shareLocationViewModel!!.uplaodLocationToApi(
-//                it!!.longitude,
-//                it!!.latitude,
-//                args.userModel.id
-//            )
-                displaySnackbarSuccess(
-                    requireContext(),
-                    binding.root,
-                    "Successfully Sharing Loctaion ",
-                    R.raw.location_share_success,
-                    R.color.PrimaryColor
-                )
+                }else{
+                    binding.shareLocationBtnShareTrainLocation.setBackgroundColor(resources.getColor(R.color.PrimaryColor))
+                    binding.shareLocationBtnShareTrainLocation.setText("Share Location")
+                    shareLocationViewModel!!.stopLocationLiveUpdate()
+                    shareLocationViewModel!!.stopLocationService(this)
+                }
+
+
             }
         })
 

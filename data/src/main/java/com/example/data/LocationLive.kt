@@ -60,7 +60,7 @@ class LocationLive(private val context: Context) : LiveData<LocationDetails>() {
         }
 //        createLocationRequest()
         fusedLocationClient.requestLocationUpdates(
-            locationRequest!!,
+            locationRequest,
             locationCallback,
             Looper.getMainLooper()
         )

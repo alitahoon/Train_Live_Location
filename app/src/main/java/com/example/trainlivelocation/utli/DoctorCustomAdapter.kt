@@ -41,7 +41,7 @@ class DoctorCustomAdapter(
 
     override fun onBindViewHolder(holder: DoctorAdapterViewHolder, position: Int) {
         val doctor = doctorArrayList.get(position)
-        holder.bind(doctor!!)
+        holder.bind(doctor)
 
     }
 

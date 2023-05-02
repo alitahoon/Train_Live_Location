@@ -150,6 +150,10 @@
     <fragment
         android:id="@+id/emergency"
         android:name="com.example.trainlivelocation.ui.Emergency"
-        android:label="Emergency" />
+        android:label="Emergency" >
+        <argument
+            android:name="userModel"
+            app:argType="com.example.domain.entity.UserResponseItem" />
+    </fragment>
 
 </navigation>

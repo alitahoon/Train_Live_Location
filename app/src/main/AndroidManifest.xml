@@ -50,6 +50,13 @@
             android:name=".ui.MainActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"/>
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
 
         <service
             android:name="com.example.data.LocationTrackForegroundService"
@@ -57,6 +64,10 @@
             android:exported="false" />
         <service
             android:name="com.example.data.LocationTrackBackgroundService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
+            android:name="com.example.data.getTrainLocationForgroundService"
             android:enabled="true"
             android:exported="false" />
 

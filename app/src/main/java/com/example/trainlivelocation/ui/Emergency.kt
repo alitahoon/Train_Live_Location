@@ -8,15 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.navArgs
 import com.example.domain.entity.DoctorResponseItem
 import com.example.domain.entity.UserResponseItem
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentAddPostCommentBinding
 import com.example.trainlivelocation.databinding.FragmentEmergencyBinding
-import com.example.trainlivelocation.utli.DoctorCustomAdapter
-import com.example.trainlivelocation.utli.DoctorListener
-import com.example.trainlivelocation.utli.MessageCustomAdapter
-import com.example.trainlivelocation.utli.Train_Dialog_Listener
+import com.example.trainlivelocation.utli.*
 
 class Emergency : Fragment() ,DoctorListener,Train_Dialog_Listener{
 
@@ -24,6 +22,8 @@ class Emergency : Fragment() ,DoctorListener,Train_Dialog_Listener{
     private lateinit var binding: FragmentEmergencyBinding
     private val emergencyViewModel: EmergencyViewModel by activityViewModels()
     var adapter :DoctorCustomAdapter? = null
+    private val args by navArgs<EmergencyArgs>()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,19 +59,19 @@ class Emergency : Fragment() ,DoctorListener,Train_Dialog_Listener{
         emergencyViewModel.doctors.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Loading -> {
-                    binding.doctorFragmentLoading.visibility=View.VISIBLE
+                    binding.emergancyShimmerLoading.visibility=View.VISIBLE
                     binding.doctorRcv.visibility=View.GONE
                     Log.i(TAG, "messages is loading ....")
                 }
                 is Resource.Success -> {
-                    binding.doctorFragmentLoading.visibility=View.GONE
+                    binding.emergancyShimmerLoading.visibility=View.GONE
                     binding.doctorRcv.visibility=View.VISIBLE
                     Log.i(TAG, "data : ${it.data}")
                     adapter.setData(it.data)
 
                 }
                 is Resource.Failure -> {
-                    binding.doctorFragmentLoading.visibility=View.GONE
+                    binding.emergancyShimmerLoading.visibility=View.GONE
                     binding.doctorRcv.visibility=View.GONE
                     Log.e(TAG, "${it.error}")
                 }
@@ -88,11 +88,18 @@ class Emergency : Fragment() ,DoctorListener,Train_Dialog_Listener{
     }
 
     override fun OnNotifyClickListener(doctor: DoctorResponseItem) {
-        TODO("Not yet implemented")
+        toast("send notification")
     }
 
     override fun OnChatClickListener(doctor: DoctorResponseItem) {
-        TODO("Not yet implemented")
+        if (doctor.userPhone!=args.userModel.phone){
+            var dialog = Chat(doctor.userPhone,doctor.userName,args.userModel)
+            var childFragmentManager = getChildFragmentManager()
+            dialog.show(childFragmentManager, "Chat")
+        }else{
+            toast("You Can't chat With your self...")
+        }
+
     }
 
     override fun onTrainSelected(trainId: Int?, trainDegree: String?) {

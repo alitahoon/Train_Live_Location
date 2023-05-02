@@ -12,10 +12,11 @@
             type="com.example.trainlivelocation.utli.DoctorCustomAdapter" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.Emergency"
+        android:orientation="vertical"
         android:background="@color/DarkPrimaryColor">
 
         <LinearLayout
@@ -23,9 +24,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginHorizontal="@dimen/_15sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:padding="@dimen/_10sdp">
@@ -50,7 +48,8 @@
                     android:text="@{viewmodel.trainid}"
                     android:textColor="@color/PrimaryColor"
                     android:textColorHint="@color/textHintColorFirst"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    />
             </com.google.android.material.textfield.TextInputLayout>
 
         </LinearLayout>
@@ -58,29 +57,34 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/doctor_rcv"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-            tools:listitem="@layout/doctor_rcv_item_layout" />
 
-        <com.airbnb.lottie.LottieAnimationView
+            tools:listitem="@layout/doctor_rcv_item_layout"
+            />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/emergancy_shimmer_loading"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:id="@+id/doctor_fragment_loading"
+            android:layout_height="wrap_content"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-            app:lottie_rawRes="@raw/doctor_fragment_loading"
-            app:lottie_autoPlay="true"
-            app:lottie_loop="true"/>
+          >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include layout="@layout/doctor_rcv_item_layout_shimmer" />
+                <include layout="@layout/doctor_rcv_item_layout_shimmer" />
+                <include layout="@layout/doctor_rcv_item_layout_shimmer" />
+                <include layout="@layout/doctor_rcv_item_layout_shimmer" />
+                <include layout="@layout/doctor_rcv_item_layout_shimmer" />
+                <include layout="@layout/doctor_rcv_item_layout_shimmer" />
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

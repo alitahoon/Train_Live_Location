@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:strokeWidth="@dimen/_1sdp"
+        app:strokeColor="@color/PrimaryColor"
+        app:cardElevation="@dimen/_5sdp"
+        android:backgroundTint="@color/textHintColorSecond"
+        android:layout_margin="@dimen/_10sdp"
+        app:cardCornerRadius="@dimen/_15sdp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/_10sdp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/doctor_rcv_item_doctor_img"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:src="@color/textHintColorFirst"
+                />
+
+            <TextView
+                android:id="@+id/doctor_rcv_item_profile_name"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_5sdp"
+                android:layout_alignTop="@+id/doctor_rcv_item_doctor_img"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@color/textHintColorFirst"
+                android:layout_toRightOf="@id/doctor_rcv_item_doctor_img"
+                android:textSize="@dimen/_10ssp" />
+
+            <TextView
+                android:id="@+id/doctor_rcv_item_profile_jop"
+                android:layout_width="@dimen/_50sdp"
+                android:layout_height="@dimen/_5sdp"
+                android:layout_below="@+id/doctor_rcv_item_profile_name"
+                android:layout_marginHorizontal="@dimen/_5sdp"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:layout_toRightOf="@id/doctor_rcv_item_doctor_img"
+                android:background="@color/textHintColorFirst"
+                android:textSize="@dimen/_10ssp" />
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
+                android:id="@+id/doctor_btn_notifiy"
+                android:layout_toEndOf="@+id/doctor_rcv_item_profile_name"
+                android:src="@color/textHintColorFirst"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/doctor_btn_chat"
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/doctor_rcv_item_doctor_img"
+                android:layout_alignBottom="@+id/doctor_rcv_item_doctor_img"
+                android:layout_alignParentEnd="true"
+                android:layout_marginHorizontal="@dimen/_15sdp"
+                android:layout_toEndOf="@+id/doctor_btn_notifiy"
+                android:backgroundTint="@color/textHintColorFirst"
+                android:textSize="@dimen/_10ssp"
+                app:cornerRadius="@dimen/_20sdp" />
+
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

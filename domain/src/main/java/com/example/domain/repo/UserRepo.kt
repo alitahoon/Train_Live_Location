@@ -45,7 +45,10 @@ interface UserRepo {
     suspend fun startLocationUpdate(interval: Long?)
     suspend fun GetUserLocationLive(result: (LiveData<LocationDetails>) -> Unit)
 
-    suspend fun getLocationTrackBackgroundService(trainid: Int, userid: Int): LifecycleService
+    suspend fun getLocationTrackBackgroundService(
+        trainid: Int, userid: Int, result: (Resource<LifecycleService>) -> Unit
+    )
+
     suspend fun getLocationTrackForegroundService(trainid: Int): LifecycleService
 
     suspend fun addLiveLoctationToApi(
@@ -123,8 +126,16 @@ interface UserRepo {
     )
 
     suspend fun getDoctorInTrain(
-        trainId:Int?,
+        trainId: Int?,
         result: (Resource<ArrayList<DoctorResponseItem>>) -> Unit
     )
+
+    suspend fun getTrainLocationInForgroundService(
+        trainId: Int?,
+        result: (Resource<LifecycleService>) -> Unit
+    )
+
+    suspend fun sendDoctorNotificationToFirebase(doctoreNotification: DoctorNotification,
+                                                 result: (Resource<String>) -> Unit)
 
 }

@@ -1,19 +1,25 @@
 package com.example.trainlivelocation.ui
 
+import Resource
 import android.content.Context
 import android.content.SharedPreferences
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import android.view.View
+import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.UserResponseItem
+import com.example.domain.usecase.GetTrainLocationInForgroundService
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val context: Context
+    private val context: Context,
+    private val getTrainLocationInForgroundService: GetTrainLocationInForgroundService
 ) :ViewModel() {
     private val sharedPrefFile = "UserToken"
     var locationBtn= SingleLiveEvent<Boolean>()
@@ -27,6 +33,10 @@ class HomeViewModel @Inject constructor(
 
     private val _userData: MutableLiveData<UserResponseItem?> = MutableLiveData(null)
     val userData: LiveData<UserResponseItem?> = _userData
+
+    private val _trainbackgroundTrackingServices: MutableLiveData<Resource<LifecycleService>?> = MutableLiveData(null)
+    val trainbackgroundTrackingServices: LiveData<Resource<LifecycleService>?> = _trainbackgroundTrackingServices
+
      fun onLocationBtn(view: View){
         locationBtn.postValue(true)
     }
@@ -64,6 +74,15 @@ class HomeViewModel @Inject constructor(
                 userSharedPreferences.getInt("userStationId",0)
             )
         )
+    }
+
+    fun getTrainLocationInbackground(trainId:Int?){
+        _trainbackgroundTrackingServices.value=Resource.Loading
+        viewModelScope.launch {
+            getTrainLocationInForgroundService(trainId){
+                _trainbackgroundTrackingServices.value=it
+            }
+        }
     }
 
 

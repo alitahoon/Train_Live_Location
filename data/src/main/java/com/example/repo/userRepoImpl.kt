@@ -20,7 +20,8 @@ class userRepoImpl(
     private val getUserLocation: userLocation,
     private val firebaseService: FirebaseService,
     private val locationServices: LocationServices,
-    private val sharedPreferencesService: SharedPreferencesService
+    private val sharedPreferencesService: SharedPreferencesService,
+    private val getTrainForgroundService: getTrainLocationForgroundService
 ) : UserRepo {
     private val TAG: String? = "userRepoImpl"
     override suspend fun getUserData(
@@ -100,10 +101,11 @@ class userRepoImpl(
 
     override suspend fun getLocationTrackBackgroundService(
         trainid: Int,
-        userid: Int
-    ): LifecycleService {
-//        locationTrackBackgroundService.setTrainId_userId(trainid,userid)
-        return locationTrackBackgroundService
+        userid: Int,
+        result: (Resource<LifecycleService>) -> Unit
+    ) {
+        locationTrackBackgroundService.setTrainId_userId(trainid,userid)
+        result.invoke(Resource.Success(locationTrackBackgroundService))
     }
 
     override suspend fun getLocationTrackForegroundService(trainid: Int): LifecycleService {
@@ -357,6 +359,14 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun getTrainLocationInForgroundService(
+        trainId: Int?,
+        result: (Resource<LifecycleService>) -> Unit
+    ) {
+        getTrainForgroundService.setTrainId(trainId)
+        result.invoke(Resource.Success(getTrainForgroundService))
+    }
+
     override suspend fun getInboxRecieveChatFromFirebase(
         phone: String?,
         result: (Resource<ArrayList<Message>>) -> Unit
@@ -376,5 +386,10 @@ class userRepoImpl(
     override suspend fun getUserLocation(callback: (LocationDetails) -> Unit) =
         getUserLocation.getLocationWithLocationManger(callback)
 
-
+    override suspend fun sendDoctorNotificationToFirebase(
+        doctoreNotification: DoctorNotification,
+        result: (Resource<String>) -> Unit
+    ) {
+        TODO("Not yet implemented")
+    }
 }

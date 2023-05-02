@@ -79,15 +79,15 @@
             android:layout_margin="@dimen/_10sdp"
             android:orientation="horizontal"
             android:gravity="center|start">
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/message_layout_sender_image"
-                android:layout_width="@dimen/_40sdp"
-                setUserProfileImage="@{message.sender}"
-                android:layout_height="@dimen/_40sdp"
-                android:src="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+<!--            <de.hdodenhof.circleimageview.CircleImageView-->
+<!--                android:id="@+id/message_layout_sender_image"-->
+<!--                android:layout_width="@dimen/_40sdp"-->
+<!--                setUserProfileImage="@{message.sender}"-->
+<!--                android:layout_height="@dimen/_40sdp"-->
+<!--                android:src="@color/white"-->
+<!--                app:layout_constraintBottom_toBottomOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="wrap_content"
