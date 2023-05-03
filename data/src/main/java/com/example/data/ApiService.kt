@@ -181,5 +181,11 @@ interface ApiService {
     @GET("/api/user/DoctorsInTrain")
     suspend fun GetDoctors(@Query("trainId") trainId:Int): Response<ArrayList<DoctorResponseItem>>
 
+    @GET("/api/user/UserInStation")
+    suspend fun GetUserNotificationInStation(@Query("stationId") stationId:Int): Response<ArrayList<StationUsersNotificationResponseItem>>
+
+    @GET("/api/user/UsersInTrain")
+    suspend fun GetUserInTrain(@Query("trainId") trainId:Int): Response<ArrayList<UserInTrainResponseItem>>
+
 
 }

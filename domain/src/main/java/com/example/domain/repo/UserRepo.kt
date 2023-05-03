@@ -138,7 +138,4 @@ interface UserRepo {
     suspend fun sendDoctorNotificationToFirebase(doctoreNotification: DoctorNotification,
                                                  result: (Resource<String>) -> Unit)
 
-    suspend fun getDoctorNotificationFromFirebase(userPhone: String,
-                                                 result: (Resource<ArrayList<DoctorNotification>>) -> Unit)
-
 }

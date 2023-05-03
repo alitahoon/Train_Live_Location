@@ -346,7 +346,39 @@ class userRepoImpl(
         }
     }
 
-    override suspend fun getDoctorInTrain(trainId:Int?,result: (Resource<ArrayList<DoctorResponseItem>>) -> Unit) {
+    override suspend fun getUserNotificationInStation(
+        stationId: Int,
+        result: (Resource<ArrayList<StationUsersNotificationResponseItem>>) -> Unit
+    ) {
+        var res = apiService.GetUserNotificationInStation(stationId!!)
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke((Resource.Failure("GetUserNotificationInStation -> Error response body = null :${res.body()}")))
+            }
+        } else {
+            result.invoke((Resource.Failure("GetUserNotificationInStation -> ${res.message()}")))
+        }
+    }
+
+    override suspend fun getUserInTrain(
+        trainId: Int,
+        result: (Resource<ArrayList<UserInTrainResponseItem>>) -> Unit
+    ) {
+        var res = apiService.GetUserInTrain(trainId!!)
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke((Resource.Failure("GetUserInTrain -> Error response body = null :${res.body()}")))
+            }
+        } else {
+            result.invoke((Resource.Failure("GetUserInTrain -> ${res.message()}")))
+        }
+    }
+
+    override suspend fun getDoctorInTrain(trainId:Int?, result: (Resource<ArrayList<DoctorResponseItem>>) -> Unit) {
         var res = apiService.GetDoctors(trainId!!)
         if (res.isSuccessful) {
             if (res.body() != null) {

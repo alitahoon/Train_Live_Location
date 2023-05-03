@@ -190,4 +190,14 @@ object UserCaseModule  {
         return GetDoctorNotificationFromFirebase(userRepo)
     }
 
+    @Provides
+    fun ProvideGetUserNotificationInStation(userRepo: UserRepo): GetUserNotificationInStation {
+        return GetUserNotificationInStation(userRepo)
+    }
+
+    @Provides
+    fun ProvideGetUserInTrain(userRepo: UserRepo): GetUserInTrain {
+        return GetUserInTrain(userRepo)
+    }
+
 }
