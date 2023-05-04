@@ -58,7 +58,7 @@ interface UserRepo {
 
     suspend fun getLiveLoctationFromApi(trainid: Int, result: (Resource<Location_Response>) -> Unit)
 
-    suspend fun getUserLocation(callback: (LocationDetails) -> Unit)
+    suspend fun getUserLocation(result: (Resource<LocationDetails>) -> Unit)
 
     suspend fun createPost(post: Post, result: (Resource<PostModelResponse>) -> Unit)
     suspend fun getAllPostsFromAPI(result: (Resource<ArrayList<PostModelResponse>>) -> Unit)

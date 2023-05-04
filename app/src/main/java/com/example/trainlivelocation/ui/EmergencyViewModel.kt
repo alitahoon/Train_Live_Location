@@ -6,20 +6,29 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.entity.DoctorNotification
 import com.example.domain.entity.DoctorResponseItem
 import com.example.domain.entity.UserResponseItem
 import com.example.domain.usecase.GetDoctorInTrain
+import com.example.domain.usecase.SendDoctorNotificationToFirebase
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
 class EmergencyViewModel @Inject constructor(
-    private val getDoctorInTrain: GetDoctorInTrain
+    private val getDoctorInTrain: GetDoctorInTrain,
+    private val sendDoctorNotificationToFirebase: SendDoctorNotificationToFirebase
 ):ViewModel() {
+
+    private val _userLocation: MutableLiveData<Resource<String>?> = MutableLiveData(null)
+    val userLocation: LiveData<Resource<String>?> = _userLocation
 
     private val _doctors: MutableLiveData<Resource<ArrayList<DoctorResponseItem>>?> = MutableLiveData(null)
     val doctors: LiveData<Resource<ArrayList<DoctorResponseItem>>?> = _doctors
+
+    private val _sentNotification: MutableLiveData<Resource<String>?> = MutableLiveData(null)
+    val sentNotification: LiveData<Resource<String>?> = _sentNotification
 
     var txtChooseTrainIdClicked = SingleLiveEvent<Boolean>()
     var trainid: String? = null
@@ -33,6 +42,15 @@ class EmergencyViewModel @Inject constructor(
         viewModelScope.launch {
             getDoctorInTrain(trainId!!){
                 _doctors.value=it
+            }
+        }
+    }
+
+    fun sentDoctorNotification(doctorNotification: DoctorNotification){
+        _sentNotification.value=Resource.Loading
+        viewModelScope.launch {
+            sendDoctorNotificationToFirebase(doctorNotification){
+                _sentNotification.value=it
             }
         }
     }

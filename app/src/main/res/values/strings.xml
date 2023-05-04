@@ -49,6 +49,8 @@
     <string name="abbreviation">Abbreviation</string>
     <string name="post_profile_name">profile name</string>
     <string name="post_time">post time</string>
+    <string name="train_id_">train id</string>
+    <string name="_356_">356</string>
     <string name="comments">Comments</string>
     <string name="post_Likes">post Likes</string>
     <string name="post_content">Post Content</string>
@@ -64,4 +66,50 @@
     <string name="para_empty_post2">No Posts Published on This Train</string>
     <string name="don_t_have_account">Don\'t have account ?</string>
     <string name="emergancy">Emergancy</string>
+
+    <string name="train_id">Train Id</string>
+    <string name="_356">356</string>
+    <string name="post_publish_failed">Post Publish Failed</string>
+    <string name="post_publish_successfully">تم النشر المنشور بنجاح</string>
+    <string name="location_shared_successfully">تمت مشاركة الموقع بنجاح</string>
+    <string name="ok">تم</string>
+    <string name="cancel">الغاء</string>
+    <string name="please_choose_operation">الرجاء اختيار العملية …</string>
+    <string name="if_you_choose_to_track_location_you_will_be_you_will_be_able_to_track_train_location_but_if_you_choose_to_share_location_your_location_will_be_shared_as_train_location">
+    if you choose to track location you will be you will be able to track train location but if you choose to share location your location will be shared as train location</string>
+    <string name="track_location">تتبع الموقع</string>
+    <string name="share_location">مشاركة الموقع</string>
+    <string name="write_a_comment">أكتب تعليقا</string>
+    <string name="submit_">submit</string>
+    <string name="please_wait_">please wait</string>
+    <string name="send_code">send code</string>
+    <string name="phone_">phone</string>
+
+    <string name="online">online</string>
+    <string name="message">message</string>
+    <string name="are_you_shore_you_want_to_remove_this_post">are you shore you want to remove this post</string>
+    <string name="no">no</string>
+    <string name="yes">yes</string>
+    <string name="share_location_">Share Location</string>
+    <string name="takeoff_station">takeoff station</string>
+    <string name="arrival_station">arrival_station</string>
+    <string name="train_id___">train id</string>
+    <string name="track_location_">track location</string>
+    <string name="train_distance">train distance</string>
+    <string name="_5_km">5 km</string>
+    <string name="address">address</string>
+    <string name="shamma_ashmoun_menofia">shamma ashmoun menofia</string>
+    <string name="profile_name_">profile name</string>
+    <string name="profile_jop_">profile jop</string>
+    <string name="profile_name__">profile name</string>
+    <string name="profile_comment">profile comment</string>
+    <string name="text_title">text title</string>
+    <string name="ali_tahoon">ali tahoon</string>
+    <string name="text_title_">text title</string>
+    <string name="convenient_with_new_technological_innovations_human_beings_have_become_more_dependent_on_science_and_technology_we_rely_on_technology_for_all_our_activities_and_have_become_an_integral_part_of_our_lives">convenient. With new technological innovations, human beings have become more dependent on science and technology. We rely on technology for all our activities, and have become an integral part of our lives</string>
+    <string name="ok_">ok</string>
+    <string name="find_station">find station</string>
+    <string name="find_train_by_id">find train by id</string>
+    <string name="train_degree">train degree</string>
+    <string name="train_number">train number</string>
 </resources>

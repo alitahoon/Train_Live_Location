@@ -40,7 +40,7 @@ object FirebaseModule {
 
     @Provides
     fun ProvideDatabaseReference(database: FirebaseDatabase): DatabaseReference {
-        return database.getReference("chats")
+        return database.getReference()
     }
 
     @Provides

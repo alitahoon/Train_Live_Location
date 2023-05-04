@@ -21,7 +21,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/are_you_shore_you_want_to_remove_this_post"
+                android:text=""
                 android:textSize="@dimen/_14sdp"
                 android:lines="2" />
 

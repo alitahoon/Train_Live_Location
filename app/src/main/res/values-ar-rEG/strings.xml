@@ -65,6 +65,8 @@
     <string name="para_empty_post">إذا كان لديك شيء مفقود ، فانتقل إلى إضافة صفحة المنشور وانشرها الآن</string>
     <string name="para_empty_post2">لا توجد مشاركات منشورة في هذا القطار</string>
     <string name="don_t_have_account">ليس لديك حساب؟</string>
+    <string name="emergancy">الطوارىء</string>
+
     <string name="train_id">رقم القطار التعريفي</string>
     <string name="_356">356</string>
     <string name="post_publish_failed">فشل نشر المنشور !</string>
@@ -85,17 +87,16 @@
     <string name="please_wait_">انتظر من فضلك…</string>
     <string name="send_code">أرسل الرمز</string>
     <string name="phone_">الهاتف</string>
+
     <string name="online">متصل</string>
     <string name="message">رسالة</string>
     <string name="are_you_shore_you_want_to_remove_this_post">هل انت متأكد انك تريد حذف هذا المنشور ..؟</string>
     <string name="no">لا</string>
     <string name="yes">نعم</string>
-    <string name="train_id__">رقم القطار التعريفي</string>
     <string name="share_location_">مشاركة الموقع</string>
     <string name="takeoff_station">محطة المغادرة</string>
     <string name="arrival_station">محطة الوصول</string>
     <string name="train_id___">رقم القطار التعريفي</string>
-    <string name="train_id____">رقم القطار التعريفي</string>
     <string name="track_location_">تتبع الموقع</string>
     <string name="train_distance">مسافة القطار</string>
     <string name="_5_km">5 كم</string>

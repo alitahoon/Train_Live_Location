@@ -17,6 +17,7 @@ import com.airbnb.lottie.Lottie
 import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.example.domain.entity.DoctorResponseItem
+import com.example.domain.entity.Location_Response
 import com.example.domain.entity.Post
 import com.example.trainlivelocation.databinding.UserPostsRcvItemLayoutBinding
 import com.google.android.material.progressindicator.LinearProgressIndicator
@@ -90,3 +91,20 @@ fun onNotifiyClicked(
         lotti.playAnimation()
     }
 }
+
+@BindingAdapter("setLongitude")
+fun setLongitude(
+    view: TextView,
+    location: Location_Response,
+) {
+    view.setText("Longitude : ${location.longitude.longitude}")
+}
+
+@BindingAdapter("setLatitude")
+fun setLatitude(
+    view: TextView,
+    location: Location_Response,
+) {
+    view.setText("Latitude : ${location.latitude.latitude}")
+}
+

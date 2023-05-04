@@ -45,7 +45,7 @@
                 android:backgroundTint="@color/DarkPrimaryColor"
                 android:drawableLeft="@drawable/train_id_txt"
                 android:drawablePadding="10dp"
-                android:hint="@string/train_id____"
+                android:hint="@string/train_id"
                 android:minHeight="48dp"
                 android:textColor="@color/PrimaryColor"
                 android:textColorHint="@color/textHintColorFirst"

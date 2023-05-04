@@ -12,10 +12,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
+import com.example.data.LocationTrackBackgroundService
+import com.example.data.LocationTrackForegroundService
 import com.example.domain.entity.LocationDetails
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentShareLocationBinding
@@ -35,6 +38,7 @@ class ShareLocationFeature : Fragment(), Train_Dialog_Listener {
     private val args by navArgs<ShareLocationFeatureArgs>()
 
     private lateinit var binding: FragmentShareLocationBinding
+    lateinit var locationbckgroundSharingService: Intent
     private val shareLocationViewModel: ShareLocationViewModel? by activityViewModels()
 
     override fun onStart() {
@@ -88,17 +92,13 @@ class ShareLocationFeature : Fragment(), Train_Dialog_Listener {
         shareLocationViewModel!!.startSharingtrainLocation.observe(viewLifecycleOwner, Observer {
             when(it){
                 is Resource.Loading->{
-                    toast("getting location service...")
                 }
                 is Resource.Success->{
-                    toast("getting location service successfully...")
-                    var locationbckgroundSharingService: Intent?= Intent(requireActivity(),it::class.java)
+                    locationbckgroundSharingService= Intent(requireActivity(),LocationTrackBackgroundService::class.java)
                     if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
-                        toast("done")
-                        requireActivity().startForegroundService(locationbckgroundSharingService)
+                        ContextCompat.startForegroundService(requireContext(),locationbckgroundSharingService!!)
                     }else{
-                        toast("done")
-                        requireActivity().startService(locationbckgroundSharingService)
+                        Log.e(TAG,"else brunch...")
                     }
                 }
                 else -> {}
@@ -129,7 +129,7 @@ class ShareLocationFeature : Fragment(), Train_Dialog_Listener {
                 if ( binding.shareLocationBtnShareTrainLocation.text.equals("Share Location")){
                     binding.shareLocationBtnShareTrainLocation.setBackgroundColor(resources.getColor(R.color.textAlarmColor))
                     binding.shareLocationBtnShareTrainLocation.setText(R.string.stop_sharing)
-                    binding.shareLocationTxtPara.setVisibility(View.VISIBLE)
+                    binding.shareLocationLottiSharing.visibility=View.VISIBLE
                     displaySnackbarSuccess(
                         requireContext(),
                         binding.root,
@@ -142,8 +142,10 @@ class ShareLocationFeature : Fragment(), Train_Dialog_Listener {
                 }else{
                     binding.shareLocationBtnShareTrainLocation.setBackgroundColor(resources.getColor(R.color.PrimaryColor))
                     binding.shareLocationBtnShareTrainLocation.setText("Share Location")
-                    shareLocationViewModel!!.stopLocationLiveUpdate()
-                    shareLocationViewModel!!.stopLocationService(this)
+                    binding.shareLocationLottiSharing.visibility=View.GONE
+//                    shareLocationViewModel!!.stopLocationLiveUpdate()
+//                    shareLocationViewModel!!.stopLocationService(this)
+                    requireActivity().stopService(locationbckgroundSharingService)
                 }
 
 

@@ -185,7 +185,7 @@ class FirebaseService(
 //            result.invoke(Resource.Failure("${it.message}"))
 //        }
 
-        databaseRef.push()
+        databaseRef.child("chats").push()
             .setValue(
                 Message(
                     message,
@@ -212,7 +212,7 @@ class FirebaseService(
     ) {
         var oldChatKey = arrayListOf<String>()
         //check if there is last chat
-        databaseRef.addValueEventListener(object : ValueEventListener {
+        databaseRef.child("chats").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 // This method is called once with the initial value and again
                 // whenever data at this location is updated.
@@ -243,7 +243,7 @@ class FirebaseService(
         phone: String?,
         result: (Resource<ArrayList<Message>>) -> Unit
     ) {
-        databaseRef.addValueEventListener(object : ValueEventListener {
+        databaseRef.child("chats").addValueEventListener(object : ValueEventListener {
             val messageList = arrayListOf<Message>()
             override fun onDataChange(snapshot: DataSnapshot) {
                 val message = snapshot.getValue(Message::class.java)
@@ -273,7 +273,7 @@ class FirebaseService(
         phone: String?,
         result: (Resource<ArrayList<Message>>) -> Unit
     ) {
-        databaseRef.addValueEventListener(object : ValueEventListener {
+        databaseRef.child("chats").addValueEventListener(object : ValueEventListener {
             val messageList = arrayListOf<Message>()
             override fun onDataChange(snapshot: DataSnapshot) {
                 val message = snapshot.getValue(Message::class.java)

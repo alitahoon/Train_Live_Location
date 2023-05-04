@@ -1,5 +1,6 @@
 package com.example.trainlivelocation.ui
 
+import Resource
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
+import com.example.domain.entity.DoctorNotification
 import com.example.domain.entity.DoctorResponseItem
 import com.example.domain.entity.UserResponseItem
 import com.example.trainlivelocation.R
@@ -16,14 +18,12 @@ import com.example.trainlivelocation.databinding.FragmentAddPostCommentBinding
 import com.example.trainlivelocation.databinding.FragmentEmergencyBinding
 import com.example.trainlivelocation.utli.*
 
-class Emergency : Fragment() ,DoctorListener,Train_Dialog_Listener{
+class Emergency : Fragment(), DoctorListener, Train_Dialog_Listener {
 
     private val TAG: String? = "Emergency"
     private lateinit var binding: FragmentEmergencyBinding
     private val emergencyViewModel: EmergencyViewModel by activityViewModels()
-    var adapter :DoctorCustomAdapter? = null
     private val args by navArgs<EmergencyArgs>()
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,11 +45,37 @@ class Emergency : Fragment() ,DoctorListener,Train_Dialog_Listener{
 
     private fun setObserver() {
         emergencyViewModel.txtChooseTrainIdClicked.observe(viewLifecycleOwner, Observer {
-            if (it ==true){
+            if (it == true) {
                 //get train inforamtion
                 var dialog = ChooseTrainDialogFragment(this)
                 var childFragmentManager = getChildFragmentManager()
                 dialog.show(childFragmentManager, "ChooseTrainDialogFragment")
+            }
+        })
+
+        emergencyViewModel.sentNotification.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is Resource.Loading -> {
+                    binding.emergancyNotificationProgressBar.visibility = View.VISIBLE
+                }
+                is Resource.Success -> {
+                    binding.emergancyNotificationProgressBar.visibility = View.GONE
+                    displaySnackbarSuccess(
+                        requireContext(),
+                        binding.root,
+                        "Notification Sent Successfully...",
+                        R.raw.notification,
+                        requireActivity().getColor(R.color.DarkPrimaryColor)
+                    )
+                }
+                is Resource.Failure -> {
+                    binding.emergancyNotificationProgressBar.visibility = View.GONE
+                    Log.e(TAG, "${it.error}")
+                }
+
+                else -> {
+                    Log.e(TAG, "Failure from else brunch")
+                }
             }
         })
     }
@@ -59,20 +85,20 @@ class Emergency : Fragment() ,DoctorListener,Train_Dialog_Listener{
         emergencyViewModel.doctors.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Loading -> {
-                    binding.emergancyShimmerLoading.visibility=View.VISIBLE
-                    binding.doctorRcv.visibility=View.GONE
+                    binding.emergancyShimmerLoading.visibility = View.VISIBLE
+                    binding.doctorRcv.visibility = View.GONE
                     Log.i(TAG, "messages is loading ....")
                 }
                 is Resource.Success -> {
-                    binding.emergancyShimmerLoading.visibility=View.GONE
-                    binding.doctorRcv.visibility=View.VISIBLE
+                    binding.emergancyShimmerLoading.visibility = View.GONE
+                    binding.doctorRcv.visibility = View.VISIBLE
                     Log.i(TAG, "data : ${it.data}")
                     adapter.setData(it.data)
 
                 }
                 is Resource.Failure -> {
-                    binding.emergancyShimmerLoading.visibility=View.GONE
-                    binding.doctorRcv.visibility=View.GONE
+                    binding.emergancyShimmerLoading.visibility = View.GONE
+                    binding.doctorRcv.visibility = View.GONE
                     Log.e(TAG, "${it.error}")
                 }
                 else -> {
@@ -88,15 +114,22 @@ class Emergency : Fragment() ,DoctorListener,Train_Dialog_Listener{
     }
 
     override fun OnNotifyClickListener(doctor: DoctorResponseItem) {
-        toast("send notification")
+        emergencyViewModel.sentDoctorNotification(
+            DoctorNotification(
+                doctor.userPhone,
+                doctor.userName,
+                args.userModel.phone,
+                args.userModel.name
+            )
+        )
     }
 
     override fun OnChatClickListener(doctor: DoctorResponseItem) {
-        if (doctor.userPhone!=args.userModel.phone){
-            var dialog = Chat(doctor.userPhone,doctor.userName,args.userModel)
+        if (doctor.userPhone != args.userModel.phone) {
+            var dialog = Chat(doctor.userPhone, doctor.userName, args.userModel)
             var childFragmentManager = getChildFragmentManager()
             dialog.show(childFragmentManager, "Chat")
-        }else{
+        } else {
             toast("You Can't chat With your self...")
         }
 
@@ -105,6 +138,6 @@ class Emergency : Fragment() ,DoctorListener,Train_Dialog_Listener{
     override fun onTrainSelected(trainId: Int?, trainDegree: String?) {
         binding.trackLocationTxtTrainId.setText(trainId.toString())
         emergencyViewModel.getDoctors(trainId)
-        binding.doctorRcv.adapter=setAdapterItems()
+        binding.doctorRcv.adapter = setAdapterItems()
     }
 }

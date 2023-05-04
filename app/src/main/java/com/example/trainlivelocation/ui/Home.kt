@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.example.data.GetTrainLocationService
 import com.example.domain.entity.UserResponseItem
 import com.example.domain.usecase.GetTrainLocationInForgroundService
 import com.example.trainlivelocation.R
@@ -118,7 +119,7 @@ class Home : Fragment() ,Train_Dialog_Listener{
                 }
                 is Resource.Success->{
                     toast("getting service successfully...")
-                    var locationForegrondservice: Intent?= Intent(requireActivity(),it::class.java)
+                    var locationForegrondservice: Intent?= Intent(requireActivity(),GetTrainLocationService::class.java)
                     if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
                         toast("done")
                         requireActivity().startForegroundService(locationForegrondservice)

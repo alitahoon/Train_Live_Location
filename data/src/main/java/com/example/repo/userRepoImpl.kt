@@ -21,7 +21,7 @@ class userRepoImpl(
     private val firebaseService: FirebaseService,
     private val locationServices: LocationServices,
     private val sharedPreferencesService: SharedPreferencesService,
-    private val getTrainForgroundService: getTrainLocationForgroundService
+    private val getTrainForgroundService: GetTrainLocationService
 ) : UserRepo {
     private val TAG: String? = "userRepoImpl"
     override suspend fun getUserData(
@@ -415,8 +415,8 @@ class userRepoImpl(
     }
 
 
-    override suspend fun getUserLocation(callback: (LocationDetails) -> Unit) =
-        getUserLocation.getLocationWithLocationManger(callback)
+    override suspend fun getUserLocation(result: (Resource<LocationDetails>) -> Unit) =
+        getUserLocation.getLocationWithLocationManger(result)
 
     override suspend fun sendDoctorNotificationToFirebase(
         doctoreNotification: DoctorNotification,

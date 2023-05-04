@@ -1,5 +1,6 @@
 package com.example.data
 
+import Resource
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
@@ -9,6 +10,7 @@ import android.os.Looper
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.domain.entity.LocationDetails
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -21,6 +23,9 @@ class LocationLiveForTracking(private val context: Context) : LiveData<LocationD
     private val TAG:String?="LocationLiveForTracking"
     private val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
     private var locationRequest: com.google.android.gms.location.LocationRequest? = null
+
+    private val _locationData: MutableLiveData<Location?> = MutableLiveData(null)
+        val locationData: LiveData<Location?> = _locationData
     override fun onActive() {
         super.onActive()
         if (ActivityCompat.checkSelfPermission(
@@ -44,6 +49,7 @@ class LocationLiveForTracking(private val context: Context) : LiveData<LocationD
         this.location = location
         location?.let { location ->
             value = LocationDetails(location.longitude.toFloat(), location.latitude.toFloat())
+            this._locationData.value=location
             EventBus.getDefault()
                 .post(LocationDetails(location.longitude.toFloat(), location.latitude.toFloat()))
             Log.i(

@@ -35,7 +35,7 @@
                 android:drawablePadding="@dimen/_10sdp"
                 android:focusable="false"
                 android:gravity="center|start"
-                android:hint="@string/train_id__"
+                android:hint="@string/train_id"
                 android:minHeight="@dimen/_48sdp"
                 android:onClick="@{viewmodel::onTxtTrainIdClicked}"
                 android:text="@={viewmodel.trainId}"
@@ -59,19 +59,15 @@
             android:textColor="@color/white"
             app:cornerRadius="@dimen/_20sdp" />
 
-        <TextView
-            android:id="@+id/shareLocation_txt_para"
+        <com.airbnb.lottie.LottieAnimationView
+            android:visibility="gone"
+            android:id="@+id/shareLocation_lotti_sharing"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_10sdp"
             android:layout_marginVertical="@dimen/_20sdp"
-            android:visibility="gone"
-            android:gravity="start"
-            android:background="@color/PrimaryColor"
-            android:padding="@dimen/_10sdp"
-            android:lineHeight="@dimen/_30sdp"
-            android:text="@string/share_location_para"
-            android:textSize="@dimen/_16ssp"
+            app:lottie_loop="true"
+            app:lottie_autoPlay="true"
+            app:lottie_rawRes="@raw/sharing_location_waiting"
             />
         <com.airbnb.lottie.LottieAnimationView
             app:lottie_autoPlay="true"

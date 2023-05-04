@@ -1,5 +1,6 @@
 package com.example.data
 
+import Resource
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -48,7 +49,7 @@ class userLocation (private val context:Context){
 
             }
     }
-    fun  getLocationWithLocationManger(callback: (LocationDetails)->Unit){
+    fun  getLocationWithLocationManger(result: (Resource<LocationDetails>) -> Unit){
         // Get LocationManager object
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager?
         // Create a criteria object to retrieve provider
@@ -68,7 +69,7 @@ class userLocation (private val context:Context){
             var myLocation=locationManager!!.getLastKnownLocation(provider!!)
             val myLatitude = myLocation!!.latitude
             val myLongitude = myLocation!!.longitude
-            callback(LocationDetails(myLongitude.toFloat(),myLongitude.toFloat()))
+            result.invoke(Resource.Success(LocationDetails(myLongitude.toFloat(),myLongitude.toFloat())))
         }
 
     }

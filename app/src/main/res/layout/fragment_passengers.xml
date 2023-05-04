@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+<!--        <variable-->
+<!--            name="adapter"-->
+<!--            type="com.example.trainlivelocation." />-->
         <variable
             name="viewmodel"
-            type="com.example.trainlivelocation.ui.EmergencyViewModel" />
-        <variable
-            name="adapter"
-            type="com.example.trainlivelocation.utli.DoctorCustomAdapter" />
+            type="com.example.trainlivelocation.ui.PassengersViewModel" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.Emergency"
-        android:orientation="vertical"
-        android:background="@color/DarkPrimaryColor">
+        tools:context=".ui.Passengers"
+        android:background="@color/DarkPrimaryColor"
+        android:orientation="vertical">
         <com.google.android.material.progressindicator.LinearProgressIndicator
             android:layout_width="match_parent"
             android:id="@+id/emergancy_notification_progress_bar"
@@ -40,7 +40,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/PrimaryColor"
-                app:hintTextColor="@color/textHintColorFirst">
+                android:textColorHint="@color/textHintColorFirst">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/track_location_txt_train_id"
                     android:layout_width="match_parent"
@@ -52,8 +52,6 @@
                     android:hint="Train Id"
                     android:minHeight="48dp"
                     android:backgroundTint="@color/DarkPrimaryColor"
-                    android:onClick="@{viewmodel::ontxtChooseTrainIdClicked}"
-                    android:text="@{viewmodel.trainid}"
                     android:textColor="@color/PrimaryColor"
                     android:textColorHint="@color/textHintColorFirst"
                     android:textSize="18sp"
@@ -68,7 +66,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-
             tools:listitem="@layout/doctor_rcv_item_layout"
             />
 
@@ -77,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"
-          >
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
