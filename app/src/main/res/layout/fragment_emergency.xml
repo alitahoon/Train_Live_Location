@@ -68,7 +68,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-
             tools:listitem="@layout/doctor_rcv_item_layout"
             />
 

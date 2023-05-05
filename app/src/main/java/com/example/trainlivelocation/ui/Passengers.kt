@@ -36,7 +36,19 @@ class Passengers : Fragment(),PassengersListener, Train_Dialog_Listener {
             .apply {
                 this.viewmodel=passengersViewModel
             }
+        setObservers()
         return binding.root
+    }
+
+    private fun setObservers() {
+        passengersViewModel.txtChooseTrainIdClicked.observe(viewLifecycleOwner, Observer {
+            if (it==true){
+                //get train inforamtion
+                var dialog = ChooseTrainDialogFragment(this)
+                var childFragmentManager = getChildFragmentManager()
+                dialog.show(childFragmentManager, "ChooseTrainDialogFragment")
+            }
+        })
     }
 
     private fun setAdapterItems(): PassengersCustomAdapter {

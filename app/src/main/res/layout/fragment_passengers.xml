@@ -41,6 +41,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/passengers_txt_train_id"
                     android:layout_width="match_parent"
+                    android:onClick="@{viewmodel::ontxtChooseTrainIdClicked}"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/train_id_txt"
                     android:drawablePadding="10dp"
