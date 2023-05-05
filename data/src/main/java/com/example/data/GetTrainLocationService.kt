@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleService
 import com.example.domain.entity.Location_Response
 import dagger.hilt.android.AndroidEntryPoint

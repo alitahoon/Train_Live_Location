@@ -108,3 +108,12 @@ fun setLatitude(
     view.setText("Latitude : ${location.latitude.latitude}")
 }
 
+@BindingAdapter("setPassengersRCVAdapter")
+fun setAdapter(
+    recyclerView: RecyclerView,
+    adapter: PassengersCustomAdapter
+) {
+    adapter?.let {
+        recyclerView.adapter = it
+    }
+}

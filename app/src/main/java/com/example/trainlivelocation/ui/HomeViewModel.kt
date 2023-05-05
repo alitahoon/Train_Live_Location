@@ -28,6 +28,8 @@ class HomeViewModel @Inject constructor(
     var btnTicketClicked= SingleLiveEvent<Boolean>()
     var btnEmergancyClicked= SingleLiveEvent<Boolean>()
     var chooseTrainTxtClicked= SingleLiveEvent<Boolean>()
+    var passengersbtnClicked= SingleLiveEvent<Boolean>()
+
 
     var trainId:String?=null
 
@@ -55,6 +57,10 @@ class HomeViewModel @Inject constructor(
     }
      fun onLocationCardBtn(view:View){
         locationCardBtn.postValue(true)
+    }
+
+    fun onPassengersbtnClicked(view:View){
+        passengersbtnClicked.postValue(true)
     }
     fun getUserDataFromsharedPreference() {
         val userSharedPreferences: SharedPreferences =

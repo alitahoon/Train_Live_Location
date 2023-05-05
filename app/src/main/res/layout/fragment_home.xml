@@ -140,7 +140,7 @@
 
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/home_btn_emergency"
+            android:id="@+id/home_btn_passengers"
             android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_80sdp"
             android:layout_margin="@dimen/_15sdp"
@@ -150,7 +150,8 @@
             app:cardElevation="@dimen/_20sdp"
             app:layout_constraintLeft_toRightOf="@id/home_btn_location"
             app:layout_constraintRight_toLeftOf="@id/home_btn_posts"
-            app:layout_constraintTop_toBottomOf="@+id/home_track_train_txt">
+            app:layout_constraintTop_toBottomOf="@+id/home_track_train_txt"
+            android:onClick="@{viewmodel::onPassengersbtnClicked}">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -273,7 +274,7 @@
             app:cardElevation="@dimen/_20sdp"
             app:layout_constraintEnd_toStartOf="@id/home_btn_explore_good_path"
             app:layout_constraintStart_toEndOf="@id/home_btn_tickets"
-            app:layout_constraintTop_toBottomOf="@id/home_btn_emergency">
+            app:layout_constraintTop_toBottomOf="@id/home_btn_passengers">
 
             <LinearLayout
                 android:layout_width="match_parent"

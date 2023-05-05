@@ -4,9 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-<!--        <variable-->
-<!--            name="adapter"-->
-<!--            type="com.example.trainlivelocation." />-->
         <variable
             name="viewmodel"
             type="com.example.trainlivelocation.ui.PassengersViewModel" />
@@ -42,7 +39,7 @@
                 android:backgroundTint="@color/PrimaryColor"
                 android:textColorHint="@color/textHintColorFirst">
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/track_location_txt_train_id"
+                    android:id="@+id/passengers_txt_train_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/train_id_txt"
@@ -61,16 +58,16 @@
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/doctor_rcv"
+            android:id="@+id/passengers_rcv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/doctor_rcv_item_layout"
+            tools:listitem="@layout/passengers_rcv_item_layout"
             />
 
         <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/emergancy_shimmer_loading"
+            android:id="@+id/passengers_shimmer_loading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="gone"

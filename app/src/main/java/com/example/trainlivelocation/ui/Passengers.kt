@@ -1,19 +1,22 @@
 package com.example.trainlivelocation.ui
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
+import com.example.domain.entity.UserInTrainResponseItem
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentEmergencyBinding
 import com.example.trainlivelocation.databinding.FragmentPassengersBinding
-import com.example.trainlivelocation.utli.DoctorCustomAdapter
+import com.example.trainlivelocation.utli.*
 
 
-class Passengers : Fragment() {
+class Passengers : Fragment(),PassengersListener, Train_Dialog_Listener {
 
     private val TAG: String? = "Passengers"
     private lateinit var binding: FragmentPassengersBinding
@@ -36,7 +39,52 @@ class Passengers : Fragment() {
         return binding.root
     }
 
+    private fun setAdapterItems(): PassengersCustomAdapter {
+        val adapter = PassengersCustomAdapter(this)
+        passengersViewModel.passengers.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is Resource.Loading -> {
+                    binding.passengersShimmerLoading.visibility = View.VISIBLE
+                    binding.passengersRcv.visibility = View.GONE
+                    Log.i(TAG, "messages is loading ....")
+                }
+                is Resource.Success -> {
+                    binding.passengersShimmerLoading.visibility = View.GONE
+                    binding.passengersRcv.visibility = View.VISIBLE
+                    Log.i(TAG, "data : ${it.data}")
+                    adapter.setData(it.data)
+
+                }
+                is Resource.Failure -> {
+                    binding.passengersShimmerLoading.visibility = View.GONE
+                    binding.passengersRcv.visibility = View.GONE
+                    Log.e(TAG, "${it.error}")
+                }
+                else -> {
+
+                }
+            }
+        })
+        return adapter
+    }
+
     companion object {
 
+    }
+
+    override fun OnChatClickListener(passengers: UserInTrainResponseItem) {
+        if (passengers.userPhone != args.userModel.phone) {
+            var dialog = Chat(passengers.userPhone, passengers.userName, args.userModel)
+            var childFragmentManager = getChildFragmentManager()
+            dialog.show(childFragmentManager, "Chat")
+        } else {
+            toast("You Can't chat With your self...")
+        }
+    }
+
+    override fun onTrainSelected(trainId: Int?, trainDegree: String?) {
+        binding.passengersTxtTrainId.setText("${trainId}")
+        passengersViewModel.getPassengers(trainId)
+        binding.passengersRcv.adapter = setAdapterItems()
     }
 }
