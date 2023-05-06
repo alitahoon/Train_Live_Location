@@ -71,6 +71,10 @@
             android:name="com.example.data.GetTrainLocationService"
             android:enabled="true"
             android:exported="false" />
+        <service
+            android:name="com.example.trainlivelocation.utli.TrackTrainService"
+            android:enabled="true"
+            android:exported="false" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

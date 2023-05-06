@@ -84,10 +84,10 @@
             android:onClick="@{viewmodel::onChooseTrainTxtClicked}"
             android:text="@{viewmodel.trainId}"
             android:drawablePadding="@dimen/_5sdp"
-            android:drawableLeft="@drawable/train_id_txt"
+            android:drawableLeft="@drawable/train_id_txt_primery"
             android:textSize="@dimen/_12ssp"
             android:layout_marginTop="-30dp"
-            android:id="@+id/home_track_train_txt"
+            android:id="@+id/home_track_trainID_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_50sdp"
@@ -108,7 +108,7 @@
             app:cardCornerRadius="@dimen/_30sdp"
             app:cardElevation="@dimen/_20sdp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/home_track_train_txt">
+            app:layout_constraintTop_toBottomOf="@+id/home_track_trainID_txt">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -150,7 +150,7 @@
             app:cardElevation="@dimen/_20sdp"
             app:layout_constraintLeft_toRightOf="@id/home_btn_location"
             app:layout_constraintRight_toLeftOf="@id/home_btn_posts"
-            app:layout_constraintTop_toBottomOf="@+id/home_track_train_txt"
+            app:layout_constraintTop_toBottomOf="@+id/home_track_trainID_txt"
             android:onClick="@{viewmodel::onPassengersbtnClicked}">
 
             <LinearLayout
@@ -192,7 +192,7 @@
             app:cardCornerRadius="@dimen/_30sdp"
             app:cardElevation="@dimen/_20sdp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/home_track_train_txt">
+            app:layout_constraintTop_toBottomOf="@+id/home_track_trainID_txt">
 
             <LinearLayout
                 android:layout_width="match_parent"

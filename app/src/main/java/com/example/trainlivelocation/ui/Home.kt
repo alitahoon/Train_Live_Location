@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.Observer
@@ -17,6 +18,7 @@ import com.example.domain.entity.UserResponseItem
 import com.example.domain.usecase.GetTrainLocationInForgroundService
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentHomeBinding
+import com.example.trainlivelocation.utli.TrackTrainService
 import com.example.trainlivelocation.utli.Train_Dialog_Listener
 import com.example.trainlivelocation.utli.toast
 import dagger.hilt.android.AndroidEntryPoint
@@ -126,13 +128,16 @@ class Home : Fragment() ,Train_Dialog_Listener{
                 }
                 is Resource.Success->{
                     toast("getting service successfully...")
-                    var locationForegrondservice: Intent?= Intent(requireActivity(),GetTrainLocationService::class.java)
+                    var locationForegrondservice: Intent?= Intent(requireActivity(),TrackTrainService::class.java)
+                    locationForegrondservice!!.putExtra("trainId",binding!!.homeTrackTrainIDTxt.text.toString().toInt())
                     if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
                         toast("done")
-                        requireActivity().startForegroundService(locationForegrondservice)
+                        ContextCompat.startForegroundService(requireContext(),locationForegrondservice)
+                    }else{
+                        toast("done")
+                        requireActivity().startService(locationForegrondservice)
                     }
-                    toast("done")
-                    requireActivity().startService(locationForegrondservice)
+
                 }
 
                 else -> {}
@@ -141,7 +146,7 @@ class Home : Fragment() ,Train_Dialog_Listener{
     }
 
     override fun onTrainSelected(trainId: Int?, trainDegree: String?) {
-        binding!!.homeTrackTrainTxt.setText(trainId!!.toString())
+        binding!!.homeTrackTrainIDTxt.setText(trainId!!.toString())
         homeViewModel!!.getTrainLocationInbackground(trainId)
         observeTrainLocationService()
     }

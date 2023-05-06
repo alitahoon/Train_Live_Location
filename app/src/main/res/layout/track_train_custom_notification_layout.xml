@@ -1,67 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/_5sdp">
 
-    <data>
-        <variable
-            name="services"
-            type="com.example.trainlivelocation.utli.TrackTrainService" />
-    </data>
+    <TextView
+        android:id="@+id/track_train_custom_notification_train_txt_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="TrainId : "
+        android:drawableStart="@drawable/train_id_txt_15"
+        android:drawablePadding="@dimen/_5sdp"
+        android:gravity="center"
+        android:textSize="@dimen/_8ssp" />
+
+    <TextView
+        android:id="@+id/track_train_custom_notification_train_address_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_2sdp"
+        android:textColor="@color/white"
+        android:drawableStart="@drawable/baseline_location_city_24"
+        android:drawablePadding="@dimen/_5sdp"
+        android:gravity="center|start"
+        android:text="Address :"
+        android:textSize="@dimen/_8ssp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/DarkPrimaryColor"
-        android:padding="@dimen/_10sdp">
+        android:layout_marginTop="@dimen/_2sdp">
 
         <TextView
+            android:id="@+id/track_train_custom_notification_train_longitude_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{services.trainId}"
-            android:textSize="@dimen/_12ssp"
-            android:drawableStart="@drawable/train_id_txt"
+            android:drawableStart="@drawable/baseline_location_on_24"
             android:drawablePadding="@dimen/_5sdp"
-            android:gravity="center" />
+            android:gravity="center|start"
+            android:textColor="@color/white"
+            android:text="Longitude : 29.4665"
+            android:textSize="@dimen/_8ssp" />
 
         <TextView
-            android:id="@+id/track_train_custom_notification_train_address_value"
+            android:id="@+id/track_train_custom_notification_train_latitude_value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Address :"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:textSize="@dimen/_12ssp"
-            android:drawableStart="@drawable/baseline_location_city_24"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:drawableStart="@drawable/baseline_location_on_24"
             android:drawablePadding="@dimen/_5sdp"
-            android:gravity="center|start" />
-
-        <LinearLayout
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/track_train_custom_notification_train_longitude_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Longitude : 29.4665"
-                setLongitude="@{services._locationLLiveDate}"
-                android:textSize="@dimen/_12ssp"
-                android:drawableStart="@drawable/baseline_location_on_24"
-                android:drawablePadding="@dimen/_5sdp"
-                android:gravity="center|start" />
-
-            <TextView
-                android:id="@+id/track_train_custom_notification_train_latitude_value"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Latitude : 30.55464"
-                setLatitude="@{services._locationLLiveDate}"
-                android:drawableStart="@drawable/baseline_location_on_24"
-                android:drawablePadding="@dimen/_5sdp"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:textSize="@dimen/_12ssp"
-                android:gravity="center" />
-        </LinearLayout>
-
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:text="Latitude : 30.55464"
+            android:textSize="@dimen/_8ssp" />
     </LinearLayout>
-</layout>
+
+</LinearLayout>
