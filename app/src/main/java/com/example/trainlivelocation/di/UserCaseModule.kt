@@ -204,4 +204,10 @@ object UserCaseModule  {
         return SendUserNotificationTokenToFirebase(userRepo)
     }
 
+    @Provides
+    fun ProvideGetNotificationTokenFromFirebase(userRepo: UserRepo): GetNotificationTokenFromFirebase {
+        return GetNotificationTokenFromFirebase(userRepo)
+    }
+
+
 }

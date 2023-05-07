@@ -163,7 +163,7 @@ interface UserRepo {
         result: (Resource<String?>) -> Unit
     )
 
-    suspend fun getNotificationToken(
+    suspend fun getNotificationTokenFromFirebase(
         userPhone: String?, result: (Resource<String?>) -> Unit
     )
 

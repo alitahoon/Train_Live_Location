@@ -438,4 +438,11 @@ class userRepoImpl(
     ) {
         firebaseService.getNotificationFromFirebase(userPhone,result)
     }
+
+    override suspend fun getNotificationTokenFromFirebase(
+        userPhone: String?,
+        result: (Resource<String?>) -> Unit
+    ) {
+        firebaseService.getNotificationToken(userPhone!!,result)
+    }
 }
