@@ -61,6 +61,7 @@ class TrackLocationFeature : Fragment(), TrackLocationListener ,Train_Dialog_Lis
             }
         binding?.viewmodel?.trackLocationListener = this
         trackLocationFeatureViewModel?.setbaseActivity(requireActivity())
+        trackLocationFeatureViewModel?.getTrainLocationFromApi()
         setObservers()
 
         return binding?.root
@@ -140,8 +141,8 @@ class TrackLocationFeature : Fragment(), TrackLocationListener ,Train_Dialog_Lis
                                 )
                                 trainLocation =
                                     LocationDetails(
-                                        it!!.longitude.longitude,
-                                        it!!.latitude.latitude
+                                        it!!.longitude.toFloat(),
+                                        it!!.latitude.toFloat()
                                     )
                             }
 

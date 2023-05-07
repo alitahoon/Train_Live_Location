@@ -11,6 +11,7 @@ import com.example.domain.entity.PostModelResponse
 import com.example.domain.entity.UserResponseItem
 import com.example.domain.usecase.GetAllPostsFromAPI
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -34,15 +35,18 @@ class AllPostsViewModel @Inject constructor(
     init {
         getPosts()
     }
-    fun getPosts(){
-        _allPosts!!.value=Resource.Loading
+    fun getPosts() {
         viewModelScope.launch {
-            getAllPostsFromAPI{
-                _allPosts.value=it
+            _allPosts!!.value = Resource.Loading
+            val child1=  launch(Dispatchers.IO) {
+                getAllPostsFromAPI {
+                    launch (Dispatchers.Main){
+                        _allPosts.value = it
+                    }
+                }
             }
         }
     }
-
     fun getUserDataFromsharedPreference() {
         val userSharedPreferences: SharedPreferences =
             context.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)

@@ -6,7 +6,9 @@ import android.net.Uri
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.LiveData
 import com.example.domain.entity.*
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.messaging.FirebaseMessaging
 
 interface UserRepo {
     suspend fun getUserData(
@@ -135,17 +137,35 @@ interface UserRepo {
         result: (Resource<LifecycleService>) -> Unit
     )
 
-    suspend fun sendDoctorNotificationToFirebase(doctoreNotification: DoctorNotification,
-                                                 result: (Resource<String>) -> Unit)
+    suspend fun sendDoctorNotificationToFirebase(
+        doctoreNotification: DoctorNotification,
+        result: (Resource<String>) -> Unit
+    )
 
-    suspend fun getDoctorNotificationFromFirebase(userPhone: String,
-                                                 result: (Resource<ArrayList<DoctorNotification>>) -> Unit)
+    suspend fun getDoctorNotificationFromFirebase(
+        userPhone: String,
+        result: (Resource<ArrayList<DoctorNotification>>) -> Unit
+    )
 
-    suspend fun getUserNotificationInStation(stationId: Int,
-                                                 result: (Resource<ArrayList<StationUsersNotificationResponseItem>>) -> Unit)
+    suspend fun getUserNotificationInStation(
+        stationId: Int,
+        result: (Resource<ArrayList<StationUsersNotificationResponseItem>>) -> Unit
+    )
 
 
-    suspend fun getUserInTrain(trainid: Int,
-                                                 result: (Resource<ArrayList<UserInTrainResponseItem>>) -> Unit)
+    suspend fun getUserInTrain(
+        trainid: Int,
+        result: (Resource<ArrayList<UserInTrainResponseItem>>) -> Unit
+    )
+
+    suspend fun sendUserNotificationTokenToFirebase(
+        token: NotificatonToken?,
+        result: (Resource<String?>) -> Unit
+    )
+
+    suspend fun getNotificationToken(
+        userPhone: String?, result: (Resource<String?>) -> Unit
+    )
+
 
 }

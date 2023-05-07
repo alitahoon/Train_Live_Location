@@ -26,7 +26,8 @@ class SignUpViewModel @Inject constructor(
     private val addNewUser: AddNewUser,
     private val application: Application,
     private val context: Context,
-    private val sendImageToFirebaseStorage: SendImageToFirebaseStorage
+    private val sendImageToFirebaseStorage: SendImageToFirebaseStorage,
+    private val sendUserNotificationTokenToFirebase: SendUserNotificationTokenToFirebase
 ) : ViewModel() {
     private var selectedJop: String? = ""
     private val TAG: String? = "RegisterViewModel"
@@ -49,6 +50,10 @@ class SignUpViewModel @Inject constructor(
 
     private var _sendingProfileImageResult:MutableLiveData<Resource<String>?> = MutableLiveData(null)
     var sendingProfileImageResult:LiveData<Resource<String>?> = _sendingProfileImageResult
+
+    private var _sendingNotificationToken:MutableLiveData<Resource<String?>> = MutableLiveData(null)
+    var sendingNotificationToken:LiveData<Resource<String?>> = _sendingNotificationToken
+
     companion object {
         private var layoutCounter: Int? = 0
     }
@@ -195,6 +200,16 @@ class SignUpViewModel @Inject constructor(
 
 
     }
+
+    fun sendingTokenToFirebase(token: NotificatonToken?){
+        _sendingNotificationToken.value=Resource.Loading
+        viewModelScope.launch {
+            sendUserNotificationTokenToFirebase(token){
+                _sendingNotificationToken.value=it
+            }
+        }
+    }
+
 
 }
 

@@ -51,7 +51,7 @@ class GetTrainLocationService() : LifecycleService() {
     fun getNotification(locationResponse: Location_Response): Notification {
         val notification = NotificationCompat.Builder(this, CHANNEL_ID!!)
             .setContentTitle("Train Location Update")
-            .setContentText("Location Latitude --> ${locationResponse?.latitude!!.latitude}\nLocation longitude --> ${locationResponse?.longitude!!.longitude}")
+            .setContentText("Location Latitude --> ${locationResponse?.latitude}\nLocation longitude --> ${locationResponse?.longitude}")
             .setSmallIcon(com.google.android.material.R.drawable.ic_clear_black_24)
             .setOnlyAlertOnce(true) // Set to true to update notification without showing popup
             .setPriority(NotificationCompat.PRIORITY_HIGH)

@@ -139,6 +139,7 @@ dependencies {
     implementation 'com.ramotion.foldingcell:folding-cell:1.2.3'
 
     implementation 'com.google.maps.android:android-maps-utils:0.4'
+    implementation 'com.google.firebase:firebase-messaging:23.0.0'
 
     //calender
     implementation 'com.applandeo:material-calendar-view:1.9.0-rc03'

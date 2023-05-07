@@ -14,6 +14,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.example.domain.entity.Post
 import com.example.domain.entity.UserResponseItem
 import com.example.trainlivelocation.R
@@ -79,12 +80,15 @@ class Add_post_fragment : Fragment(),FragmentLifecycle ,Train_Dialog_Listener{
                             binding.addPostProgressBar.setVisibility(View.VISIBLE)
                         }
                         is Resource.Success->{
+                            binding.addPostTxtPostContent.setText("")
+                            binding.addPostTxtTrainId.setText("")
+                            binding.addPostImageViewPostImage.setImageDrawable(resources.getDrawable(R.drawable.add_photo_icon))
                             binding.addPostProgressBar.setVisibility(View.INVISIBLE)
-                            getSnakbar(binding.addPostBtnSubmit,com.example.trainlivelocation.R.layout.custom_snake_bar_add_post_success_layout).show()
+                            getSnakbar(binding.addPostBtnSubmit,R.layout.custom_snake_bar_add_post_success_layout).show()
                         }
                         is Resource.Failure->{
                             binding.addPostProgressBar.setVisibility(View.INVISIBLE)
-                            getSnakbar(binding.addPostBtnSubmit,com.example.trainlivelocation.R.layout.custom_snake_bar_add_post_failed_layout).show()
+                            getSnakbar(binding.addPostBtnSubmit,R.layout.custom_snake_bar_add_post_failed_layout).show()
                         }
                         else -> {
                             Log.i(TAG, "Failed else brunch")

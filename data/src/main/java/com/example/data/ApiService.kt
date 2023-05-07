@@ -176,7 +176,7 @@ interface ApiService {
     suspend fun AddLocation(@Body location_Request: Location_Request): Response<Location_Request_with_id>
 
     @GET("/api/LiveLocation/GetLocation")
-    suspend fun GetLocation(@Query("trainid") trainid: Int): Response<Location_Response>
+    suspend fun GetLocation(@Query("TrainId") trainid: Int): Response<Location_Response>
 
     @GET("/api/user/DoctorsInTrain")
     suspend fun GetDoctors(@Query("trainId") trainId:Int): Response<ArrayList<DoctorResponseItem>>

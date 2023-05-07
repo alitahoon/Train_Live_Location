@@ -18,6 +18,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -75,7 +76,6 @@ class Add_post_fragment_ViewModel @Inject constructor(
 
     fun sendPostImageToFirebase(postImageUri: Uri, imagePath: String) {
         _sendPostImageToFirebase!!.value = Resource.Loading
-        _showProgressBar.postValue(true)
         viewModelScope.launch {
             sendImageToFirebaseStorage(postImageUri, imagePath) {
                 _sendPostImageToFirebase.value = it
@@ -83,15 +83,18 @@ class Add_post_fragment_ViewModel @Inject constructor(
         }
     }
 
-
     fun addPost(post: Post) {
-        Log.i(TAG,"${post}")
-        _post!!.value=Resource.Loading
         viewModelScope.launch {
-           createPost(post){
-               _post!!.value=it
-           }
-        }
+            Log.i(TAG, "${post}")
+            _post!!.value = Resource.Loading
+            val child1=  launch  (Dispatchers.IO){
+                createPost(post) {
+                    val child2=   launch(Dispatchers.Main) {
+                        _post!!.value = it }
+
+                }
+            }
+            child1.join()  }
     }
 
     fun getUserDataFromsharedPreference() {

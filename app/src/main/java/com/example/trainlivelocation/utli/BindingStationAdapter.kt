@@ -101,7 +101,7 @@ fun setLongitude(
     view: TextView,
     location: Location_Response,
 ) {
-    view.setText("Longitude : ${location.longitude.longitude}")
+    view.setText("Longitude : ${location.longitude}")
 }
 
 @BindingAdapter("setLatitude")
@@ -109,7 +109,7 @@ fun setLatitude(
     view: TextView,
     location: Location_Response,
 ) {
-    view.setText("Latitude : ${location.latitude.latitude}")
+    view.setText("Latitude : ${location.latitude}")
 }
 
 @BindingAdapter("setPassengersRCVAdapter")
@@ -127,14 +127,14 @@ fun setAddressFromLocation(
     view: TextView,
     location: Location_Response
 ) {
-    Log.i("setAddressFromLocation","${location.longitude.longitude.toDouble()},${location.latitude.latitude.toDouble()}")
+    Log.i("setAddressFromLocation","${location.longitude},${location.latitude}")
     val geocoder: Geocoder
     val addresses: List<Address>?
     geocoder = Geocoder(view.context, Locale.getDefault())
 
     addresses = geocoder.getFromLocation(
-        location.longitude.longitude.toDouble(),
-        location.latitude.latitude.toDouble(),
+        location.longitude,
+        location.latitude,
         4
     ) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
 

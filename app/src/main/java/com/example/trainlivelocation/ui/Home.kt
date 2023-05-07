@@ -127,16 +127,7 @@ class Home : Fragment() ,Train_Dialog_Listener{
                     toast("getting service please wait...")
                 }
                 is Resource.Success->{
-                    toast("getting service successfully...")
-                    var locationForegrondservice: Intent?= Intent(requireActivity(),TrackTrainService::class.java)
-                    locationForegrondservice!!.putExtra("trainId",binding!!.homeTrackTrainIDTxt.text.toString().toInt())
-                    if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
-                        toast("done")
-                        ContextCompat.startForegroundService(requireContext(),locationForegrondservice)
-                    }else{
-                        toast("done")
-                        requireActivity().startService(locationForegrondservice)
-                    }
+
 
                 }
 
@@ -148,6 +139,12 @@ class Home : Fragment() ,Train_Dialog_Listener{
     override fun onTrainSelected(trainId: Int?, trainDegree: String?) {
         binding!!.homeTrackTrainIDTxt.setText(trainId!!.toString())
         homeViewModel!!.getTrainLocationInbackground(trainId)
-        observeTrainLocationService()
+        var locationForegrondservice: Intent?= Intent(requireActivity(),TrackTrainService::class.java)
+        locationForegrondservice!!.putExtra("trainId",binding!!.homeTrackTrainIDTxt.text.toString().toInt())
+        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
+            requireActivity().startForegroundService(locationForegrondservice)
+        }else{
+            requireActivity().startService(locationForegrondservice)
+        }
     }
 }

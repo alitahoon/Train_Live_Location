@@ -199,5 +199,9 @@ object UserCaseModule  {
     fun ProvideGetUserInTrain(userRepo: UserRepo): GetUserInTrain {
         return GetUserInTrain(userRepo)
     }
+    @Provides
+    fun ProvideSendUserNotificationTokenToFirebase(userRepo: UserRepo): SendUserNotificationTokenToFirebase {
+        return SendUserNotificationTokenToFirebase(userRepo)
+    }
 
 }

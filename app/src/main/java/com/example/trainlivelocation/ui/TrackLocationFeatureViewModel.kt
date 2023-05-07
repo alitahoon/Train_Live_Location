@@ -72,20 +72,10 @@ class TrackLocationFeatureViewModel @Inject constructor(
 
     public fun getTrainLocationFromApi() {
         viewModelScope.launch {
-//            var result = getLiveLoctationFromApi(trainid!!.toInt())
-//            if (result.isSuccessful) {
-//                if (result.body() != null) {
-//                    Log.e(TAG, "success")
-//                    _trainLocationMuta.postValue(result.body())
-//                } else {
-//                    Log.e(TAG, result.errorBody().toString())
-//                    Toast.makeText(activity, result.errorBody().toString(), Toast.LENGTH_SHORT)
-//                        .show()
-//                }
-//            } else {
-//                Toast.makeText(activity, result.message(), Toast.LENGTH_SHORT).show()
-//                Log.e(TAG, result.message())
-//            }
+
+            getLiveLoctationFromApi(18){
+                Log.i(TAG,"${it}")
+            }
         }
     }
 

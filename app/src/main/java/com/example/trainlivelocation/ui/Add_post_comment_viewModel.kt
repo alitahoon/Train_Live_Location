@@ -16,6 +16,7 @@ import com.example.domain.usecase.CreatePostComment
 import com.example.domain.usecase.GetCommentsForPostUsingId
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
@@ -38,12 +39,16 @@ class Add_post_comment_viewModel @Inject constructor(
     val userData: LiveData<UserResponseItem?> = _userData
 
 
-    fun sendPostCommentToApi(commentRequest: CommentRequest){
-        _uploadComment!!.value=Resource.Loading
+    fun sendPostCommentToApi(commentRequest: CommentRequest) {
+        _uploadComment!!.value = Resource.Loading
         viewModelScope.launch {
-            createPostComment(commentRequest){
-                _uploadComment!!.value=it
+            val child1= launch(Dispatchers.IO) {
+                createPostComment(commentRequest) {
+                    val child2 = launch(Dispatchers.Main) {
+                        _uploadComment!!.value = it  }
+                }
             }
+            child1.join()
         }
     }
 
@@ -52,11 +57,16 @@ class Add_post_comment_viewModel @Inject constructor(
     }
 
     fun getPostComments(postId:Int?){
-        _postComments!!.value=Resource.Loading
+        _postComments!!.value = Resource.Loading
         viewModelScope.launch {
-            getCommentsForPostUsingId(postId){
-                _postComments!!.value=it
+            val child1= launch (Dispatchers.IO) {
+                getCommentsForPostUsingId(postId) {
+                    val child2 =launch(Dispatchers.Main) {
+                        _postComments!!.value = it }
+
+                }
             }
+            child1.join()
         }
     }
 

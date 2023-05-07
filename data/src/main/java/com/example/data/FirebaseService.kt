@@ -6,22 +6,30 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.domain.entity.DoctorNotification
 import com.example.domain.entity.Message
+import com.example.domain.entity.NotificatonToken
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
 import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
-import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.StorageReference
+import com.google.gson.Gson
+import java.io.OutputStreamWriter
+import java.net.HttpURLConnection
+import java.net.URL
 import java.util.concurrent.TimeUnit
+
 
 class FirebaseService(
     private val auth: FirebaseAuth,
     private val storageRef: StorageReference,
-    private val databaseRef: DatabaseReference
+    private val databaseRef: DatabaseReference,
+    private val firebaseMessaging: FirebaseMessaging
 ) {
     private val TAG: String? = "FirebaseService"
 
@@ -33,17 +41,14 @@ class FirebaseService(
     }
 
     fun sendOtpToPhone(
-        phoneNumber: String?,
-        callback: (result: String?) -> Unit
+        phoneNumber: String?, callback: (result: String?) -> Unit
     ) {
         Log.i(TAG, "${phoneNumber}")
         auth.setLanguageCode("ar")
         // Configure faking the auto-retrieval with the whitelisted numbers.
         auth.firebaseAuthSettings.forceRecaptchaFlowForTesting(false)
-        val options = PhoneAuthOptions.newBuilder(auth)
-            .setPhoneNumber(phoneNumber!!)
-            .setTimeout(60L, TimeUnit.SECONDS)
-            .setActivity(firebaseAuthActivity!!)
+        val options = PhoneAuthOptions.newBuilder(auth).setPhoneNumber(phoneNumber!!)
+            .setTimeout(60L, TimeUnit.SECONDS).setActivity(firebaseAuthActivity!!)
             .setCallbacks(object : OnVerificationStateChangedCallbacks() {
                 override fun onVerificationCompleted(credential: PhoneAuthCredential) {
                     //start sign in with credential
@@ -69,8 +74,7 @@ class FirebaseService(
                 }
 
                 override fun onCodeSent(
-                    verificationId: String,
-                    token: PhoneAuthProvider.ForceResendingToken
+                    verificationId: String, token: PhoneAuthProvider.ForceResendingToken
                 ) {
                     super.onCodeSent(verificationId, token)
                     // The SMS verification code has been sent to the provided phone number, we
@@ -82,8 +86,7 @@ class FirebaseService(
                     callback("onCodeSent")
                 }
 
-            })
-            .build()
+            }).build()
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
@@ -94,9 +97,7 @@ class FirebaseService(
     }
 
     fun sendImageToFirebaseStorage(
-        profileImagesUri: Uri,
-        imagePath: String,
-        result: (Resource<String>) -> Unit
+        profileImagesUri: Uri, imagePath: String, result: (Resource<String>) -> Unit
     ) {
         profileImagesUri?.let {
             storageRef.child(imagePath).putFile(it).addOnSuccessListener {
@@ -109,8 +110,7 @@ class FirebaseService(
     }
 
     fun signInWithPhoneAuthCredential(
-        credential: PhoneAuthCredential,
-        callback: (result: String?) -> Unit
+        credential: PhoneAuthCredential, callback: (result: String?) -> Unit
     ) {
         auth.signInWithCredential(credential)
             .addOnCompleteListener(firebaseAuthActivity!!) { task ->
@@ -126,9 +126,7 @@ class FirebaseService(
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
                         // The verification code entered was invalid
                         Log.w(
-                            TAG,
-                            "FirebaseAuthInvalidCredentialsException:failure",
-                            task.exception
+                            TAG, "FirebaseAuthInvalidCredentialsException:failure", task.exception
                         )
                     }
                     // Update UI
@@ -185,30 +183,27 @@ class FirebaseService(
 //            result.invoke(Resource.Failure("${it.message}"))
 //        }
 
-        databaseRef.child("chats").push()
-            .setValue(
-                Message(
-                    message,
-                    senderUsername,
-                    recieverUsername,
-                    senderPhone,
-                    recieverPhone,
-                    senderPhone + recieverPhone
-                )
-            ).addOnSuccessListener {
-                Log.i(TAG, "sent successfully...")
-                result.invoke(Resource.Success("Message Sent Successfully..."))
-            }.addOnFailureListener {
-                Log.i(TAG, "Failed :${it.message}")
-                result.invoke(Resource.Failure("${it.message}"))
-            }
+        databaseRef.child("chats").push().setValue(
+            Message(
+                message,
+                senderUsername,
+                recieverUsername,
+                senderPhone,
+                recieverPhone,
+                senderPhone + recieverPhone
+            )
+        ).addOnSuccessListener {
+            Log.i(TAG, "sent successfully...")
+            result.invoke(Resource.Success("Message Sent Successfully..."))
+        }.addOnFailureListener {
+            Log.i(TAG, "Failed :${it.message}")
+            result.invoke(Resource.Failure("${it.message}"))
+        }
     }
 
 
     fun getChatMessagesFromFirebase(
-        senderPhone: String?,
-        recieverPhone: String?,
-        result: (Resource<ArrayList<Message>>) -> Unit
+        senderPhone: String?, recieverPhone: String?, result: (Resource<ArrayList<Message>>) -> Unit
     ) {
         var oldChatKey = arrayListOf<String>()
         //check if there is last chat
@@ -240,8 +235,7 @@ class FirebaseService(
     }
 
     fun getInboxRecieveChatFromFirebase(
-        phone: String?,
-        result: (Resource<ArrayList<Message>>) -> Unit
+        phone: String?, result: (Resource<ArrayList<Message>>) -> Unit
     ) {
         databaseRef.child("chats").addValueEventListener(object : ValueEventListener {
             val messageList = arrayListOf<Message>()
@@ -270,8 +264,7 @@ class FirebaseService(
     }
 
     fun getInboxSentChatFromFirebase(
-        phone: String?,
-        result: (Resource<ArrayList<Message>>) -> Unit
+        phone: String?, result: (Resource<ArrayList<Message>>) -> Unit
     ) {
         databaseRef.child("chats").addValueEventListener(object : ValueEventListener {
             val messageList = arrayListOf<Message>()
@@ -304,20 +297,21 @@ class FirebaseService(
         doctorNotification: DoctorNotification, result: (Resource<String>) -> Unit
     ) {
         databaseRef.child("Notifications").child("DoctorsNotification").push()
-            .setValue(doctorNotification)
-            .addOnSuccessListener {
+            .setValue(doctorNotification).addOnSuccessListener {
                 result.invoke(Resource.Success("Notification sent Successfully"))
             }.addOnFailureListener {
                 result.invoke(Resource.Success("Notification sent Failed ---> ${it.message}"))
             }
     }
 
-    fun getNotificationFromFirebase(userPhone: String, result: (Resource<ArrayList<DoctorNotification>>) -> Unit) {
+    fun getNotificationFromFirebase(
+        userPhone: String, result: (Resource<ArrayList<DoctorNotification>>) -> Unit
+    ) {
         databaseRef.child("Notifications").child("DoctorsNotification").orderByChild("doctorPhone")
-            .equalTo(userPhone).addValueEventListener(object  : ValueEventListener{
+            .equalTo(userPhone).addValueEventListener(object : ValueEventListener {
                 val doctorNotificationList = arrayListOf<DoctorNotification>()
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    for (doctorSnapshot in snapshot.children){
+                    for (doctorSnapshot in snapshot.children) {
                         doctorNotificationList.add(doctorSnapshot.getValue(DoctorNotification::class.java)!!)
                     }
                     result.invoke(Resource.Success(doctorNotificationList))
@@ -328,6 +322,114 @@ class FirebaseService(
                 }
 
             })
+    }
+
+
+    fun sendNotificatonToken(
+        token: NotificatonToken?, result: (Resource<String?>) -> Unit
+    ) {
+        firebaseMessaging.token.addOnCompleteListener(OnCompleteListener { task ->
+            if (task.isSuccessful && token!!.token.equals(" ")) {
+                // Get new FCM registration token
+                val userToken = task.result
+                databaseRef.child("UsersNotificationToken").push().setValue(token)
+                    .addOnCompleteListener(OnCompleteListener {
+                        if (it.isSuccessful) {
+                            result.invoke(Resource.Success(userToken))
+                        } else {
+                            result.invoke(Resource.Failure("Failed Saving token---> ${it.exception}"))
+                        }
+                    })
+            } else if (!token!!.token.equals(" ")) {
+                // here user want to just refresh token
+                databaseRef.child("UsersNotificationToken").orderByChild("userPhone")
+                    .equalTo(token.userPhone).addValueEventListener(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val notificatonToken = snapshot.getValue(NotificatonToken::class.java)
+                            val key = snapshot.key
+                            databaseRef.child("UsersNotificationToken").child(key!!).setValue(token)
+                                .addOnCompleteListener(OnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        result.invoke(Resource.Success(notificatonToken!!.token))
+                                    } else {
+                                        result.invoke(Resource.Failure("Failed Saving token---> ${task.exception}"))
+                                    }
+                                })
+                            databaseRef.removeEventListener(this)
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            result.invoke(Resource.Failure("Failed Saving token---> ${error.message}"))
+                        }
+
+                    })
+            } else {
+                result.invoke(Resource.Failure("Fetching FCM registration token failed ${task.exception}"))
+            }
+
+        })
+    }
+
+    fun getNotificationToken(
+        userPhone: String?, result: (Resource<String?>) -> Unit
+    ) {
+        databaseRef.child("UsersNotificationToken").orderByChild("userPhone").equalTo(userPhone)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val notificatonToken = snapshot.getValue(NotificatonToken::class.java)
+                    result.invoke(Resource.Success(notificatonToken!!.token))
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    result.invoke(Resource.Failure("Failed Getting token---> ${error.message}"))
+                }
+            })
+    }
+
+    fun sendDoctorNotification(token: NotificatonToken,serverKey:String?,doctorNotification: DoctorNotification, result: (Resource<String>) -> Unit) {
+        // Set the target registration token
+        // Set the target registration token
+        val targetToken:String = token.token!!
+
+    // Create a notification message
+
+    // Create a notification message
+        val notification: MutableMap<String, String> = HashMap()
+        notification["title"] = "Need Doctor"
+        notification["body"] = doctorNotification.content
+
+    // Create the message payload
+
+    // Create the message payload
+        val message: MutableMap<String, Any> = HashMap()
+        message["notification"] = notification
+        message["to"] = targetToken
+
+    // Send the message to FCM server
+
+    // Send the message to FCM server
+        val url = URL("https://fcm.googleapis.com/fcm/send")
+        val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
+        conn.setRequestProperty("Authorization", "key=${serverKey}")
+        conn.setRequestProperty("Content-Type", "application/json")
+        conn.setRequestMethod("POST")
+        conn.setDoOutput(true)
+        val writer = OutputStreamWriter(conn.getOutputStream())
+        writer.write(Gson().toJson(message))
+        writer.flush()
+
+    // Handle the response
+
+    // Handle the response
+        val responseCode: Int = conn.getResponseCode()
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            result.invoke(Resource.Success("Notification Sent To Doctor"))
+        } else {
+            // Notification failed to send
+            result.invoke(Resource.Failure("Failed Sending Notification"))
+
+        }
+
     }
 
 

@@ -8,4 +8,5 @@ data class DoctorResponseItem(
     val userId: Int,
     val userName: String,
     val userPhone: String
-)
+){
+}

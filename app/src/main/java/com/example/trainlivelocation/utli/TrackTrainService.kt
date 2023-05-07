@@ -31,8 +31,8 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class TrackTrainService() : LifecycleService() {
-    private lateinit var handler: Handler
-    private lateinit var runnable: Runnable
+//    private lateinit var handler: Handler
+//    private lateinit var runnable: Runnable
     private var job: Job = Job()
 //    val trainId: Int? = trainID
     var _locationLLiveDate = MutableLiveData<Location_Response>()
@@ -60,14 +60,14 @@ class TrackTrainService() : LifecycleService() {
         }
     }
 
-    fun getNotification(locationResponse: Location_Response): Notification {
+    fun getNotification(): Notification {
         val packageName = applicationContext.packageName
         val notification =
             NotificationCompat.Builder(this, CHANNEL_ID!!).setContentTitle("Train Location Update")
-                .setContentText("Location Latitude --> ${locationResponse?.latitude!!.latitude}\nLocation longitude --> ${locationResponse?.longitude?.longitude}")
-                .setSmallIcon(com.google.android.material.R.drawable.ic_clear_black_24)
+                .setSmallIcon(R.drawable.app_logo)
                 .setOnlyAlertOnce(true) // Set to true to update notification without showing popup
-                .setPriority(NotificationCompat.PRIORITY_HIGH).setCustomContentView(notificationCustomLayout)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCustomContentView(notificationCustomLayout)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notification.setChannelId(CHANNEL_ID)
         }
@@ -89,16 +89,18 @@ class TrackTrainService() : LifecycleService() {
         super.onStartCommand(intent, flags, startId)
         // Perform desired actions here
         trainID = intent!!.getIntExtra("trainId",0)
-        Log.i(TAG, "GetTrainLocationService....")
+        trainID
         // Create a new handler and runnable to fetch data from the API
-        handler = Handler()
-        runnable = Runnable {
-            fetchDataFromApi(trainID)
-            handler.postDelayed(runnable, 5000) // Fetch data every 5 seconds
-        }
+        fetchDataFromApi(trainID)
+//
+//        handler = Handler()
+//        runnable = Runnable {
+//            Log.i(TAG, "GetTrainLocationService.... :${trainID}")
+//            handler.postDelayed(runnable, 2000) // Fetch data every 1 seconds
+//        }
 
-        // Start the handler to continuously fetch data from the API
-        handler.post(runnable)
+//         Start the handler to continuously fetch data from the API
+//        handler.post(runnable)
         return START_STICKY
     }
 
@@ -113,26 +115,27 @@ class TrackTrainService() : LifecycleService() {
 
     override fun onDestroy() {
         super.onDestroy()
-        handler.removeCallbacks(runnable) // Stop the handler when the service is destroyed
+//        handler.removeCallbacks(runnable) // Stop the handler when the service is destroyed
         stopSelf()
     }
 
     private fun fetchDataFromApi(trainId: Int?) {
         val coroutineScope = CoroutineScope(Dispatchers.Main + job)
-
         coroutineScope.launch {
             try {
+                Log.i(TAG,"From courtine scope")
                 val response = apiService.GetLocation(trainId!!)
+                Log.i(TAG, "success")
                 if (response.isSuccessful) {
                     Log.i(TAG, "success  ${response.body()}")
                     _locationLLiveDate.value = response.body()
                     setData(trainId)
-                    startForeground(NOTIFICATION_ID!!, getNotification(response.body()!!))
                 } else {
                     Log.e(TAG, "${response.message()}")
                 }
             } catch (e: Exception) {
                 // Handle the exception here
+                Log.i(TAG, "${e.message}")
             }
         }
 
@@ -143,16 +146,16 @@ class TrackTrainService() : LifecycleService() {
         _locationLLiveDate.observe(this, androidx.lifecycle.Observer {
             Log.i(
                 "setAddressFromLocation",
-                "${it.longitude.longitude.toDouble()},${it.latitude.latitude.toDouble()}"
+                "${it.longitude},${it.latitude}"
             )
-            notificationCustomLayout!!.setTextViewText(R.id.track_train_custom_notification_train_longitude_value,"Longitude : ${it.longitude.longitude}")
-            notificationCustomLayout!!.setTextViewText(R.id.track_train_custom_notification_train_latitude_value,"Longitude : ${it.latitude.latitude}")
+            notificationCustomLayout!!.setTextViewText(R.id.track_train_custom_notification_train_longitude_value,"Longitude : ${it.longitude}")
+            notificationCustomLayout!!.setTextViewText(R.id.track_train_custom_notification_train_latitude_value,"Longitude : ${it.latitude}")
             val geocoder: Geocoder
             val addresses: List<Address>?
             geocoder = Geocoder(context, Locale.getDefault())
 
             addresses = geocoder.getFromLocation(
-                it.longitude.longitude.toDouble(), it.latitude.latitude.toDouble(), 4
+                it.longitude, it.latitude, 4
             ) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
 
             val address: String =
@@ -174,6 +177,7 @@ class TrackTrainService() : LifecycleService() {
 
             }
         })
-
+        startForeground(NOTIFICATION_ID!!, getNotification())
+        fetchDataFromApi(trainId)
     }
 }
