@@ -143,7 +143,7 @@ class userRepoImpl(
         doctorNotification: DoctorNotification,
         result: (Resource<String>) -> Unit
     ) {
-        firebaseService.sendDoctorNotificationUsingFCM(token,serverKey,doctorNotification,result)
+        firebaseService.sendDoctorNotificationUsingFCM(token,serverKey!!,doctorNotification,result)
     }
 
     override suspend fun getLiveLoctationFromApi(

@@ -1,9 +1,11 @@
 package com.example.trainlivelocation.ui
 
 import Resource
+import android.animation.Animator
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +16,7 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.data.GetTrainLocationService
+import com.example.domain.entity.NotificatonToken
 import com.example.domain.entity.UserResponseItem
 import com.example.domain.usecase.GetTrainLocationInForgroundService
 import com.example.trainlivelocation.R
@@ -26,7 +29,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class Home : Fragment() ,Train_Dialog_Listener{
-
+    private val TAG:String?=null;
 
     private val homeViewModel:HomeViewModel? by activityViewModels()
     private var binding: FragmentHomeBinding? = null
@@ -58,6 +61,24 @@ class Home : Fragment() ,Train_Dialog_Listener{
     }
 
     private fun setObservers() {
+        homeViewModel!!.sendingNotificationToken.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is Resource.Loading -> {
+                    Log.e(TAG, "sending token...")
+                }
+                is Resource.Success -> {
+                    Log.e(TAG, "${it.data}")
+                }
+                is Resource.Failure -> {
+                    Log.e(TAG, "${it.error}")
+                }
+                else -> {
+                    Log.e(TAG, "sendingNotificationToken else brunch...")
+
+                }
+            }
+        })
+
         homeViewModel?.locationBtn?.observe(viewLifecycleOwner, Observer {
             if (it==true){
                 val action= HomeDirections.actionHomeToLocationDialogFragment(userModel!!)
@@ -102,6 +123,9 @@ class Home : Fragment() ,Train_Dialog_Listener{
 
         homeViewModel?.userData!!.observe(viewLifecycleOwner, Observer {
             userModel=it
+            if (userModel!=null){
+                homeViewModel!!.sendingTokenToFirebase(NotificatonToken(userModel!!.phone,userModel!!.name," "))
+            }
         })
 
         homeViewModel?.chooseTrainTxtClicked!!.observe(viewLifecycleOwner, Observer {

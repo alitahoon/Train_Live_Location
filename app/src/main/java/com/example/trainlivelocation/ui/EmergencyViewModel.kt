@@ -13,14 +13,16 @@ import com.example.domain.entity.UserResponseItem
 import com.example.domain.usecase.GetDoctorInTrain
 import com.example.domain.usecase.GetNotificationTokenFromFirebase
 import com.example.domain.usecase.SendDoctorNotificationToFirebase
+import com.example.domain.usecase.SendDoctorNotificationUsingFCM
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
 class EmergencyViewModel @Inject constructor(
     private val getDoctorInTrain: GetDoctorInTrain,
-    private val sendUserNoti,
+    private val sendDoctorNotificationUsingFCM: SendDoctorNotificationUsingFCM,
     private val getUserNotificationTokenFromFirebase: GetNotificationTokenFromFirebase
 ):ViewModel() {
 
@@ -52,13 +54,18 @@ class EmergencyViewModel @Inject constructor(
         }
     }
 
-    fun sentDoctorNotification(,doctorNotification: DoctorNotification){
+    fun sentDoctorNotification(token:NotificatonToken,serverKey:String?,doctorNotification: DoctorNotification){
         _sentNotification.value=Resource.Loading
         viewModelScope.launch {
-            sendDoctorNotificationToFirebase(doctorNotification){
-                _sentNotification.value=it
+           val child1=viewModelScope.launch (Dispatchers.IO){
+                sendDoctorNotificationUsingFCM(token,serverKey,doctorNotification){
+                    val child2=viewModelScope.launch(Dispatchers.Main) {
+                        _sentNotification.value=it                    }
+                }
             }
+            child1.join()
         }
+
     }
 
     fun getNotificationToken(userPhone:String?){

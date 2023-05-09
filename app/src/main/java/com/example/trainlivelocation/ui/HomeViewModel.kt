@@ -10,8 +10,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.entity.NotificatonToken
 import com.example.domain.entity.UserResponseItem
 import com.example.domain.usecase.GetTrainLocationInForgroundService
+import com.example.domain.usecase.SendUserNotificationTokenToFirebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -19,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val context: Context,
+    private val sendUserNotificationTokenToFirebase:SendUserNotificationTokenToFirebase,
     private val getTrainLocationInForgroundService: GetTrainLocationInForgroundService
 ) :ViewModel() {
     private val sharedPrefFile = "UserToken"
@@ -32,6 +35,9 @@ class HomeViewModel @Inject constructor(
 
 
     var trainId:String?=null
+
+    private var _sendingNotificationToken:MutableLiveData<Resource<String?>> = MutableLiveData(null)
+    var sendingNotificationToken:LiveData<Resource<String?>> = _sendingNotificationToken
 
     private val _userData: MutableLiveData<UserResponseItem?> = MutableLiveData(null)
     val userData: LiveData<UserResponseItem?> = _userData
@@ -87,6 +93,15 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             getTrainLocationInForgroundService(trainId){
                 _trainbackgroundTrackingServices.value=it
+            }
+        }
+    }
+
+    fun sendingTokenToFirebase(token: NotificatonToken?){
+        _sendingNotificationToken.value=Resource.Loading
+        viewModelScope.launch {
+            sendUserNotificationTokenToFirebase(token){
+                _sendingNotificationToken.value=it
             }
         }
     }

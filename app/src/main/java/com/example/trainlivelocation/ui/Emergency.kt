@@ -12,11 +12,13 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
 import com.example.domain.entity.DoctorNotification
 import com.example.domain.entity.DoctorResponseItem
+import com.example.domain.entity.NotificatonToken
 import com.example.domain.entity.UserResponseItem
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentAddPostCommentBinding
 import com.example.trainlivelocation.databinding.FragmentEmergencyBinding
 import com.example.trainlivelocation.utli.*
+import com.example.trainlivelocation.utli.constant.Companion.NOTIFICATION_SERVER_KEY
 
 class Emergency : Fragment(), DoctorListener, Train_Dialog_Listener {
 
@@ -53,31 +55,31 @@ class Emergency : Fragment(), DoctorListener, Train_Dialog_Listener {
             }
         })
 
-        emergencyViewModel.sentNotification.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is Resource.Loading -> {
-                    binding.emergancyNotificationProgressBar.visibility = View.VISIBLE
-                }
-                is Resource.Success -> {
-                    binding.emergancyNotificationProgressBar.visibility = View.GONE
-                    displaySnackbarSuccess(
-                        requireContext(),
-                        binding.root,
-                        "Notification Sent Successfully...",
-                        R.raw.notification,
-                        requireActivity().getColor(R.color.DarkPrimaryColor)
-                    )
-                }
-                is Resource.Failure -> {
-                    binding.emergancyNotificationProgressBar.visibility = View.GONE
-                    Log.e(TAG, "${it.error}")
-                }
-
-                else -> {
-                    Log.e(TAG, "Failure from else brunch")
-                }
-            }
-        })
+//        emergencyViewModel.sentNotification.observe(viewLifecycleOwner, Observer {
+//            when (it) {
+//                is Resource.Loading -> {
+//                    binding.emergancyNotificationProgressBar.visibility = View.VISIBLE
+//                }
+//                is Resource.Success -> {
+//                    binding.emergancyNotificationProgressBar.visibility = View.GONE
+//                    displaySnackbarSuccess(
+//                        requireContext(),
+//                        binding.root,
+//                        "Notification Sent Successfully...",
+//                        R.raw.notification,
+//                        requireActivity().getColor(R.color.DarkPrimaryColor)
+//                    )
+//                }
+//                is Resource.Failure -> {
+//                    binding.emergancyNotificationProgressBar.visibility = View.GONE
+//                    Log.e(TAG, "${it.error}")
+//                }
+//
+//                else -> {
+//                    Log.e(TAG, "Failure from else brunch")
+//                }
+//            }
+//        })
     }
 
     private fun setAdapterItems(): DoctorCustomAdapter {
@@ -114,17 +116,52 @@ class Emergency : Fragment(), DoctorListener, Train_Dialog_Listener {
     }
 
     override fun OnNotifyClickListener(doctor: DoctorResponseItem) {
+        emergencyViewModel.getNotificationToken(doctor.userPhone)
         emergencyViewModel.notificationToken.observe(viewLifecycleOwner, Observer {
-            when(it){
-                is Resource.Loading->{
-                    Log.i(TAG,"getting notification token.....")
+            when (it) {
+                is Resource.Loading -> {
+                    Log.i(TAG, "getting notification token.....")
                 }
-                is Resource.Failure->{
-                    Log.i(TAG,"${it.error}")
+                is Resource.Failure -> {
+                    Log.e(TAG, "${it.error}")
                 }
-                is Resource.Success->{
-                    //send notification here
+                is Resource.Success -> {
+                    if (it!=null){
+                        Log.i(TAG,"${it.data}")
+                        //send notification here
+                        emergencyViewModel.sentDoctorNotification(
+                            NotificatonToken(
+                                args.userModel.phone,
+                                args.userModel.name,
+                                it.data
+                            ),
+                            NOTIFICATION_SERVER_KEY,
+                            DoctorNotification(
+                                "Please help we need doctor",
+                                doctor.userPhone,
+                                doctor.userName,
+                                args.userModel.phone,
+                                args.userModel.name,
+                            )
+                        )
+                        emergencyViewModel.sentNotification.observe(viewLifecycleOwner, Observer {
+                            when(it){
+                                is Resource.Loading->{
+                                    Log.i(TAG,"Sending notification...")
+                                }
+                                is Resource.Failure->{
+                                    Log.e(TAG,"${it.error}")
+                                }
+                                is Resource.Success->{
+                                    Log.i(TAG,"${it.data}")
+                                    binding.emergancyNotificationProgressBar.visibility=View.INVISIBLE
+                                }
+                                else -> {
 
+                                }
+                            }
+                        })
+                    }
                 }
                 else -> {}
             }

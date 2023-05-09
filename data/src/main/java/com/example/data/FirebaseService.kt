@@ -19,6 +19,9 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.StorageReference
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.OutputStreamWriter
 import java.net.HttpURLConnection
 import java.net.URL
@@ -377,8 +380,15 @@ class FirebaseService(
         databaseRef.child("UsersNotificationToken").orderByChild("userPhone").equalTo(userPhone)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val notificatonToken = snapshot.getValue(NotificatonToken::class.java)
-                    result.invoke(Resource.Success(notificatonToken!!.token))
+                    val notificatonToken =
+                        snapshot.children.firstOrNull()?.getValue(NotificatonToken::class.java)
+                    val token = notificatonToken?.token
+                    Log.i(TAG, "UsersNotificationToken -->$notificatonToken")
+                    if (token != null) {
+                        result.invoke(Resource.Success(token))
+                    } else {
+                        result.invoke(Resource.Failure("Failed Getting token"))
+                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -387,51 +397,51 @@ class FirebaseService(
             })
     }
 
-    fun sendDoctorNotificationUsingFCM(token: NotificatonToken,serverKey:String?,doctorNotification: DoctorNotification, result: (Resource<String>) -> Unit) {
-        // Set the target registration token
-        // Set the target registration token
-        val targetToken:String = token.token!!
+    fun sendDoctorNotificationUsingFCM(token: NotificatonToken, serverKey: String, doctorNotification: DoctorNotification, result: (Resource<String>) -> Unit) {
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                Log.i(TAG,"${token.token} \n ${serverKey} \n ${doctorNotification} \n")
+                // Set the target registration token
+                val targetToken = token.token!!
 
-    // Create a notification message
+                // Create a notification message
+                val notification = HashMap<String, String>()
+                notification["title"] = "Need Doctor"
+                notification["body"] = doctorNotification.content
 
-    // Create a notification message
-        val notification: MutableMap<String, String> = HashMap()
-        notification["title"] = "Need Doctor"
-        notification["body"] = doctorNotification.content
+                // Create the message payload
+                val message = HashMap<String, Any>()
+                message["notification"] = notification
+                message["to"] = targetToken
 
-    // Create the message payload
+                // Send the message to FCM server
+                val url = URL("https://fcm.googleapis.com/fcm/send")
+                val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
+                conn.setRequestProperty("Authorization", "key=${serverKey}")
+                conn.setRequestProperty("Content-Type", "application/json")
+                conn.requestMethod = "POST"
+                conn.doOutput = true
+                val writer = OutputStreamWriter(conn.outputStream)
+                writer.write(Gson().toJson(message))
+                writer.flush()
 
-    // Create the message payload
-        val message: MutableMap<String, Any> = HashMap()
-        message["notification"] = notification
-        message["to"] = targetToken
-
-    // Send the message to FCM server
-
-    // Send the message to FCM server
-        val url = URL("https://fcm.googleapis.com/fcm/send")
-        val conn: HttpURLConnection = url.openConnection() as HttpURLConnection
-        conn.setRequestProperty("Authorization", "key=${serverKey}")
-        conn.setRequestProperty("Content-Type", "application/json")
-        conn.setRequestMethod("POST")
-        conn.setDoOutput(true)
-        val writer = OutputStreamWriter(conn.getOutputStream())
-        writer.write(Gson().toJson(message))
-        writer.flush()
-
-    // Handle the response
-
-    // Handle the response
-        val responseCode: Int = conn.getResponseCode()
-        if (responseCode == HttpURLConnection.HTTP_OK) {
-            result.invoke(Resource.Success("Notification Sent To Doctor"))
-        } else {
-            // Notification failed to send
-            result.invoke(Resource.Failure("Failed Sending Notification"))
-
+                // Handle the response
+                val responseCode: Int = conn.responseCode
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    Log.e(TAG,"responseCode --> ${responseCode}")
+                    result.invoke(Resource.Success("Notification Sent To Doctor"))
+                } else {
+                    // Notification failed to send
+                    Log.e(TAG,"responseCode --> ${responseCode}")
+                    result.invoke(Resource.Failure("Failed Sending Notification"))
+                }
+            } catch (e: Exception) {
+                // Handle any exceptions that occur during the network operation
+                result.invoke(Resource.Failure("Failed Sending Notification: ${e.message}"))
+            }
         }
-
     }
+
 
 
 }
