@@ -325,13 +325,14 @@ class FirebaseService(
     }
 
 
-    fun sendNotificatonToken(
+    fun sendUserNotificatonToken(
         token: NotificatonToken?, result: (Resource<String?>) -> Unit
     ) {
         firebaseMessaging.token.addOnCompleteListener(OnCompleteListener { task ->
             if (task.isSuccessful && token!!.token.equals(" ")) {
                 // Get new FCM registration token
                 val userToken = task.result
+                token.token=userToken
                 databaseRef.child("UsersNotificationToken").push().setValue(token)
                     .addOnCompleteListener(OnCompleteListener {
                         if (it.isSuccessful) {
@@ -386,7 +387,7 @@ class FirebaseService(
             })
     }
 
-    fun sendDoctorNotification(token: NotificatonToken,serverKey:String?,doctorNotification: DoctorNotification, result: (Resource<String>) -> Unit) {
+    fun sendDoctorNotificationUsingFCM(token: NotificatonToken,serverKey:String?,doctorNotification: DoctorNotification, result: (Resource<String>) -> Unit) {
         // Set the target registration token
         // Set the target registration token
         val targetToken:String = token.token!!

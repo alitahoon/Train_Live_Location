@@ -114,14 +114,21 @@ class Emergency : Fragment(), DoctorListener, Train_Dialog_Listener {
     }
 
     override fun OnNotifyClickListener(doctor: DoctorResponseItem) {
-        emergencyViewModel.sentDoctorNotification(
-            DoctorNotification(
-                doctor.userPhone,
-                doctor.userName,
-                args.userModel.phone,
-                args.userModel.name
-            )
-        )
+        emergencyViewModel.notificationToken.observe(viewLifecycleOwner, Observer {
+            when(it){
+                is Resource.Loading->{
+                    Log.i(TAG,"getting notification token.....")
+                }
+                is Resource.Failure->{
+                    Log.i(TAG,"${it.error}")
+                }
+                is Resource.Success->{
+                    //send notification here
+
+                }
+                else -> {}
+            }
+        })
     }
 
     override fun OnChatClickListener(doctor: DoctorResponseItem) {

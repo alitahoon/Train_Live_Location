@@ -8,8 +8,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.DoctorNotification
 import com.example.domain.entity.DoctorResponseItem
+import com.example.domain.entity.NotificatonToken
 import com.example.domain.entity.UserResponseItem
 import com.example.domain.usecase.GetDoctorInTrain
+import com.example.domain.usecase.GetNotificationTokenFromFirebase
 import com.example.domain.usecase.SendDoctorNotificationToFirebase
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,8 +20,12 @@ import javax.inject.Inject
 @HiltViewModel
 class EmergencyViewModel @Inject constructor(
     private val getDoctorInTrain: GetDoctorInTrain,
-    private val sendDoctorNotificationToFirebase: SendDoctorNotificationToFirebase
+    private val sendUserNoti,
+    private val getUserNotificationTokenFromFirebase: GetNotificationTokenFromFirebase
 ):ViewModel() {
+
+    private val _notificationToken: MutableLiveData<Resource<String?>> = MutableLiveData(null)
+    val notificationToken: LiveData<Resource<String?>> = _notificationToken
 
     private val _userLocation: MutableLiveData<Resource<String>?> = MutableLiveData(null)
     val userLocation: LiveData<Resource<String>?> = _userLocation
@@ -46,11 +52,20 @@ class EmergencyViewModel @Inject constructor(
         }
     }
 
-    fun sentDoctorNotification(doctorNotification: DoctorNotification){
+    fun sentDoctorNotification(,doctorNotification: DoctorNotification){
         _sentNotification.value=Resource.Loading
         viewModelScope.launch {
             sendDoctorNotificationToFirebase(doctorNotification){
                 _sentNotification.value=it
+            }
+        }
+    }
+
+    fun getNotificationToken(userPhone:String?){
+        _notificationToken.value=Resource.Loading
+        viewModelScope.launch {
+            getUserNotificationTokenFromFirebase(userPhone){
+                _notificationToken.value=it
             }
         }
     }

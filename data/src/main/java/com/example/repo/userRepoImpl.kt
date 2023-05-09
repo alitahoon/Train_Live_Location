@@ -45,7 +45,7 @@ class userRepoImpl(
         token: NotificatonToken?,
         result: (Resource<String?>) -> Unit
     ) {
-        TODO("Not yet implemented")
+        firebaseService.sendUserNotificatonToken(token,result)
     }
 
     override suspend fun addNewUser(
@@ -135,6 +135,15 @@ class userRepoImpl(
             result.invoke((Resource.Failure("addLiveLoctationToApi -> ${res.message()}")))
         }
 
+    }
+
+    override suspend fun sendDoctorNotificationUsingFCM(
+        token: NotificatonToken,
+        serverKey: String?,
+        doctorNotification: DoctorNotification,
+        result: (Resource<String>) -> Unit
+    ) {
+        firebaseService.sendDoctorNotificationUsingFCM(token,serverKey,doctorNotification,result)
     }
 
     override suspend fun getLiveLoctationFromApi(

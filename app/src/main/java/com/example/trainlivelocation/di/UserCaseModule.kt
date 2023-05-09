@@ -209,5 +209,10 @@ object UserCaseModule  {
         return GetNotificationTokenFromFirebase(userRepo)
     }
 
+    @Provides
+    fun ProvideSendDoctorNotificationUsingFCM(userRepo: UserRepo): SendDoctorNotificationUsingFCM {
+        return SendDoctorNotificationUsingFCM(userRepo)
+    }
+
 
 }

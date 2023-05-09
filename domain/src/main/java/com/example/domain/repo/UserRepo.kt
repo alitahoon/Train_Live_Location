@@ -167,5 +167,12 @@ interface UserRepo {
         userPhone: String?, result: (Resource<String?>) -> Unit
     )
 
+    suspend fun sendDoctorNotificationUsingFCM(
+        token: NotificatonToken,
+        serverKey: String?,
+        doctorNotification: DoctorNotification,
+        result: (Resource<String>) -> Unit
+    )
+
 
 }
