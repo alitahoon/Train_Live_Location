@@ -187,5 +187,13 @@ interface ApiService {
     @GET("/api/user/UsersInTrain")
     suspend fun GetUserInTrain(@Query("trainId") trainId:Int): Response<ArrayList<UserInTrainResponseItem>>
 
+    @GET("/api/news/GetNews")
+    suspend fun GetNews(): Response<ArrayList<GetNewsResponseItem>>
+
+    @POST("/api/news/CreateNews")
+    suspend fun CreateNews(): Response<CreateNewsResponseItem>
+
+    @GET("/api/news/GetNewsById")
+    suspend fun GetNewsById(@Query("newsId") newsId:Int): Response<GetNewsByIdResponseItem>
 
 }

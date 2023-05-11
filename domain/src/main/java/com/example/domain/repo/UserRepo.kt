@@ -6,8 +6,8 @@ import android.net.Uri
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.LiveData
 import com.example.domain.entity.*
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.PhoneAuthCredential
+import retrofit2.Response
 import com.google.firebase.messaging.FirebaseMessaging
 
 interface UserRepo {
@@ -15,6 +15,16 @@ interface UserRepo {
         userPhone: String?,
         userPassword: String?, result: (Resource<UserResponseItem>) -> Unit
     )
+
+    suspend fun getNews(
+        result: (Response<ArrayList<GetNewsResponseItem>>) -> Unit
+    )
+
+    suspend fun createNews(
+        result: (Response<CreateNewsResponseItem>) -> Unit
+    )
+
+    suspend fun getNewsById(newsId: Int, result: (Response<GetNewsByIdResponseItem>) -> Unit)
 
     suspend fun addNewUser(user: RegisterUser?, result: (Resource<UserResponseItem>) -> Unit)
     suspend fun sendOtpToPhone(
@@ -86,7 +96,7 @@ interface UserRepo {
     )
 
     suspend fun deletePostWithID(postId: Int?, result: (Resource<String>) -> Unit)
-    suspend fun getStationById(stationId: Int?, result: (Resource<StationResponseItem>) -> Unit)
+    suspend fun getStationById(stationId: Int?, result: (Response<GetNewsByIdResponseItem>) -> Unit)
     suspend fun updateUserData(
         userID: Int?,
         userRequest: RegisterUser, result: (Resource<String>) -> Unit

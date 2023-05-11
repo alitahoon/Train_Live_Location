@@ -11,6 +11,7 @@ import com.example.domain.entity.*
 import com.example.domain.repo.UserRepo
 import com.google.android.gms.location.LocationRequest
 import com.google.firebase.auth.*
+import retrofit2.Response
 
 class userRepoImpl(
     private val apiService: ApiService,
@@ -289,7 +290,7 @@ class userRepoImpl(
 
     override suspend fun getStationById(
         stationId: Int?,
-        result: (Resource<StationResponseItem>) -> Unit
+        result: (Response<GetNewsByIdResponseItem>) -> Unit
     ) {
         var res = apiService.GetStationById(stationId!!)
         if (res.isSuccessful) {
