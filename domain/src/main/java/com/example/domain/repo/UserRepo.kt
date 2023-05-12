@@ -96,7 +96,7 @@ interface UserRepo {
     )
 
     suspend fun deletePostWithID(postId: Int?, result: (Resource<String>) -> Unit)
-    suspend fun getStationById(stationId: Int?, result: (Response<GetNewsByIdResponseItem>) -> Unit)
+    suspend fun getStationById(stationId: Int?, result: (Resource<StationResponseItem>) -> Unit)
     suspend fun updateUserData(
         userID: Int?,
         userRequest: RegisterUser, result: (Resource<String>) -> Unit

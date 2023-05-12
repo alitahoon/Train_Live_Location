@@ -290,7 +290,7 @@ class userRepoImpl(
 
     override suspend fun getStationById(
         stationId: Int?,
-        result: (Response<GetNewsByIdResponseItem>) -> Unit
+        result: (Resource<StationResponseItem>) -> Unit
     ) {
         var res = apiService.GetStationById(stationId!!)
         if (res.isSuccessful) {
@@ -345,6 +345,28 @@ class userRepoImpl(
         result: (Resource<String>) -> Unit
     ) {
         firebaseService.subscribeToNewTopic(topicInput,result)
+    }
+
+    override suspend fun getNews(result: (Response<ArrayList<GetNewsResponseItem>>) -> Unit) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun createNews(result: (Response<CreateNewsResponseItem>) -> Unit) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getNewsById(
+        newsId: Int,
+        result: (Response<GetNewsByIdResponseItem>) -> Unit
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun pushNewTopicNotification(
+        notification: PushNotification,
+        result: (Resource<String>) -> Unit
+    ) {
+        TODO("Not yet implemented")
     }
 
     override suspend fun getDataFromSharedPrefrences(
