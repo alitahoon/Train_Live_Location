@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.domain.entity.DoctorNotification
 import com.example.domain.entity.Message
 import com.example.domain.entity.NotificatonToken
+import com.example.domain.entity.PushNotification
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
@@ -19,6 +20,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.StorageReference
 import com.google.gson.Gson
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -32,7 +34,8 @@ class FirebaseService(
     private val auth: FirebaseAuth,
     private val storageRef: StorageReference,
     private val databaseRef: DatabaseReference,
-    private val firebaseMessaging: FirebaseMessaging
+    private val firebaseMessaging: FirebaseMessaging,
+    private val apiManager: ApiManager
 ) {
     private val TAG: String? = "FirebaseService"
 
@@ -335,8 +338,8 @@ class FirebaseService(
             if (task.isSuccessful && token!!.token.equals(" ")) {
                 // Get new FCM registration token
                 val userToken = task.result
-                token.token=userToken
-                databaseRef.child("UsersNotificationToken").push().setValue(token)
+                token.token = userToken
+                databaseRef.child("UsersNotificationToken").child(token.userPhone!!).setValue(token)
                     .addOnCompleteListener(OnCompleteListener {
                         if (it.isSuccessful) {
                             result.invoke(Resource.Success(userToken))
@@ -346,8 +349,8 @@ class FirebaseService(
                     })
             } else if (!token!!.token.equals(" ")) {
                 // here user want to just refresh token
-                databaseRef.child("UsersNotificationToken").orderByChild("userPhone")
-                    .equalTo(token.userPhone).addValueEventListener(object : ValueEventListener {
+                databaseRef.child("UsersNotificationToken").child(token.userPhone!!)
+                    .addValueEventListener(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             val notificatonToken = snapshot.getValue(NotificatonToken::class.java)
                             val key = snapshot.key
@@ -377,11 +380,10 @@ class FirebaseService(
     fun getNotificationToken(
         userPhone: String?, result: (Resource<String?>) -> Unit
     ) {
-        databaseRef.child("UsersNotificationToken").orderByChild("userPhone").equalTo(userPhone)
+        databaseRef.child("UsersNotificationToken").child(userPhone!!)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val notificatonToken =
-                        snapshot.children.firstOrNull()?.getValue(NotificatonToken::class.java)
+                    val notificatonToken = snapshot.getValue(NotificatonToken::class.java)
                     val token = notificatonToken?.token
                     Log.i(TAG, "UsersNotificationToken -->$notificatonToken")
                     if (token != null) {
@@ -397,10 +399,15 @@ class FirebaseService(
             })
     }
 
-    fun sendDoctorNotificationUsingFCM(token: NotificatonToken, serverKey: String, doctorNotification: DoctorNotification, result: (Resource<String>) -> Unit) {
+    fun sendDoctorNotificationUsingFCM(
+        token: NotificatonToken,
+        serverKey: String,
+        doctorNotification: DoctorNotification,
+        result: (Resource<String>) -> Unit
+    ) {
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                Log.i(TAG,"${token.token} \n ${serverKey} \n ${doctorNotification} \n")
+                Log.i(TAG, "${token.token} \n ${serverKey} \n ${doctorNotification} \n")
                 // Set the target registration token
                 val targetToken = token.token!!
 
@@ -428,11 +435,11 @@ class FirebaseService(
                 // Handle the response
                 val responseCode: Int = conn.responseCode
                 if (responseCode == HttpURLConnection.HTTP_OK) {
-                    Log.e(TAG,"responseCode --> ${responseCode}")
-                    result.invoke(Resource.Success("Notification Sent To Doctor"))
+                    Log.e(TAG, "responseCode --> ${responseCode}")
+                    result.invoke(Resource.Success("Notification Sent To Doctor  ${responseCode}"))
                 } else {
                     // Notification failed to send
-                    Log.e(TAG,"responseCode --> ${responseCode}")
+                    Log.e(TAG, "responseCode --> ${responseCode}")
                     result.invoke(Resource.Failure("Failed Sending Notification"))
                 }
             } catch (e: Exception) {
@@ -442,6 +449,27 @@ class FirebaseService(
         }
     }
 
+
+    fun subscribeToNewTopic(
+        topicInput: String, result: (Resource<String>) -> Unit
+    ) {
+        FirebaseMessaging.getInstance().subscribeToTopic(topicInput)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    result.invoke(Resource.Success("successfully subscribed to the topic--->${topicInput}"))
+                } else {
+                    println("failed to subscribe to the topic")
+                }
+            }
+            .addOnFailureListener {
+                result.invoke(Resource.Failure("failed to subscribe to the topic : ${it.message}"))
+            }
+    }
+    fun sendNewNotificationTopic(notification: PushNotification){
+        CoroutineScope(Dispatchers.IO).launch{
+            apiManager.postNotification(notification)
+        }
+    }
 
 
 }

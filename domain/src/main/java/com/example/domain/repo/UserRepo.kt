@@ -184,5 +184,8 @@ interface UserRepo {
         result: (Resource<String>) -> Unit
     )
 
+    suspend fun subscribeToNewTopic(topicInput: String,result: (Resource<String>) -> Unit)
+    suspend fun pushNewTopicNotification(notification: PushNotification,result: (Resource<String>) -> Unit)
+
 
 }

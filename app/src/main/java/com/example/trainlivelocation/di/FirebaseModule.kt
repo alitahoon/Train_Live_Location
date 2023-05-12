@@ -2,6 +2,7 @@ package com.example.trainlivelocation.di
 
 import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
+import com.example.data.ApiManager
 import com.example.data.FirebaseService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -60,6 +61,12 @@ object FirebaseModule {
         return FirebaseMessaging.getInstance()
     }
 
+    @Provides
+    fun ProvideFirebaseMessaging(
+        apiManager: ApiManager
+    ): ApiManager {
+        return apiManager
+    }
 
 
 }

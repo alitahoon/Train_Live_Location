@@ -53,7 +53,7 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-storage-ktx:20.0.1'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
-    implementation 'com.google.firebase:firebase-messaging:23.0.3'
+    implementation 'com.google.firebase:firebase-messaging:22.0.0'
     def nav_version = "2.5.3"
     def lifecycle_version = "2.5.1"
 

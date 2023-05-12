@@ -13,7 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.Home"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:layoutDirection="ltr">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -46,7 +47,7 @@
                 android:drawableStart="@drawable/train_id"
                 android:drawablePadding="@dimen/_10sdp"
                 android:gravity="center"
-                android:text="Train ID"
+                android:text="@string/train_id_"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16ssp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -58,10 +59,10 @@
                 android:id="@+id/home_txt_train_distance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/train_location"
+                android:drawableStart="@drawable/train_location"
                 android:drawablePadding="@dimen/_10sdp"
                 android:gravity="center"
-                android:text="80 KM"
+                android:text="@string/_80_km"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14ssp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -69,13 +70,14 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@id/home_card_train_icon"
                 app:layout_constraintTop_toBottomOf="@id/home_card_train_id"
-                app:layout_constraintVertical_bias="0.461" />
+                app:layout_constraintVertical_bias="0.185" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <EditText
-            android:hint="Choose Train To Track"
+            android:layoutDirection="locale"
+            android:hint="@string/choose_train_to_track"
             android:textColorHint="@color/PrimaryColor"
             android:focusable="false"
             android:padding="@dimen/_10sdp"
@@ -84,7 +86,7 @@
             android:onClick="@{viewmodel::onChooseTrainTxtClicked}"
             android:text="@{viewmodel.trainId}"
             android:drawablePadding="@dimen/_5sdp"
-            android:drawableLeft="@drawable/train_id_txt_primery"
+            android:drawableStart="@drawable/train_id_txt_primery"
             android:textSize="@dimen/_12ssp"
             android:layout_marginTop="-30dp"
             android:id="@+id/home_track_trainID_txt"
@@ -98,17 +100,17 @@
 
 
         <com.google.android.material.card.MaterialCardView
-            android:onClick="@{viewmodel::onLocationBtn}"
             android:id="@+id/home_btn_location"
             android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_80sdp"
-            android:layout_margin="@dimen/_15sdp"
+            android:layout_marginHorizontal="@dimen/_15sdp"
             android:background="@color/white"
             android:backgroundTint="@color/DarkPrimaryColor"
+            android:onClick="@{viewmodel::onLocationBtn}"
             app:cardCornerRadius="@dimen/_30sdp"
             app:cardElevation="@dimen/_20sdp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/home_track_trainID_txt">
+            app:layout_constraintTop_toTopOf="@+id/home_btn_passengers">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -182,17 +184,17 @@
         </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
-            android:onClick="@{viewmodel::onPostsBtn}"
             android:id="@+id/home_btn_posts"
             android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_80sdp"
-            android:layout_margin="@dimen/_15sdp"
+            android:layout_marginHorizontal="@dimen/_15sdp"
             android:background="@color/white"
             android:backgroundTint="@color/DarkPrimaryColor"
+            android:onClick="@{viewmodel::onPostsBtn}"
             app:cardCornerRadius="@dimen/_30sdp"
             app:cardElevation="@dimen/_20sdp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/home_track_trainID_txt">
+            app:layout_constraintTop_toTopOf="@+id/home_btn_passengers">
 
             <LinearLayout
                 android:layout_width="match_parent"

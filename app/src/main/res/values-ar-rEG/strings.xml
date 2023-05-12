@@ -66,11 +66,12 @@
     <string name="para_empty_post2">لا توجد مشاركات منشورة في هذا القطار</string>
     <string name="don_t_have_account">ليس لديك حساب؟</string>
     <string name="emergancy">الطوارىء</string>
+    <string name="_80_km">80 كم</string>
 
     <string name="train_id">رقم القطار التعريفي</string>
     <string name="_356">356</string>
     <string name="post_publish_failed">فشل نشر المنشور !</string>
-    <string name="train_id_">رقم القطار التعريفي :</string>
+    <string name="train_id_">رقم القطار  </string>
     <string name="_356_">356</string>
     <string name="post_publish_successfully">تم النشر المنشور بنجاح</string>
     <string name="location_shared_successfully">تمت مشاركة الموقع بنجاح</string>
@@ -115,4 +116,5 @@
     <string name="find_train_by_id">البحث عن القطار بواسطة الرقم التعريفي</string>
     <string name="train_degree">درجة القطار:</string>
     <string name="train_number">رقم القطار:</string>
+    <string name="choose_train_to_track">تحديد قطار</string>
 </resources>

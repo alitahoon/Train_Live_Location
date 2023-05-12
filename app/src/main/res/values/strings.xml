@@ -112,4 +112,6 @@
     <string name="find_train_by_id">find train by id</string>
     <string name="train_degree">train degree</string>
     <string name="train_number">train number</string>
+    <string name="_80_km">80 KM</string>
+    <string name="choose_train_to_track">Choose Train To Track</string>
 </resources>

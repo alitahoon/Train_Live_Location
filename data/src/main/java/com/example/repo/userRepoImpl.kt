@@ -340,6 +340,13 @@ class userRepoImpl(
         firebaseService.sendMessageToChat(message, senderPhone, reciverPhone,senderUsername,recieverUsername, result)
     }
 
+    override suspend fun subscribeToNewTopic(
+        topicInput: String,
+        result: (Resource<String>) -> Unit
+    ) {
+        firebaseService.subscribeToNewTopic(topicInput,result)
+    }
+
     override suspend fun getDataFromSharedPrefrences(
         sharedPrefFile: String?,
         result: (Resource<UserResponseItem>) -> Unit

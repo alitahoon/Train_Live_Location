@@ -214,5 +214,11 @@ object UserCaseModule  {
         return SendDoctorNotificationUsingFCM(userRepo)
     }
 
+    @Provides
+    fun ProvideSubscribeToNewTopic(userRepo: UserRepo): SubscribeToNewTopic {
+        return SubscribeToNewTopic(userRepo)
+    }
+
+
 
 }
