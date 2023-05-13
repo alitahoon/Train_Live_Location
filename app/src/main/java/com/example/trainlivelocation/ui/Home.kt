@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -16,6 +17,7 @@ import com.example.domain.entity.NotificatonToken
 import com.example.domain.entity.UserResponseItem
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentHomeBinding
+import com.example.trainlivelocation.utli.PermissionManager
 import com.example.trainlivelocation.utli.TrackTrainService
 import com.example.trainlivelocation.utli.Train_Dialog_Listener
 import com.example.trainlivelocation.utli.toast
@@ -28,6 +30,7 @@ class Home : Fragment() ,Train_Dialog_Listener{
 
     private val homeViewModel:HomeViewModel? by activityViewModels()
     private var binding: FragmentHomeBinding? = null
+    private val permissionManager = PermissionManager.from(this)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,11 +49,29 @@ class Home : Fragment() ,Train_Dialog_Listener{
         setObservers()
 
         homeViewModel?.getUserDataFromsharedPreference()
-
+        homeViewModel?.subscribeToNewTopic()
         if (getDistance()!=null){
             binding?.homeTxtTrainDistance?.setText(getDistance().toString()+" Meal")
         }
 
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissionManager
+                .request(Permission.Notification)
+                .rationale("We need permission to show Notifications")
+                .checkPermission { granted: Boolean ->
+                    if (granted) {
+                        Toast.makeText(requireContext(), "Permission Granted", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        Toast.makeText(
+                            requireContext(),
+                            "No Permission to show notifications",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+        }
 
 
         return binding!!.root

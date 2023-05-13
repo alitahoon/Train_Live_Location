@@ -58,6 +58,7 @@
         <service
             android:name="com.example.trainlivelocation.MyFirebaseMessagingService"
             android:exported="false"
+            android:directBootAware="true"
             >
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

@@ -357,7 +357,7 @@ class userRepoImpl(
 
     override suspend fun getNewsById(
         newsId: Int,
-        result: (Response<GetNewsByIdResponseItem>) -> Unit
+        result: (Resource<GetNewsByIdResponseItem>) -> Unit
     ) {
         TODO("Not yet implemented")
     }
@@ -366,7 +366,7 @@ class userRepoImpl(
         notification: PushNotification,
         result: (Resource<String>) -> Unit
     ) {
-        TODO("Not yet implemented")
+        firebaseService.sendNewNotificationToTopic(notification,result)
     }
 
     override suspend fun getDataFromSharedPrefrences(

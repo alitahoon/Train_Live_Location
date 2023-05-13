@@ -50,7 +50,7 @@ object FirebaseModule {
         firebaseAuth: FirebaseAuth,
         storageReference: StorageReference,
         databaseReference: DatabaseReference,
-        firebaseMessaging: FirebaseMessaging
+        firebaseMessaging: FirebaseMessaging,
     ): FirebaseService {
         return FirebaseService(firebaseAuth,storageReference,databaseReference,firebaseMessaging)
     }
@@ -59,13 +59,6 @@ object FirebaseModule {
     fun ProvideFirebaseMessaging(
     ): FirebaseMessaging {
         return FirebaseMessaging.getInstance()
-    }
-
-    @Provides
-    fun ProvideFirebaseMessaging(
-        apiManager: ApiManager
-    ): ApiManager {
-        return apiManager
     }
 
 

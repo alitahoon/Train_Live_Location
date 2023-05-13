@@ -34,9 +34,7 @@ class FirebaseService(
     private val auth: FirebaseAuth,
     private val storageRef: StorageReference,
     private val databaseRef: DatabaseReference,
-    private val firebaseMessaging: FirebaseMessaging,
-    private val apiManager: ApiManager
-) {
+    private val firebaseMessaging: FirebaseMessaging) {
     private val TAG: String? = "FirebaseService"
 
     companion object {
@@ -465,9 +463,13 @@ class FirebaseService(
                 result.invoke(Resource.Failure("failed to subscribe to the topic : ${it.message}"))
             }
     }
-    fun sendNewNotificationTopic(notification: PushNotification){
-        CoroutineScope(Dispatchers.IO).launch{
-            apiManager.postNotification(notification)
+
+    fun sendNewNotificationToTopic(
+        notification: PushNotification, result: (Resource<String>) -> Unit
+    ) {
+        var apiManager:ApiManager=ApiManager()
+        CoroutineScope(Dispatchers.Main).launch {
+            apiManager.postNotification(notification,result)
         }
     }
 

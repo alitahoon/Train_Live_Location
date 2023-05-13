@@ -24,7 +24,7 @@ interface UserRepo {
         result: (Response<CreateNewsResponseItem>) -> Unit
     )
 
-    suspend fun getNewsById(newsId: Int, result: (Response<GetNewsByIdResponseItem>) -> Unit)
+    suspend fun getNewsById(newsId: Int, result: (Resource<GetNewsByIdResponseItem>) -> Unit)
 
     suspend fun addNewUser(user: RegisterUser?, result: (Resource<UserResponseItem>) -> Unit)
     suspend fun sendOtpToPhone(

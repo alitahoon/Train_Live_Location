@@ -6,14 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.entity.DoctorNotification
-import com.example.domain.entity.DoctorResponseItem
-import com.example.domain.entity.NotificatonToken
-import com.example.domain.entity.UserResponseItem
-import com.example.domain.usecase.GetDoctorInTrain
-import com.example.domain.usecase.GetNotificationTokenFromFirebase
-import com.example.domain.usecase.SendDoctorNotificationToFirebase
-import com.example.domain.usecase.SendDoctorNotificationUsingFCM
+import com.example.domain.entity.*
+import com.example.domain.usecase.*
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +17,8 @@ import javax.inject.Inject
 class EmergencyViewModel @Inject constructor(
     private val getDoctorInTrain: GetDoctorInTrain,
     private val sendDoctorNotificationUsingFCM: SendDoctorNotificationUsingFCM,
-    private val getUserNotificationTokenFromFirebase: GetNotificationTokenFromFirebase
+    private val getUserNotificationTokenFromFirebase: GetNotificationTokenFromFirebase,
+    private val pushNewTopicNotification: PushNewTopicNotification
 ):ViewModel() {
 
     private val _notificationToken: MutableLiveData<Resource<String?>> = MutableLiveData(null)
@@ -55,15 +50,21 @@ class EmergencyViewModel @Inject constructor(
     }
 
     fun sentDoctorNotification(token:NotificatonToken,serverKey:String?,doctorNotification: DoctorNotification){
+//        _sentNotification.value=Resource.Loading
+//        viewModelScope.launch {
+//           val child1=viewModelScope.launch (Dispatchers.IO){
+//                sendDoctorNotificationUsingFCM(token,serverKey,doctorNotification){
+//                    val child2=viewModelScope.launch(Dispatchers.Main) {
+//                        _sentNotification.value=it                    }
+//                }
+//            }
+//            child1.join()
+//        }
         _sentNotification.value=Resource.Loading
         viewModelScope.launch {
-           val child1=viewModelScope.launch (Dispatchers.IO){
-                sendDoctorNotificationUsingFCM(token,serverKey,doctorNotification){
-                    val child2=viewModelScope.launch(Dispatchers.Main) {
-                        _sentNotification.value=it                    }
-                }
+            pushNewTopicNotification(PushNotification(NotificationData("doctors",doctorNotification.content),token.token!!)){
+                _sentNotification.value=it
             }
-            child1.join()
         }
 
     }

@@ -1,18 +1,19 @@
 package com.example.data
 
+import Resource
 import com.example.domain.entity.PushNotification
 
 class ApiManager {
-    suspend fun postNotification(notification: PushNotification) {
+    suspend fun postNotification(notification: PushNotification,result: (Resource<String>) -> Unit) {
         try {
             val response = RetrofitInstance.api.postNotification(notification)
             if (response.isSuccessful){
-                println("Sending data was successful - notification recipient: ${notification.to}")
+                result.invoke(Resource.Success("Sending data was successful - notification recipient: ${notification.to}"))
             }else{
-                println("Error sending the data")
+                result.invoke(Resource.Success("\"Error sending the data\": ${response.errorBody()}"))
             }
         } catch (e: Exception) {
-            println(e.message.toString())
+            result.invoke(Resource.Success("${e.message}"))
         }
     }
 }

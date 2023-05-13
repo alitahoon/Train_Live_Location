@@ -11,7 +11,7 @@ import retrofit2.http.POST
 interface NotificationApi {
     companion object{
         const val CONTENT_TYPE = "application/json"
-        const val API_KEY = "ENTER YOUR API KEY"
+        const val API_KEY = "AAAAMRaF_zY:APA91bEue9-CV7da0fKxYfnJoNKn5qEW2wYRq7sVi-ECJbiVIUs_SwFsvKB9PidU32XeLESAa4FnRxgynAT-K_WoautrmAJgcynGc98NOxN_JAKuyp3IRxZX65aytA9Z-3MojjAOehpK"
     }
 
     @Headers("Authorization: key=${API_KEY}", "Content-Type: $CONTENT_TYPE")

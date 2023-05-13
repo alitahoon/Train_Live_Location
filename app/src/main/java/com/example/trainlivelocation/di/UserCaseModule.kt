@@ -219,6 +219,12 @@ object UserCaseModule  {
         return SubscribeToNewTopic(userRepo)
     }
 
+    @Provides
+    fun ProvidePushNewTopicNotification(userRepo: UserRepo): PushNewTopicNotification {
+        return PushNewTopicNotification(userRepo)
+    }
+
+
 
 
 }

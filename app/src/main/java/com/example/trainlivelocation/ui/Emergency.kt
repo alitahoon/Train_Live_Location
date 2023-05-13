@@ -1,12 +1,17 @@
 package com.example.trainlivelocation.ui
 
 import Resource
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
@@ -27,7 +32,6 @@ class Emergency : Fragment(), DoctorListener, Train_Dialog_Listener {
     private val emergencyViewModel: EmergencyViewModel by activityViewModels()
     private val args by navArgs<EmergencyArgs>()
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -41,8 +45,42 @@ class Emergency : Fragment(), DoctorListener, Train_Dialog_Listener {
             .apply {
                 this.viewmodel = emergencyViewModel
             }
+
+        askNotificationPermission()
         setObserver()
         return binding.root
+    }
+
+
+    private fun askNotificationPermission() {
+        // Declare the launcher at the top of your Activity/Fragment:
+         val requestPermissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestPermission(),
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                // FCM SDK (and your app) can post notifications.
+                Log.i(TAG,"ok you can send notification..")
+            } else {
+                Log.i(TAG," you can not send notification..")
+            }
+        }
+        // This is only necessary for API level >= 33 (TIRAMISU)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) ==
+                PackageManager.PERMISSION_GRANTED
+            ) {
+                // FCM SDK (and your app) can post notifications.
+            } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                // TODO: display an educational UI explaining to the user the features that will be enabled
+                //       by them granting the POST_NOTIFICATION permission. This UI should provide the user
+                //       "OK" and "No thanks" buttons. If the user selects "OK," directly request the permission.
+                //       If the user selects "No thanks," allow the user to continue without notifications.
+            } else {
+                // Directly ask for the permission
+                Log.i(TAG,"ok you can send notification..")
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
     }
 
     private fun setObserver() {

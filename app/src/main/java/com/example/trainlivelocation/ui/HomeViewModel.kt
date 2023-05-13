@@ -3,6 +3,7 @@ package com.example.trainlivelocation.ui
 import Resource
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import android.view.View
 import androidx.lifecycle.LifecycleService
@@ -14,6 +15,7 @@ import com.example.domain.entity.NotificatonToken
 import com.example.domain.entity.UserResponseItem
 import com.example.domain.usecase.GetTrainLocationInForgroundService
 import com.example.domain.usecase.SendUserNotificationTokenToFirebase
+import com.example.domain.usecase.SubscribeToNewTopic
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,8 +24,10 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val context: Context,
     private val sendUserNotificationTokenToFirebase:SendUserNotificationTokenToFirebase,
-    private val getTrainLocationInForgroundService: GetTrainLocationInForgroundService
+    private val getTrainLocationInForgroundService: GetTrainLocationInForgroundService,
+    private val subscribeToNewTopic: SubscribeToNewTopic
 ) :ViewModel() {
+    private val TAG:String="HomeViewModel"
     private val sharedPrefFile = "UserToken"
     var locationBtn= SingleLiveEvent<Boolean>()
     var postsBtn= SingleLiveEvent<Boolean>()
@@ -102,6 +106,14 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             sendUserNotificationTokenToFirebase(token){
                 _sendingNotificationToken.value=it
+            }
+        }
+    }
+
+    fun subscribeToNewTopic(){
+        viewModelScope.launch (){
+            subscribeToNewTopic("doctors"){
+                Log.i(TAG,"${it}")
             }
         }
     }
