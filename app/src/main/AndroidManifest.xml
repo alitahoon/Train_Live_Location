@@ -52,7 +52,14 @@
         <activity
             android:name=".ui.MainActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"/>
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <intent-filter>
+                    <action android:name="OPEN_FRAGMENT" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                </intent-filter>
+            </intent-filter>
+        </activity>
 
 
         <service

@@ -2,6 +2,7 @@ package com.example.trainlivelocation.di
 
 import com.example.data.*
 import com.example.domain.repo.UserRepo
+import com.example.domain.usecase.GetUserCurrantLocationJustOnce
 import com.example.repo.userRepoImpl
 import dagger.Module
 import dagger.Provides
@@ -23,7 +24,8 @@ object RepoModule {
         firebaseService: FirebaseService,
         locationServices: LocationServices,
         sharedPreferencesService: SharedPreferencesService,
-        GetTrainLocationService: GetTrainLocationService
+        GetTrainLocationService: GetTrainLocationService,
+        getCurrantLocationJustOnce: GetCurrantLocationJustOnce
     ): UserRepo {
         return userRepoImpl(
             apiService,
@@ -34,7 +36,8 @@ object RepoModule {
             firebaseService,
             locationServices,
             sharedPreferencesService,
-            GetTrainLocationService
+            GetTrainLocationService,
+            getCurrantLocationJustOnce
         )
     }
 

@@ -224,6 +224,12 @@ object UserCaseModule  {
         return PushNewTopicNotification(userRepo)
     }
 
+    @Provides
+    fun ProvideGetUserCurrantLocationJustOnce(userRepo: UserRepo): GetUserCurrantLocationJustOnce {
+        return GetUserCurrantLocationJustOnce(userRepo)
+    }
+
+
 
 
 

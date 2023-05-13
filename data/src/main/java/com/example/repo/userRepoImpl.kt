@@ -1,6 +1,7 @@
 package com.example.repo
 
 import Resource
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.net.Uri
 import android.util.Log
@@ -22,7 +23,8 @@ class userRepoImpl(
     private val firebaseService: FirebaseService,
     private val locationServices: LocationServices,
     private val sharedPreferencesService: SharedPreferencesService,
-    private val getTrainForgroundService: GetTrainLocationService
+    private val getTrainForgroundService: GetTrainLocationService,
+    private val getCurrantLocationJustOnce: GetCurrantLocationJustOnce
 ) : UserRepo {
     private val TAG: String? = "userRepoImpl"
     override suspend fun getUserData(
@@ -360,6 +362,12 @@ class userRepoImpl(
         result: (Resource<GetNewsByIdResponseItem>) -> Unit
     ) {
         TODO("Not yet implemented")
+    }
+
+    override suspend fun getUserCurrantLocationJustOnce(result: (Resource<Location>) -> Unit) {
+        getCurrantLocationJustOnce.createLocationRequest()
+        getCurrantLocationJustOnce.startGettingLocation()
+        getCurrantLocationJustOnce.getLocationCallBacks(result)
     }
 
     override suspend fun pushNewTopicNotification(

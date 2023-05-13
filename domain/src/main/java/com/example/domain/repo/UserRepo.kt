@@ -1,6 +1,7 @@
 package com.example.domain.repo
 
 import Resource
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.net.Uri
 import androidx.lifecycle.LifecycleService
@@ -186,6 +187,8 @@ interface UserRepo {
 
     suspend fun subscribeToNewTopic(topicInput: String,result: (Resource<String>) -> Unit)
     suspend fun pushNewTopicNotification(notification: PushNotification,result: (Resource<String>) -> Unit)
+
+    suspend fun getUserCurrantLocationJustOnce(result: (Resource<Location>) -> Unit)
 
 
 }

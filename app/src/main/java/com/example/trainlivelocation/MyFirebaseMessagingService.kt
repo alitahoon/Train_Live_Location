@@ -134,9 +134,43 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // Check if message contains a data payload.
         if (remoteMessage.data.size > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.data)
-        val title:String? = remoteMessage.getData()["title"]
-        val message:String? = remoteMessage.getData()["message"]
-            getRemoteView(title!!,message!!)?.let { generateDoctorNotification(it) }
+            var title: String? = remoteMessage.getData()["title"]
+            var message: String? = remoteMessage.getData()["message"]
+            when (title!!){
+                "doctors" -> {
+                    //create doctors notification
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("FRAGMENT_NAME", fragmentName)
+                    intent.action = "OPEN_FRAGMENT"
+
+                    val pendingIntent = PendingIntent.getActivity(
+                        this,
+                        0,
+                        intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                    )
+                    getRemoteView(title!!, message!!)?.let { generateDoctorNotification(it) }
+                }
+                "stationAlarm" -> {
+                    //create station alarm notification
+
+
+                }
+                "stationHistory" -> {
+                    //create station history notification
+
+
+                }
+                "addCommentToPost" -> {
+                    //create post comment notification
+
+                }
+                "getInboxMessage" -> {
+                    //create get inbox Message notification
+
+                }
+            }
+
         }
 
         // Check if message contains a notification payload.
@@ -147,7 +181,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // Also if you intend on generating your own notifications as a result of a received FCM
         // message, here is where that should be initiated. See sendNotification method below.
     }
-//    override fun onMessageReceived(remoteMessage: RemoteMessage) {
+
+    //    override fun onMessageReceived(remoteMessage: RemoteMessage) {
 //        super.onMessageReceived(remoteMessage)
 //        val from: String? = remoteMessage.from
 //        val data = remoteMessage.data
@@ -347,11 +382,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     }
 
-    fun generateDoctorNotification(remoteViews: RemoteViews) {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+    fun generateDoctorNotification(remoteViews: RemoteViews,pendingIntent: PendingIntent) {
 
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
         //channel id,name
         var builder: NotificationCompat.Builder =
             NotificationCompat.Builder(applicationContext, CHANNEL_ID)
@@ -372,29 +404,30 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun getRemoteView(title: String, message: String): RemoteViews? {
-        var remoteView:RemoteViews?=null
-        when (title){
-            "doctors"->{
+        var remoteView: RemoteViews? = null
+        when (title) {
+            "doctors" -> {
                 //create doctors notification
-                remoteView= RemoteViews("com.example.trainlivelocation", R.layout.doctor_notification)
+                remoteView =
+                    RemoteViews("com.example.trainlivelocation", R.layout.doctor_notification)
                 remoteView.setTextViewText(R.id.doctor_notification_title, title)
                 remoteView.setTextViewText(R.id.doctor_notification_content, message)
             }
-            "stationAlarm"->{
+            "stationAlarm" -> {
                 //create station alarm notification
 
 
             }
-            "stationHistory"->{
+            "stationHistory" -> {
                 //create station history notification
 
 
             }
-            "addCommentToPost"->{
+            "addCommentToPost" -> {
                 //create post comment notification
 
             }
-            "getInboxMessage"->{
+            "getInboxMessage" -> {
                 //create get inbox Message notification
 
             }

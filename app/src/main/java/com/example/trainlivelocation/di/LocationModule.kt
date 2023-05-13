@@ -52,5 +52,11 @@ object LocationModule {
         return TrackTrainService()
     }
 
+    @Provides
+    fun ProvideGetCurrantLocationJustOnce(context: Context): GetCurrantLocationJustOnce {
+        return GetCurrantLocationJustOnce(context)
+    }
+
+
 
 }
