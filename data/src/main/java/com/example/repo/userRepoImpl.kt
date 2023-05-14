@@ -24,8 +24,9 @@ class userRepoImpl(
     private val locationServices: LocationServices,
     private val sharedPreferencesService: SharedPreferencesService,
     private val getTrainForgroundService: GetTrainLocationService,
-    private val getCurrantLocationJustOnce: GetCurrantLocationJustOnce
-) : UserRepo {
+    private val getCurrantLocationJustOnce: GetCurrantLocationJustOnce,
+    private val getCurrantLocationLive:GetCurrantLocationLive
+    ) : UserRepo {
     private val TAG: String? = "userRepoImpl"
     override suspend fun getUserData(
         userPhone: String?,
@@ -367,6 +368,10 @@ class userRepoImpl(
     override suspend fun getUserCurrantLocationJustOnce(result: (Resource<Location>) -> Unit) {
         getCurrantLocationJustOnce.createLocationRequest()
         getCurrantLocationJustOnce.startGettingLocation(result)
+    }
+
+    override suspend fun getUserCurrantLocationLive(result: (Resource<Location>) -> Unit) {
+
     }
 
     override suspend fun pushNewTopicNotification(

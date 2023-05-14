@@ -16,14 +16,17 @@ object LocationModule {
     fun ProvideLocationLitener(context: Context): LocationLive {
         return LocationLive(context)
     }
+
     @Provides
     fun ProvideLocationTrackBackgroundService(): LocationTrackBackgroundService {
         return LocationTrackBackgroundService()
     }
+
     @Provides
     fun ProvideLocationTrackForegroundService(): LocationTrackForegroundService {
         return LocationTrackForegroundService()
     }
+
     @Provides
     fun ProvideLocationLiveForTracking(context: Context): LocationLiveForTracking {
         return LocationLiveForTracking(context)
@@ -34,10 +37,12 @@ object LocationModule {
     fun ProvideLocationGetLocationService(): GetLocationService {
         return GetLocationService()
     }
+
     @Provides
     fun ProvideUserLocation(context: Context): userLocation {
         return userLocation(context)
     }
+
     @Provides
     fun ProvideLocationServices(context: Context): LocationServices {
         return LocationServices(context)
@@ -47,6 +52,7 @@ object LocationModule {
     fun ProvideGetTrainLocationForgroundService(): GetTrainLocationService {
         return GetTrainLocationService()
     }
+
     @Provides
     fun ProvideTrackTrainService(): TrackTrainService {
         return TrackTrainService()
@@ -57,6 +63,10 @@ object LocationModule {
         return GetCurrantLocationJustOnce(context)
     }
 
+    @Provides
+    fun ProvideGetCurrantLocationLive(context: Context): GetCurrantLocationLive {
+        return GetCurrantLocationLive(context)
+    }
 
 
 }

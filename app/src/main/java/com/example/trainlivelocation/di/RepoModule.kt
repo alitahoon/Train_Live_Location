@@ -25,7 +25,8 @@ object RepoModule {
         locationServices: LocationServices,
         sharedPreferencesService: SharedPreferencesService,
         GetTrainLocationService: GetTrainLocationService,
-        getCurrantLocationJustOnce: GetCurrantLocationJustOnce
+        getCurrantLocationJustOnce: GetCurrantLocationJustOnce,
+        getCurrantLocationLive: GetCurrantLocationLive
     ): UserRepo {
         return userRepoImpl(
             apiService,
@@ -37,7 +38,8 @@ object RepoModule {
             locationServices,
             sharedPreferencesService,
             GetTrainLocationService,
-            getCurrantLocationJustOnce
+            getCurrantLocationJustOnce,
+            getCurrantLocationLive
         )
     }
 

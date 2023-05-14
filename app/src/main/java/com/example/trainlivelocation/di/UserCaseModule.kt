@@ -229,6 +229,12 @@ object UserCaseModule  {
         return GetUserCurrantLocationJustOnce(userRepo)
     }
 
+    @Provides
+    fun ProvideGetUserCurrantLocationLive(userRepo: UserRepo): GetUserCurrantLocationLive {
+        return GetUserCurrantLocationLive(userRepo)
+    }
+
+
 
 
 
