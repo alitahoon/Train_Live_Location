@@ -142,7 +142,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 "doctors" -> {
                     //create doctors notification
                     val intent = Intent(this, MainActivity::class.java)
-                    intent.putExtra("FRAGMENT_NAME", "trainLocationInMap")
+                    intent.putExtra("FRAGMENT_NAME", "DoctorLocationInMap")
                     intent.putExtra("doctorLocationLongitude",longitude)
                     intent.putExtra("doctorLocationLatitude",latitude)
 

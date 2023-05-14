@@ -17,17 +17,17 @@
         android:orientation="vertical">
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/trainLocation_MapCardView"
+            android:id="@+id/doctorLocation_MapCardView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.2"
-            app:layout_constraintBottom_toTopOf="materialCardView2"
+            app:layout_constraintBottom_toTopOf="@id/materialCardView2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.gms.maps.MapView
-                android:id="@+id/trainLocationMap_mapView"
+                android:id="@+id/doctorLocationMap_mapView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
         </com.google.android.material.card.MaterialCardView>
@@ -37,6 +37,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.8"
+            app:cardElevation="@dimen/_15sdp"
             android:backgroundTint="@color/PrimaryColor"
             app:cardCornerRadius="@dimen/_15sdp"
             android:layout_marginBottom="@dimen/_30sdp"

@@ -19,6 +19,8 @@ import androidx.navigation.fragment.NavHostFragment
 import com.ashokvarma.bottomnavigation.BottomNavigationBar
 import com.ashokvarma.bottomnavigation.BottomNavigationItem
 import com.bumptech.glide.Glide
+import com.example.domain.entity.DoctorNotificationData
+import com.example.domain.entity.Location_Response
 import com.example.domain.entity.UserResponseItem
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.ActivityMainBinding
@@ -143,14 +145,12 @@ class MainActivity : AppCompatActivity() {
         val fragmentToLoad: String? = intent.getStringExtra("FRAGMENT_NAME")
         if (fragmentToLoad != null) {
             when (fragmentToLoad) {
-                "trainLocationInMap" -> {
+                "DoctorLocationInMap" -> {
                     val latitude: Double=intent.getDoubleExtra("doctorLocationLatitude",0.0)
                     val longitude: Double=intent.getDoubleExtra("doctorLocationLongitude",0.0)
                     val bundle = Bundle()
-                    bundle.putDouble("doctorLocationLatitude", latitude)
-                    bundle.putDouble("doctorLocationLongitude", longitude)
-                    Log.i(TAG, "doctorLocationLatitude : ${latitude},doctorLocationLatitude : ${latitude}")
-                    navController.navigate(R.id.trainLocationInMap, bundle)
+                    bundle.putSerializable("patientLocation",Location_Response(latitude,longitude))
+                    navController.navigate(R.id.doctorLocationInMap, bundle)
                 }
             }
 

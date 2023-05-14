@@ -179,8 +179,8 @@
         android:label="fragment_doctor_location_in_map"
         tools:layout="@layout/fragment_doctor_location_in_map" >
         <argument
-            android:name="doctorNotificationData"
-            app:argType="com.example.domain.entity.DoctorNotificationData" />
+            android:name="patientLocation"
+            app:argType="com.example.domain.entity.Location_Response" />
     </fragment>
 
 </navigation>
