@@ -175,7 +175,7 @@
     </fragment>
     <fragment
         android:id="@+id/doctorLocationInMap"
-        android:name="com.example.trainlivelocation.DoctorLocationInMap"
+        android:name="com.example.trainlivelocation.ui.DoctorLocationInMap"
         android:label="fragment_doctor_location_in_map"
         tools:layout="@layout/fragment_doctor_location_in_map" >
         <argument
