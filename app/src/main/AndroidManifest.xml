@@ -8,7 +8,6 @@
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" tools:node="remove"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
@@ -53,12 +52,7 @@
             android:name=".ui.MainActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <intent-filter>
-                    <action android:name="OPEN_FRAGMENT" />
-                    <category android:name="android.intent.category.DEFAULT" />
-                </intent-filter>
-            </intent-filter>
+
         </activity>
 
 

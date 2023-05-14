@@ -11,8 +11,10 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.ashokvarma.bottomnavigation.BottomNavigationBar
 import com.ashokvarma.bottomnavigation.BottomNavigationItem
@@ -137,6 +139,25 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        //handle notification load fragments
+        val fragmentToLoad: String? = intent.getStringExtra("FRAGMENT_NAME")
+        if (fragmentToLoad != null) {
+            when (fragmentToLoad) {
+                "trainLocationInMap" -> {
+                    val latitude: Double=intent.getDoubleExtra("doctorLocationLatitude",0.0)
+                    val longitude: Double=intent.getDoubleExtra("doctorLocationLongitude",0.0)
+                    val bundle = Bundle()
+                    bundle.putDouble("doctorLocationLatitude", latitude)
+                    bundle.putDouble("doctorLocationLongitude", longitude)
+                    Log.i(TAG, "doctorLocationLatitude : ${latitude},doctorLocationLatitude : ${latitude}")
+                    navController.navigate(R.id.trainLocationInMap, bundle)
+                }
+            }
+
+        }else{
+            Log.i(TAG, "FRAGMENT_NAME from notification is null")
+        }
+
 
         setContentView(binding.root)
     }
@@ -145,7 +166,6 @@ class MainActivity : AppCompatActivity() {
     private fun setObservers() {
         mainActivityViewModel!!.menuBtnClicked.observe(this) {
             if (it == true) {
-                toast("hhhh")
                 binding.mainActivityDrwerLayout.openDrawer(GravityCompat.START)
             }
         }
@@ -232,7 +252,7 @@ class MainActivity : AppCompatActivity() {
                 binding.mainActivityFragmentHeaderNav.setBackgroundColor(resources.getColor(R.color.PrimaryColor))
                 binding.mainActivityFragmentHeaderNavFrName.setText(title)
             }
-            "Emergency" ->{
+            "Emergency" -> {
                 binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
                 binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
                 binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)

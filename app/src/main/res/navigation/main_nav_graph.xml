@@ -56,6 +56,13 @@
         <action
             android:id="@+id/action_home2_to_passengers"
             app:destination="@id/passengers" />
+        <action
+            android:id="@+id/action_home2_to_doctorLocationInMap"
+            app:destination="@id/doctorLocationInMap"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
     </fragment>
     <dialog
         android:id="@+id/locationDialogFragment"
@@ -165,6 +172,15 @@
         <argument
             android:name="userModel"
             app:argType="com.example.domain.entity.UserResponseItem" />
+    </fragment>
+    <fragment
+        android:id="@+id/doctorLocationInMap"
+        android:name="com.example.trainlivelocation.DoctorLocationInMap"
+        android:label="fragment_doctor_location_in_map"
+        tools:layout="@layout/fragment_doctor_location_in_map" >
+        <argument
+            android:name="doctorNotificationData"
+            app:argType="com.example.domain.entity.DoctorNotificationData" />
     </fragment>
 
 </navigation>

@@ -4,7 +4,7 @@ import Resource
 import com.example.domain.entity.PushNotification
 
 class ApiManager {
-    suspend fun postNotification(notification: PushNotification,result: (Resource<String>) -> Unit) {
+    suspend fun postNotification(notification: PushNotification, result: (Resource<String>) -> Unit) {
         try {
             val response = RetrofitInstance.api.postNotification(notification)
             if (response.isSuccessful){

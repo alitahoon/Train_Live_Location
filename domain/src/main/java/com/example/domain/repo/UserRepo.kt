@@ -9,7 +9,6 @@ import androidx.lifecycle.LiveData
 import com.example.domain.entity.*
 import com.google.firebase.auth.PhoneAuthCredential
 import retrofit2.Response
-import com.google.firebase.messaging.FirebaseMessaging
 
 interface UserRepo {
     suspend fun getUserData(
@@ -186,7 +185,7 @@ interface UserRepo {
     )
 
     suspend fun subscribeToNewTopic(topicInput: String,result: (Resource<String>) -> Unit)
-    suspend fun pushNewTopicNotification(notification: PushNotification,result: (Resource<String>) -> Unit)
+    suspend fun pushNewTopicNotification(notification: PushNotification, result: (Resource<String>) -> Unit)
 
     suspend fun getUserCurrantLocationJustOnce(result: (Resource<Location>) -> Unit)
 

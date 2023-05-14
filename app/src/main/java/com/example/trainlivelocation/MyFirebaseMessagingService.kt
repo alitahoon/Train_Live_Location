@@ -27,7 +27,7 @@ import java.util.*
 import javax.inject.Inject
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
-    private val TAG: String? = "com.example.trainlivelocation.MyFirebaseMessagingService"
+    private val TAG: String? = "MyFirebaseMessagingService"
     private val CHANNEL_ID = "notification_name"
     private val CHANNEL_NAME = "com.example.trainlivelocation"
 
@@ -100,7 +100,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 // Send the notification
                 Log.i(TAG, "New notification...")
                 if (remoteMessage != null) {
-                    generateDoctorNotification(result!!)
+//                    generateDoctorNotification(result!!)
                 }
             }
         }
@@ -136,20 +136,23 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             Log.d(TAG, "Message data payload: " + remoteMessage.data)
             var title: String? = remoteMessage.getData()["title"]
             var message: String? = remoteMessage.getData()["message"]
+            var longitude = remoteMessage.getData()["longitude"]!!.toDouble()
+            var latitude = remoteMessage.getData()["latitude"]!!.toDouble()
             when (title!!){
                 "doctors" -> {
                     //create doctors notification
                     val intent = Intent(this, MainActivity::class.java)
-                    intent.putExtra("FRAGMENT_NAME", fragmentName)
-                    intent.action = "OPEN_FRAGMENT"
+                    intent.putExtra("FRAGMENT_NAME", "trainLocationInMap")
+                    intent.putExtra("doctorLocationLongitude",longitude)
+                    intent.putExtra("doctorLocationLatitude",latitude)
 
                     val pendingIntent = PendingIntent.getActivity(
                         this,
                         0,
                         intent,
-                        PendingIntent.FLAG_UPDATE_CURRENT
+                        PendingIntent.FLAG_IMMUTABLE
                     )
-                    getRemoteView(title!!, message!!)?.let { generateDoctorNotification(it) }
+                    getRemoteView(title!!, message!!)?.let { generateDoctorNotification(it,pendingIntent) }
                 }
                 "stationAlarm" -> {
                     //create station alarm notification

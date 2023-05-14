@@ -3,6 +3,7 @@ package com.example.trainlivelocation.ui
 import Resource
 import android.Manifest
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -54,19 +55,22 @@ class Emergency : Fragment(), DoctorListener, Train_Dialog_Listener {
 
     private fun askNotificationPermission() {
         // Declare the launcher at the top of your Activity/Fragment:
-         val requestPermissionLauncher = registerForActivityResult(
+        val requestPermissionLauncher = registerForActivityResult(
             ActivityResultContracts.RequestPermission(),
         ) { isGranted: Boolean ->
             if (isGranted) {
                 // FCM SDK (and your app) can post notifications.
-                Log.i(TAG,"ok you can send notification..")
+                Log.i(TAG, "ok you can send notification..")
             } else {
-                Log.i(TAG," you can not send notification..")
+                Log.i(TAG, " you can not send notification..")
             }
         }
         // This is only necessary for API level >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.POST_NOTIFICATIONS) ==
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) ==
                 PackageManager.PERMISSION_GRANTED
             ) {
                 // FCM SDK (and your app) can post notifications.
@@ -77,7 +81,7 @@ class Emergency : Fragment(), DoctorListener, Train_Dialog_Listener {
                 //       If the user selects "No thanks," allow the user to continue without notifications.
             } else {
                 // Directly ask for the permission
-                Log.i(TAG,"ok you can send notification..")
+                Log.i(TAG, "ok you can send notification..")
                 requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
@@ -164,44 +168,72 @@ class Emergency : Fragment(), DoctorListener, Train_Dialog_Listener {
                     Log.e(TAG, "${it.error}")
                 }
                 is Resource.Success -> {
-                    if (it!=null){
-                        Log.i(TAG,"${it.data}")
-                        //send notification here
-                        emergencyViewModel.sentDoctorNotification(
-                            NotificatonToken(
-                                args.userModel.phone,
-                                args.userModel.name,
-                                it.data
-                            ),
-                            NOTIFICATION_SERVER_KEY,
-                            DoctorNotification(
-                                "Please help we need doctor",
-                                doctor.userPhone,
-                                doctor.userName,
-                                args.userModel.phone,
-                                args.userModel.name,
-                            )
-                        )
-                        emergencyViewModel.sentNotification.observe(viewLifecycleOwner, Observer {
-                            when(it){
-                                is Resource.Loading->{
-                                    Log.i(TAG,"Sending notification...")
+                    if (it != null) {
+                        val token = it.data
+                        emergencyViewModel.getUserLocation()
+                        emergencyViewModel.userLocation.observe(viewLifecycleOwner, Observer {
+                            when (it) {
+                                is Resource.Loading -> {
+                                    Log.i(TAG, "getting user Location .....")
                                 }
-                                is Resource.Failure->{
-                                    Log.e(TAG,"${it.error}")
+                                is Resource.Failure -> {
+                                    Log.i(TAG, "Failed getting user Location : ${it.error}")
                                 }
-                                is Resource.Success->{
-                                    Log.i(TAG,"${it.data}")
-                                    binding.emergancyNotificationProgressBar.visibility=View.INVISIBLE
-                                }
-                                else -> {
+                                is Resource.Success -> {
+                                    if (it != null){
+                                        Log.i(TAG, "success getting user Location : ${it.data}")
+                                        //send notification here
+                                        emergencyViewModel.sentDoctorNotification(
+                                            NotificatonToken(
+                                                args.userModel.phone,
+                                                args.userModel.name,
+                                                token
+                                            ),
+                                            NOTIFICATION_SERVER_KEY,
+                                            DoctorNotification(
+                                                "Please help we need doctor",
+                                                doctor.userPhone,
+                                                doctor.userName,
+                                                args.userModel.phone,
+                                                args.userModel.name,
+                                            ),
+                                            Location(it.data)
+                                        )
+                                        emergencyViewModel.sentNotification.observe(
+                                            viewLifecycleOwner,
+                                            Observer {
+                                                when (it) {
+                                                    is Resource.Loading -> {
+                                                        Log.i(TAG, "Sending notification...")
+                                                    }
+                                                    is Resource.Failure -> {
+                                                        Log.e(TAG, "${it.error}")
+                                                    }
+                                                    is Resource.Success -> {
+                                                        Log.i(TAG, "${it.data}")
+                                                        binding.emergancyNotificationProgressBar.visibility =
+                                                            View.INVISIBLE
+                                                    }
+                                                    else -> {
 
+                                                    }
+                                                }
+                                            })
+                                    }
+
+                                }
+
+                                else -> {
+                                    Log.e(TAG,"location else brunch")
                                 }
                             }
                         })
+
                     }
                 }
-                else -> {}
+                else -> {
+                    Log.e(TAG,"token else brunch")
+                }
             }
         })
     }
