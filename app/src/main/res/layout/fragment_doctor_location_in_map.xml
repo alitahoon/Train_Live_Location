@@ -9,7 +9,7 @@
             type="com.example.trainlivelocation.ui.DoctorLocationInMapViewModel" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.DoctorLocationInMap"
@@ -23,6 +23,9 @@
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:visibility="invisible"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -31,11 +34,11 @@
             android:id="@+id/doctorLocation_MapCardView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.6"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/doctor_Location_progress_bar">
+            android:layout_below="@+id/doctor_Location_progress_bar"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            >
 
             <com.google.android.gms.maps.MapView
                 android:id="@+id/doctorLocationMap_mapView"
@@ -47,11 +50,15 @@
             android:id="@+id/materialCardView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardElevation="@dimen/_15sdp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_80sdp"
+            android:layout_marginTop="@dimen/_10sdp"
             android:backgroundTint="@color/PrimaryColor"
             app:cardCornerRadius="@dimen/_15sdp"
-            android:layout_margin="@dimen/_10sdp"
-            android:layout_marginHorizontal="@dimen/_20sdp"
+            app:cardElevation="@dimen/_15sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -94,6 +101,7 @@
                     android:text="Car Dirction : Forward"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12ssp" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -107,5 +115,5 @@
 
 
 
-    </LinearLayout>
+    </RelativeLayout>
 </layout>

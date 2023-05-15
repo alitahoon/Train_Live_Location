@@ -10,6 +10,7 @@ import android.os.Looper
 import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.location.LocationManagerCompat.isLocationEnabled
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -24,12 +25,13 @@ class GetCurrantLocationLive(private val context: Context) {
 
 
     fun createLocationRequest() {
-        locationRequest = LocationRequest.create()
-        locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
-        locationRequest.interval = 500 // Update interval in milliseconds
-        locationRequest.fastestInterval = 500
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest = LocationRequest.create().apply {
+            interval = 500 // Update interval in milliseconds
+            fastestInterval = 250 // Fastest update interval in milliseconds
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+
     }
 
     fun startGettingLocation(result: (Resource<Location>) -> Unit) {

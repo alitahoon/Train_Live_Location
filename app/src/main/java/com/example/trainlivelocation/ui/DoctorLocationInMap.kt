@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentDoctorLocationInMapBinding
@@ -40,8 +42,10 @@ class DoctorLocationInMap : Fragment() ,OnMapReadyCallback{
     ): View? {
        binding= FragmentDoctorLocationInMapBinding.inflate(inflater,container,false)
            .apply {
-               this.viewmodel=doctorLocationInMapViewModel
+//               this.viewmodel=doctorLocationInMapViewModel
            }
+        val viewModelff = ViewModelProvider(this).get(DoctorLocationInMapViewModel::class.java)
+        binding?.viewmodel = viewModelff
         mapView=binding!!.doctorLocationMapMapView
         binding!!.doctorLocationMapMapView.onCreate(doctorLocationInMapViewModel?.getMAP_VIEW_KEY())
         binding!!.doctorLocationMapMapView.getMapAsync(this)
@@ -98,10 +102,13 @@ class DoctorLocationInMap : Fragment() ,OnMapReadyCallback{
                         val polylineOptions = PolylineOptions()
                             .add(sydnyDoctor, sydnyPatient)
                             .color(R.color.textAlarmColor)
-                            .width(5f)
+                            .width(10f)
 
                         // Animate camera to the calculated bounds
-                        val padding = 100 // Optional padding around the bounds (in pixels)
+                        // Calculate the padding based on the map size and desired zoom level
+                        val mapWidth = mapView.width
+                        val mapHeight = mapView.height
+                        val padding = (Math.max(mapWidth, mapHeight) * 0.1).toInt() // Optional padding around the bounds (in pixels)
                         val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding)
                         mMap?.animateCamera(cameraUpdate)
                         mMap?.addPolyline(polylineOptions)
