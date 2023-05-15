@@ -163,9 +163,11 @@ class Emergency : Fragment(), DoctorListener, Train_Dialog_Listener {
             when (it) {
                 is Resource.Loading -> {
                     Log.i(TAG, "getting notification token.....")
+                    binding.emergancyNotificationProgressBar.visibility = View.VISIBLE
                 }
                 is Resource.Failure -> {
                     Log.e(TAG, "${it.error}")
+                    binding.emergancyNotificationProgressBar.visibility = View.GONE
                 }
                 is Resource.Success -> {
                     if (it != null) {
@@ -178,9 +180,10 @@ class Emergency : Fragment(), DoctorListener, Train_Dialog_Listener {
                                 }
                                 is Resource.Failure -> {
                                     Log.i(TAG, "Failed getting user Location : ${it.error}")
+                                    binding.emergancyNotificationProgressBar.visibility = View.GONE
                                 }
                                 is Resource.Success -> {
-                                    if (it != null){
+                                    if (it != null) {
                                         Log.i(TAG, "success getting user Location : ${it.data}")
                                         //send notification here
                                         emergencyViewModel.sentDoctorNotification(
@@ -208,11 +211,14 @@ class Emergency : Fragment(), DoctorListener, Train_Dialog_Listener {
                                                     }
                                                     is Resource.Failure -> {
                                                         Log.e(TAG, "${it.error}")
+                                                        binding.emergancyNotificationProgressBar.visibility =
+                                                            View.GONE
+
                                                     }
                                                     is Resource.Success -> {
                                                         Log.i(TAG, "${it.data}")
                                                         binding.emergancyNotificationProgressBar.visibility =
-                                                            View.INVISIBLE
+                                                            View.GONE
                                                     }
                                                     else -> {
 
@@ -224,7 +230,8 @@ class Emergency : Fragment(), DoctorListener, Train_Dialog_Listener {
                                 }
 
                                 else -> {
-                                    Log.e(TAG,"location else brunch")
+                                    binding.emergancyNotificationProgressBar.visibility = View.GONE
+                                    Log.e(TAG, "location else brunch")
                                 }
                             }
                         })
@@ -232,7 +239,8 @@ class Emergency : Fragment(), DoctorListener, Train_Dialog_Listener {
                     }
                 }
                 else -> {
-                    Log.e(TAG,"token else brunch")
+                    binding.emergancyNotificationProgressBar.visibility = View.GONE
+                    Log.e(TAG, "token else brunch")
                 }
             }
         })

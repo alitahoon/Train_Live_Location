@@ -371,7 +371,8 @@ class userRepoImpl(
     }
 
     override suspend fun getUserCurrantLocationLive(result: (Resource<Location>) -> Unit) {
-
+        getCurrantLocationLive.createLocationRequest()
+        getCurrantLocationLive.startGettingLocation(result)
     }
 
     override suspend fun pushNewTopicNotification(

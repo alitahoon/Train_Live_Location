@@ -25,7 +25,8 @@ class GetCurrantLocationJustOnce(private val context: Context) {
     fun createLocationRequest() {
         locationRequest = LocationRequest.create()
         locationRequest.priority = LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY
-        locationRequest.interval = 1000 // Update interval in milliseconds
+        locationRequest.interval = 500 // Update interval in milliseconds
+        locationRequest.fastestInterval=125
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
     }

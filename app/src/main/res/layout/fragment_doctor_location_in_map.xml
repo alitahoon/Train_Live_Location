@@ -9,22 +9,33 @@
             type="com.example.trainlivelocation.ui.DoctorLocationInMapViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.DoctorLocationInMap"
         android:background="@color/PrimaryColor"
         android:orientation="vertical">
 
+        <com.google.android.material.progressindicator.LinearProgressIndicator
+            android:id="@+id/doctor_Location_progress_bar"
+            style="@style/Widget.MaterialComponents.LinearProgressIndicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/doctorLocation_MapCardView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.2"
-            app:layout_constraintBottom_toTopOf="@id/materialCardView2"
+            android:layout_weight="0.6"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/doctor_Location_progress_bar">
 
             <com.google.android.gms.maps.MapView
                 android:id="@+id/doctorLocationMap_mapView"
@@ -36,11 +47,10 @@
             android:id="@+id/materialCardView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.8"
             app:cardElevation="@dimen/_15sdp"
             android:backgroundTint="@color/PrimaryColor"
             app:cardCornerRadius="@dimen/_15sdp"
-            android:layout_marginBottom="@dimen/_30sdp"
+            android:layout_margin="@dimen/_10sdp"
             android:layout_marginHorizontal="@dimen/_20sdp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -59,7 +69,7 @@
                     android:drawablePadding="@dimen/_5sdp"
                     android:gravity="bottom"
                     android:padding="@dimen/_5sdp"
-                    android:text="Distance : 0.0 M"
+                    android:text="@{viewmodel._distance}"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12ssp" />
 
@@ -70,7 +80,7 @@
                     android:drawablePadding="@dimen/_5sdp"
                     android:gravity="center"
                     android:padding="@dimen/_5sdp"
-                    android:text="Car Number : 2"
+                    android:text="@{viewmodel._cars}"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12ssp" />
 
@@ -97,5 +107,5 @@
 
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>
