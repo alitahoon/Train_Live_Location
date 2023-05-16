@@ -157,8 +157,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     //create post comment notification
                     //create station alarm notification
                     var trainID=remoteMessage.getData()["trainID"]!!.toInt()
-                    var postId=remoteMessage.getData()["critical"]!!.toInt()
-                    var criticalPost=remoteMessage.getData()["postId"]!!.toBoolean()
+                    var criticalPost=remoteMessage.getData()["critical"]!!.toBoolean()
+                    var postId=remoteMessage.getData()["postId"]!!.toBoolean()
                     val intent = Intent(this, MainActivity::class.java)
                     intent.putExtra("FRAGMENT_NAME", "AddPostFragment")
                     intent.putExtra("trainID",trainID)

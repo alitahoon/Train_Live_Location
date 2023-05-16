@@ -103,11 +103,11 @@ class Add_post_fragment : Fragment(), FragmentLifecycle, Train_Dialog_Listener {
                                                 PushPostNotification(
                                                     (AddPostNotificationData
                                                         (
-                                                        "AddedPostNotification",
+                                                        "postAdded${binding.addPostTxtTrainId.text.toString()}",
                                                         "New Post Added To Train with id :${binding.addPostTxtTrainId.text.toString()}",
                                                         binding.addPostTxtTrainId.text.toString().toInt(),
                                                         isPostIsCritical(binding.addPostTxtPostContent.text.toString()),
-                                                        postID!!)), it.data
+                                                        postID!!)), "postAdded${binding.addPostTxtTrainId.text.toString()}"
 
                                                 )
                                             )
