@@ -107,7 +107,7 @@ class Add_post_fragment : Fragment(), FragmentLifecycle, Train_Dialog_Listener {
                                                         "New Post Added To Train with id :${binding.addPostTxtTrainId.text.toString()}",
                                                         binding.addPostTxtTrainId.text.toString().toInt(),
                                                         isPostIsCritical(binding.addPostTxtPostContent.text.toString()),
-                                                        postID!!)), "postAdded${binding.addPostTxtTrainId.text.toString()}"
+                                                        postID!!)), it.data
 
                                                 )
                                             )
