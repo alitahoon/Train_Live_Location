@@ -11,6 +11,7 @@ import com.example.domain.entity.TicketResponseItem
 import com.example.domain.entity.UserResponseItem
 import com.example.domain.usecase.CreateTicket
 import com.example.domain.usecase.GetDataFromSharedPrefrences
+import com.example.domain.usecase.SubscribeToNewTopic
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -19,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class TicketsViewModel @Inject constructor(
     private val createTicket: CreateTicket,
-    private val getDataFromSharedPrefrences: GetDataFromSharedPrefrences
+    private val getDataFromSharedPrefrences: GetDataFromSharedPrefrences,
+    private val subscribeToNewTopic: SubscribeToNewTopic
 ):ViewModel() {
     var takroffStationTxtClicked = SingleLiveEvent<Boolean>()
     var arrivalStationTxtClicked = SingleLiveEvent<Boolean>()
@@ -30,6 +32,10 @@ class TicketsViewModel @Inject constructor(
 
     private val _ticket:MutableLiveData<Resource<TicketResponseItem>> = MutableLiveData(null)
         val ticket:LiveData<Resource<TicketResponseItem>> = _ticket
+
+    private val _subscribeTrain:MutableLiveData<Resource<String>> = MutableLiveData(null)
+    val subscribeTrain:LiveData<Resource<String>> = _subscribeTrain
+
 
 
 
@@ -58,6 +64,12 @@ class TicketsViewModel @Inject constructor(
     }
 
 
+    fun subscribeTrain(trainId:Int){
+        viewModelScope.launch {
+            subscribeToNewTopic("postAdded/${trainId}"){
 
+            }
+        }
+    }
 
 }

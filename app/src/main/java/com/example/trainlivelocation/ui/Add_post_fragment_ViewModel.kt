@@ -9,9 +9,11 @@ import android.view.View
 import androidx.lifecycle.*
 import com.example.domain.entity.Post
 import com.example.domain.entity.PostModelResponse
+import com.example.domain.entity.PushPostNotification
 import com.example.domain.entity.UserResponseItem
 import com.example.domain.usecase.CreatePost
 import com.example.domain.usecase.GetUserDataById
+import com.example.domain.usecase.PushAddPostNotification
 import com.example.domain.usecase.SendImageToFirebaseStorage
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import com.google.firebase.ktx.Firebase
@@ -27,7 +29,9 @@ class Add_post_fragment_ViewModel @Inject constructor(
     private val sendImageToFirebaseStorage: SendImageToFirebaseStorage,
     private val getUserDataById: GetUserDataById,
     private val createPost: CreatePost,
-    private val context: Context
+    private val context: Context,
+    private val pushAddPostNotification: PushAddPostNotification
+
 ) : ViewModel() {
     var IsProgressBarVisible: Boolean = false
     private val _showProgressBar = MutableLiveData(false)
@@ -53,6 +57,8 @@ class Add_post_fragment_ViewModel @Inject constructor(
     val sendPostImageToFirebase: LiveData<Resource<String>>? = _sendPostImageToFirebase
 
 
+    private val _AddedPostNotification: MutableLiveData<Resource<String>> = MutableLiveData(null)
+    val AddedPostNotification: LiveData<Resource<String>>?= _AddedPostNotification
 
 
     fun setCritical() {
@@ -79,6 +85,15 @@ class Add_post_fragment_ViewModel @Inject constructor(
         viewModelScope.launch {
             sendImageToFirebaseStorage(postImageUri, imagePath) {
                 _sendPostImageToFirebase.value = it
+            }
+        }
+    }
+
+    fun sendAddedPostNotificationPost(notification: PushPostNotification){
+        _AddedPostNotification.value=Resource.Loading
+        viewModelScope.launch {
+            pushAddPostNotification(notification){
+                _AddedPostNotification.value=it
             }
         }
     }

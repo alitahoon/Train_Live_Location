@@ -375,6 +375,13 @@ class userRepoImpl(
         getCurrantLocationLive.startGettingLocation(result)
     }
 
+    override suspend fun pushAddPostNotification(
+        notification: PushPostNotification,
+        result: (Resource<String>) -> Unit
+    ) {
+        firebaseService.subscribeToNewTopic()
+    }
+
     override suspend fun pushNewTopicNotification(
         notification: PushNotification,
         result: (Resource<String>) -> Unit

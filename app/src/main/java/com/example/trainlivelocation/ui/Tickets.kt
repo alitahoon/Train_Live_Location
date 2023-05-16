@@ -40,6 +40,7 @@ class Tickets : Fragment(), Station_Dialog_Listener, Train_Dialog_Listener,
 
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -79,13 +80,34 @@ class Tickets : Fragment(), Station_Dialog_Listener, Train_Dialog_Listener,
                         }
                         is Resource.Success -> {
                             binding.ticketProgressBar.visibility = View.INVISIBLE
-                            displaySnackbarSuccess(
-                                requireContext(),
-                                binding.root,
-                                "Ticket Booked Successfully...",
-                                R.raw.success_auth, R.color.PrimaryColor
-                            )
+
                             Log.i(TAG,"Success To book ticket--->{${it.data}}")
+
+                            //here we will subscribe to train events
+                            ticketsViewModel.subscribeTrain(binding.ticketTxtTrainId.text!!.toString().toInt())
+                            ticketsViewModel.subscribeTrain.observe(viewLifecycleOwner, Observer {
+                                when(it){
+                                    is Resource.Success->{
+                                        Log.i(TAG,"${it.data}")
+                                        displaySnackbarSuccess(
+                                            requireContext(),
+                                            binding.root,
+                                            "Ticket Booked Successfully...",
+                                            R.raw.success_auth, R.color.PrimaryColor
+                                        )
+                                    }
+                                    is Resource.Failure->{
+                                        Log.i(TAG,"${it.error}")
+                                    }
+                                    is Resource.Loading->{
+                                        Log.i(TAG,"Waiting subscribe posts added for this train")
+                                    }
+                                    else ->{
+                                        Log.i(TAG,"else brunch subscribeTrain...")
+                                    }
+                                }
+                            })
+
                         }
                         is Resource.Failure -> {
                             Log.e(TAG, "Error from else brunsh---->ticket ${it.error}")

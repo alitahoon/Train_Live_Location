@@ -233,6 +233,10 @@ object UserCaseModule  {
     fun ProvideGetUserCurrantLocationLive(userRepo: UserRepo): GetUserCurrantLocationLive {
         return GetUserCurrantLocationLive(userRepo)
     }
+    @Provides
+    fun ProvidePushAddPostNotification(userRepo: UserRepo): PushAddPostNotification {
+        return PushAddPostNotification(userRepo)
+    }
 
 
 

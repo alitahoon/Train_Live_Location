@@ -80,11 +80,30 @@ class Add_post_fragment : Fragment(),FragmentLifecycle ,Train_Dialog_Listener{
                             binding.addPostProgressBar.setVisibility(View.VISIBLE)
                         }
                         is Resource.Success->{
-                            binding.addPostTxtPostContent.setText("")
-                            binding.addPostTxtTrainId.setText("")
-                            binding.addPostImageViewPostImage.setImageDrawable(resources.getDrawable(R.drawable.add_photo_icon))
-                            binding.addPostProgressBar.setVisibility(View.INVISIBLE)
-                            getSnakbar(binding.addPostBtnSubmit,R.layout.custom_snake_bar_add_post_success_layout).show()
+                            Log.i(TAG,"${it.data}")
+                            //push notification
+                            addPostFragmentViewmodel.AddedPostNotification!!.observe(viewLifecycleOwner,
+                                Observer {
+                                    when(it){
+                                        is Resource.Success->{
+                                            Log.i(TAG,"${it.data}")
+                                            binding.addPostTxtPostContent.setText("")
+                                            binding.addPostTxtTrainId.setText("")
+                                            binding.addPostImageViewPostImage.setImageDrawable(resources.getDrawable(R.drawable.add_photo_icon))
+                                            binding.addPostProgressBar.setVisibility(View.INVISIBLE)
+                                            getSnakbar(binding.addPostBtnSubmit,R.layout.custom_snake_bar_add_post_success_layout).show()
+                                        }
+                                        is Resource.Failure->{
+                                            Log.e(TAG,"${it.error}")
+                                        }
+                                        is Resource.Loading->{
+                                            Log.e(TAG,"Waiting for notifying train users for new post..")
+                                        }
+                                        else -> {
+
+                                        }
+                                    }
+                                })
                         }
                         is Resource.Failure->{
                             binding.addPostProgressBar.setVisibility(View.INVISIBLE)

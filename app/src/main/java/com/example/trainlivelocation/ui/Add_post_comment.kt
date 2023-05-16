@@ -106,6 +106,8 @@ class Add_post_comment(var post: PostModelResponse) : BottomSheetDialogFragment(
                                 binding.addPostTxtComment.setText("")
                                 Log.i(TAG, "${it.data}")
                                 addPostCommentFragmentViewModel.getPostComments(post.id)
+
+
                             }
                             is Resource.Failure -> {
                                 toast("Comment send Failure")

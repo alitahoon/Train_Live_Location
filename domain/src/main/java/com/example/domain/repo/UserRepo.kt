@@ -189,6 +189,7 @@ interface UserRepo {
 
     suspend fun getUserCurrantLocationJustOnce(result: (Resource<Location>) -> Unit)
     suspend fun getUserCurrantLocationLive(result: (Resource<Location>) -> Unit)
+    suspend fun pushAddPostNotification(notification: PushPostNotification, result: (Resource<String>) -> Unit)
 
 
 }
