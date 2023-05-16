@@ -379,7 +379,7 @@ class userRepoImpl(
         notification: PushPostNotification,
         result: (Resource<String>) -> Unit
     ) {
-        firebaseService.subscribeToNewTopic()
+        firebaseService.sendNewNotificationToAddedPostTopic(notification,result)
     }
 
     override suspend fun pushNewTopicNotification(

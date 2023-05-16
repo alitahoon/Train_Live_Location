@@ -97,7 +97,7 @@ class Add_post_fragment : Fragment(),FragmentLifecycle ,Train_Dialog_Listener{
                                             Log.e(TAG,"${it.error}")
                                         }
                                         is Resource.Loading->{
-                                            Log.e(TAG,"Waiting for notifying train users for new post..")
+                                            Log.e(TAG,"Waiting for notifying train users for new post...")
                                         }
                                         else -> {
 

@@ -4,10 +4,7 @@ import Resource
 import android.net.Uri
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.example.domain.entity.DoctorNotification
-import com.example.domain.entity.Message
-import com.example.domain.entity.NotificatonToken
-import com.example.domain.entity.PushNotification
+import com.example.domain.entity.*
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
@@ -470,6 +467,15 @@ class FirebaseService(
         var apiManager:ApiManager=ApiManager()
         CoroutineScope(Dispatchers.Main).launch {
             apiManager.postNotification(notification,result)
+        }
+    }
+
+    fun sendNewNotificationToAddedPostTopic(
+        notification: PushPostNotification, result: (Resource<String>) -> Unit
+    ) {
+        var apiManager:ApiManager=ApiManager()
+        CoroutineScope(Dispatchers.Main).launch {
+            apiManager.postAddedNotification(notification,result)
         }
     }
 
