@@ -11,10 +11,7 @@ import com.example.domain.entity.Post
 import com.example.domain.entity.PostModelResponse
 import com.example.domain.entity.PushPostNotification
 import com.example.domain.entity.UserResponseItem
-import com.example.domain.usecase.CreatePost
-import com.example.domain.usecase.GetUserDataById
-import com.example.domain.usecase.PushAddPostNotification
-import com.example.domain.usecase.SendImageToFirebaseStorage
+import com.example.domain.usecase.*
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
@@ -30,7 +27,8 @@ class Add_post_fragment_ViewModel @Inject constructor(
     private val getUserDataById: GetUserDataById,
     private val createPost: CreatePost,
     private val context: Context,
-    private val pushAddPostNotification: PushAddPostNotification
+    private val pushAddPostNotification: PushAddPostNotification,
+    private val getNotificationTokenFromFirebase: GetNotificationTokenFromFirebase
 
 ) : ViewModel() {
     var IsProgressBarVisible: Boolean = false
@@ -59,6 +57,9 @@ class Add_post_fragment_ViewModel @Inject constructor(
 
     private val _AddedPostNotification: MutableLiveData<Resource<String>> = MutableLiveData(null)
     val AddedPostNotification: LiveData<Resource<String>>?= _AddedPostNotification
+
+    private val _notificationToken: MutableLiveData<Resource<String>> = MutableLiveData(null)
+    val notificationToken: LiveData<Resource<String>> = _notificationToken
 
 
     fun setCritical() {
@@ -130,6 +131,15 @@ class Add_post_fragment_ViewModel @Inject constructor(
                 userSharedPreferences.getInt("userStationId", 0)
             )
         )
+    }
+
+    fun getToken(userPhone:String?){
+        _notificationToken.value=Resource.Loading
+        viewModelScope.launch {
+            getNotificationTokenFromFirebase(userPhone){
+                _notificationToken.value=it
+            }
+        }
     }
 
 }

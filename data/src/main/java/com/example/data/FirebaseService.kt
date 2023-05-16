@@ -373,7 +373,7 @@ class FirebaseService(
     }
 
     fun getNotificationToken(
-        userPhone: String?, result: (Resource<String?>) -> Unit
+        userPhone: String?, result: (Resource<String>) -> Unit
     ) {
         databaseRef.child("UsersNotificationToken").child(userPhone!!)
             .addValueEventListener(object : ValueEventListener {

@@ -174,7 +174,7 @@ interface UserRepo {
     )
 
     suspend fun getNotificationTokenFromFirebase(
-        userPhone: String?, result: (Resource<String?>) -> Unit
+        userPhone: String?, result: (Resource<String>) -> Unit
     )
 
     suspend fun sendDoctorNotificationUsingFCM(

@@ -84,7 +84,9 @@ class Home : Fragment() ,Train_Dialog_Listener{
                     Log.e(TAG, "sending token...")
                 }
                 is Resource.Success -> {
+                    token = it.data!!
                     Log.e(TAG, "${it.data}")
+
                 }
                 is Resource.Failure -> {
                     Log.e(TAG, "${it.error}")
@@ -159,6 +161,7 @@ class Home : Fragment() ,Train_Dialog_Listener{
 
     companion object {
         var userModel:UserResponseItem?=null
+        private var token:String?=null
     }
 
     fun observeTrainLocationService(){

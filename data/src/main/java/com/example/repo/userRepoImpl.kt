@@ -500,7 +500,7 @@ class userRepoImpl(
 
     override suspend fun getNotificationTokenFromFirebase(
         userPhone: String?,
-        result: (Resource<String?>) -> Unit
+        result: (Resource<String>) -> Unit
     ) {
         firebaseService.getNotificationToken(userPhone!!,result)
     }

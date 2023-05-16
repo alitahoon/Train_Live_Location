@@ -65,9 +65,10 @@ class TicketsViewModel @Inject constructor(
 
 
     fun subscribeTrain(trainId:Int){
+        _subscribeTrain.value=Resource.Loading
         viewModelScope.launch {
-            subscribeToNewTopic("postAdded/${trainId}"){
-
+            subscribeToNewTopic("postAdded${trainId}"){
+                _subscribeTrain.value=it
             }
         }
     }

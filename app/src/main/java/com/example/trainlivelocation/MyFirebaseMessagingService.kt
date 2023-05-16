@@ -107,23 +107,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
-    //    private fun scheduleJob() {
-//        val dispatcher = FirebaseJobDispatcher(GooglePlayDriver(this))
-//
-//        // Create a new job to handle the FCM message
-//        val job = dispatcher.newJobBuilder()
-//            .setService(MyJobService::class.java)
-//            .setTag("my-fcm-job")
-//            .setRecurring(false)
-//            .setLifetime(Lifetime.UNTIL_NEXT_BOOT)
-//            .setTrigger(Trigger.executionWindow(0, 60))
-//            .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
-//            .setReplaceCurrent(false)
-//            .build()
-//
-//        // Schedule the job
-//        dispatcher.mustSchedule(job)
-//    }
+
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         // ...

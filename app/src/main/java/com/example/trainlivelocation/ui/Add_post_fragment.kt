@@ -53,6 +53,11 @@ class Add_post_fragment : Fragment(), FragmentLifecycle, Train_Dialog_Listener {
     }
 
     private fun setObserver() {
+
+
+
+
+
         addPostFragmentViewmodel?.btnSubmitClicked?.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 //add image to firebase
@@ -85,50 +90,70 @@ class Add_post_fragment : Fragment(), FragmentLifecycle, Train_Dialog_Listener {
                             }
                             is Resource.Success -> {
                                 Log.i(TAG, "${it.data}")
-                                //push notification
-                                addPostFragmentViewmodel.sendAddedPostNotificationPost(
-                                    PushPostNotification(
-                                        (AddPostNotificationData
-                                            (
-                                            "AddedPostNotification",
-                                            "New Post Added To Train with id :${binding.addPostTxtTrainId.text.toString()}",
-                                            binding.addPostTxtTrainId.text.toString().toInt(),
-                                            isPostIsCritical(binding.addPostTxtPostContent.text.toString()),
-                                        postID!!)), "postAdded/${binding.addPostTxtTrainId.text.toString()}"
-
-                                    )
-                                )
-                                addPostFragmentViewmodel.AddedPostNotification!!.observe(
-                                    viewLifecycleOwner,
-                                    Observer {
-                                        when (it) {
-                                            is Resource.Success -> {
-                                                Log.i(TAG, "${it.data}")
-                                                binding.addPostTxtPostContent.setText("")
-                                                binding.addPostTxtTrainId.setText("")
-                                                binding.addPostImageViewPostImage.setImageDrawable(
-                                                    resources.getDrawable(R.drawable.add_photo_icon)
-                                                )
-                                                binding.addPostProgressBar.setVisibility(View.INVISIBLE)
-                                                getSnakbar(
-                                                    binding.addPostBtnSubmit,
-                                                    R.layout.custom_snake_bar_add_post_success_layout
-                                                ).show()
-                                            }
-                                            is Resource.Failure -> {
-                                                Log.e(TAG, "${it.error}")
-                                            }
-                                            is Resource.Loading -> {
-                                                Log.e(
-                                                    TAG,
-                                                    "Waiting for notifying train users for new post..."
-                                                )
-                                            }
-                                            else -> {
-
-                                            }
+                                //get token
+                                addPostFragmentViewmodel.getToken(userModel!!.phone)
+                                addPostFragmentViewmodel.notificationToken!!.observe(viewLifecycleOwner, Observer {
+                                    when(it){
+                                        is Resource.Loading->{
+                                            Log.i(TAG,"getting token..")
                                         }
-                                    })
+                                        is Resource.Success->{
+                                            //push notification
+                                            addPostFragmentViewmodel.sendAddedPostNotificationPost(
+                                                PushPostNotification(
+                                                    (AddPostNotificationData
+                                                        (
+                                                        "AddedPostNotification",
+                                                        "New Post Added To Train with id :${binding.addPostTxtTrainId.text.toString()}",
+                                                        binding.addPostTxtTrainId.text.toString().toInt(),
+                                                        isPostIsCritical(binding.addPostTxtPostContent.text.toString()),
+                                                        postID!!)), it.data
+
+                                                )
+                                            )
+                                            addPostFragmentViewmodel.AddedPostNotification!!.observe(
+                                                viewLifecycleOwner,
+                                                Observer {
+                                                    when (it) {
+                                                        is Resource.Success -> {
+                                                            Log.i(TAG, "${it.data}")
+                                                            binding.addPostTxtPostContent.setText("")
+                                                            binding.addPostTxtTrainId.setText("")
+                                                            binding.addPostImageViewPostImage.setImageDrawable(
+                                                                resources.getDrawable(R.drawable.add_photo_icon)
+                                                            )
+                                                            binding.addPostProgressBar.setVisibility(View.INVISIBLE)
+                                                            getSnakbar(
+                                                                binding.addPostBtnSubmit,
+                                                                R.layout.custom_snake_bar_add_post_success_layout
+                                                            ).show()
+                                                        }
+                                                        is Resource.Failure -> {
+                                                            Log.e(TAG, "${it.error}")
+                                                        }
+                                                        is Resource.Loading -> {
+                                                            Log.e(
+                                                                TAG,
+                                                                "Waiting for notifying train users for new post..."
+                                                            )
+                                                        }
+                                                        else -> {
+
+                                                        }
+                                                    }
+                                                })
+                                        }
+
+                                        is Resource.Failure->{
+
+                                        }
+                                        else->{
+
+                                        }
+                                    }
+                                })
+
+
                             }
                             is Resource.Failure -> {
                                 binding.addPostProgressBar.setVisibility(View.INVISIBLE)
