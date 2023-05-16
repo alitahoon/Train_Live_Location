@@ -11,7 +11,7 @@
         android:layout_width="@dimen/_30sdp"
         android:layout_height="@dimen/_30sdp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
         android:src="@drawable/doctor_icon_notifiction"
         />
 
@@ -22,7 +22,7 @@
         android:layout_above="@+id/doctor_notification_content"
         android:layout_alignTop="@+id/imageView3"
         android:layout_marginHorizontal="@dimen/_10sdp"
-        android:layout_toStartOf="@+id/imageView3"
+        android:layout_toEndOf="@+id/imageView3"
         android:text="Hello,Doctor"
         android:textColor="@color/white"
         android:textSize="@dimen/_12sdp" />
@@ -34,7 +34,7 @@
         android:layout_alignBottom="@+id/imageView3"
         android:layout_marginHorizontal="@dimen/_10sdp"
 
-        android:layout_toStartOf="@+id/imageView3"
+        android:layout_toEndOf="@+id/imageView3"
         android:text="could you help us please..."
         android:textColor="@color/white"
         android:textSize="@dimen/_12sdp" />

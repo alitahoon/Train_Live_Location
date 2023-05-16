@@ -19,6 +19,7 @@ import androidx.core.content.ContextCompat
 import com.example.domain.entity.NotificatonToken
 import com.example.domain.usecase.GetDataFromSharedPrefrences
 import com.example.domain.usecase.SendUserNotificationTokenToFirebase
+import com.example.trainlivelocation.ui.CriticalPost
 import com.example.trainlivelocation.ui.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
@@ -94,7 +95,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             // Return the result to the main thread
             val result = getRemoteView(
                 remoteMessage!!.notification!!.title!!,
-                remoteMessage.notification!!.body!!
+                remoteMessage.notification!!.body!!,false
             )
             withContext(Dispatchers.Main) {
                 // Send the notification
@@ -136,11 +137,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             Log.d(TAG, "Message data payload: " + remoteMessage.data)
             var title: String? = remoteMessage.getData()["title"]
             var message: String? = remoteMessage.getData()["message"]
-            var longitude = remoteMessage.getData()["longitude"]!!.toDouble()
-            var latitude = remoteMessage.getData()["latitude"]!!.toDouble()
+
             when (title!!){
                 "doctors" -> {
                     //create doctors notification
+                    var longitude = remoteMessage.getData()["longitude"]!!.toDouble()
+                    var latitude = remoteMessage.getData()["latitude"]!!.toDouble()
                     val intent = Intent(this, MainActivity::class.java)
                     intent.putExtra("FRAGMENT_NAME", "DoctorLocationInMap")
                     intent.putExtra("doctorLocationLongitude",longitude)
@@ -152,10 +154,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                         intent,
                         PendingIntent.FLAG_IMMUTABLE
                     )
-                    getRemoteView(title!!, message!!)?.let { generateDoctorNotification(it,pendingIntent) }
+                    getRemoteView(title!!, message!!,false)?.let { generateNotification(it,pendingIntent) }
                 }
                 "stationAlarm" -> {
-                    //create station alarm notification
 
 
                 }
@@ -166,6 +167,26 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 }
                 "addCommentToPost" -> {
                     //create post comment notification
+
+                }
+                "AddedPostNotification" -> {
+                    //create post comment notification
+                    //create station alarm notification
+                    var trainID=remoteMessage.getData()["trainID"]!!.toInt()
+                    var postId=remoteMessage.getData()["critical"]!!.toInt()
+                    var criticalPost=remoteMessage.getData()["postId"]!!.toBoolean()
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("FRAGMENT_NAME", "AddPostFragment")
+                    intent.putExtra("trainID",trainID)
+                    intent.putExtra("critical",criticalPost)
+                    intent.putExtra("postId",postId)
+                    val pendingIntent = PendingIntent.getActivity(
+                        this,
+                        0,
+                        intent,
+                        PendingIntent.FLAG_IMMUTABLE
+                    )
+                    getRemoteView(title!!, message!!,false)?.let { generateNotification(it,pendingIntent) }
 
                 }
                 "getInboxMessage" -> {
@@ -268,75 +289,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
-//    override fun onMessageReceived(remoteMessage: RemoteMessage) {
-//        super.onMessageReceived(remoteMessage)
-//        val from: String? = remoteMessage.getFrom()
-//        val data = remoteMessage.getData()
-//        val intent = Intent(this, MainActivity::class.java)
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-//        Log.d(TAG, "From: ${remoteMessage.from}")
-//        if (remoteMessage.notification != null) {
-//            Log.d(TAG, "Notification Message Body: ${remoteMessage.notification?.body}")
-//
-//            var builder: NotificationCompat.Builder =
-//                NotificationCompat.Builder(applicationContext, CHANNEL_ID)
-//                    .setVibrate(longArrayOf(1000, 1000, 1000, 1000))
-//                    .setSmallIcon(R.drawable.app_logo)
-//                    .setAutoCancel(true)
-//                    .setContentIntent(pendingIntent)
-//            builder = builder.setContent(
-//                getRemoteView(
-//                    remoteMessage.notification!!.title!!,
-//                    remoteMessage.notification!!.body!!
-//                )
-//            )
-//
-//            val notificationManager = NotificationManagerCompat.from(this)
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                val channel = NotificationChannel(
-//                    "default",
-//                    "Channel name",
-//                    NotificationManager.IMPORTANCE_HIGH
-//                ).apply {
-//                    description = "Channel description"
-//                }
-//                val notificationManager = getSystemService(NotificationManager::class.java)
-//                notificationManager.createNotificationChannel(channel)
-//                if (ActivityCompat.checkSelfPermission(
-//                        this,
-//                        Manifest.permission.POST_NOTIFICATIONS
-//                    ) != PackageManager.PERMISSION_GRANTED
-//                ) {
-//                    // TODO: Consider calling
-//                    //    ActivityCompat#requestPermissions
-//                    // here to request the missing permissions, and then overriding
-//                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                    //                                          int[] grantResults)
-//                    // to handle the case where the user grants the permission. See the documentation
-//                    // for ActivityCompat#requestPermissions for more details.
-//                    return
-//                }
-//                notificationManager.notify(0, builder.build())
-//            }
-//
-////     Create a coroutine scope
-////        CoroutineScope(Dispatchers.IO).launch {
-////            // Return the result to the main thread
-////            val result=getRemoteView(remoteMessage.notification!!.title!!,remoteMessage.notification!!.body!!)
-////            withContext(Dispatchers.Main) {
-////                // Send the notification
-////                Log.i(TAG,"New notification...")
-////                if (remoteMessage!=null){
-////                    generateDoctorNotification(result!!)
-////                }
-////            }
-////        }
-//
-//
-//        }
-//    }
-
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         Log.i(TAG, "onNewToken")
@@ -385,7 +337,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     }
 
-    fun generateDoctorNotification(remoteViews: RemoteViews,pendingIntent: PendingIntent) {
+    fun generateNotification(remoteViews: RemoteViews,pendingIntent: PendingIntent) {
 
         //channel id,name
         var builder: NotificationCompat.Builder =
@@ -406,7 +358,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     }
 
-    private fun getRemoteView(title: String, message: String): RemoteViews? {
+
+    private fun getRemoteView(title: String, message: String,criticalPost: Boolean): RemoteViews? {
         var remoteView: RemoteViews? = null
         when (title) {
             "doctors" -> {

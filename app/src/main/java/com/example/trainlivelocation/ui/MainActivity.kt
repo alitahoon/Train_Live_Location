@@ -152,6 +152,16 @@ class MainActivity : AppCompatActivity() {
                     bundle.putSerializable("patientLocation",Location_Response(latitude,longitude))
                     navController.navigate(R.id.doctorLocationInMap, bundle)
                 }
+                "AddPostFragment"->{
+                    val trainID: Int?=intent.getIntExtra("trainID",0)
+                    val postCritical: Boolean=intent.getBooleanExtra("critical",false)
+                    val postID: Int?=intent.getIntExtra("postId",0)
+                    val bundle = Bundle()
+                    bundle.putInt("patientLocation",trainID!!)
+                    bundle.putInt("patientLocation",postID!!)
+                    bundle.putBoolean("patientLocation",postCritical)
+                    navController.navigate(R.id.posts2, bundle)
+                }
             }
 
         }else{
