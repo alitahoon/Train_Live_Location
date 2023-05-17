@@ -461,6 +461,16 @@ class FirebaseService(
             }
     }
 
+    fun createUserNotificationToken(result: (Resource<String>) -> Unit){
+        firebaseMessaging.token.addOnCompleteListener(OnCompleteListener{
+            if (it.isSuccessful){
+                result.invoke(Resource.Success(it.result))
+            }else{
+                result.invoke(Resource.Failure("${it.exception}"))
+            }
+        })
+    }
+
     fun sendNewNotificationToTopic(
         notification: PushNotification, result: (Resource<String>) -> Unit
     ) {

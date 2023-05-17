@@ -243,6 +243,12 @@ object UserCaseModule  {
         return PushAddPostCommentNotification(userRepo)
     }
 
+    @Provides
+    fun ProvideCreateUserNotificationToken(userRepo: UserRepo): CreateUserNotificationToken {
+        return CreateUserNotificationToken(userRepo)
+    }
+
+
 
 
 

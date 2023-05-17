@@ -219,6 +219,10 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun createUserNotificationToken(result: (Resource<String>) -> Unit) {
+        firebaseService.createUserNotificationToken(result)
+    }
+
 
     override suspend fun setFirebaseServiceActivity(activity: AppCompatActivity) {
         Log.i(TAG, "setFirebaseServiceActivity")
