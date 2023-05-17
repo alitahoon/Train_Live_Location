@@ -70,16 +70,16 @@
     <string name="train_id">Train Id</string>
     <string name="_356">356</string>
     <string name="post_publish_failed">Post Publish Failed</string>
-    <string name="post_publish_successfully">تم النشر المنشور بنجاح</string>
-    <string name="location_shared_successfully">تمت مشاركة الموقع بنجاح</string>
-    <string name="ok">تم</string>
-    <string name="cancel">الغاء</string>
+    <string name="post_publish_successfully">post publish successfully</string>
+    <string name="location_shared_successfully">location shared successfully</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
     <string name="please_choose_operation">الرجاء اختيار العملية …</string>
     <string name="if_you_choose_to_track_location_you_will_be_you_will_be_able_to_track_train_location_but_if_you_choose_to_share_location_your_location_will_be_shared_as_train_location">
     if you choose to track location you will be you will be able to track train location but if you choose to share location your location will be shared as train location</string>
-    <string name="track_location">تتبع الموقع</string>
-    <string name="share_location">مشاركة الموقع</string>
-    <string name="write_a_comment">أكتب تعليقا</string>
+    <string name="track_location">Location Track</string>
+    <string name="share_location">Location Share</string>
+    <string name="write_a_comment">Write Comment</string>
     <string name="submit_">submit</string>
     <string name="please_wait_">please wait</string>
     <string name="send_code">send code</string>

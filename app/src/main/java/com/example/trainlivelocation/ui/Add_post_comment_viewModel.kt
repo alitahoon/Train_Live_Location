@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.*
 import com.example.domain.usecase.CreatePostComment
 import com.example.domain.usecase.GetCommentsForPostUsingId
+import com.example.domain.usecase.PushAddPostCommentNotification
 import com.example.domain.usecase.PushAddPostNotification
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +22,8 @@ import javax.inject.Inject
 class Add_post_comment_viewModel @Inject constructor(
     private val createPostComment: CreatePostComment,
     private val getCommentsForPostUsingId: GetCommentsForPostUsingId,
-    private val context: Context,
+    private val pushAddPostCommentNotification: PushAddPostCommentNotification,
+    private val context: Context
 ) : ViewModel(){
 
     var btnSendCommentClicked= SingleLiveEvent<Boolean>()
@@ -35,6 +37,9 @@ class Add_post_comment_viewModel @Inject constructor(
 
     private val _userData: MutableLiveData<UserResponseItem?> = MutableLiveData(null)
     val userData: LiveData<UserResponseItem?> = _userData
+
+    private val _postCommentNotification: MutableLiveData<Resource<String>> = MutableLiveData(null)
+    val postCommentNotification: LiveData<Resource<String>> = _postCommentNotification
 
 
 
@@ -67,6 +72,15 @@ class Add_post_comment_viewModel @Inject constructor(
                 }
             }
             child1.join()
+        }
+    }
+
+    fun sendPostCommentNotification(notification: PushPostCommentNotification){
+        _postCommentNotification.value=Resource.Loading
+        viewModelScope.launch {
+            pushAddPostCommentNotification(notification){
+                _postCommentNotification.value=it
+            }
         }
     }
 

@@ -108,7 +108,7 @@ class Home : Fragment() ,Train_Dialog_Listener{
 
         homeViewModel?.postsBtn?.observe(viewLifecycleOwner, Observer {
             if (it==true){
-                findNavController().navigate(HomeDirections.actionHomeToPosts())
+                findNavController().navigate(HomeDirections.actionHomeToPosts(null))
             }
         })
 

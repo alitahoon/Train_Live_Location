@@ -1,6 +1,7 @@
 package com.example.trainlivelocation.ui
 
 import Resource
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -9,6 +10,7 @@ import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
@@ -19,6 +21,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.ashokvarma.bottomnavigation.BottomNavigationBar
 import com.ashokvarma.bottomnavigation.BottomNavigationItem
 import com.bumptech.glide.Glide
+import com.example.domain.entity.AddPostNotificationData
 import com.example.domain.entity.DoctorNotificationData
 import com.example.domain.entity.Location_Response
 import com.example.domain.entity.UserResponseItem
@@ -34,6 +37,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val mainActivityViewModel: MainActivityViewModel? by viewModels()
     private val TAG: String? = "MainActivity"
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -102,6 +106,9 @@ class MainActivity : AppCompatActivity() {
                     R.id.home2 -> {
                         setHeader("home")
                     }
+                    R.id.passengers->{
+                        setHeader("Passengers")
+                    }
                 }
             }
 
@@ -146,6 +153,7 @@ class MainActivity : AppCompatActivity() {
         if (fragmentToLoad != null) {
             when (fragmentToLoad) {
                 "DoctorLocationInMap" -> {
+                    setHeader("Emergency")
                     val latitude: Double=intent.getDoubleExtra("doctorLocationLatitude",0.0)
                     val longitude: Double=intent.getDoubleExtra("doctorLocationLongitude",0.0)
                     val bundle = Bundle()
@@ -153,13 +161,15 @@ class MainActivity : AppCompatActivity() {
                     navController.navigate(R.id.doctorLocationInMap, bundle)
                 }
                 "AddPostFragment"->{
-                    val trainID: Int?=intent.getIntExtra("trainID",0)
-                    val postCritical: Boolean=intent.getBooleanExtra("critical",false)
-                    val postID: Int?=intent.getIntExtra("postId",0)
+                    setHeader("Posts")
+//                    val trainID=intent.getIntExtra("trainID",0)
+//                    Log.i(TAG,"trainID : ${trainID}")
+//                    val postCritical=intent.getBooleanExtra("critical",false)
+                    val notificationModel=intent.getSerializableExtra("notificationModel")
                     val bundle = Bundle()
-                    bundle.putInt("patientLocation",trainID!!)
-                    bundle.putInt("patientLocation",postID!!)
-                    bundle.putBoolean("patientLocation",postCritical)
+                    bundle.putSerializable("postNotificationModel",notificationModel)
+//                    bundle.putInt("patientLocation",trainID!!)
+//                    bundle.putBoolean("patientLocation",postCritical)
                     navController.navigate(R.id.posts2, bundle)
                 }
             }

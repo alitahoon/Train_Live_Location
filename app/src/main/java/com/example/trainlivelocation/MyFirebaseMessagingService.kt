@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import com.example.domain.entity.AddPostNotificationData
 import com.example.domain.entity.NotificatonToken
 import com.example.domain.usecase.GetDataFromSharedPrefrences
 import com.example.domain.usecase.SendUserNotificationTokenToFirebase
@@ -95,7 +96,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             // Return the result to the main thread
             val result = getRemoteView(
                 remoteMessage!!.notification!!.title!!,
-                remoteMessage.notification!!.body!!,false
+                remoteMessage.notification!!.body!!, false
             )
             withContext(Dispatchers.Main) {
                 // Send the notification
@@ -106,7 +107,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             }
         }
     }
-
 
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -122,15 +122,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             var title: String? = remoteMessage.getData()["title"]
             var message: String? = remoteMessage.getData()["message"]
 
-            when (title!!){
+            when (title!!) {
                 "doctors" -> {
                     //create doctors notification
                     var longitude = remoteMessage.getData()["longitude"]!!.toDouble()
                     var latitude = remoteMessage.getData()["latitude"]!!.toDouble()
                     val intent = Intent(this, MainActivity::class.java)
                     intent.putExtra("FRAGMENT_NAME", "DoctorLocationInMap")
-                    intent.putExtra("doctorLocationLongitude",longitude)
-                    intent.putExtra("doctorLocationLatitude",latitude)
+                    intent.putExtra("doctorLocationLongitude", longitude)
+                    intent.putExtra("doctorLocationLatitude", latitude)
 
                     val pendingIntent = PendingIntent.getActivity(
                         this,
@@ -138,7 +138,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                         intent,
                         PendingIntent.FLAG_IMMUTABLE
                     )
-                    getRemoteView(title!!, message!!,false)?.let { generateNotification(it,pendingIntent) }
+                    getRemoteView(title!!, message!!, false)?.let {
+                        generateNotification(
+                            it,
+                            pendingIntent
+                        )
+                    }
                 }
                 "stationAlarm" -> {
 
@@ -153,24 +158,30 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     //create post comment notification
 
                 }
-                "AddedPostNotification" -> {
-                    //create post comment notification
-                    //create station alarm notification
-                    var trainID=remoteMessage.getData()["trainID"]!!.toInt()
-                    var criticalPost=remoteMessage.getData()["critical"]!!.toBoolean()
-                    var postId=remoteMessage.getData()["postId"]!!.toBoolean()
+                "postAdded" -> {
+                    //create post  notification
+                    Log.d(TAG, "post  notification ")
+                    var trainID = remoteMessage.getData()["trainID"]!!.toInt()
+                    var criticalPost = remoteMessage.getData()["critical"]!!.toBoolean()
+                    var id = remoteMessage.getData()["postId"]!!.toInt()
                     val intent = Intent(this, MainActivity::class.java)
                     intent.putExtra("FRAGMENT_NAME", "AddPostFragment")
-                    intent.putExtra("trainID",trainID)
-                    intent.putExtra("critical",criticalPost)
-                    intent.putExtra("postId",postId)
+//                    intent.putExtra("trainID", trainID)
+                    intent.putExtra("notificationModel", AddPostNotificationData(title,message!!,trainID,criticalPost,id))
+//                    intent.putExtra("critical", criticalPost)
+                    Log.i(TAG,"Post ID ${id::class.simpleName}")
                     val pendingIntent = PendingIntent.getActivity(
                         this,
                         0,
                         intent,
                         PendingIntent.FLAG_IMMUTABLE
                     )
-                    getRemoteView(title!!, message!!,false)?.let { generateNotification(it,pendingIntent) }
+                    getRemoteView(title!!, message!!, false)?.let {
+                        generateNotification(
+                            it,
+                            pendingIntent
+                        )
+                    }
 
                 }
                 "getInboxMessage" -> {
@@ -190,57 +201,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // message, here is where that should be initiated. See sendNotification method below.
     }
 
-    //    override fun onMessageReceived(remoteMessage: RemoteMessage) {
-//        super.onMessageReceived(remoteMessage)
-//        val from: String? = remoteMessage.from
-//        val data = remoteMessage.data
-//
-//        Log.d(TAG, "From: $from")
-//        if (remoteMessage.notification != null) {
-//            Log.d(TAG, "Notification Message Body: ${remoteMessage.notification?.body}")
-//            val intent = Intent(this, MainActivity::class.java)
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//            val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-//
-//            var builder: NotificationCompat.Builder =
-//                NotificationCompat.Builder(applicationContext, CHANNEL_ID)
-//                    .setVibrate(longArrayOf(1000, 1000, 1000, 1000))
-//                    .setSmallIcon(R.drawable.app_logo)
-//                    .setAutoCancel(true)
-//                    .setContentIntent(pendingIntent)
-//            builder = builder.setContent(
-//                getRemoteView(
-//                    remoteMessage.notification!!.title!!,
-//                    remoteMessage.notification!!.body!!
-//                )
-//            )
-//
-//            val notificationManager = NotificationManagerCompat.from(this)
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                val channel = NotificationChannel(
-//                    "default",
-//                    "Channel name",
-//                    NotificationManager.IMPORTANCE_HIGH
-//                ).apply {
-//                    description = "Channel description"
-//                }
-//                val notificationManager = getSystemService(NotificationManager::class.java)
-//                notificationManager.createNotificationChannel(channel)
-//                if (ActivityCompat.checkSelfPermission(
-//                        this,
-//                        Manifest.permission.POST_NOTIFICATIONS
-//                    ) != PackageManager.PERMISSION_GRANTED
-//                ) {
-//                    notificationManager.notify(0, builder.build())
-//                    return
-//                }
-//            }
-//        } else if (!data.isNullOrEmpty()) {
-//            // Handle message with only data payload
-//            Log.d(TAG, "Data payload: $data")
-//            HandleDataPayload(data)
-//        }
-//    }
     private fun HandleDataPayload(data: MutableMap<String, String>) {
         val title = data["title"]
         val message = data["message"]
@@ -321,7 +281,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     }
 
-    fun generateNotification(remoteViews: RemoteViews,pendingIntent: PendingIntent) {
+    fun generateNotification(remoteViews: RemoteViews, pendingIntent: PendingIntent) {
 
         //channel id,name
         var builder: NotificationCompat.Builder =
@@ -343,7 +303,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
 
-    private fun getRemoteView(title: String, message: String,criticalPost: Boolean): RemoteViews? {
+    private fun getRemoteView(title: String, message: String, criticalPost: Boolean): RemoteViews? {
         var remoteView: RemoteViews? = null
         when (title) {
             "doctors" -> {
@@ -353,9 +313,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 remoteView.setTextViewText(R.id.doctor_notification_title, title)
                 remoteView.setTextViewText(R.id.doctor_notification_content, message)
             }
-            "stationAlarm" -> {
-                //create station alarm notification
-
+            "postAdded" -> {
+                //create post  notification
+                remoteView =
+                    RemoteViews("com.example.trainlivelocation", R.layout.add_post_notification)
+                remoteView.setTextViewText(R.id.doctor_notification_title, title)
+                remoteView.setTextViewText(R.id.doctor_notification_content, message)
 
             }
             "stationHistory" -> {

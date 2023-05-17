@@ -8,6 +8,7 @@ package com.example.trainlivelocation.ui
 
 import Resource
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,20 +16,33 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
+import com.example.domain.entity.AddPostNotificationData
 import com.example.domain.entity.PostModelResponse
 import com.example.domain.entity.UserResponseItem
 import com.example.trainlivelocation.databinding.FragmentAllPostsBinding
 import com.example.trainlivelocation.utli.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class AllPosts : Fragment() , PostListener, FragmentLifecycle,DeletePostListener {
     private val TAG:String?="AllPostsFragment"
     private var flagFirstTimeRunning:Boolean=false
     private lateinit var binding: FragmentAllPostsBinding
+    private lateinit var notificationModel:AddPostNotificationData
     private val allPostFragmentViewmodel : AllPostsViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        allPostFragmentViewmodel.getPosts()
+        arguments?.let {
+            notificationModel = it.getSerializable("postNotificationModel") as AddPostNotificationData
+            Log.i(TAG,"postNotificationModel ${notificationModel}")
+            if (notificationModel != null){
+                scrollToLastPost=true
+            }
+        }
 
     }
 
@@ -41,11 +55,11 @@ class AllPosts : Fragment() , PostListener, FragmentLifecycle,DeletePostListener
                 this.viemodel=allPostFragmentViewmodel
             }
         Log.i(TAG,"from all posts")
-        allPostFragmentViewmodel.getPosts()
         binding.adapter=setAdapterItems()
         allPostFragmentViewmodel.getUserDataFromsharedPreference()
         setObserver()
         flagFirstTimeRunning=true
+
         return binding.root
     }
 
@@ -88,11 +102,23 @@ class AllPosts : Fragment() , PostListener, FragmentLifecycle,DeletePostListener
                         Log.i(TAG,"${it.data}")
                         adapter.setData(it.data!!)
                     }else{
+
+                        Log.i(TAG,"${it.data}")
+                        adapter.setData(it.data)
                         binding.allPostsPostShimmerLayout.setVisibility(View.GONE)
                         binding.allPostsEmptyPostLayout.setVisibility(View.GONE)
                         binding.allPostsRCVPosts.setVisibility(View.VISIBLE)
-                        Log.i(TAG,"${it.data}")
-                        adapter.setData(it.data!!)
+//                        if (scrollToLastPost) {
+//                            val targetPosition = binding.allPostsRCVPosts.adapter?.itemCount?.let { itemCount ->
+//                                if (itemCount > 0) itemCount - 1 else RecyclerView.NO_POSITION
+//                            } ?: RecyclerView.NO_POSITION
+//
+//                            if (targetPosition != RecyclerView.NO_POSITION) {
+//                                Handler().postDelayed({
+//                                    binding.allPostsRCVPosts.smoothScrollToPosition(targetPosition)
+//                                }, 3000) // Delay for 1 second (adjust the delay as needed)
+//                            }
+//                        }
                     }
                 }
                 is Resource.Failure->{
@@ -109,6 +135,14 @@ class AllPosts : Fragment() , PostListener, FragmentLifecycle,DeletePostListener
 
     companion object {
         var userModel: UserResponseItem?=null
+        var scrollToLastPost:Boolean=false
+        fun newInstance(myObject: AddPostNotificationData): AllPosts {
+            val fragment = AllPosts()
+            val args = Bundle()
+            args.putSerializable("postNotificationModel", myObject)
+            fragment.arguments = args
+            return fragment
+        }
     }
 
     override fun OnCommentClickListener(post: PostModelResponse) {
@@ -155,4 +189,5 @@ class AllPosts : Fragment() , PostListener, FragmentLifecycle,DeletePostListener
             toast("Failed To Delete The Post")
         }
     }
+
 }

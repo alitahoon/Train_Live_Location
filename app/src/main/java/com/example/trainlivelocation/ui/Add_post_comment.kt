@@ -9,15 +9,9 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.example.domain.entity.CommentRequest
-import com.example.domain.entity.PostCommentsResponseItem
-import com.example.domain.entity.PostModelResponse
-import com.example.domain.entity.UserResponseItem
+import com.example.domain.entity.*
 import com.example.trainlivelocation.databinding.FragmentAddPostCommentBinding
-import com.example.trainlivelocation.utli.CommentCustomAdapter
-import com.example.trainlivelocation.utli.CommentListener
-import com.example.trainlivelocation.utli.displaySnackbarSuccess
-import com.example.trainlivelocation.utli.toast
+import com.example.trainlivelocation.utli.*
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -106,7 +100,29 @@ class Add_post_comment(var post: PostModelResponse) : BottomSheetDialogFragment(
                                 binding.addPostTxtComment.setText("")
                                 Log.i(TAG, "${it.data}")
                                 addPostCommentFragmentViewModel.getPostComments(post.id)
-
+                                //getToken
+                                val usermodel =getuserModelFromSharedPreferences(requireContext())
+                                //send notification
+                                addPostCommentFragmentViewModel.sendPostCommentNotification(
+                                    PushPostCommentNotification(
+                                        AddPostCommentNotificationData(
+                                            "New Post Comment",
+                                            it.data.content,
+                                            it.data.adminId,
+                                            it.data.content,
+                                            post.critical,
+                                            post.date,
+                                            post.id,
+                                            post.img,
+                                            post.imgId,
+                                            post.trainNumber,
+                                            post.userId,
+                                            post.userName,
+                                            post.userPhone
+                                        )
+                                    ,usermodel.userToken
+                                    )
+                                )
 
                             }
                             is Resource.Failure -> {
@@ -143,6 +159,7 @@ class Add_post_comment(var post: PostModelResponse) : BottomSheetDialogFragment(
                         binding.addPostCommentShimmer.setVisibility(View.INVISIBLE)
                         Log.i(TAG, "${it.data}")
                         adapter.setData(it.data)
+
                     } else {
                         binding.addPostRCVComment.setVisibility(View.VISIBLE)
                         binding.addPostCommentShimmer.setVisibility(View.INVISIBLE)

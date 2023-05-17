@@ -55,7 +55,11 @@
             app:popExitAnim="@anim/pop_exit" />
         <action
             android:id="@+id/action_home2_to_passengers"
-            app:destination="@id/passengers" />
+            app:destination="@id/passengers"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
         <action
             android:id="@+id/action_home2_to_doctorLocationInMap"
             app:destination="@id/doctorLocationInMap"
@@ -117,7 +121,13 @@
     <fragment
         android:id="@+id/posts2"
         android:name="com.example.trainlivelocation.ui.Posts"
-        android:label="Posts" />
+        android:label="Posts" >
+        <argument
+            android:name="postNotificationModel"
+            app:argType="com.example.domain.entity.AddPostNotificationData"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
     <fragment
         android:id="@+id/trainLocationInMap"
         android:name="com.example.trainlivelocation.ui.TrainLocationInMap"

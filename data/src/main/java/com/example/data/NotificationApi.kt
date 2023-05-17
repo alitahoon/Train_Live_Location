@@ -1,6 +1,7 @@
 package com.example.data
 
 import com.example.domain.entity.PushNotification
+import com.example.domain.entity.PushPostCommentNotification
 import com.example.domain.entity.PushPostNotification
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -25,5 +26,12 @@ interface NotificationApi {
     @POST("fcm/send")
     suspend fun postAddedPostNotification(
         @Body notification: PushPostNotification
+    ): Response<ResponseBody>
+
+
+    @Headers("Authorization: key=${API_KEY}", "Content-Type: $CONTENT_TYPE")
+    @POST("fcm/send")
+    suspend fun postAddedPostCommentNotification(
+        @Body notification: PushPostCommentNotification
     ): Response<ResponseBody>
 }

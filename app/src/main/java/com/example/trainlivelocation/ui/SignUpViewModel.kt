@@ -27,7 +27,8 @@ class SignUpViewModel @Inject constructor(
     private val application: Application,
     private val context: Context,
     private val sendImageToFirebaseStorage: SendImageToFirebaseStorage,
-    private val sendUserNotificationTokenToFirebase: SendUserNotificationTokenToFirebase
+    private val sendUserNotificationTokenToFirebase: SendUserNotificationTokenToFirebase,
+
 ) : ViewModel() {
     private var selectedJop: String? = ""
     private val TAG: String? = "RegisterViewModel"
@@ -100,7 +101,7 @@ class SignUpViewModel @Inject constructor(
     private val _userDataMuta: MutableLiveData<Resource<UserResponseItem>?> = MutableLiveData(null)
     val userDataLive: LiveData<Resource<UserResponseItem>?> = _userDataMuta
 
-    fun sendUserDataToApi(userPhone: String?,stationId:Int?) {
+    fun sendUserDataToApi(userPhone: String?,stationId:Int?,userToken:String) {
         //Start send user data to api
         _userDataMuta.value = Resource.Loading
         val newUser=RegisterUser(
@@ -113,7 +114,8 @@ class SignUpViewModel @Inject constructor(
             userPassword?.trim()!!,
             userPhone?.trim()!!,
             "normal",
-            stationId!!
+            stationId!!,
+            userToken
         )
         Log.i(TAG,"${newUser}")
         viewModelScope.launch {

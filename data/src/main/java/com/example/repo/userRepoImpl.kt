@@ -184,7 +184,8 @@ class userRepoImpl(
         var res = apiService.GetAllPosts()
         if (res.isSuccessful) {
             if (res.body() != null) {
-                result.invoke(Resource.Success(res.body()!!))
+
+                result.invoke(Resource.Success(ArrayList(res.body()!!.reversed().toMutableList())))
             } else {
                 result.invoke((Resource.Failure("getAllPostsFromAPI -> Error response body = null :${res.body()}")))
             }
@@ -192,6 +193,13 @@ class userRepoImpl(
             result.invoke((Resource.Failure("getAllPostsFromAPI -> ${res.message()}")))
         }
 
+    }
+
+    override suspend fun pushAddPostCommentNotification(
+        notification: PushPostCommentNotification,
+        result: (Resource<String>) -> Unit
+    ) {
+        firebaseService.sendNewNotificationToAddedPostCommentTopic(notification,result)
     }
 
 

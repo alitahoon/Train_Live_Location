@@ -1,5 +1,6 @@
 package com.example.trainlivelocation.di
 
+import com.example.domain.entity.PushPostCommentNotification
 import com.example.domain.repo.UserRepo
 import com.example.domain.usecase.*
 import dagger.Module
@@ -236,6 +237,10 @@ object UserCaseModule  {
     @Provides
     fun ProvidePushAddPostNotification(userRepo: UserRepo): PushAddPostNotification {
         return PushAddPostNotification(userRepo)
+    }
+   @Provides
+    fun ProvidePushAddPostCommentNotification(userRepo: UserRepo): PushAddPostCommentNotification {
+        return PushAddPostCommentNotification(userRepo)
     }
 
 

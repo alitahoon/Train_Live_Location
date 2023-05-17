@@ -479,5 +479,15 @@ class FirebaseService(
         }
     }
 
+    fun sendNewNotificationToAddedPostCommentTopic(
+        notification: PushPostCommentNotification, result: (Resource<String>) -> Unit
+    ) {
+        var apiManager:ApiManager=ApiManager()
+        CoroutineScope(Dispatchers.Main).launch {
+            apiManager.postCommentAddedNotification(notification,result)
+        }
+    }
+
+
 
 }
