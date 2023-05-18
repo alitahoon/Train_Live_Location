@@ -18,6 +18,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.example.domain.entity.AddPostNotificationData
 import com.example.domain.entity.NotificatonToken
+import com.example.domain.repo.UserRepo
 import com.example.domain.usecase.GetDataFromSharedPrefrences
 import com.example.domain.usecase.SendUserNotificationTokenToFirebase
 import com.example.trainlivelocation.ui.CriticalPost
@@ -33,36 +34,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     private val CHANNEL_ID = "notification_name"
     private val CHANNEL_NAME = "com.example.trainlivelocation"
 
-    @Inject
-    lateinit var sendUserNotificationTokenToFirebase: SendUserNotificationTokenToFirebase
 
-    @Inject
-    lateinit var getDataFromSharedPrefrences: GetDataFromSharedPrefrences
-//    override fun onMessageReceived(remoteMessage: RemoteMessage) {
-//        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-//        super.onMessageReceived(remoteMessage)
-//        val from: String? = remoteMessage.getFrom()
-//        val data = remoteMessage.getData()
-//        Log.d(TAG, "From: ${from} Data:${data}")
-//
-///*----------------------- Show a notification based on the message -------------------- */
-//        if (remoteMessage.notification != null){
-//            if (tiramisuPermissionsCheck()) {
-//                // Create the actual notification
-//                Log.d(TAG, "title: " + remoteMessage.notification!!.title!!)
-//                Log.d(TAG, "body: " + remoteMessage.notification!!.body!!)
-//
-//                getRemoteView(remoteMessage.notification!!.title!!,remoteMessage.notification!!.body!!)?.let {
-//                    generateDoctorNotification(
-//                        it
-//                    )
-//                }
-//
-//            }
-//        }
-//
-//
-//    }
 
     private fun tiramisuPermissionsCheck(): Boolean {
         // If we are above level 33, check permissions
@@ -76,6 +48,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
     }
 
+    override fun onDeletedMessages() {
+        super.onDeletedMessages()
+        Log.i(TAG,"message was deleted")
+    }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(notificationManager: NotificationManager) {
         val channelName = "TutorialNotificationsChannel"
@@ -91,22 +67,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         notificationManager.createNotificationChannel(channel)
     }
 
-    private fun handleNow(remoteMessage: RemoteMessage?) {
-        CoroutineScope(Dispatchers.IO).launch {
-            // Return the result to the main thread
-            val result = getRemoteView(
-                remoteMessage!!.notification!!.title!!,
-                remoteMessage.notification!!.body!!, false
-            )
-            withContext(Dispatchers.Main) {
-                // Send the notification
-                Log.i(TAG, "New notification...")
-                if (remoteMessage != null) {
-//                    generateDoctorNotification(result!!)
-                }
-            }
-        }
-    }
+
 
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -235,49 +196,49 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        Log.i(TAG, "onNewToken")
+        Log.i(TAG, "onNewToken ---> ${token}")
         // Handle FCM token refresh here
-        CoroutineScope(Dispatchers.Main).launch {
-            getDataFromSharedPrefrences("userToken") {
-                when (it) {
-                    is Resource.Loading -> {
-                        Log.i(TAG, "Waiting for user data...")
-                    }
-                    is Resource.Success -> {
-                        if (it != null) {
-                            CoroutineScope(Dispatchers.Main).launch {
-                                sendUserNotificationTokenToFirebase(
-                                    NotificatonToken(
-                                        it.data.phone,
-                                        it.data.name,
-                                        token
-                                    )
-                                ) {
-                                    when (it) {
-                                        is Resource.Loading -> {
-                                            Log.i(TAG, "sending token...")
-                                        }
-                                        is Resource.Success -> {
-                                            Log.i(TAG, "${it.data}")
-                                        }
-                                        is Resource.Failure -> {
-                                            Log.i(TAG, "${it.error}")
-                                        }
-                                        else -> {
-
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    is Resource.Failure -> {
-                        Log.i(TAG, "${it.error}")
-                    }
-                    else -> {}
-                }
-            }
-        }
+//        CoroutineScope(Dispatchers.Main).launch {
+//            getDataFromSharedPrefrences("userToken") {
+//                when (it) {
+//                    is Resource.Loading -> {
+//                        Log.i(TAG, "Waiting for user data...")
+//                    }
+//                    is Resource.Success -> {
+//                        if (it != null) {
+//                            CoroutineScope(Dispatchers.Main).launch {
+//                                sendUserNotificationTokenToFirebase(
+//                                    NotificatonToken(
+//                                        it.data.phone,
+//                                        it.data.name,
+//                                        token
+//                                    )
+//                                ) {
+//                                    when (it) {
+//                                        is Resource.Loading -> {
+//                                            Log.i(TAG, "sending token...")
+//                                        }
+//                                        is Resource.Success -> {
+//                                            Log.i(TAG, "${it.data}")
+//                                        }
+//                                        is Resource.Failure -> {
+//                                            Log.i(TAG, "${it.error}")
+//                                        }
+//                                        else -> {
+//
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                    is Resource.Failure -> {
+//                        Log.i(TAG, "${it.error}")
+//                    }
+//                    else -> {}
+//                }
+//            }
+//        }
 
     }
 

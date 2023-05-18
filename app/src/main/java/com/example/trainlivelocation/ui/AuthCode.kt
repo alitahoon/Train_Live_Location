@@ -1,9 +1,11 @@
 package com.example.trainlivelocation.ui
 
+import Resource
 import android.animation.Animator
 import android.animation.Animator.AnimatorListener
 import android.graphics.Color
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Message
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -20,6 +22,7 @@ import com.chaos.view.PinView
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentAuthCodeBinding
 import com.example.trainlivelocation.databinding.FragmentHomeBinding
+import com.example.trainlivelocation.utli.toast
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -50,10 +53,49 @@ class AuthCode : Fragment() {
             Log.e(TAG, code!!)
         }
         setObservers()
+        // Create a CountDownTimer instance
+        val timer = object : CountDownTimer(60000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                // This method will be called every second (1000 milliseconds) during the countdown
+                val secondsRemaining = millisUntilFinished / 1000
+                // Update UI or perform any desired actions with the remaining time
+                // For example, update a TextView with the remaining seconds:
+                binding!!.resendcodetimer.text = secondsRemaining.toString()+" seconds"
+            }
+
+            override fun onFinish() {
+                // This method will be called when the countdown is finished
+                // Perform any desired actions when the timer finishes
+                binding!!.resendcodetimer.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null)
+                binding!!.resendcodetimer.text = "Resend Code..."
+                binding!!.resendcodetimer.isEnabled = true
+            }
+        }.start()
         return binding!!.root
     }
 
     private fun setObservers() {
+        authCodeViewmodel!!.resendCodeClicked.observe(viewLifecycleOwner, Observer {
+            if (it==true){
+                authCodeViewmodel!!.resendOtbCode("+20"+args.userPhone)
+                authCodeViewmodel!!.resendCode.observe(viewLifecycleOwner, Observer {
+                    when(it){
+                        is Resource.Loading->{
+                            toast("Waiting for resending code...")
+                        }
+                        is Resource.Success->{
+                            toast("Code Resending success...")
+                        }
+                        is Resource.Failure->{
+                            toast("Code Resending Failed...")
+                        }
+                        else -> {
+
+                        }
+                    }
+                })
+            }
+        })
         authCodeViewmodel?.btnSubmitClicked!!.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 //start loading

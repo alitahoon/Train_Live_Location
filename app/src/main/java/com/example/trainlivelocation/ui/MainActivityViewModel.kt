@@ -26,32 +26,14 @@ class MainActivityViewModel @Inject constructor(
     private val sharedPrefFile = "UserToken"
     var menuBtnClicked= SingleLiveEvent<Boolean>()
 
-    private val _userData: MutableLiveData<UserResponseItem?> = MutableLiveData(null)
-    val userData: LiveData<UserResponseItem?> = _userData
+
 
 
     private val _userProfileImageUri: MutableLiveData<Resource<Uri>?> = MutableLiveData(null)
     val userProfileImageUri: LiveData<Resource<Uri>?> = _userProfileImageUri
 
 
-    fun getUserDataFromsharedPreference() {
-        val userSharedPreferences: SharedPreferences =
-            context.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        _userData.postValue(
-            UserResponseItem(
-            userSharedPreferences.getString("userAddress","empty")!!,
-            userSharedPreferences.getString("userBirthdate","empty")!!,
-            userSharedPreferences.getString("userEmail","empty")!!,
-            userSharedPreferences.getString("userGender","empty")!!,
-            userSharedPreferences.getInt("userId",0),
-            userSharedPreferences.getString("userJop","empty")!!,
-            userSharedPreferences.getString("userName","empty")!!,
-            userSharedPreferences.getString("userPassword","empty")!!,
-            userSharedPreferences.getString("userPhone","empty")!!,
-            userSharedPreferences.getString("userRole","empty")!!,
-            userSharedPreferences.getInt("userStationId",0)
-        ))
-    }
+
 
     fun getProfileImage(imageRef:String?){
         _userProfileImageUri.value=Resource.Loading

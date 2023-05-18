@@ -27,8 +27,7 @@ class SignUpViewModel @Inject constructor(
     private val application: Application,
     private val context: Context,
     private val sendImageToFirebaseStorage: SendImageToFirebaseStorage,
-    private val sendUserNotificationTokenToFirebase: SendUserNotificationTokenToFirebase,
-
+    private val createUserNotificationToken: CreateUserNotificationToken
 ) : ViewModel() {
     private var selectedJop: String? = ""
     private val TAG: String? = "RegisterViewModel"
@@ -49,11 +48,14 @@ class SignUpViewModel @Inject constructor(
     var datePickerTxtClicked = SingleLiveEvent<Boolean>()
     var stationTxtClicked = SingleLiveEvent<Boolean>()
 
-    private var _sendingProfileImageResult:MutableLiveData<Resource<String>?> = MutableLiveData(null)
-    var sendingProfileImageResult:LiveData<Resource<String>?> = _sendingProfileImageResult
+    private var _sendingProfileImageResult: MutableLiveData<Resource<String>?> =
+        MutableLiveData(null)
+    var sendingProfileImageResult: LiveData<Resource<String>?> = _sendingProfileImageResult
 
-    private var _sendingNotificationToken:MutableLiveData<Resource<String?>> = MutableLiveData(null)
-    var sendingNotificationToken:LiveData<Resource<String?>> = _sendingNotificationToken
+
+    private var _generateNotificationToken: MutableLiveData<Resource<String?>> =
+        MutableLiveData(null)
+    var generateNotificationToken: LiveData<Resource<String?>> = _generateNotificationToken
 
     companion object {
         private var layoutCounter: Int? = 0
@@ -66,6 +68,7 @@ class SignUpViewModel @Inject constructor(
             nextBtnClicked.postValue(true)
             layoutCounter = layoutCounter!!.plus(1)
         } else {
+            layoutCounter = 0
             submitBtnClicked.postValue(true)
         }
     }
@@ -73,7 +76,8 @@ class SignUpViewModel @Inject constructor(
     fun onDatePickerTxtClicked(view: View) {
         datePickerTxtClicked.postValue(true)
     }
-    fun onStationTxtClicked(view: View){
+
+    fun onStationTxtClicked(view: View) {
         stationTxtClicked.postValue(true)
     }
 
@@ -89,6 +93,15 @@ class SignUpViewModel @Inject constructor(
         activity = baseActivity
     }
 
+    fun generateUserNotificationToken() {
+        _generateNotificationToken.value = Resource.Loading
+        viewModelScope.launch {
+            createUserNotificationToken() {
+                _generateNotificationToken.value = it
+            }
+        }
+    }
+
 
     //handel jop spinner listener
     val selectedItemFromSpinner: LiveData<String> = MediatorLiveData<String>().apply {
@@ -101,78 +114,82 @@ class SignUpViewModel @Inject constructor(
     private val _userDataMuta: MutableLiveData<Resource<UserResponseItem>?> = MutableLiveData(null)
     val userDataLive: LiveData<Resource<UserResponseItem>?> = _userDataMuta
 
-    fun sendUserDataToApi(userPhone: String?,stationId:Int?,userToken:String) {
+    fun sendUserDataToApi(userPhone: String?, stationId: Int?, userToken: String) {
         //Start send user data to api
         _userDataMuta.value = Resource.Loading
-        val newUser=RegisterUser(
-            userAddress!!,
-            userBirthDate!!,
-            userEmail?.trim()!!,
-            gender_redio_checked.value!!,
-            selectedJop!!,
-            userName?.trim()!!,
-            userPassword?.trim()!!,
-            userPhone?.trim()!!,
-            "normal",
-            stationId!!,
-            userToken
-        )
-        Log.i(TAG,"${newUser}")
+        if (userAddress != null || userBirthDate != null || userEmail != null || gender_redio_checked.value != null || selectedJop != null
+            || userPassword != null || userPhone != null || userToken != null
+        ) {
+            val newUser = RegisterUser(
+                userAddress!!,
+                userBirthDate!!,
+                userEmail?.trim()!!,
+                gender_redio_checked.value!!,
+                selectedJop!!,
+                userName?.trim()!!,
+                userPassword?.trim()!!,
+                userPhone?.trim()!!,
+                "normal",
+                userToken
+            )
+            Log.i(TAG, "${newUser}")
+            viewModelScope.launch {
+                var result = addNewUser(
+                    newUser
+                ) {
+                    _userDataMuta.value = it
+                }
+            }
+        }else{
+            _userDataMuta.value=Resource.Failure("Please Enter  All Fields...")
+        }
+
+    }
+
+    //handle radio check button
+
+    fun onClickMale() {
+        gender_redio_checked.postValue("Male")
+        Log.i(TAG, "${gender_redio_checked.value!!}")
+    }
+
+    fun onClickFemale() {
+        gender_redio_checked.postValue("Female")
+        Log.i(TAG, "${gender_redio_checked.value!!}")
+    }
+
+
+    fun uploadProfileImage(profileImageUri: Uri, userPhone: String?) {
+        _sendingProfileImageResult.value = Resource.Loading
         viewModelScope.launch {
-            var result = addNewUser(
-               newUser
-            ) {
-                _userDataMuta.value = it
+            sendImageToFirebaseStorage(profileImageUri, "profileImages/${userPhone!!}") {
+                Log.i(TAG, "${it}")
+                _sendingProfileImageResult.value = it
             }
 
-            //End send user data to api
         }
     }
 
-        //handle radio check button
+    fun incrementLayoutCounter() {
+        layoutCounter?.plus(1)
+    }
 
-        fun onClickMale() {
-            gender_redio_checked.postValue("Male")
-            Log.i(TAG, "${gender_redio_checked.value!!}")
+    val clickListener = object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(
+            parent: AdapterView<*>?,
+            view: View?,
+            position: Int,
+            id: Long
+        ) {
+            selectedJop = parent?.getItemAtPosition(position) as String
         }
 
-        fun onClickFemale() {
-            gender_redio_checked.postValue("Female")
-            Log.i(TAG, "${gender_redio_checked.value!!}")
+        override fun onNothingSelected(p0: AdapterView<*>?) {
         }
+    }
 
-
-        fun uploadProfileImage(profileImageUri: Uri, userPhone: String?) {
-            _sendingProfileImageResult.value=Resource.Loading
-            viewModelScope.launch {
-                sendImageToFirebaseStorage(profileImageUri, "profileImages/${userPhone!!}") {
-                    Log.i(TAG, "${it}")
-                    _sendingProfileImageResult.value=it
-                }
-
-            }
-        }
-
-        fun incrementLayoutCounter() {
-            layoutCounter?.plus(1)
-        }
-
-        val clickListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                selectedJop = parent?.getItemAtPosition(position) as String
-            }
-
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-            }
-        }
-
-    fun getAddress(longitude: Double,latitude: Double){
-        Log.i(TAG,"${longitude},${latitude}")
+    fun getAddress(longitude: Double, latitude: Double) {
+        Log.i(TAG, "${longitude},${latitude}")
         val geocoder: Geocoder
         val addresses: List<Address>?
         geocoder = Geocoder(context, Locale.getDefault())
@@ -187,29 +204,21 @@ class SignUpViewModel @Inject constructor(
         val address: String =
             addresses!![0].getAddressLine(0) // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
 
-       if (addresses[0]==null){
-           val city: String = addresses!![0].locality
-           val state: String = addresses!![0].adminArea
-           val country: String = addresses!![0].countryName
-           val postalCode: String = addresses!![0].postalCode
-           val knownName: String = addresses!![0].featureName // Only if available else return NULL
-           userAddress=""
-       }else{
-           //get first name of state
-           val stateArr=addresses!![0].adminArea.split(" ")
-           this.userAddress="${addresses!![0].locality},${stateArr[0]},${addresses!![0].countryName}"
-       }
-
-
-    }
-
-    fun sendingTokenToFirebase(token: NotificatonToken?){
-        _sendingNotificationToken.value=Resource.Loading
-        viewModelScope.launch {
-            sendUserNotificationTokenToFirebase(token){
-                _sendingNotificationToken.value=it
-            }
+        if (addresses[0] == null) {
+            val city: String = addresses!![0].locality
+            val state: String = addresses!![0].adminArea
+            val country: String = addresses!![0].countryName
+            val postalCode: String = addresses!![0].postalCode
+            val knownName: String = addresses!![0].featureName // Only if available else return NULL
+            userAddress = ""
+        } else {
+            //get first name of state
+            val stateArr = addresses!![0].adminArea.split(" ")
+            this.userAddress =
+                "${addresses!![0].locality},${stateArr[0]},${addresses!![0].countryName}"
         }
+
+
     }
 
 

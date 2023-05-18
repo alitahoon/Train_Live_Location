@@ -49,7 +49,6 @@ class UserProfile : Fragment() {
         jobArrayAdapter.setDropDownViewResource(R.layout.spinner_job_dropdown_item_layout)
         binding.profileSpinnerJobs.adapter=jobArrayAdapter
 
-        userProfileViewModel.getStationName(user!!.stationId)
         setSpinnerSelectionByValue(user!!.jop)
         setObserver()
         return binding.root
@@ -71,7 +70,7 @@ class UserProfile : Fragment() {
                         binding.profileTxtPassword.text.toString(),
                         binding.profileTxtPhone.text.toString(),
                         user!!.role,
-                        user!!.stationId
+                        user.tokenForNotifications
                     )
                 )
 

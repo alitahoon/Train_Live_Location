@@ -43,8 +43,7 @@ class HomeViewModel @Inject constructor(
     private var _sendingNotificationToken:MutableLiveData<Resource<String?>> = MutableLiveData(null)
     var sendingNotificationToken:LiveData<Resource<String?>> = _sendingNotificationToken
 
-    private val _userData: MutableLiveData<UserResponseItem?> = MutableLiveData(null)
-    val userData: LiveData<UserResponseItem?> = _userData
+
 
     private val _trainbackgroundTrackingServices: MutableLiveData<Resource<LifecycleService>?> = MutableLiveData(null)
     val trainbackgroundTrackingServices: LiveData<Resource<LifecycleService>?> = _trainbackgroundTrackingServices
@@ -72,25 +71,7 @@ class HomeViewModel @Inject constructor(
     fun onPassengersbtnClicked(view:View){
         passengersbtnClicked.postValue(true)
     }
-    fun getUserDataFromsharedPreference() {
-        val userSharedPreferences: SharedPreferences =
-            context.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        _userData.postValue(
-            UserResponseItem(
-                userSharedPreferences.getString("userAddress","empty")!!,
-                userSharedPreferences.getString("userBirthdate","empty")!!,
-                userSharedPreferences.getString("userEmail","empty")!!,
-                userSharedPreferences.getString("userGender","empty")!!,
-                userSharedPreferences.getInt("userId",0),
-                userSharedPreferences.getString("userJop","empty")!!,
-                userSharedPreferences.getString("userName","empty")!!,
-                userSharedPreferences.getString("userPassword","empty")!!,
-                userSharedPreferences.getString("userPhone","empty")!!,
-                userSharedPreferences.getString("userRole","empty")!!,
-                userSharedPreferences.getInt("userStationId",0)
-            )
-        )
-    }
+
 
     fun getTrainLocationInbackground(trainId:Int?){
         _trainbackgroundTrackingServices.value=Resource.Loading

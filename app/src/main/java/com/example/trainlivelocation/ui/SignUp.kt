@@ -86,29 +86,51 @@ class SignUp : Fragment(), DatePickerListener, Station_Dialog_Listener {
         signUpViewModel!!.nextBtnClicked.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 Log.i(TAG, "setObservers-nextBtnClicked")
-                //send user date to api
-                signUpViewModel!!.sendUserDataToApi("${args.userPhone}", stationIdNumber)
-                signUpViewModel!!.userDataLive.observe(viewLifecycleOwner, Observer {
-                    when (it) {
-                        is Resource.Loading -> {
-                            binding.signUpLocationProgressBar.setVisibility(View.VISIBLE)
+
+                //generate token for notification
+                signUpViewModel!!.generateUserNotificationToken()
+                signUpViewModel!!.generateNotificationToken.observe(viewLifecycleOwner, Observer {
+                    when(it){
+
+                        is Resource.Loading->{
+                            Log.i(TAG,"Waiting for generating notification token...")
                         }
-                        is Resource.Success -> {
-                            Log.i(TAG, "User Added ${it.data}")
-                            binding.signUpLocationProgressBar.setVisibility(View.GONE)
-                            binding!!.signUpBtnNext.setText("Submit")
-                            binding.signUpDataLayout.setVisibility(View.GONE)
-                            binding.signUpLayoutProfileImage.setVisibility(View.VISIBLE)
+                        is Resource.Success->{
+                            Log.i(TAG,"Success  generating notification token...")
+                            //send user date to api
+                            signUpViewModel!!.sendUserDataToApi("${args.userPhone}", stationIdNumber,it.data!!)
+                            signUpViewModel!!.userDataLive.observe(viewLifecycleOwner, Observer {
+                                when (it) {
+                                    is Resource.Loading -> {
+                                        binding.signUpLocationProgressBar.setVisibility(View.VISIBLE)
+                                    }
+                                    is Resource.Success -> {
+                                        Log.i(TAG, "User Added ${it.data}")
+                                        binding.signUpLocationProgressBar.setVisibility(View.GONE)
+                                        binding!!.signUpBtnNext.setText("Submit")
+                                        binding.signUpDataLayout.setVisibility(View.GONE)
+                                        binding.signUpLayoutProfileImage.setVisibility(View.VISIBLE)
+                                    }
+                                    is Resource.Failure -> {
+                                        toast(it.error!!)
+                                        Log.e(TAG, it.error!!)
+                                    }
+                                    else -> {
+
+                                    }
+                                }
+                            })
                         }
-                        is Resource.Failure -> {
-                            toast(it.error!!)
-                            Log.e(TAG, it.error!!)
+                        is Resource.Failure->{
+
                         }
-                        else -> {
+                        else->{
 
                         }
                     }
                 })
+
+
             }
 
         })
@@ -137,13 +159,28 @@ class SignUp : Fragment(), DatePickerListener, Station_Dialog_Listener {
                         }
                         is Resource.Success -> {
                             Log.i(TAG, "Image Send Successfully")
-                            signUpViewModel!!.sendingTokenToFirebase(
-                                NotificatonToken(
-                                    args.userPhone,
-                                    binding.signUpTxtName.text.toString(),
-                                    " "
-                                )
-                            )
+                            binding.signUpLoadingLotti.setVisibility(View.GONE)
+                            binding.signUpSuccessLoadingLotti.setVisibility(View.VISIBLE)
+                            binding.signUpSuccessLoadingLotti.playAnimation()
+                            binding.signUpSuccessLoadingLotti.addAnimatorListener(object :
+                                AnimatorListener {
+                                override fun onAnimationStart(p0: Animator) {
+                                    TODO("Not yet implemented")
+                                }
+
+                                override fun onAnimationEnd(p0: Animator) {
+                                    findNavController().navigate(SignUpDirections.actionSignUpToSplash())
+                                }
+
+                                override fun onAnimationCancel(p0: Animator) {
+                                    TODO("Not yet implemented")
+                                }
+
+                                override fun onAnimationRepeat(p0: Animator) {
+                                    TODO("Not yet implemented")
+                                }
+
+                            })
                         }
                         is Resource.Failure -> {
                             Log.i(TAG, "Failed To send image to Fire base ${it.error}")
@@ -158,44 +195,6 @@ class SignUp : Fragment(), DatePickerListener, Station_Dialog_Listener {
         })
 
 
-        signUpViewModel!!.sendingNotificationToken.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is Resource.Loading -> {
-
-                }
-                is Resource.Success -> {
-                    binding.signUpLoadingLotti.setVisibility(View.GONE)
-                    binding.signUpSuccessLoadingLotti.setVisibility(View.VISIBLE)
-                    binding.signUpSuccessLoadingLotti.playAnimation()
-                    binding.signUpSuccessLoadingLotti.addAnimatorListener(object :
-                        AnimatorListener {
-                        override fun onAnimationStart(p0: Animator) {
-                            TODO("Not yet implemented")
-                        }
-
-                        override fun onAnimationEnd(p0: Animator) {
-                            findNavController().navigate(SignUpDirections.actionSignUpToSplash())
-                        }
-
-                        override fun onAnimationCancel(p0: Animator) {
-                            TODO("Not yet implemented")
-                        }
-
-                        override fun onAnimationRepeat(p0: Animator) {
-                            TODO("Not yet implemented")
-                        }
-
-                    })
-                }
-                is Resource.Failure -> {
-                    Log.e(TAG, "${it.error}")
-                }
-                else -> {
-                    Log.e(TAG, "else brunch...")
-
-                }
-            }
-        })
 
         signUpViewModel!!.datePickerTxtClicked.observe(viewLifecycleOwner, Observer {
             var dialog = DatePickerDialogFragment(this)

@@ -1,5 +1,6 @@
 package com.example.trainlivelocation.ui
 
+import Resource
 import android.app.Activity
 import android.os.Looper
 import android.util.Log
@@ -46,16 +47,25 @@ class AuthPhoneViewmodel @Inject constructor(
             if (userPhone!!.length==11){
                 sendOtpToPhone("+20"+userPhone!!.trim()){
                     when(it){
-                        "onVerificationCompleted"->{
-                            Log.e(TAG,"${it}")
+                        is Resource.Success->{
+                            Log.e(TAG,"${it.data}")
+                            when(it.data){
+                                "onCodeSent"->{
+                                    onCodeSent.postValue(true)
+                                }
+                                "onVerificationCompleted"->{
+                                    Log.i(TAG,"onVerificationCompleted")
+                                }
+                            }
                         }
-                        "onVerificationFailed"->{
-                            Log.e(TAG,"${it}")
+                        is Resource.Failure->{
+                            Log.e(TAG,"${it.error}")
                             onAuthFailed.postValue(true)
                         }
-                        "onCodeSent"->{
-                            onCodeSent.postValue(true)
+                        Resource.Loading->{
+                            Log.i(TAG,"Waiting for sending code...")
                         }
+                        else -> {}
                     }
                 }
             }else{

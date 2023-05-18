@@ -1,42 +1,34 @@
 {
   "project_info": {
-    "project_number": "210831277878",
-    "firebase_url": "https://trainlivelocation-4df97-default-rtdb.firebaseio.com",
-    "project_id": "trainlivelocation-4df97",
-    "storage_bucket": "trainlivelocation-4df97.appspot.com"
+    "project_number": "431168569258",
+    "firebase_url": "https://trainlivelocation-3be7d-default-rtdb.firebaseio.com",
+    "project_id": "trainlivelocation-3be7d",
+    "storage_bucket": "trainlivelocation-3be7d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:210831277878:android:b1a300962fa860c6297d97",
+        "mobilesdk_app_id": "1:431168569258:android:5587f96795d53f5b4bf5d3",
         "android_client_info": {
           "package_name": "com.example.trainlivelocation"
         }
       },
       "oauth_client": [
         {
-          "client_id": "210831277878-fdshumr1q69tevh4t3khp4rb9ai2agrj.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.trainlivelocation",
-            "certificate_hash": "bee508ae443294e4100c71099a7a36fac5f2a921"
-          }
-        },
-        {
-          "client_id": "210831277878-jk615l6hh0rbceijb06ikuii8fcfhr9v.apps.googleusercontent.com",
+          "client_id": "431168569258-kid9mr5tktjivshu11tikmbng8sae3ud.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCe1SPIi2N9RusxDQ7O84-_YQfPsbqidqg"
+          "current_key": "AIzaSyBJ2VMdxFLQj9ugo1R-ABH_kvsCa-_Eoq8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "210831277878-jk615l6hh0rbceijb06ikuii8fcfhr9v.apps.googleusercontent.com",
+              "client_id": "431168569258-kid9mr5tktjivshu11tikmbng8sae3ud.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -35,8 +35,7 @@ class Add_post_comment_viewModel @Inject constructor(
     private val _postComments: MutableLiveData<Resource<ArrayList<PostCommentsResponseItem>>>? = MutableLiveData(null)
     val postComments: LiveData<Resource<ArrayList<PostCommentsResponseItem>>>? = _postComments
 
-    private val _userData: MutableLiveData<UserResponseItem?> = MutableLiveData(null)
-    val userData: LiveData<UserResponseItem?> = _userData
+
 
     private val _postCommentNotification: MutableLiveData<Resource<String>> = MutableLiveData(null)
     val postCommentNotification: LiveData<Resource<String>> = _postCommentNotification
@@ -86,24 +85,6 @@ class Add_post_comment_viewModel @Inject constructor(
 
 
 
-    fun getUserDataFromsharedPreference() {
-        val userSharedPreferences: SharedPreferences =
-            context.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        _userData.postValue(
-            UserResponseItem(
-                userSharedPreferences.getString("userAddress","empty")!!,
-                userSharedPreferences.getString("userBirthdate","empty")!!,
-                userSharedPreferences.getString("userEmail","empty")!!,
-                userSharedPreferences.getString("userGender","empty")!!,
-                userSharedPreferences.getInt("userId",0),
-                userSharedPreferences.getString("userJop","empty")!!,
-                userSharedPreferences.getString("userName","empty")!!,
-                userSharedPreferences.getString("userPassword","empty")!!,
-                userSharedPreferences.getString("userPhone","empty")!!,
-                userSharedPreferences.getString("userRole","empty")!!,
-                userSharedPreferences.getInt("userStationId",0)
-            )
-        )
-    }
+
 
 }

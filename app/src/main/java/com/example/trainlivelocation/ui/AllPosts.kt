@@ -56,7 +56,7 @@ class AllPosts : Fragment() , PostListener, FragmentLifecycle,DeletePostListener
             }
         Log.i(TAG,"from all posts")
         binding.adapter=setAdapterItems()
-        allPostFragmentViewmodel.getUserDataFromsharedPreference()
+        userModel=getuserModelFromSharedPreferences(requireContext())
         setObserver()
         flagFirstTimeRunning=true
 
@@ -78,9 +78,6 @@ class AllPosts : Fragment() , PostListener, FragmentLifecycle,DeletePostListener
     }
 
     private fun setObserver() {
-        allPostFragmentViewmodel?.userData!!.observe(viewLifecycleOwner, Observer {
-            userModel =it
-        })
 
     }
     private fun setAdapterItems():PostCustomAdapter{

@@ -71,14 +71,17 @@ class userRepoImpl(
 
     override suspend fun sendOtpToPhone(
         phoneNumber: String?,
-        callback: (result: String?) -> Unit
-    ) = firebaseService.sendOtpToPhone(phoneNumber, callback)
+        result: (result: Resource<String>) -> Unit
+    ) = firebaseService.sendOtpToPhone(phoneNumber, result)
 
     override suspend fun resendOtpCode(
         phoneNumber: String?,
-        callback: (result: String?) -> Unit
+        result: (result: Resource<String>) -> Unit
+    ) {
+        firebaseService.resendOtpCode(phoneNumber,result)
+    }
 
-    ) = firebaseService.resendOtpCode(phoneNumber!!, callback)
+
 
     override suspend fun signInWithPhoneAuthCredential(
         credential: PhoneAuthCredential,

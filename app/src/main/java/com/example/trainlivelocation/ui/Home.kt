@@ -17,10 +17,7 @@ import com.example.domain.entity.NotificatonToken
 import com.example.domain.entity.UserResponseItem
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentHomeBinding
-import com.example.trainlivelocation.utli.PermissionManager
-import com.example.trainlivelocation.utli.TrackTrainService
-import com.example.trainlivelocation.utli.Train_Dialog_Listener
-import com.example.trainlivelocation.utli.toast
+import com.example.trainlivelocation.utli.*
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -48,8 +45,7 @@ class Home : Fragment() ,Train_Dialog_Listener{
             }
         setObservers()
 
-        homeViewModel?.getUserDataFromsharedPreference()
-        homeViewModel?.subscribeToNewTopic()
+        userModel=getuserModelFromSharedPreferences(requireContext())
         if (getDistance()!=null){
             binding?.homeTxtTrainDistance?.setText(getDistance().toString()+" Meal")
         }
@@ -140,12 +136,7 @@ class Home : Fragment() ,Train_Dialog_Listener{
             }
         })
 
-        homeViewModel?.userData!!.observe(viewLifecycleOwner, Observer {
-            userModel=it
-            if (userModel!=null){
-                homeViewModel!!.sendingTokenToFirebase(NotificatonToken(userModel!!.phone,userModel!!.name," "))
-            }
-        })
+
 
         homeViewModel?.chooseTrainTxtClicked!!.observe(viewLifecycleOwner, Observer {
             if (it==true){

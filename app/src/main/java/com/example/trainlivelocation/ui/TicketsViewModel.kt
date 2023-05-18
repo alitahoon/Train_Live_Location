@@ -70,6 +70,9 @@ class TicketsViewModel @Inject constructor(
             subscribeToNewTopic("postAdded${trainId}"){
                 _subscribeTrain.value=it
             }
+            subscribeToNewTopic("doctors${trainId}"){
+                _subscribeTrain.value=it
+            }
         }
     }
 

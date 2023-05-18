@@ -1,5 +1,6 @@
 package com.example.trainlivelocation.ui
 
+import Resource
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +12,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.chaos.view.PinView
 import com.example.domain.usecase.CreateAPhoneAuthCredential
+import com.example.domain.usecase.ResendOtpCode
+import com.example.domain.usecase.SendOtpToPhone
 import com.example.domain.usecase.SignInWithPhoneAuthCredential
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import com.google.firebase.auth.PhoneAuthCredential
@@ -20,13 +23,18 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthCodeViewmodel @Inject constructor(
     private val createAPhoneAuthCredential: CreateAPhoneAuthCredential,
-    private val signInWithPhoneAuthCredential: SignInWithPhoneAuthCredential
+    private val signInWithPhoneAuthCredential: SignInWithPhoneAuthCredential,
+    private val resendOtpToPhone: ResendOtpCode
 ) :ViewModel(){
     private val TAG: String?="AuthCodeViewmodel"
     var btnSubmitClicked= SingleLiveEvent<Boolean>()
     var onCodeSubmitSuccess= SingleLiveEvent<Boolean>()
+    var resendCodeClicked= SingleLiveEvent<Boolean>()
     var onCodeSubmitFailer= SingleLiveEvent<Boolean>()
     private lateinit var activity: AppCompatActivity
+    private val _resendCode:MutableLiveData<Resource<String>> = MutableLiveData(null)
+     val resendCode:LiveData<Resource<String>> = _resendCode
+
 
     fun onBtnSubmitClicked(view:View){
         btnSubmitClicked.postValue(true)
@@ -44,6 +52,19 @@ class AuthCodeViewmodel @Inject constructor(
         }
     }
 
+
+    fun resendOtbCode(phoneNumber:String){
+        _resendCode.value=Resource.Loading
+        viewModelScope.launch {
+            resendOtpToPhone(phoneNumber){
+                _resendCode.value=it
+            }
+        }
+    }
+
+    fun onResendBtnClicked(){
+        resendCodeClicked.postValue(true)
+    }
     fun signInNewUserWithCredential(credential: PhoneAuthCredential){
         viewModelScope.launch {
             signInWithPhoneAuthCredential(credential){

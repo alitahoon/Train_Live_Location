@@ -31,9 +31,10 @@ class FirebaseService(
     private val auth: FirebaseAuth,
     private val storageRef: StorageReference,
     private val databaseRef: DatabaseReference,
-    private val firebaseMessaging: FirebaseMessaging) {
+    private val firebaseMessaging: FirebaseMessaging
+) {
     private val TAG: String? = "FirebaseService"
-
+    lateinit var  mCallbacks: OnVerificationStateChangedCallbacks
     companion object {
         var storedVerificationId: String? = null
         var storedtoken: PhoneAuthProvider.ForceResendingToken? = null
@@ -42,58 +43,72 @@ class FirebaseService(
     }
 
     fun sendOtpToPhone(
-        phoneNumber: String?, callback: (result: String?) -> Unit
+        phoneNumber: String?, result: (result: Resource<String>) -> Unit
+
     ) {
         Log.i(TAG, "${phoneNumber}")
         auth.setLanguageCode("ar")
+        mCallbacks=object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                //start sign in with credential
+                Log.d(TAG, "onVerificationCompleted:$credential")
+                signInWithPhoneAuthCredential(credential) {
+                    Log.i(TAG, it!!)
+                }
+                result.invoke(Resource.Success("onVerificationCompleted"))
+            }
+
+            override fun onVerificationFailed(e: FirebaseException) {
+                //stop progress bar
+                result.invoke(Resource.Success("onVerificationFailed"))
+                if (e is FirebaseAuthInvalidCredentialsException) {
+                    // Invalid request
+                    Log.e(TAG, "onVerificationFailed ${e.message}")
+                } else if (e is FirebaseTooManyRequestsException) {
+                    // The SMS quota for the project has been exceeded
+                    Log.e(TAG, "FirebaseTooManyRequestsException ${e.message}")
+                    result.invoke(Resource.Failure("onVerificationCompleted ${e.message}"))
+
+                }
+
+            }
+
+            override fun onCodeSent(
+                verificationId: String, token: PhoneAuthProvider.ForceResendingToken
+            ) {
+                super.onCodeSent(verificationId, token)
+                // The SMS verification code has been sent to the provided phone number, we
+                // now need to ask the user to enter the code and then construct a credential
+                // by combining the code with a verification ID
+                Log.d(TAG, "onCodeSent:$verificationId")
+                storedtoken = token
+                storedVerificationId = verificationId
+                result.invoke(Resource.Success("onCodeSent"))
+            }
+
+        }
+
         // Configure faking the auto-retrieval with the whitelisted numbers.
-        auth.firebaseAuthSettings.forceRecaptchaFlowForTesting(false)
         val options = PhoneAuthOptions.newBuilder(auth).setPhoneNumber(phoneNumber!!)
             .setTimeout(60L, TimeUnit.SECONDS).setActivity(firebaseAuthActivity!!)
-            .setCallbacks(object : OnVerificationStateChangedCallbacks() {
-                override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                    //start sign in with credential
-                    Log.d(TAG, "onVerificationCompleted:$credential")
-                    signInWithPhoneAuthCredential(credential) {
-                        Log.i(TAG, it!!)
-                    }
-                    callback("onVerificationCompleted")
-                }
-
-                override fun onVerificationFailed(e: FirebaseException) {
-                    //stop progress bar
-                    callback("onVerificationFailed")
-                    if (e is FirebaseAuthInvalidCredentialsException) {
-                        // Invalid request
-                        Log.e(TAG, "onVerificationFailed ${e.message}")
-                    } else if (e is FirebaseTooManyRequestsException) {
-                        // The SMS quota for the project has been exceeded
-                        Log.e(TAG, "FirebaseTooManyRequestsException ${e.message}")
-
-                    }
-
-                }
-
-                override fun onCodeSent(
-                    verificationId: String, token: PhoneAuthProvider.ForceResendingToken
-                ) {
-                    super.onCodeSent(verificationId, token)
-                    // The SMS verification code has been sent to the provided phone number, we
-                    // now need to ask the user to enter the code and then construct a credential
-                    // by combining the code with a verification ID
-                    Log.d(TAG, "onCodeSent:$verificationId")
-                    storedtoken = token
-                    storedVerificationId = verificationId
-                    callback("onCodeSent")
-                }
-
-            }).build()
+            .setCallbacks(mCallbacks).build()
         PhoneAuthProvider.verifyPhoneNumber(options)
     }
 
     fun resendOtpCode(
-        phoneNumber: String?, callback: (result: String?) -> Unit
+        phoneNumber: String?, result: (result: Resource<String>) -> Unit
     ) {
+        Log.i(TAG, "${phoneNumber}")
+        auth.setLanguageCode("ar")
+        // Configure faking the auto-retrieval with the whitelisted numbers.
+        val options = PhoneAuthOptions.newBuilder(auth)
+            .setPhoneNumber(phoneNumber!!) // Phone number to verify
+            .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+            .setActivity(firebaseAuthActivity!!) // Activity (for callback binding)
+            .setCallbacks(mCallbacks) // OnVerificationStateChangedCallbacks
+            .setForceResendingToken(storedtoken!!) // ForceResendingToken from callbacks
+            .build()
+        PhoneAuthProvider.verifyPhoneNumber(options)
 
     }
 
@@ -461,11 +476,11 @@ class FirebaseService(
             }
     }
 
-    fun createUserNotificationToken(result: (Resource<String>) -> Unit){
-        firebaseMessaging.token.addOnCompleteListener(OnCompleteListener{
-            if (it.isSuccessful){
+    fun createUserNotificationToken(result: (Resource<String>) -> Unit) {
+        firebaseMessaging.token.addOnCompleteListener(OnCompleteListener {
+            if (it.isSuccessful) {
                 result.invoke(Resource.Success(it.result))
-            }else{
+            } else {
                 result.invoke(Resource.Failure("${it.exception}"))
             }
         })
@@ -474,30 +489,29 @@ class FirebaseService(
     fun sendNewNotificationToTopic(
         notification: PushNotification, result: (Resource<String>) -> Unit
     ) {
-        var apiManager:ApiManager=ApiManager()
+        var apiManager: ApiManager = ApiManager()
         CoroutineScope(Dispatchers.Main).launch {
-            apiManager.postNotification(notification,result)
+            apiManager.postNotification(notification, result)
         }
     }
 
     fun sendNewNotificationToAddedPostTopic(
         notification: PushPostNotification, result: (Resource<String>) -> Unit
     ) {
-        var apiManager:ApiManager=ApiManager()
+        var apiManager: ApiManager = ApiManager()
         CoroutineScope(Dispatchers.Main).launch {
-            apiManager.postAddedNotification(notification,result)
+            apiManager.postAddedNotification(notification, result)
         }
     }
 
     fun sendNewNotificationToAddedPostCommentTopic(
         notification: PushPostCommentNotification, result: (Resource<String>) -> Unit
     ) {
-        var apiManager:ApiManager=ApiManager()
+        var apiManager: ApiManager = ApiManager()
         CoroutineScope(Dispatchers.Main).launch {
-            apiManager.postCommentAddedNotification(notification,result)
+            apiManager.postCommentAddedNotification(notification, result)
         }
     }
-
 
 
 }

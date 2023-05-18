@@ -24,7 +24,7 @@ class SharedPreferencesService(private val context: Context) {
                 userSharedPreferences.getString("userPassword","empty")!!,
                 userSharedPreferences.getString("userPhone","empty")!!,
                 userSharedPreferences.getString("userRole","empty")!!,
-                userSharedPreferences.getInt("userStationId",0)
+             userSharedPreferences.getString("userToken","empty")!!
             )))
         }catch (e:Exception){
             result.invoke(Resource.Failure("${e.message}"))

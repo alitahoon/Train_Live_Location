@@ -16,6 +16,7 @@ import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import androidx.navigation.NavOptions
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import com.ashokvarma.bottomnavigation.BottomNavigationBar
@@ -27,6 +28,7 @@ import com.example.domain.entity.Location_Response
 import com.example.domain.entity.UserResponseItem
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.ActivityMainBinding
+import com.example.trainlivelocation.utli.getuserModelFromSharedPreferences
 import com.example.trainlivelocation.utli.toast
 import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,12 +47,17 @@ class MainActivity : AppCompatActivity() {
         window.statusBarColor =
             resources.getColor(R.color.DarkPrimaryColor)
         setBottomBarIcons()
-
-        mainActivityViewModel!!.getUserDataFromsharedPreference()
+        setHeaderData()
         setObservers()
         binding.mainActivityBtnDrawerMenu.setOnClickListener {
             binding.mainActivityDrwerLayout.openDrawer(GravityCompat.START)
         }
+        val navOptions = NavOptions.Builder()
+            .setEnterAnim(R.anim.enter) // Specify the animation resource for enter animation
+            .setExitAnim(R.anim.exit) // Specify the animation resource for exit animation
+            .setPopEnterAnim(R.anim.pop_enter) // Specify the animation resource for pop enter animation
+            .setPopExitAnim(R.anim.pop_exit) // Specify the animation resource for pop exit animation
+            .build()
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView2) as NavHostFragment
         val navController = navHostFragment.navController
@@ -128,10 +135,13 @@ class MainActivity : AppCompatActivity() {
                         val bundle = Bundle()
                         bundle.putParcelable("userModel", userModel)
                         Log.i(TAG, "$userModel")
-                        navController.navigate(R.id.inbox, bundle)
+                        navController.navigate(R.id.inbox, bundle,navOptions)
                     }
                     1 -> {
                         toast("Home")
+                        setHeader("home")
+
+                        navController.navigate(R.id.home2,null,navOptions)
                     }
                     0 -> {
                         toast("Notification")
@@ -190,23 +200,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        mainActivityViewModel!!.userData.observe(this) {
-            if (it != null) {
-                userModel = it
-
-                val menuHeader = binding.mainActivityNavigationView.getHeaderView(0)
-                val nametxt =
-                    menuHeader.findViewById(R.id.nav_menu_header_profile_name) as TextView
-                val joptxt =
-                    menuHeader.findViewById(R.id.nav_menu_header_profile_jop) as TextView
-
-                nametxt.setText(it!!.name)
-                joptxt.setText(it!!.jop)
-                binding.mainActivityCiProfileName.setText(it.name)
-                binding.mainActivityCiProfileJop.setText(it.jop)
-                mainActivityViewModel!!.getProfileImage("profileImages/+20${it.phone}")
-            }
-        }
 
 
         mainActivityViewModel!!.userProfileImageUri.observe(this) {
@@ -287,6 +280,23 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+    fun setHeaderData(){
+        userModel=getuserModelFromSharedPreferences()
+        if (userModel != null) {
+
+            val menuHeader = binding.mainActivityNavigationView.getHeaderView(0)
+            val nametxt =
+                menuHeader.findViewById(R.id.nav_menu_header_profile_name) as TextView
+            val joptxt =
+                menuHeader.findViewById(R.id.nav_menu_header_profile_jop) as TextView
+
+            nametxt.setText(userModel!!.name)
+            joptxt.setText(userModel!!.jop)
+            binding.mainActivityCiProfileName.setText(userModel!!.name)
+            binding.mainActivityCiProfileJop.setText(userModel!!.jop)
+            mainActivityViewModel!!.getProfileImage("profileImages/+20${userModel!!.phone}")
+        }
     }
 
 

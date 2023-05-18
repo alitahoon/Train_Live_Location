@@ -13,7 +13,7 @@ import retrofit2.http.POST
 interface NotificationApi {
     companion object{
         const val CONTENT_TYPE = "application/json"
-        const val API_KEY = "AAAAMRaF_zY:APA91bEue9-CV7da0fKxYfnJoNKn5qEW2wYRq7sVi-ECJbiVIUs_SwFsvKB9PidU32XeLESAa4FnRxgynAT-K_WoautrmAJgcynGc98NOxN_JAKuyp3IRxZX65aytA9Z-3MojjAOehpK"
+        const val API_KEY = "AAAAZGOmP6o:APA91bEUkTb5AucaPfa7V32J5FpUUkeHR-uYAv7rIXIAFBOgfk2HEz6A2tqXRE8EJ6S_eCEIZXiIZ1DGZ_tUOtRaIYMiwslkCBOM80cryStRzMVEEstG2BcPR-cVo44KNirAQRX0ZR5g"
     }
 
     @Headers("Authorization: key=${API_KEY}", "Content-Type: $CONTENT_TYPE")

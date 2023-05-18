@@ -20,15 +20,13 @@ class AllPostsViewModel @Inject constructor(
     private val getAllPostsFromAPI: GetAllPostsFromAPI,
     private val context: Context
 )  : ViewModel() {
-    private val sharedPrefFile = "UserToken"
 
 
     private val _allPosts:MutableLiveData<Resource<ArrayList<PostModelResponse>>>?= MutableLiveData(null)
     val allPosts:LiveData<Resource<ArrayList<PostModelResponse>>>?= _allPosts
 
 
-    private val _userData: MutableLiveData<UserResponseItem?> = MutableLiveData(null)
-    val userData: LiveData<UserResponseItem?> = _userData
+
 
 
 
@@ -47,24 +45,6 @@ class AllPostsViewModel @Inject constructor(
             }
         }
     }
-    fun getUserDataFromsharedPreference() {
-        val userSharedPreferences: SharedPreferences =
-            context.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        _userData.postValue(
-            UserResponseItem(
-                userSharedPreferences.getString("address","empty")!!,
-                userSharedPreferences.getString("userBirthdate","empty")!!,
-                userSharedPreferences.getString("userEmail","empty")!!,
-                userSharedPreferences.getString("userGender","empty")!!,
-                userSharedPreferences.getInt("userId",0),
-                userSharedPreferences.getString("userJop","empty")!!,
-                userSharedPreferences.getString("userName","empty")!!,
-                userSharedPreferences.getString("userPassword","empty")!!,
-                userSharedPreferences.getString("userPhone","empty")!!,
-                userSharedPreferences.getString("userRole","empty")!!,
-                userSharedPreferences.getInt("userStationId",0)
-            )
-        )
-    }
+
 
 }

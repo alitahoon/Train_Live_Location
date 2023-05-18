@@ -32,6 +32,25 @@ fun Fragment.getuserModelFromSharedPreferences(context: Context): UserResponseIt
         userSharedPreferences.getString("userPassword","empty")!!,
         userSharedPreferences.getString("userPhone","empty")!!,
         userSharedPreferences.getString("userRole","empty")!!,
-        userSharedPreferences.getInt("userStationId",0)
+        userSharedPreferences.getString("tokenForNotifications","empty")!!
+    )
+}
+
+fun Context.getuserModelFromSharedPreferences(): UserResponseItem{
+    val userSharedPreferences: SharedPreferences =
+        getSharedPreferences("UserToken", Context.MODE_PRIVATE)
+    return   UserResponseItem(
+        userSharedPreferences.getString("userAddress","empty")!!,
+        userSharedPreferences.getString("userBirthdate","empty")!!,
+        userSharedPreferences.getString("userEmail","empty")!!,
+        userSharedPreferences.getString("userGender","empty")!!,
+        userSharedPreferences.getInt("userId",0),
+        userSharedPreferences.getString("userJop","empty")!!,
+        userSharedPreferences.getString("userName","empty")!!,
+        userSharedPreferences.getString("userPassword","empty")!!,
+        userSharedPreferences.getString("userPhone","empty")!!,
+        userSharedPreferences.getString("userRole","empty")!!,
+        userSharedPreferences.getString("tokenForNotifications","empty")!!
+
     )
 }

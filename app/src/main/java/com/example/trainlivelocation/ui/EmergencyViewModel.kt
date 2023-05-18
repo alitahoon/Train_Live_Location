@@ -22,8 +22,7 @@ class EmergencyViewModel @Inject constructor(
 ) : ViewModel() {
     private val TAG = "EmergencyViewModel"
 
-    private val _notificationToken: MutableLiveData<Resource<String?>> = MutableLiveData(null)
-    val notificationToken: LiveData<Resource<String?>> = _notificationToken
+
 
 //    private val _userLocation: MutableLiveData<Resource<String>?> = MutableLiveData(null)
 //    val userLocation: LiveData<Resource<String>?> = _userLocation
@@ -55,10 +54,7 @@ class EmergencyViewModel @Inject constructor(
     }
 
     fun sentDoctorNotification(
-        token: NotificatonToken,
-        serverKey: String?,
-        doctorNotification: DoctorNotification,
-        location: Location
+        notification: PushNotification
     ) {
 //        _sentNotification.value=Resource.Loading
 //        viewModelScope.launch {
@@ -73,13 +69,7 @@ class EmergencyViewModel @Inject constructor(
         _sentNotification.value = Resource.Loading
         viewModelScope.launch {
             pushNewTopicNotification(
-                PushNotification(
-                    DoctorNotificationData(
-                        "doctors",
-                        doctorNotification.content, location.latitude, location.longitude
-                    ), token.token!!
-                )
-            ) {
+                notification) {
                 _sentNotification.value = it
             }
         }
@@ -97,13 +87,6 @@ class EmergencyViewModel @Inject constructor(
         }
     }
 
-    fun getNotificationToken(userPhone: String?) {
-        _notificationToken.value = Resource.Loading
-        viewModelScope.launch {
-            getUserNotificationTokenFromFirebase(userPhone) {
-                _notificationToken.value = it
-            }
-        }
-    }
+
 
 }

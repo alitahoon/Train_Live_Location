@@ -29,12 +29,12 @@ interface UserRepo {
     suspend fun addNewUser(user: RegisterUser?, result: (Resource<UserResponseItem>) -> Unit)
     suspend fun sendOtpToPhone(
         phoneNumber: String?,
-        callback: (result: String?) -> Unit
+        result: (result: Resource<String>) -> Unit
     )
 
     suspend fun resendOtpCode(
         phoneNumber: String?,
-        callback: (result: String?) -> Unit
+        result: (result: Resource<String>) -> Unit
     )
 
     suspend fun signInWithPhoneAuthCredential(

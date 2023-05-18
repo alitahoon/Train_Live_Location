@@ -44,8 +44,7 @@ class Add_post_fragment_ViewModel @Inject constructor(
     private var imageRefrence: StorageReference = Firebase.storage.reference
     private val sharedPrefFile = "UserToken"
 
-    private val _userData: MutableLiveData<UserResponseItem?> = MutableLiveData(null)
-    val userData: LiveData<UserResponseItem?> = _userData
+
 
 
     private val _post: MutableLiveData<Resource<PostModelResponse>>? = MutableLiveData(null)
@@ -58,8 +57,7 @@ class Add_post_fragment_ViewModel @Inject constructor(
     private val _AddedPostNotification: MutableLiveData<Resource<String>> = MutableLiveData(null)
     val AddedPostNotification: LiveData<Resource<String>>?= _AddedPostNotification
 
-    private val _notificationToken: MutableLiveData<Resource<String>> = MutableLiveData(null)
-    val notificationToken: LiveData<Resource<String>> = _notificationToken
+
 
 
     fun setCritical() {
@@ -113,33 +111,8 @@ class Add_post_fragment_ViewModel @Inject constructor(
             child1.join()  }
     }
 
-    fun getUserDataFromsharedPreference() {
-        val userSharedPreferences: SharedPreferences =
-            context.getSharedPreferences(sharedPrefFile, Context.MODE_PRIVATE)
-        _userData.postValue(
-            UserResponseItem(
-                userSharedPreferences.getString("userAddress", "empty")!!,
-                userSharedPreferences.getString("userBirthdate", "empty")!!,
-                userSharedPreferences.getString("userEmail", "empty")!!,
-                userSharedPreferences.getString("userGender", "empty")!!,
-                userSharedPreferences.getInt("userId", 0),
-                userSharedPreferences.getString("userJop", "empty")!!,
-                userSharedPreferences.getString("userName", "empty")!!,
-                userSharedPreferences.getString("userPassword", "empty")!!,
-                userSharedPreferences.getString("userPhone", "empty")!!,
-                userSharedPreferences.getString("userRole", "empty")!!,
-                userSharedPreferences.getInt("userStationId", 0)
-            )
-        )
-    }
 
-    fun getToken(userPhone:String?){
-        _notificationToken.value=Resource.Loading
-        viewModelScope.launch {
-            getNotificationTokenFromFirebase(userPhone){
-                _notificationToken.value=it
-            }
-        }
-    }
+
+
 
 }

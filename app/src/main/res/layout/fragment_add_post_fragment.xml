@@ -54,7 +54,6 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/add_post_txt_train_id"
                 android:focusable="false"
-                android:onClick="@{viewModel::onBtnChooseTrainclicked}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/PrimaryColor"
@@ -73,7 +72,6 @@
         <ImageView
             android:id="@+id/add_post_imageView_postImage"
             android:layout_width="match_parent"
-            android:onClick="@{viewModel::onBtnChooseImageclicked}"
             android:layout_height="@dimen/_200sdp"
             android:background="@color/PrimaryColor"
             android:src="@drawable/add_photo_icon"

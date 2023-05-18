@@ -64,7 +64,7 @@ class Add_post_comment(var post: PostModelResponse) : BottomSheetDialogFragment(
                 this.viewmodel = addPostCommentFragmentViewModel
             }
         txtCommentFocus()
-        addPostCommentFragmentViewModel.getUserDataFromsharedPreference()
+        userModel=getuserModelFromSharedPreferences(requireContext())
         addPostCommentFragmentViewModel.getPostComments(post.id)
         setObservers()
         binding.adapter = setAdapterItems()
@@ -120,7 +120,7 @@ class Add_post_comment(var post: PostModelResponse) : BottomSheetDialogFragment(
                                             post.userName,
                                             post.userPhone
                                         )
-                                    ,usermodel.userToken
+                                    ,usermodel.tokenForNotifications
                                     )
                                 )
 
@@ -137,9 +137,7 @@ class Add_post_comment(var post: PostModelResponse) : BottomSheetDialogFragment(
             }
         })
 
-        addPostCommentFragmentViewModel.userData!!.observe(viewLifecycleOwner, Observer {
-            userModel = it
-        })
+
 
     }
 

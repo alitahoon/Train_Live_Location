@@ -72,7 +72,7 @@ class SignInViewModel @Inject constructor(
         editor.putString("userRole",userItem.role)
         editor.putString("userGender",userItem.gender)
         editor.putString("userPassword",userItem.password)
-        editor.putInt("userStationId",userItem.stationId)
+        editor.putString("tokenForNotifications",userItem.tokenForNotifications)
         editor.putInt("userId",userItem.id)
         editor.apply()
         editor.commit()

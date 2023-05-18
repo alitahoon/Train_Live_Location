@@ -15,6 +15,5 @@ data class UserResponseItem(
     val password: String,
     val phone: String,
     val role: String,
-    val stationId:Int,
-    val userToken:String
+    val tokenForNotifications:String
 ) : Parcelable

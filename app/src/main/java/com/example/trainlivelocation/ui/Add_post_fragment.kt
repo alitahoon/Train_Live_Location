@@ -23,6 +23,8 @@ import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentAddPostFragmentBinding
 import com.example.trainlivelocation.utli.FragmentLifecycle
 import com.example.trainlivelocation.utli.Train_Dialog_Listener
+import com.example.trainlivelocation.utli.getuserModelFromSharedPreferences
+import com.example.trainlivelocation.utli.toast
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.SnackbarLayout
 
@@ -47,41 +49,43 @@ class Add_post_fragment : Fragment(), FragmentLifecycle, Train_Dialog_Listener {
             .apply {
                 this.viewModel = addPostFragmentViewmodel
             }
-        addPostFragmentViewmodel!!.getUserDataFromsharedPreference()
+        userModel = getuserModelFromSharedPreferences(requireContext())
         setObserver()
         return binding.root
     }
 
     private fun setObserver() {
 
-
-
-
-
         addPostFragmentViewmodel?.btnSubmitClicked?.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 //add image to firebase
-                var imageUri = postImageUri
-
                 var critical: Boolean = true
-                addPostFragmentViewmodel?.post_redio_checked?.observe(viewLifecycleOwner, Observer {
+                addPostFragmentViewmodel.post_redio_checked?.observe(viewLifecycleOwner, Observer {
                     critical = it
                 })
 
-                addPostFragmentViewmodel?.addPost(
-                    Post(
-                        binding.addPostTxtPostContent.text?.trim().toString(),
-                        binding.addPostTxtTrainId.text?.trim().toString().toInt(),
-                        true,
-                        "postsImages/${userModel!!.phone}/${userModel!!.id}",
-                        userModel!!.id,
-                        userModel!!.phone,
-                        userModel!!.name,
-                        "${userModel!!.id}"
+                if (binding.addPostTxtPostContent.text?.trim().toString()
+                        .isEmpty() || binding.addPostTxtTrainId.text?.trim().toString().toInt()==null||postImageUri ==null
+                ){
+                    toast("Please enter post data")
+                }else{
+                    addPostFragmentViewmodel.addPost(
+                        Post(
+                            binding.addPostTxtPostContent.text?.trim().toString(),
+                            binding.addPostTxtTrainId.text?.trim().toString().toInt(),
+                            true,
+                            "postsImages/${userModel!!.phone}/${userModel!!.id}",
+                            userModel!!.id,
+                            userModel!!.phone,
+                            userModel!!.name,
+                            "${userModel!!.id}"
+                        )
                     )
-                )
+                }
 
-                addPostFragmentViewmodel!!.sendPostImageToFirebase!!.observe(
+
+
+                addPostFragmentViewmodel.sendPostImageToFirebase!!.observe(
                     viewLifecycleOwner,
                     Observer {
                         when (it) {
@@ -91,67 +95,54 @@ class Add_post_fragment : Fragment(), FragmentLifecycle, Train_Dialog_Listener {
                             is Resource.Success -> {
                                 Log.i(TAG, "${it.data}")
                                 //get token
-                                addPostFragmentViewmodel.getToken(userModel!!.phone)
-                                addPostFragmentViewmodel.notificationToken!!.observe(viewLifecycleOwner, Observer {
-                                    when(it){
-                                        is Resource.Loading->{
-                                            Log.i(TAG,"getting token..")
-                                        }
-                                        is Resource.Success->{
-                                            //push notification
-                                            addPostFragmentViewmodel.sendAddedPostNotificationPost(
-                                                PushPostNotification(
-                                                    (AddPostNotificationData
-                                                        (
-                                                        "postAdded",
-                                                        "New Post Added To Train with id :${binding.addPostTxtTrainId.text.toString()}",
-                                                        binding.addPostTxtTrainId.text.toString().toInt(),
-                                                        isPostIsCritical(binding.addPostTxtPostContent.text.toString()),
-                                                        postID!!)), it.data
+                                val token =
+                                    getuserModelFromSharedPreferences(requireContext()).tokenForNotifications
+                                Log.i(TAG, "${token}")
+                                //push notification
+                                addPostFragmentViewmodel.sendAddedPostNotificationPost(
+                                    PushPostNotification(
+                                        (AddPostNotificationData
+                                            (
+                                            "postAdded",
+                                            "New Post Added To Train with id :${binding.addPostTxtTrainId.text.toString()}",
+                                            binding.addPostTxtTrainId.text.toString().toInt(),
+                                            isPostIsCritical(binding.addPostTxtPostContent.text.toString()),
+                                            postID!!
+                                        )),"postAdded${binding.addPostTxtTrainId.text.toString()}"
 
+                                    )
+                                )
+                                addPostFragmentViewmodel.AddedPostNotification!!.observe(
+                                    viewLifecycleOwner,
+                                    Observer {
+                                        when (it) {
+                                            is Resource.Success -> {
+                                                Log.i(TAG, "${it.data}")
+                                                binding.addPostTxtPostContent.setText("")
+                                                binding.addPostTxtTrainId.setText("")
+                                                binding.addPostImageViewPostImage.setImageDrawable(
+                                                    resources.getDrawable(R.drawable.add_photo_icon)
                                                 )
-                                            )
-                                            addPostFragmentViewmodel.AddedPostNotification!!.observe(
-                                                viewLifecycleOwner,
-                                                Observer {
-                                                    when (it) {
-                                                        is Resource.Success -> {
-                                                            Log.i(TAG, "${it.data}")
-                                                            binding.addPostTxtPostContent.setText("")
-                                                            binding.addPostTxtTrainId.setText("")
-                                                            binding.addPostImageViewPostImage.setImageDrawable(
-                                                                resources.getDrawable(R.drawable.add_photo_icon)
-                                                            )
-                                                            binding.addPostProgressBar.setVisibility(View.INVISIBLE)
-                                                            getSnakbar(
-                                                                binding.addPostBtnSubmit,
-                                                                R.layout.custom_snake_bar_add_post_success_layout
-                                                            ).show()
-                                                        }
-                                                        is Resource.Failure -> {
-                                                            Log.e(TAG, "${it.error}")
-                                                        }
-                                                        is Resource.Loading -> {
-                                                            Log.e(
-                                                                TAG,
-                                                                "Waiting for notifying train users for new post..."
-                                                            )
-                                                        }
-                                                        else -> {
+                                                binding.addPostProgressBar.setVisibility(View.INVISIBLE)
+                                                getSnakbar(
+                                                    binding.addPostBtnSubmit,
+                                                    R.layout.custom_snake_bar_add_post_success_layout
+                                                ).show()
+                                            }
+                                            is Resource.Failure -> {
+                                                Log.e(TAG, "${it.error}")
+                                            }
+                                            is Resource.Loading -> {
+                                                Log.e(
+                                                    TAG,
+                                                    "Waiting for notifying train users for new post..."
+                                                )
+                                            }
+                                            else -> {
 
-                                                        }
-                                                    }
-                                                })
+                                            }
                                         }
-
-                                        is Resource.Failure->{
-
-                                        }
-                                        else->{
-
-                                        }
-                                    }
-                                })
+                                    })
 
 
                             }
@@ -175,7 +166,7 @@ class Add_post_fragment : Fragment(), FragmentLifecycle, Train_Dialog_Listener {
                         }
                         is Resource.Success -> {
                             Log.e(TAG, "${it}")
-                            postID=it.data.id
+                            postID = it.data.id
                             addPostFragmentViewmodel?.sendPostImageToFirebase(
                                 postImageUri!!,
                                 "postsImages/${userModel!!.phone}/${it.data.id}"
@@ -199,30 +190,31 @@ class Add_post_fragment : Fragment(), FragmentLifecycle, Train_Dialog_Listener {
             }
         })
 
+        binding.addPostTxtTrainId.setOnClickListener {
+            var dialog = ChooseTrainDialogFragment(this)
+            var childFragmentManager = getChildFragmentManager()
+            dialog.show(childFragmentManager, "ChooseTrainDialogFragment")
+        }
+        binding.addPostImageViewPostImage.setOnClickListener {
+            //get image uri
+            getImageUri()
+            Log.i(TAG, "Add_post_fragment")
+        }
+
 
         addPostFragmentViewmodel?.btnChooseImageClicked?.observe(viewLifecycleOwner, Observer {
             if (it == true) {
-                //get image uri
-                getImageUri()
-                Log.i(TAG, "Add_post_fragment")
+
             }
         })
 
         addPostFragmentViewmodel.btnChooseTrainClicked.observe(viewLifecycleOwner, Observer {
             if (it == true) {
-                var dialog = ChooseTrainDialogFragment(this)
-                var childFragmentManager = getChildFragmentManager()
-                dialog.show(childFragmentManager, "ChooseTrainDialogFragment")
+
             }
         })
 
-        addPostFragmentViewmodel?.userData!!.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                userModel = it
-            } else {
-                Log.i(TAG, "Error while getting user shared preferences")
-            }
-        })
+
     }
 
 
@@ -260,7 +252,7 @@ class Add_post_fragment : Fragment(), FragmentLifecycle, Train_Dialog_Listener {
 
     companion object {
         var userModel: UserResponseItem? = null
-        private var postID: Int?=null
+        private var postID: Int? = null
 
     }
 
