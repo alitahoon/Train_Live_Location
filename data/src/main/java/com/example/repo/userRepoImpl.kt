@@ -88,6 +88,22 @@ class userRepoImpl(
         callback: (result: String?) -> Unit
     ) = firebaseService.signInWithPhoneAuthCredential(credential, callback)
 
+    override suspend fun getNotificationTokenByUserIDFromApi(
+        userId: Int,
+        result: (Resource<NotificationTokenResponse>) -> Unit
+    ) {
+        var res = apiService.GetUserTokenById(userId)
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke((Resource.Failure("addLiveLoctationToApi -> Error response body = null :${res.body()}")))
+            }
+        } else {
+            result.invoke((Resource.Failure("addLiveLoctationToApi -> ${res.message()}")))
+        }
+    }
+
     override suspend fun createAPhoneAuthCredential(
         code: String?,
         callback: (result: PhoneAuthCredential?) -> Unit

@@ -193,4 +193,6 @@ interface UserRepo {
     suspend fun pushAddPostCommentNotification(notification: PushPostCommentNotification, result: (Resource<String>) -> Unit)
 
     suspend fun createUserNotificationToken(result: (Resource<String>) -> Unit)
+
+    suspend fun getNotificationTokenByUserIDFromApi(userId:Int,result: (Resource<NotificationTokenResponse>) -> Unit)
 }
