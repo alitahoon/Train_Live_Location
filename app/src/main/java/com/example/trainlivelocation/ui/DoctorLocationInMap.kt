@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -51,7 +53,41 @@ class DoctorLocationInMap : Fragment() ,OnMapReadyCallback{
         binding!!.doctorLocationMapMapView.getMapAsync(this)
         doctorLocationInMapViewModel!!.getCurrantLocation(args.patientLocation)
         setObservers()
+        val scaleUpAnimation: Animation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_up)
+        val scaleDownAnimation: Animation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_down)
 
+        binding!!.patientBtnData.setOnClickListener{
+
+            if (binding!!.materialCardView2.visibility==View.GONE){
+                binding!!.materialCardView2.startAnimation(scaleUpAnimation)
+                scaleUpAnimation.setAnimationListener(object : Animation.AnimationListener{
+                    override fun onAnimationStart(p0: Animation?) {
+                        binding!!.materialCardView2.visibility=View.VISIBLE
+                    }
+
+                    override fun onAnimationEnd(p0: Animation?) {
+                    }
+
+                    override fun onAnimationRepeat(p0: Animation?) {
+                    }
+
+                })
+            }else{
+                binding!!.materialCardView2.startAnimation(scaleDownAnimation)
+                scaleDownAnimation.setAnimationListener(object :Animation.AnimationListener{
+                    override fun onAnimationStart(p0: Animation?) {
+                    }
+
+                    override fun onAnimationEnd(p0: Animation?) {
+                        binding!!.materialCardView2.visibility=View.GONE
+                    }
+
+                    override fun onAnimationRepeat(p0: Animation?) {
+                    }
+
+                })
+            }
+        }
         return binding!!.root
     }
 
@@ -67,7 +103,7 @@ class DoctorLocationInMap : Fragment() ,OnMapReadyCallback{
         mapView.onResume()
         mMap = googleMap
         mMap?.isMyLocationEnabled()
-        mMap?.setMapType(GoogleMap.MAP_TYPE_SATELLITE)
+        mMap?.setMapType(GoogleMap.MAP_TYPE_NORMAL)
         doctorLocationInMapViewModel!!.userCurrantLocation.observe(viewLifecycleOwner, Observer {
             when(it){
                 is Resource.Loading->{

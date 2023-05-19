@@ -9,10 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.*
-import com.example.domain.usecase.CreatePostComment
-import com.example.domain.usecase.GetCommentsForPostUsingId
-import com.example.domain.usecase.PushAddPostCommentNotification
-import com.example.domain.usecase.PushAddPostNotification
+import com.example.domain.usecase.*
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +20,8 @@ class Add_post_comment_viewModel @Inject constructor(
     private val createPostComment: CreatePostComment,
     private val getCommentsForPostUsingId: GetCommentsForPostUsingId,
     private val pushAddPostCommentNotification: PushAddPostCommentNotification,
-    private val context: Context
+    private val context: Context,
+    private val getNotificationTokenByUserIDFromApi:GetNotificationTokenByUserIDFromApi
 ) : ViewModel(){
 
     var btnSendCommentClicked= SingleLiveEvent<Boolean>()
@@ -40,6 +38,9 @@ class Add_post_comment_viewModel @Inject constructor(
     private val _postCommentNotification: MutableLiveData<Resource<String>> = MutableLiveData(null)
     val postCommentNotification: LiveData<Resource<String>> = _postCommentNotification
 
+    private val _postOwnerNotificationToken: MutableLiveData<Resource<NotificationTokenResponse>> = MutableLiveData(null)
+    val postOwnerNotificationToken: LiveData<Resource<NotificationTokenResponse>> = _postOwnerNotificationToken
+
 
 
 
@@ -54,6 +55,21 @@ class Add_post_comment_viewModel @Inject constructor(
             }
             child1.join()
         }
+    }
+    fun getPostOwnerNotificationToken(userID:Int){
+        _postOwnerNotificationToken.value=Resource.Loading
+        viewModelScope.launch{
+            val child1=launch (Dispatchers.IO){
+                getNotificationTokenByUserIDFromApi(userID){
+                    val child2=launch (Dispatchers.Main){
+                        _postOwnerNotificationToken.value=it
+                    }
+                }
+
+            }
+            child1.join()
+        }
+
     }
 
     fun onbtnSendCommentClicked(view: View){

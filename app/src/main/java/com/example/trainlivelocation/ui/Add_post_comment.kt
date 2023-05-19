@@ -99,30 +99,49 @@ class Add_post_comment(var post: PostModelResponse) : BottomSheetDialogFragment(
                                 toast("Comment send Successfully")
                                 binding.addPostTxtComment.setText("")
                                 Log.i(TAG, "${it.data}")
+                                val comment=it.data
                                 addPostCommentFragmentViewModel.getPostComments(post.id)
                                 //getToken
-                                val usermodel =getuserModelFromSharedPreferences(requireContext())
-                                //send notification
-                                addPostCommentFragmentViewModel.sendPostCommentNotification(
-                                    PushPostCommentNotification(
-                                        AddPostCommentNotificationData(
-                                            "New Post Comment",
-                                            it.data.content,
-                                            it.data.adminId,
-                                            it.data.content,
-                                            post.critical,
-                                            post.date,
-                                            post.id,
-                                            post.img,
-                                            post.imgId,
-                                            post.trainNumber,
-                                            post.userId,
-                                            post.userName,
-                                            post.userPhone
-                                        )
-                                    ,usermodel.tokenForNotifications
-                                    )
-                                )
+                                addPostCommentFragmentViewModel.getPostOwnerNotificationToken(post.userId)
+                                addPostCommentFragmentViewModel.postOwnerNotificationToken.observe(viewLifecycleOwner,
+                                    Observer {
+                                        when(it){
+                                            is Resource.Success->{
+                                                Log.i(TAG,"${it.data}")
+                                                //send notification
+                                                addPostCommentFragmentViewModel.sendPostCommentNotification(
+                                                    PushPostCommentNotification(
+                                                        AddPostCommentNotificationData(
+                                                            "New Post Comment",
+                                                            comment.content,
+                                                            comment.adminId,
+                                                            comment.content,
+                                                            post.critical,
+                                                            post.date,
+                                                            post.id,
+                                                            post.img,
+                                                            post.imgId,
+                                                            post.trainNumber,
+                                                            post.userId,
+                                                            post.userName,
+                                                            post.userPhone
+                                                        )
+                                                        ,it.data.tokenForNotifications
+                                                    )
+                                                )
+
+                                            }
+                                            is Resource.Loading->{
+                                                Log.i(TAG,"Waiting for getting post owner notification token")
+                                            }
+                                            is Resource.Failure->{
+                                                Log.i(TAG,"${it.error}")
+                                            }
+                                            else->{
+
+                                            }
+                                        }
+                                    })
 
                             }
                             is Resource.Failure -> {

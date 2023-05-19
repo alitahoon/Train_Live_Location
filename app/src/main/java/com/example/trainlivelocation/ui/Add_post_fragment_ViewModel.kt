@@ -7,10 +7,7 @@ import android.net.Uri
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.*
-import com.example.domain.entity.Post
-import com.example.domain.entity.PostModelResponse
-import com.example.domain.entity.PushPostNotification
-import com.example.domain.entity.UserResponseItem
+import com.example.domain.entity.*
 import com.example.domain.usecase.*
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import com.google.firebase.ktx.Firebase
@@ -28,7 +25,10 @@ class Add_post_fragment_ViewModel @Inject constructor(
     private val createPost: CreatePost,
     private val context: Context,
     private val pushAddPostNotification: PushAddPostNotification,
-    private val getNotificationTokenFromFirebase: GetNotificationTokenFromFirebase
+    private val getNotificationTokenFromFirebase: GetNotificationTokenFromFirebase,
+    private val getNotificationTokenByUserIDFromApi: GetNotificationTokenByUserIDFromApi,
+    private val getUserInTrain: GetUserInTrain
+
 
 ) : ViewModel() {
     var IsProgressBarVisible: Boolean = false
@@ -45,7 +45,11 @@ class Add_post_fragment_ViewModel @Inject constructor(
     private val sharedPrefFile = "UserToken"
 
 
+    private val _postOwnerNotificationToken: MutableLiveData<Resource<NotificationTokenResponse>> = MutableLiveData(null)
+    val postOwnerNotificationToken: LiveData<Resource<NotificationTokenResponse>> = _postOwnerNotificationToken
 
+    private val _usersInTrain: MutableLiveData<Resource<ArrayList<UserInTrainResponseItem>>> = MutableLiveData(null)
+    val usersInTrain: LiveData<Resource<ArrayList<UserInTrainResponseItem>>> = _usersInTrain
 
     private val _post: MutableLiveData<Resource<PostModelResponse>>? = MutableLiveData(null)
     val post: LiveData<Resource<PostModelResponse>>? = _post
@@ -109,6 +113,20 @@ class Add_post_fragment_ViewModel @Inject constructor(
                 }
             }
             child1.join()  }
+    }
+
+
+    fun getUsersInTrainById(trainID:Int){
+        _usersInTrain.value=Resource.Loading
+        viewModelScope.launch {
+            val child1= launch (Dispatchers.IO){
+                getUserInTrain(trainID){
+                    val child2=launch (Dispatchers.Main){
+                        _usersInTrain.value=it
+                    }
+                }
+            }
+        }
     }
 
 

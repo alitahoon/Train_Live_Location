@@ -8,7 +8,7 @@ data class AddPostCommentNotificationData(
     val critical: Boolean,
     val date: String,
     val id: Int,
-    val img: String,
+    val img: String?,
     val imgId: String,
     val trainNumber: Int,
     val userId: Int,

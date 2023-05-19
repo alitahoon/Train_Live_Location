@@ -171,39 +171,58 @@ class Emergency : Fragment(), DoctorListener, Train_Dialog_Listener {
                     }
                     is Resource.Success -> {
                         if (it != null) {
-                            Log.i(TAG, "success getting user Location : ${it.data}")
-                            //send notification here
-                            emergencyViewModel.sentDoctorNotification(
-                                PushNotification(DoctorNotificationData(
-                                    "doctors"
-                                ,"please help we need doctor"
-                                ,it.data.latitude
-                                ,it.data.longitude
-                                ),userModel.tokenForNotifications)
-                            )
-                            emergencyViewModel.sentNotification.observe(
-                                viewLifecycleOwner,
+                            val patientLocation:Location=it.data
+                            Log.i(TAG, "success getting user Location : ${patientLocation}")
+                            //get doctorNotificationToken
+                            emergencyViewModel.getDoctorNotification(doctor.userId)
+                            emergencyViewModel.doctorNotification.observe(viewLifecycleOwner,
                                 Observer {
-                                    when (it) {
-                                        is Resource.Loading -> {
-                                            Log.i(TAG, "Sending notification...")
+                                    when(it){
+                                        is Resource.Loading->{
+                                            Log.i(TAG,"Wait while getting doctor notification token...")
                                         }
-                                        is Resource.Failure -> {
-                                            Log.e(TAG, "${it.error}")
-                                            binding.emergancyNotificationProgressBar.visibility =
-                                                View.GONE
+                                        is Resource.Success->{
+                                            Log.i(TAG,"${it.data}")
+                                            //send notification here
+                                            emergencyViewModel.sentDoctorNotification(
+                                                PushNotification(DoctorNotificationData(
+                                                    "doctors"
+                                                    ,"please help we need doctor"
+                                                    ,patientLocation.latitude
+                                                    ,patientLocation.longitude
+                                                ),it.data.tokenForNotifications)
+                                            )
+                                            emergencyViewModel.sentNotification.observe(
+                                                viewLifecycleOwner,
+                                                Observer {
+                                                    when (it) {
+                                                        is Resource.Loading -> {
+                                                            Log.i(TAG, "Sending notification...")
+                                                        }
+                                                        is Resource.Failure -> {
+                                                            Log.e(TAG, "${it.error}")
+                                                            binding.emergancyNotificationProgressBar.visibility =
+                                                                View.GONE
 
-                                        }
-                                        is Resource.Success -> {
-                                            Log.i(TAG, "${it.data}")
-                                            binding.emergancyNotificationProgressBar.visibility =
-                                                View.GONE
-                                        }
-                                        else -> {
+                                                        }
+                                                        is Resource.Success -> {
+                                                            Log.i(TAG, "${it.data}")
+                                                            binding.emergancyNotificationProgressBar.visibility =
+                                                                View.GONE
+                                                        }
+                                                        else -> {
 
+                                                        }
+                                                    }
+                                                })
                                         }
+                                        is Resource.Failure->{
+                                            Log.i(TAG,"${it.error}")
+                                        }
+                                        else -> {}
                                     }
                                 })
+
                         }
 
                     }

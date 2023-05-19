@@ -195,4 +195,7 @@ interface UserRepo {
     suspend fun createUserNotificationToken(result: (Resource<String>) -> Unit)
 
     suspend fun getNotificationTokenByUserIDFromApi(userId:Int,result: (Resource<NotificationTokenResponse>) -> Unit)
+
+    suspend fun getNotificationTokenForUsersInTrain(trainId:Int,result: (Resource<ArrayList<NotificationTokenResponse>>) -> Unit)
+
 }

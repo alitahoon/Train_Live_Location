@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import com.example.domain.entity.AddPostCommentNotificationData
 import com.example.domain.entity.AddPostNotificationData
 import com.example.domain.entity.NotificatonToken
 import com.example.domain.repo.UserRepo
@@ -35,7 +36,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     private val CHANNEL_NAME = "com.example.trainlivelocation"
 
 
-
     private fun tiramisuPermissionsCheck(): Boolean {
         // If we are above level 33, check permissions
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -50,8 +50,9 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onDeletedMessages() {
         super.onDeletedMessages()
-        Log.i(TAG,"message was deleted")
+        Log.i(TAG, "message was deleted")
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(notificationManager: NotificationManager) {
         val channelName = "TutorialNotificationsChannel"
@@ -66,8 +67,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
         notificationManager.createNotificationChannel(channel)
     }
-
-
 
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
@@ -115,8 +114,55 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
 
                 }
-                "addCommentToPost" -> {
+                "New Post Comment" -> {
                     //create post comment notification
+                    Log.i(TAG, "New Post Comment")
+                    var adminId = remoteMessage.getData()["adminId"]!!.toInt()
+                    var content = remoteMessage.getData()["content"]!!.toString()
+                    var critical = remoteMessage.getData()["critical"]!!.toBoolean()
+                    var date = remoteMessage.getData()["date"]!!.toString()
+                    var id = remoteMessage.getData()["id"]!!.toInt()
+                    var img = remoteMessage.getData()["img"]?.toString()
+                    var imgId = remoteMessage.getData()["imgId"]!!.toString()
+                    var trainNumber = remoteMessage.getData()["trainNumber"]!!.toInt()
+                    var userId = remoteMessage.getData()["userId"]!!.toInt()
+                    var userName = remoteMessage.getData()["userName"]!!.toString()
+                    var userPhone = remoteMessage.getData()["userPhone"]!!.toString()
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("FRAGMENT_NAME", "NewPostComment")
+//                    intent.putExtra("trainID", trainID)
+                    intent.putExtra(
+                        "notificationModel",
+                        AddPostCommentNotificationData(
+                            title,
+                            message!!,
+                            adminId,
+                            content,
+                            critical,
+                            date,
+                            id,
+                            img,
+                            imgId,
+                            trainNumber,
+                            userId,
+                            userName,
+                            userPhone
+                        )
+                    )
+//                    intent.putExtra("critical", criticalPost)
+                    Log.i(TAG, "Post ID ${id::class.simpleName}")
+                    val pendingIntent = PendingIntent.getActivity(
+                        this,
+                        0,
+                        intent,
+                        PendingIntent.FLAG_IMMUTABLE
+                    )
+                    getRemoteView(title, content, false)?.let {
+                        generateNotification(
+                            it,
+                            pendingIntent
+                        )
+                    }
 
                 }
                 "postAdded" -> {
@@ -128,9 +174,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     val intent = Intent(this, MainActivity::class.java)
                     intent.putExtra("FRAGMENT_NAME", "AddPostFragment")
 //                    intent.putExtra("trainID", trainID)
-                    intent.putExtra("notificationModel", AddPostNotificationData(title,message!!,trainID,criticalPost,id))
+                    intent.putExtra(
+                        "notificationModel",
+                        AddPostNotificationData(title, message!!, trainID, criticalPost, id)
+                    )
 //                    intent.putExtra("critical", criticalPost)
-                    Log.i(TAG,"Post ID ${id::class.simpleName}")
+                    Log.i(TAG, "Post ID ${id::class.simpleName}")
                     val pendingIntent = PendingIntent.getActivity(
                         this,
                         0,
@@ -282,9 +331,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 remoteView.setTextViewText(R.id.doctor_notification_content, message)
 
             }
-            "stationHistory" -> {
+            "New Post Comment" -> {
                 //create station history notification
-
+                remoteView =
+                    RemoteViews("com.example.trainlivelocation", R.layout.add_post_notification)
+                remoteView.setTextViewText(R.id.doctor_notification_title, title)
+                remoteView.setTextViewText(R.id.doctor_notification_content, message)
 
             }
             "addCommentToPost" -> {

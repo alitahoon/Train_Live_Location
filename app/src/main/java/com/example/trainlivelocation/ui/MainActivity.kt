@@ -22,10 +22,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.ashokvarma.bottomnavigation.BottomNavigationBar
 import com.ashokvarma.bottomnavigation.BottomNavigationItem
 import com.bumptech.glide.Glide
-import com.example.domain.entity.AddPostNotificationData
-import com.example.domain.entity.DoctorNotificationData
-import com.example.domain.entity.Location_Response
-import com.example.domain.entity.UserResponseItem
+import com.example.domain.entity.*
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.ActivityMainBinding
 import com.example.trainlivelocation.utli.getuserModelFromSharedPreferences
@@ -39,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val mainActivityViewModel: MainActivityViewModel? by viewModels()
     private val TAG: String? = "MainActivity"
+
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,7 +111,7 @@ class MainActivity : AppCompatActivity() {
                     R.id.home2 -> {
                         setHeader("home")
                     }
-                    R.id.passengers->{
+                    R.id.passengers -> {
                         setHeader("Passengers")
                     }
                 }
@@ -135,13 +133,13 @@ class MainActivity : AppCompatActivity() {
                         val bundle = Bundle()
                         bundle.putParcelable("userModel", userModel)
                         Log.i(TAG, "$userModel")
-                        navController.navigate(R.id.inbox, bundle,navOptions)
+                        navController.navigate(R.id.inbox, bundle, navOptions)
                     }
                     1 -> {
                         toast("Home")
                         setHeader("home")
 
-                        navController.navigate(R.id.home2,null,navOptions)
+                        navController.navigate(R.id.home2, null, navOptions)
                     }
                     0 -> {
                         toast("Notification")
@@ -164,27 +162,52 @@ class MainActivity : AppCompatActivity() {
             when (fragmentToLoad) {
                 "DoctorLocationInMap" -> {
                     setHeader("Emergency")
-                    val latitude: Double=intent.getDoubleExtra("doctorLocationLatitude",0.0)
-                    val longitude: Double=intent.getDoubleExtra("doctorLocationLongitude",0.0)
+                    val latitude: Double = intent.getDoubleExtra("doctorLocationLatitude", 0.0)
+                    val longitude: Double = intent.getDoubleExtra("doctorLocationLongitude", 0.0)
                     val bundle = Bundle()
-                    bundle.putSerializable("patientLocation",Location_Response(latitude,longitude))
+                    bundle.putSerializable(
+                        "patientLocation",
+                        Location_Response(latitude, longitude)
+                    )
                     navController.navigate(R.id.doctorLocationInMap, bundle)
                 }
-                "AddPostFragment"->{
+                "AddPostFragment" -> {
                     setHeader("Posts")
 //                    val trainID=intent.getIntExtra("trainID",0)
 //                    Log.i(TAG,"trainID : ${trainID}")
 //                    val postCritical=intent.getBooleanExtra("critical",false)
-                    val notificationModel=intent.getSerializableExtra("notificationModel")
+                    val notificationModel = intent.getSerializableExtra("notificationModel")
                     val bundle = Bundle()
-                    bundle.putSerializable("postNotificationModel",notificationModel)
+                    bundle.putSerializable("postNotificationModel", notificationModel)
 //                    bundle.putInt("patientLocation",trainID!!)
 //                    bundle.putBoolean("patientLocation",postCritical)
                     navController.navigate(R.id.posts2, bundle)
                 }
+                "NewPostComment" -> {
+                    val notificationModel: AddPostCommentNotificationData =
+                        intent.getSerializableExtra("notificationModel") as AddPostCommentNotificationData
+                    Log.i(TAG,"notificationModel -->${notificationModel}")
+                    var dialog = Add_post_comment(
+                        PostModelResponse(
+                            notificationModel.adminId,
+                            notificationModel.content,
+                            notificationModel.critical,
+                            notificationModel.date,
+                            notificationModel.id,
+                            " ",
+                            notificationModel.imgId,
+                            notificationModel.trainNumber,
+                            notificationModel.userId,
+                            notificationModel.userName,
+                            notificationModel.userPhone
+                        )
+
+                    )
+                    dialog.show(supportFragmentManager, "Add_post_comment")
+                }
             }
 
-        }else{
+        } else {
             Log.i(TAG, "FRAGMENT_NAME from notification is null")
         }
 
@@ -281,8 +304,9 @@ class MainActivity : AppCompatActivity() {
         }
 
     }
-    fun setHeaderData(){
-        userModel=getuserModelFromSharedPreferences()
+
+    fun setHeaderData() {
+        userModel = getuserModelFromSharedPreferences()
         if (userModel != null) {
 
             val menuHeader = binding.mainActivityNavigationView.getHeaderView(0)

@@ -255,6 +255,11 @@ object UserCaseModule  {
         return GetNotificationTokenByUserIDFromApi(userRepo)
     }
 
+    @Provides
+    fun ProvideGetNotificationTokenForUsersInTrain(userRepo: UserRepo): GetNotificationTokenForUsersInTrain {
+        return GetNotificationTokenForUsersInTrain(userRepo)
+    }
+
 
 
 

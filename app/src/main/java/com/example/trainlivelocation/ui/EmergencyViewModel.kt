@@ -9,6 +9,7 @@ import com.example.domain.entity.*
 import com.example.domain.usecase.*
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,7 +19,8 @@ class EmergencyViewModel @Inject constructor(
     private val sendDoctorNotificationUsingFCM: SendDoctorNotificationUsingFCM,
     private val getUserNotificationTokenFromFirebase: GetNotificationTokenFromFirebase,
     private val pushNewTopicNotification: PushNewTopicNotification,
-    private val getUserCurrantLocationJustOnce: GetUserCurrantLocationJustOnce
+    private val getUserCurrantLocationJustOnce: GetUserCurrantLocationJustOnce,
+    private val getNotificationTokenByUserIDFromApi: GetNotificationTokenByUserIDFromApi
 ) : ViewModel() {
     private val TAG = "EmergencyViewModel"
 
@@ -36,6 +38,10 @@ class EmergencyViewModel @Inject constructor(
 
     private val _userLocation: MutableLiveData<Resource<Location>> = MutableLiveData(null)
     val userLocation: LiveData<Resource<Location>> = _userLocation
+
+
+    private val _doctorNotification: MutableLiveData<Resource<NotificationTokenResponse>> = MutableLiveData(null)
+    val doctorNotification: LiveData<Resource<NotificationTokenResponse>> = _doctorNotification
 
     var txtChooseTrainIdClicked = SingleLiveEvent<Boolean>()
     var trainid: String? = null
@@ -85,6 +91,21 @@ class EmergencyViewModel @Inject constructor(
                 _userLocation.value=it
             }
         }
+    }
+    fun getDoctorNotification(doctorID:Int){
+        _doctorNotification.value=Resource.Loading
+        viewModelScope.launch{
+            val child1=launch (Dispatchers.IO){
+                getNotificationTokenByUserIDFromApi(doctorID){
+                    val child2=launch (Dispatchers.Main){
+                        _doctorNotification.value=it
+                    }
+                }
+
+            }
+            child1.join()
+        }
+
     }
 
 

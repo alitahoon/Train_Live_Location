@@ -15,10 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.example.domain.entity.AddPostNotificationData
-import com.example.domain.entity.Post
-import com.example.domain.entity.PushPostNotification
-import com.example.domain.entity.UserResponseItem
+import com.example.domain.entity.*
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentAddPostFragmentBinding
 import com.example.trainlivelocation.utli.FragmentLifecycle
@@ -98,51 +95,27 @@ class Add_post_fragment : Fragment(), FragmentLifecycle, Train_Dialog_Listener {
                                 val token =
                                     getuserModelFromSharedPreferences(requireContext()).tokenForNotifications
                                 Log.i(TAG, "${token}")
-                                //push notification
-                                addPostFragmentViewmodel.sendAddedPostNotificationPost(
-                                    PushPostNotification(
-                                        (AddPostNotificationData
-                                            (
-                                            "postAdded",
-                                            "New Post Added To Train with id :${binding.addPostTxtTrainId.text.toString()}",
-                                            binding.addPostTxtTrainId.text.toString().toInt(),
-                                            isPostIsCritical(binding.addPostTxtPostContent.text.toString()),
-                                            postID!!
-                                        )),"postAdded${binding.addPostTxtTrainId.text.toString()}"
-
-                                    )
-                                )
-                                addPostFragmentViewmodel.AddedPostNotification!!.observe(
-                                    viewLifecycleOwner,
+                                //get User Token
+                                addPostFragmentViewmodel.getUsersInTrainById(binding.addPostTxtTrainId.text.toString().toInt())
+                                addPostFragmentViewmodel.usersInTrain.observe(viewLifecycleOwner,
                                     Observer {
-                                        when (it) {
-                                            is Resource.Success -> {
-                                                Log.i(TAG, "${it.data}")
-                                                binding.addPostTxtPostContent.setText("")
-                                                binding.addPostTxtTrainId.setText("")
-                                                binding.addPostImageViewPostImage.setImageDrawable(
-                                                    resources.getDrawable(R.drawable.add_photo_icon)
-                                                )
-                                                binding.addPostProgressBar.setVisibility(View.INVISIBLE)
-                                                getSnakbar(
-                                                    binding.addPostBtnSubmit,
-                                                    R.layout.custom_snake_bar_add_post_success_layout
-                                                ).show()
+                                        when(it){
+                                            is Resource.Loading->{
+                                                Log.i(TAG,"Waiting for getting users Tokens..")
                                             }
-                                            is Resource.Failure -> {
-                                                Log.e(TAG, "${it.error}")
+                                            is Resource.Success->{
+                                                Log.i(TAG,"${it.data}")
                                             }
-                                            is Resource.Loading -> {
-                                                Log.e(
-                                                    TAG,
-                                                    "Waiting for notifying train users for new post..."
-                                                )
+                                            is Resource.Failure->{
+                                                Log.i(TAG, "${it.error}")
                                             }
-                                            else -> {
+                                            else->{
 
                                             }
                                         }
                                     })
+
+
 
 
                             }
@@ -279,6 +252,55 @@ class Add_post_fragment : Fragment(), FragmentLifecycle, Train_Dialog_Listener {
             }
         }
         return false
+    }
+
+    fun sendNotificationToUsers(notificationTokenList:ArrayList<UserInTrainResponseItem>){
+        for (token in notificationTokenList) {
+            //push notification
+            addPostFragmentViewmodel.sendAddedPostNotificationPost(
+                PushPostNotification(
+                    (AddPostNotificationData
+                        (
+                        "postAdded",
+                        "New Post Added To Train with id :${binding.addPostTxtTrainId.text.toString()}",
+                        binding.addPostTxtTrainId.text.toString().toInt(),
+                        isPostIsCritical(binding.addPostTxtPostContent.text.toString()),
+                        postID!!
+                    )), token.userPhone
+                )
+            )
+            addPostFragmentViewmodel.AddedPostNotification!!.observe(
+                viewLifecycleOwner,
+                Observer {
+                    when (it) {
+                        is Resource.Success -> {
+                            Log.i(TAG, "${it.data}")
+                        }
+                        is Resource.Failure -> {
+                            Log.e(TAG, "${it.error}")
+                        }
+                        is Resource.Loading -> {
+                            Log.e(
+                                TAG,
+                                "Waiting for notifying train users for new post..."
+                            )
+                        }
+                        else -> {
+
+                        }
+                    }
+                })
+        }
+        binding.addPostTxtPostContent.setText("")
+        binding.addPostTxtTrainId.setText("")
+        binding.addPostImageViewPostImage.setImageDrawable(
+            resources.getDrawable(R.drawable.add_photo_icon)
+        )
+        binding.addPostProgressBar.setVisibility(View.INVISIBLE)
+        getSnakbar(
+            binding.addPostBtnSubmit,
+            R.layout.custom_snake_bar_add_post_success_layout
+        ).show()
     }
 
     fun clearFields() {

@@ -197,4 +197,7 @@ interface ApiService {
     suspend fun GetNewsById(@Query("newsId") newsId:Int): Response<GetNewsByIdResponseItem>
     @GET("/api/user/GetUserTokenById")
     suspend fun GetUserTokenById(@Query("id") trainId:Int): Response<NotificationTokenResponse>
+
+    @GET("/api/user/UsersTokenInTrain?TrainId")
+    suspend fun GetUsersTokenInTrain(@Query("id") trainId:Int): Response<ArrayList<NotificationTokenResponse>>
 }
