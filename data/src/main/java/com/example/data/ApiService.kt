@@ -198,6 +198,6 @@ interface ApiService {
     @GET("/api/user/GetUserTokenById")
     suspend fun GetUserTokenById(@Query("id") trainId:Int): Response<NotificationTokenResponse>
 
-    @GET("/api/user/UsersTokenInTrain?TrainId")
-    suspend fun GetUsersTokenInTrain(@Query("id") trainId:Int): Response<ArrayList<NotificationTokenResponse>>
+    @GET("/api/user/UsersTokenInTrain")
+    suspend fun GetUsersTokenInTrain(@Query("TrainId") trainId:Int): Response<ArrayList<NotificationTokenResponseInTrain>>
 }

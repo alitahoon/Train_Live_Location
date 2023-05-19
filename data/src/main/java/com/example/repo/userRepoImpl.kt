@@ -106,7 +106,7 @@ class userRepoImpl(
 
     override suspend fun getNotificationTokenForUsersInTrain(
         trainId: Int,
-        result: (Resource<ArrayList<NotificationTokenResponse>>) -> Unit
+        result: (Resource<ArrayList<NotificationTokenResponseInTrain>>) -> Unit
     ) {
         var res = apiService.GetUsersTokenInTrain(trainId)
         if (res.isSuccessful) {

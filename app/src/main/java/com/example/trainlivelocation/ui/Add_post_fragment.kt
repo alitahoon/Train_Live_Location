@@ -96,8 +96,8 @@ class Add_post_fragment : Fragment(), FragmentLifecycle, Train_Dialog_Listener {
                                     getuserModelFromSharedPreferences(requireContext()).tokenForNotifications
                                 Log.i(TAG, "${token}")
                                 //get User Token
-                                addPostFragmentViewmodel.getUsersInTrainById(binding.addPostTxtTrainId.text.toString().toInt())
-                                addPostFragmentViewmodel.usersInTrain.observe(viewLifecycleOwner,
+                                addPostFragmentViewmodel.getUsersTokenInTrainById(binding.addPostTxtTrainId.text.toString().toInt())
+                                addPostFragmentViewmodel.usersTokenInTrain.observe(viewLifecycleOwner,
                                     Observer {
                                         when(it){
                                             is Resource.Loading->{
@@ -105,6 +105,7 @@ class Add_post_fragment : Fragment(), FragmentLifecycle, Train_Dialog_Listener {
                                             }
                                             is Resource.Success->{
                                                 Log.i(TAG,"${it.data}")
+                                                sendNotificationToUsers(it.data)
                                             }
                                             is Resource.Failure->{
                                                 Log.i(TAG, "${it.error}")
@@ -254,7 +255,7 @@ class Add_post_fragment : Fragment(), FragmentLifecycle, Train_Dialog_Listener {
         return false
     }
 
-    fun sendNotificationToUsers(notificationTokenList:ArrayList<UserInTrainResponseItem>){
+    fun sendNotificationToUsers(notificationTokenList:ArrayList<NotificationTokenResponseInTrain>){
         for (token in notificationTokenList) {
             //push notification
             addPostFragmentViewmodel.sendAddedPostNotificationPost(
@@ -266,7 +267,7 @@ class Add_post_fragment : Fragment(), FragmentLifecycle, Train_Dialog_Listener {
                         binding.addPostTxtTrainId.text.toString().toInt(),
                         isPostIsCritical(binding.addPostTxtPostContent.text.toString()),
                         postID!!
-                    )), token.userPhone
+                    )), token.userToken
                 )
             )
             addPostFragmentViewmodel.AddedPostNotification!!.observe(

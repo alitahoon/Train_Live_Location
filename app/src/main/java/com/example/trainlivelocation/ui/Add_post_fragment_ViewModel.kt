@@ -27,7 +27,7 @@ class Add_post_fragment_ViewModel @Inject constructor(
     private val pushAddPostNotification: PushAddPostNotification,
     private val getNotificationTokenFromFirebase: GetNotificationTokenFromFirebase,
     private val getNotificationTokenByUserIDFromApi: GetNotificationTokenByUserIDFromApi,
-    private val getUserInTrain: GetUserInTrain
+    private val getNotificationTokenForUsersInTrain: GetNotificationTokenForUsersInTrain
 
 
 ) : ViewModel() {
@@ -48,8 +48,8 @@ class Add_post_fragment_ViewModel @Inject constructor(
     private val _postOwnerNotificationToken: MutableLiveData<Resource<NotificationTokenResponse>> = MutableLiveData(null)
     val postOwnerNotificationToken: LiveData<Resource<NotificationTokenResponse>> = _postOwnerNotificationToken
 
-    private val _usersInTrain: MutableLiveData<Resource<ArrayList<UserInTrainResponseItem>>> = MutableLiveData(null)
-    val usersInTrain: LiveData<Resource<ArrayList<UserInTrainResponseItem>>> = _usersInTrain
+    private val _usersTokenInTrain: MutableLiveData<Resource<ArrayList<NotificationTokenResponseInTrain>>> = MutableLiveData(null)
+    val usersTokenInTrain: LiveData<Resource<ArrayList<NotificationTokenResponseInTrain>>> = _usersTokenInTrain
 
     private val _post: MutableLiveData<Resource<PostModelResponse>>? = MutableLiveData(null)
     val post: LiveData<Resource<PostModelResponse>>? = _post
@@ -116,16 +116,17 @@ class Add_post_fragment_ViewModel @Inject constructor(
     }
 
 
-    fun getUsersInTrainById(trainID:Int){
-        _usersInTrain.value=Resource.Loading
+    fun getUsersTokenInTrainById(trainID:Int){
+        _usersTokenInTrain.value=Resource.Loading
         viewModelScope.launch {
             val child1= launch (Dispatchers.IO){
-                getUserInTrain(trainID){
+                getNotificationTokenForUsersInTrain(trainID){
                     val child2=launch (Dispatchers.Main){
-                        _usersInTrain.value=it
+                        _usersTokenInTrain.value=it
                     }
                 }
             }
+            child1.join()
         }
     }
 
