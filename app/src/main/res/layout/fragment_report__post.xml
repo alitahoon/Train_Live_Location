@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.example.trainlivelocation.ui.Report_Post_ViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/PrimaryColor"
+        android:padding="@dimen/_10sdp"
+        tools:context=".ui.Report_Post">
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:text="Are you sure you want to report this post"
+            android:textColor="@color/textHintColorFirst"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/report_post_btn_no"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:backgroundTint="@color/DarkPrimaryColor"
+            android:text="Yes"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/report_post_btn_yes"
+            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/report_post_btn_yes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:backgroundTint="@color/textAlarmColor"
+            android:text="Cancel"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/report_post_choose_reason_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:text="Why you want to report this post ?"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14sdp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/DarkPrimaryColor"
+                android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
+                android:padding="@dimen/_5sdp"
+                android:text="It contains the rude are not offensive"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10ssp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/DarkPrimaryColor"
+                android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
+                android:padding="@dimen/_5sdp"
+                android:text="False content of facts"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10ssp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/DarkPrimaryColor"
+                android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
+                android:padding="@dimen/_5sdp"
+                android:text="Content  create confusion"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10ssp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/DarkPrimaryColor"
+                android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
+                android:padding="@dimen/_5sdp"
+                android:text="Inappropriate content "
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10ssp" />
+
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

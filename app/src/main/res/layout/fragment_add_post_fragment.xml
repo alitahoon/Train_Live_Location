@@ -61,7 +61,6 @@
                 android:drawablePadding="@dimen/_10sdp"
                 android:gravity="center|start|bottom"
                 android:hint="Train Id"
-                android:text="@{viewModel._trainId}"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16ssp" />
         </com.google.android.material.textfield.TextInputLayout>

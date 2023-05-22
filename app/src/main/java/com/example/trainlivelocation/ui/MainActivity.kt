@@ -242,9 +242,6 @@ class MainActivity : AppCompatActivity() {
                     Glide.with(this)
                         .load(it.data)
                         .into(binding.mainActivityCiProfileImage)
-                    Glide.with(this)
-                        .load(it.data)
-                        .into(ProfileImage)
 
                 }
                 is Resource.Failure -> {

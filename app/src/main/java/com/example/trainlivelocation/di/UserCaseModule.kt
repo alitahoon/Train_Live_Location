@@ -261,6 +261,12 @@ object UserCaseModule  {
     }
 
 
+    @Provides
+    fun ProvideReportPost(userRepo: UserRepo): ReportPost {
+        return ReportPost(userRepo)
+    }
+
+
 
 
 

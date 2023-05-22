@@ -198,4 +198,6 @@ interface UserRepo {
 
     suspend fun getNotificationTokenForUsersInTrain(trainId:Int,result: (Resource<ArrayList<NotificationTokenResponseInTrain>>) -> Unit)
 
+    suspend fun reportPost(postId:Int,userID:Int,reportReason:String,result: (Resource<NotificationTokenResponseInTrain>) -> Unit)
+
 }

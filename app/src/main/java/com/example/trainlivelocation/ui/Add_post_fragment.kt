@@ -31,7 +31,6 @@ class Add_post_fragment : Fragment(), FragmentLifecycle, Train_Dialog_Listener {
     private lateinit var binding: FragmentAddPostFragmentBinding
     private val addPostFragmentViewmodel: Add_post_fragment_ViewModel by activityViewModels()
     private val REQUSET_CODE_IMAGE: Int? = 108
-    private var postImageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -133,7 +132,7 @@ class Add_post_fragment : Fragment(), FragmentLifecycle, Train_Dialog_Listener {
                         }
                     })
 
-                addPostFragmentViewmodel!!.post?.observe(viewLifecycleOwner, Observer {
+                addPostFragmentViewmodel.post?.observe(viewLifecycleOwner, Observer {
                     when (it) {
                         is Resource.Loading -> {
                             binding.addPostProgressBar.setVisibility(View.VISIBLE)
@@ -227,6 +226,8 @@ class Add_post_fragment : Fragment(), FragmentLifecycle, Train_Dialog_Listener {
     companion object {
         var userModel: UserResponseItem? = null
         private var postID: Int? = null
+        private var postImageUri: Uri? = null
+
 
     }
 
@@ -239,6 +240,7 @@ class Add_post_fragment : Fragment(), FragmentLifecycle, Train_Dialog_Listener {
     }
 
     override fun onTrainSelected(trainId: Int?, trainDegree: String?) {
+        Log.i(TAG,"onTrainSelected")
         binding.addPostTxtTrainId.setText("${trainId}")
     }
 
@@ -292,11 +294,7 @@ class Add_post_fragment : Fragment(), FragmentLifecycle, Train_Dialog_Listener {
                     }
                 })
         }
-        binding.addPostTxtPostContent.setText("")
-        binding.addPostTxtTrainId.setText("")
-        binding.addPostImageViewPostImage.setImageDrawable(
-            resources.getDrawable(R.drawable.add_photo_icon)
-        )
+        clearFields()
         binding.addPostProgressBar.setVisibility(View.INVISIBLE)
         getSnakbar(
             binding.addPostBtnSubmit,

@@ -119,6 +119,23 @@ class userRepoImpl(
             result.invoke((Resource.Failure("getNotificationTokenForUsersInTrain -> ${res.message()}")))
         }    }
 
+    override suspend fun reportPost(
+        postId: Int,
+        userID: Int,
+        reportReason: String,
+        result: (Resource<NotificationTokenResponseInTrain>) -> Unit
+    ) {
+        var res = apiService.GetUsersTokenInTrain(trainId)
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke((Resource.Failure("getNotificationTokenForUsersInTrain -> Error response body = null :${res.body()}")))
+            }
+        } else {
+            result.invoke((Resource.Failure("getNotificationTokenForUsersInTrain -> ${res.message()}")))
+        }     }
+
     override suspend fun createAPhoneAuthCredential(
         code: String?,
         callback: (result: PhoneAuthCredential?) -> Unit
@@ -401,6 +418,7 @@ class userRepoImpl(
     }
 
     override suspend fun createNews(result: (Response<CreateNewsResponseItem>) -> Unit) {
+
         TODO("Not yet implemented")
     }
 
