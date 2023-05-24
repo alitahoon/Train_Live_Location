@@ -230,4 +230,13 @@ interface UserRepo {
         result: (Resource<ArrayList<StationAlarmEntity>>) -> Unit
     )
 
+    suspend fun insertNewUserItemToDatabase (
+        userItemEntity: UserItemEntity,
+        result: (Resource<String>) -> Unit
+    )
+
+    suspend fun getNewUserItemFromDatabase (
+        result: (Resource<ArrayList<UserItemEntity>>) -> Unit
+    )
+
 }

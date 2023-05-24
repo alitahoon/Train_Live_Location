@@ -275,7 +275,15 @@ object UserCaseModule  {
         return GetStationAlarmsFromDatabase(userRepo)
     }
 
+    @Provides
+    fun ProvideInsertNewUserItemToDatabase(userRepo: UserRepo): InsertNewUserItemToDatabase {
+        return InsertNewUserItemToDatabase(userRepo)
+    }
 
+    @Provides
+    fun ProvideGetNewUserItemFromDatabase(userRepo: UserRepo): GetNewUserItemFromDatabase {
+        return GetNewUserItemFromDatabase(userRepo)
+    }
 
 
 
