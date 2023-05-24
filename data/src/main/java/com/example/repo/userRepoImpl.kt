@@ -8,6 +8,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.LiveData
+import androidx.room.RoomDatabase
 import com.example.data.*
 import com.example.domain.entity.*
 import com.example.domain.repo.UserRepo
@@ -16,7 +17,6 @@ import com.google.firebase.auth.*
 import retrofit2.Response
 
 class userRepoImpl(
-    private val context: Context,
     private val apiService: ApiService,
     private val locationLive: LocationLive,
     private val locationTrackBackgroundService: LocationTrackBackgroundService,
@@ -46,6 +46,18 @@ class userRepoImpl(
         } else {
             result.invoke(Resource.Failure("failed:${res.message()}"))
         }
+    }
+
+    override suspend fun insertNewStationAlarm(
+        stationAlarmEntity: StationAlarmEntity,
+        result: (Resource<String>) -> Unit
+    ) {
+         try{
+             myDatabase.stationAlarmDao().insertStationAlarmEntity(stationAlarmEntity)
+             result.invoke(Resource.Success("Insert stationAlarmEntity data success"))
+         }catch (e:Exception){
+             result.invoke(Resource.Failure("Error wihle inserting stationAlarmEntity data ---> ${e.message}"))
+         }
     }
 
     override suspend fun sendUserNotificationTokenToFirebase(

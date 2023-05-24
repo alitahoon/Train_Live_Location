@@ -200,4 +200,6 @@ interface UserRepo {
 
     suspend fun reportPost(postId:Int,userID:Int,reportReason:String,result: (Resource<NotificationTokenResponseInTrain>) -> Unit)
 
+    suspend fun insertNewStationAlarm(stationAlarmEntity: StationAlarmEntity,result: (Resource<String>) -> Unit)
+
 }

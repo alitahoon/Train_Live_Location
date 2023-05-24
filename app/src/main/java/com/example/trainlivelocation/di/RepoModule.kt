@@ -1,10 +1,12 @@
 package com.example.trainlivelocation.di
 
 import android.content.Context
+import androidx.room.RoomDatabase
 import com.example.data.*
 import com.example.domain.repo.UserRepo
 import com.example.domain.usecase.GetUserCurrantLocationJustOnce
 import com.example.repo.userRepoImpl
+import com.google.firebase.storage.FirebaseStorage
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,9 +16,14 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 object RepoModule {
+
+    @Provides
+    fun ProvideFirebaseStorage(context: Context): MyDatabase {
+        return MyDatabase.getInstance(context) as MyDatabase
+    }
+
     @Provides
     fun ProvideRepo(
-        context: Context,
         apiService: ApiService,
         locationLive: LocationLive,
         locationTrackForegroundService: LocationTrackForegroundService,
@@ -32,7 +39,6 @@ object RepoModule {
         myDatabase: MyDatabase
     ): UserRepo {
         return userRepoImpl(
-            context,
             apiService,
             locationLive,
             locationTrackBackgroundService,

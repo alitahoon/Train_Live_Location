@@ -266,6 +266,11 @@ object UserCaseModule  {
         return ReportPost(userRepo)
     }
 
+    @Provides
+    fun ProvideInsertNewStationAlarm(userRepo: UserRepo): InsertNewStationAlarm {
+        return InsertNewStationAlarm(userRepo)
+    }
+
 
 
 

@@ -7,7 +7,10 @@ import androidx.room.RoomDatabase
 import com.example.domain.entity.StationAlarmEntity
 
 @Database(entities = [StationAlarmEntity::class], version = 1)
-abstract class MyDatabase : RoomDatabase() {
+abstract class MyDatabase(private val context: Context) : RoomDatabase() {
+    init {
+        getInstance(context)
+    }
 
     abstract fun stationAlarmDao(): StationAlarmDao
 
