@@ -41,6 +41,8 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14ssp"/>
             <ImageView
+                android:onClick="@{viewmodel::onBtnAddStationAlarmClicked()}"
+                android:id="@+id/alarm_btn_add_station_alarm"
                 android:layout_weight="0.5"
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
@@ -65,7 +67,7 @@
                 android:focusable="false"
                 android:gravity="bottom|start"
                 android:hint="Station"
-                android:onClick="@{viewmodel::onStationTxtClicked}"
+                android:onClick="@{viewmodel::onbtnChooseStationClicked}"
                 android:text="@={viewmodel.userStation}"
                 android:textColor="@color/PrimaryColor"
                 android:textColorHint="@color/textHintColorFirst"
@@ -91,6 +93,7 @@
                 android:textSize="@dimen/_12ssp" />
 
             <NumberPicker
+                android:id="@+id/add_station_alarm_txt_distance"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_50sdp"
                 android:layout_weight="1" />

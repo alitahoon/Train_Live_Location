@@ -43,7 +43,6 @@
                         android:inputType="number"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/white"
-
                         android:background="@drawable/login_textfield_selector"
                         android:drawableStart="@drawable/phone_icon"
                         android:drawablePadding="@dimen/_5sdp"

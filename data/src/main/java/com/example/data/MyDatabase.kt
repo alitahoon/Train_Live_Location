@@ -13,6 +13,7 @@ abstract class MyDatabase(private val context: Context) : RoomDatabase() {
     }
 
     abstract fun stationAlarmDao(): StationAlarmDao
+    abstract fun UserItemEntityDao(): UserItemEntityDao
 
     companion object {
         @Volatile
