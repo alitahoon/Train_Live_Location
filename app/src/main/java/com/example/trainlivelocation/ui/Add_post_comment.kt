@@ -112,7 +112,7 @@ class Add_post_comment(var post: PostModelResponse) : BottomSheetDialogFragment(
                                                 addPostCommentFragmentViewModel.sendPostCommentNotification(
                                                     PushPostCommentNotification(
                                                         AddPostCommentNotificationData(
-                                                            "New Post Comment",
+                                                            "NewPostComment",
                                                             comment.content,
                                                             comment.adminId,
                                                             comment.content,

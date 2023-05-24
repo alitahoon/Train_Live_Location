@@ -13,6 +13,11 @@
         android:icon="@drawable/contact_icon"
         android:title="@string/contact_us"/>
     <item
+        android:id="@+id/home_menu_alarms"
+        android:iconTint="@color/white"
+        android:icon="@drawable/alarm_icon_notifiction"
+        android:title="@string/Alarms"/>
+    <item
         android:id="@+id/home_menu_invite_friend"
         android:icon="@drawable/invite_icon"
         android:title="@string/invite_friend"/>

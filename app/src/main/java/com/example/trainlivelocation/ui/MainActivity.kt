@@ -72,6 +72,10 @@ class MainActivity : AppCompatActivity() {
                         binding.mainActivityDrwerLayout.closeDrawer(GravityCompat.START);
 
                     }
+
+                    R.id.home_menu_alarms ->{
+                        navController.navigate(R.id.userProfile,null,navOptions)
+                    }
                 }
                 return true
             }
@@ -138,11 +142,13 @@ class MainActivity : AppCompatActivity() {
                     1 -> {
                         toast("Home")
                         setHeader("home")
-
                         navController.navigate(R.id.home2, null, navOptions)
                     }
                     0 -> {
-                        toast("Notification")
+                        toast("Alarms")
+                        setHeader("Alarms")
+                        navController.navigate(R.id.alarms, null, navOptions)
+
                     }
                 }
             }
@@ -262,7 +268,7 @@ class MainActivity : AppCompatActivity() {
     private fun setBottomBarIcons() {
         binding.bottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC)
         binding.bottomNavigationBar
-            .addItem(BottomNavigationItem(R.drawable.notifications, "Notification"))
+            .addItem(BottomNavigationItem(R.drawable.alarm_icon_notifiction, "Notification"))
             .setActiveColor(R.color.white)
             .addItem(BottomNavigationItem(R.drawable.home, "Home")).setActiveColor(R.color.white)
             .addItem(BottomNavigationItem(R.drawable.inbox, "Inbox"))

@@ -114,7 +114,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
 
                 }
-                "New Post Comment" -> {
+                "NewPostComment" -> {
                     //create post comment notification
                     Log.i(TAG, "New Post Comment")
                     var adminId = remoteMessage.getData()["adminId"]!!.toInt()
@@ -331,7 +331,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                 remoteView.setTextViewText(R.id.doctor_notification_content, message)
 
             }
-            "New Post Comment" -> {
+            "NewPostComment" -> {
                 //create station history notification
                 remoteView =
                     RemoteViews("com.example.trainlivelocation", R.layout.add_post_notification)

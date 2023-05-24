@@ -7,13 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.example.trainlivelocation.R
-import com.example.trainlivelocation.databinding.FragmentReportPostBinding
-import dagger.hilt.android.AndroidEntryPoint
+import com.example.trainlivelocation.databinding.FragmentAddPostCommentBinding
+import com.example.trainlivelocation.databinding.FragmentAlarmsBinding
 
-@AndroidEntryPoint
-class Report_Post : Fragment() {
-    private var binding:FragmentReportPostBinding?=null
-    private val report_Post_ViewModel: Report_Post_ViewModel by activityViewModels()
+
+class Alarms : Fragment() {
+    private val TAG: String? = "Alarms"
+    private lateinit var binding: FragmentAlarmsBinding
+    private val alarms_viewModel: Alarms_viewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,13 +25,13 @@ class Report_Post : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentReportPostBinding.inflate(inflater,container,false)
+        binding=FragmentAlarmsBinding.inflate(inflater,container,false)
             .apply {
-                this.viewmodel=report_Post_ViewModel
+                this.viewmodel=alarms_viewModel
             }
-    return binding!!.root
-    }
 
+        return binding.root
+    }
 
     companion object {
 

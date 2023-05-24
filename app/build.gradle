@@ -15,7 +15,7 @@ plugins {
 android {
     namespace 'com.example.trainlivelocation'
     compileSdk 33
-
+    compileSdkPreview 'UpsideDownCake'
     defaultConfig {
         applicationId "com.example.trainlivelocation"
         minSdk 24

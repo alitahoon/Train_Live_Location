@@ -67,6 +67,13 @@
             app:exitAnim="@anim/exit"
             app:popEnterAnim="@anim/pop_enter"
             app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_home2_to_alarms"
+            app:destination="@id/alarms"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
     </fragment>
     <dialog
         android:id="@+id/locationDialogFragment"
@@ -192,5 +199,9 @@
             android:name="patientLocation"
             app:argType="com.example.domain.entity.Location_Response" />
     </fragment>
+    <fragment
+        android:id="@+id/alarms"
+        android:name="com.example.trainlivelocation.ui.Alarms"
+        android:label="Alarms" />
 
 </navigation>

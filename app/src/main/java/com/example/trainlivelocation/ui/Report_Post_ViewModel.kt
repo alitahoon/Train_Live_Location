@@ -16,16 +16,16 @@ class Report_Post_ViewModel @Inject constructor(
     private val reportPost: ReportPost
 ) :ViewModel() {
 
-    private val _report:MutableLiveData<Resource<>> = MutableLiveData(null)
-     val report:LiveData<Resource<>> = _report
+//    private val _report:MutableLiveData<Resource<>> = MutableLiveData(null)
+//     val report:LiveData<Resource<>> = _report
 
 
     fun report(postID:Int,userID:Int,resoen:String){
-        _report.value=Resource.Loading
-        viewModelScope.launch {
-            reportPost(postID,userID,resoen){
-                _report.value=it
-            }
-        }
+//        _report.value=Resource.Loading
+//        viewModelScope.launch {
+//            reportPost(postID,userID,resoen){
+//                _report.value=it
+//            }
+//        }
     }
 }
