@@ -239,4 +239,13 @@ interface UserRepo {
         result: (Resource<ArrayList<UserItemEntity>>) -> Unit
     )
 
+    suspend fun insertNewTrainItemToDatabase (
+        trainItemEntity: TrainItemEntity,
+        result: (Resource<String>) -> Unit
+    )
+
+    suspend fun getNewTrainItemFromDatabase (
+        result: (Resource<ArrayList<TrainItemEntity>>) -> Unit
+    )
+
 }

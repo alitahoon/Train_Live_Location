@@ -76,6 +76,26 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun insertNewTrainItemToDatabase(
+        trainItemEntity: TrainItemEntity,
+        result: (Resource<String>) -> Unit
+    ) {
+        try {
+            myDatabase.TrainItemEntityDao().insertTrainItemEntity(trainItemEntity)
+            result.invoke(Resource.Success("Successfully added train data item in database"))
+        }catch (e:Exception){
+            result.invoke(Resource.Failure("Failed inserting TrainItemToDatabase ---> ${e.message}"))
+        }
+    }
+
+    override suspend fun getNewTrainItemFromDatabase(result: (Resource<ArrayList<TrainItemEntity>>) -> Unit) {
+        try {
+            result.invoke(Resource.Success(myDatabase.TrainItemEntityDao().getAllTrainItemEntity()))
+        }catch (e:Exception){
+            result.invoke(Resource.Failure("Failed getting TrainItemFromDatabase ---> ${e.message}"))
+        }
+    }
+
     override suspend fun insertNewStationAlarm(
         stationAlarmEntity: StationAlarmEntity,
         result: (Resource<String>) -> Unit
