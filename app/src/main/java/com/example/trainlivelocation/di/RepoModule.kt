@@ -1,5 +1,6 @@
 package com.example.trainlivelocation.di
 
+import android.content.Context
 import com.example.data.*
 import com.example.domain.repo.UserRepo
 import com.example.domain.usecase.GetUserCurrantLocationJustOnce
@@ -15,6 +16,7 @@ import dagger.hilt.components.SingletonComponent
 object RepoModule {
     @Provides
     fun ProvideRepo(
+        context: Context,
         apiService: ApiService,
         locationLive: LocationLive,
         locationTrackForegroundService: LocationTrackForegroundService,
@@ -26,9 +28,11 @@ object RepoModule {
         sharedPreferencesService: SharedPreferencesService,
         GetTrainLocationService: GetTrainLocationService,
         getCurrantLocationJustOnce: GetCurrantLocationJustOnce,
-        getCurrantLocationLive: GetCurrantLocationLive
+        getCurrantLocationLive: GetCurrantLocationLive,
+        myDatabase: MyDatabase
     ): UserRepo {
         return userRepoImpl(
+            context,
             apiService,
             locationLive,
             locationTrackBackgroundService,
@@ -39,7 +43,8 @@ object RepoModule {
             sharedPreferencesService,
             GetTrainLocationService,
             getCurrantLocationJustOnce,
-            getCurrantLocationLive
+            getCurrantLocationLive,
+            myDatabase
         )
     }
 

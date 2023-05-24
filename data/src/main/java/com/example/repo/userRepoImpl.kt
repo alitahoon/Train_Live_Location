@@ -1,6 +1,7 @@
 package com.example.repo
 
 import Resource
+import android.content.Context
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.net.Uri
@@ -15,6 +16,7 @@ import com.google.firebase.auth.*
 import retrofit2.Response
 
 class userRepoImpl(
+    private val context: Context,
     private val apiService: ApiService,
     private val locationLive: LocationLive,
     private val locationTrackBackgroundService: LocationTrackBackgroundService,
@@ -25,7 +27,8 @@ class userRepoImpl(
     private val sharedPreferencesService: SharedPreferencesService,
     private val getTrainForgroundService: GetTrainLocationService,
     private val getCurrantLocationJustOnce: GetCurrantLocationJustOnce,
-    private val getCurrantLocationLive:GetCurrantLocationLive
+    private val getCurrantLocationLive:GetCurrantLocationLive,
+    private val myDatabase: MyDatabase
     ) : UserRepo {
     private val TAG: String? = "userRepoImpl"
     override suspend fun getUserData(
