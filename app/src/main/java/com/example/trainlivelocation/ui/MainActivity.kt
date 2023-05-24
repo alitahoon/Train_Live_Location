@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     R.id.home_menu_alarms ->{
-                        navController.navigate(R.id.userProfile,null,navOptions)
+                        navController.navigate(R.id.alarms,null,navOptions)
                     }
                 }
                 return true

@@ -5,12 +5,12 @@
         <!-- Primary brand color. -->
         <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
         <item name="materialThemeOverlay">@style/ButtonStyleTextColor</item>
-        <item name="colorPrimary">@color/basicColor</item>
-        <item name="colorPrimaryVariant">@color/secondColor</item>
+        <item name="colorPrimary">@color/PrimaryColor</item>
+        <item name="colorPrimaryVariant">@color/PrimaryColor</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/thirdColor</item>
-        <item name="colorSecondaryVariant">@color/fourth</item>
+        <item name="colorSecondaryVariant">@color/DarkPrimaryColor</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/DarkPrimaryColor</item>

@@ -1,14 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.Add_station_alarm">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <data>
+
+        <variable
+            name="viewmodel"
+            type="com.example.trainlivelocation.ui.Add_station_alarmViewmodel" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:background="@color/DarkPrimaryColor"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/_10sdp"
+        tools:context=".ui.Add_station_alarm">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_weight="0.5"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:gravity="start"
+                android:src="@drawable/close_icon"/>
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Add Station Alarm"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_14ssp"/>
+            <ImageView
+                android:layout_weight="0.5"
+                android:layout_width="@dimen/_30sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:gravity="start"
+                android:src="@drawable/baseline_done_24"/>
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/signUp_txt_station_tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            android:textColorHint="@color/textHintColorFirst">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/add_alarm_txt_station"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTint="@color/DarkPrimaryColor"
+                android:drawableLeft="@drawable/staion"
+                android:drawablePadding="@dimen/_10sdp"
+                android:focusable="false"
+                android:gravity="bottom|start"
+                android:hint="Station"
+                android:onClick="@{viewmodel::onStationTxtClicked}"
+                android:text="@={viewmodel.userStation}"
+                android:textColor="@color/PrimaryColor"
+                android:textColorHint="@color/textHintColorFirst"
+                android:textSize="@dimen/_12ssp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableStart="@drawable/distance3_primery"
+                android:drawablePadding="@dimen/_5sdp"
+                android:gravity="center"
+                android:text="Distance : "
+                android:textColor="@color/textHintColorFirst"
+                android:textSize="@dimen/_12ssp" />
+
+            <NumberPicker
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_50sdp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawablePadding="@dimen/_10sdp"
+                android:gravity="center"
+                android:text=": KM"
+                android:textColor="@color/textHintColorFirst"
+                android:textSize="@dimen/_12ssp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>

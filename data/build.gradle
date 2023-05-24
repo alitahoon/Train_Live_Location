@@ -51,7 +51,12 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
+    // Room components
+    implementation "androidx.room:room-ktx:2.4.0"
+    implementation "androidx.room:room-compiler:2.4.0"
 
+    // Coroutines support for Room
+    implementation "androidx.room:room-ktx:2.4.0"
     // Add the dependency for the Cloud Storage library
     // When using the BoM, you don't specify versions in Firebase library dependencies
     implementation 'com.google.firebase:firebase-storage-ktx'

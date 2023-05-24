@@ -62,7 +62,12 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     def nav_version = "2.5.3"
     def lifecycle_version = "2.5.1"
+    // Room components
+    implementation "androidx.room:room-ktx:2.4.0"
+    implementation "androidx.room:room-compiler:2.4.0"
 
+    // Coroutines support for Room
+    implementation "androidx.room:room-ktx:2.4.0"
     // Kotlin navigation graph
     implementation("androidx.navigation:navigation-fragment-ktx:$nav_version")
     implementation("androidx.navigation:navigation-ui-ktx:$nav_version")

@@ -2,10 +2,10 @@
     <!-- Base application theme. -->
     <style name="Theme.TrainLiveLocation" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/basicColor</item>
+        <item name="colorPrimary">@color/PrimaryColor</item>
         <item name="materialThemeOverlay">@style/ButtonStyleTextColor</item>
 
-        <item name="colorPrimaryVariant">@color/secondColor</item>
+        <item name="colorPrimaryVariant">@color/PrimaryColor</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/thirdColor</item>
