@@ -184,22 +184,50 @@ interface UserRepo {
         result: (Resource<String>) -> Unit
     )
 
-    suspend fun subscribeToNewTopic(topicInput: String,result: (Resource<String>) -> Unit)
-    suspend fun pushNewTopicNotification(notification: PushNotification, result: (Resource<String>) -> Unit)
+    suspend fun subscribeToNewTopic(topicInput: String, result: (Resource<String>) -> Unit)
+    suspend fun pushNewTopicNotification(
+        notification: PushNotification,
+        result: (Resource<String>) -> Unit
+    )
 
     suspend fun getUserCurrantLocationJustOnce(result: (Resource<Location>) -> Unit)
     suspend fun getUserCurrantLocationLive(result: (Resource<Location>) -> Unit)
-    suspend fun pushAddPostNotification(notification: PushPostNotification, result: (Resource<String>) -> Unit)
-    suspend fun pushAddPostCommentNotification(notification: PushPostCommentNotification, result: (Resource<String>) -> Unit)
+    suspend fun pushAddPostNotification(
+        notification: PushPostNotification,
+        result: (Resource<String>) -> Unit
+    )
+
+    suspend fun pushAddPostCommentNotification(
+        notification: PushPostCommentNotification,
+        result: (Resource<String>) -> Unit
+    )
 
     suspend fun createUserNotificationToken(result: (Resource<String>) -> Unit)
 
-    suspend fun getNotificationTokenByUserIDFromApi(userId:Int,result: (Resource<NotificationTokenResponse>) -> Unit)
+    suspend fun getNotificationTokenByUserIDFromApi(
+        userId: Int,
+        result: (Resource<NotificationTokenResponse>) -> Unit
+    )
 
-    suspend fun getNotificationTokenForUsersInTrain(trainId:Int,result: (Resource<ArrayList<NotificationTokenResponseInTrain>>) -> Unit)
+    suspend fun getNotificationTokenForUsersInTrain(
+        trainId: Int,
+        result: (Resource<ArrayList<NotificationTokenResponseInTrain>>) -> Unit
+    )
 
-    suspend fun reportPost(postId:Int,userID:Int,reportReason:String,result: (Resource<NotificationTokenResponseInTrain>) -> Unit)
+    suspend fun reportPost(
+        postId: Int,
+        userID: Int,
+        reportReason: String,
+        result: (Resource<NotificationTokenResponseInTrain>) -> Unit
+    )
 
-    suspend fun insertNewStationAlarm(stationAlarmEntity: StationAlarmEntity,result: (Resource<String>) -> Unit)
+    suspend fun insertNewStationAlarm(
+        stationAlarmEntity: StationAlarmEntity,
+        result: (Resource<String>) -> Unit
+    )
+
+    suspend fun getStationAlarmsFromDatabase(
+        result: (Resource<ArrayList<StationAlarmEntity>>) -> Unit
+    )
 
 }

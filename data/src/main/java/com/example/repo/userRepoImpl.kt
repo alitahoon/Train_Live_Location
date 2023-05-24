@@ -48,6 +48,14 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun getStationAlarmsFromDatabase(result: (Resource<ArrayList<StationAlarmEntity>>) -> Unit) {
+        try {
+            result.invoke(Resource.Success(myDatabase.stationAlarmDao().getAllStationAlarmEntity()))
+        }catch (e:Exception){
+            result.invoke(Resource.Failure("Failed getting StationAlarmsFromDatabase ---> ${e.message}"))
+        }
+    }
+
     override suspend fun insertNewStationAlarm(
         stationAlarmEntity: StationAlarmEntity,
         result: (Resource<String>) -> Unit

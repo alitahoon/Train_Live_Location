@@ -270,6 +270,10 @@ object UserCaseModule  {
     fun ProvideInsertNewStationAlarm(userRepo: UserRepo): InsertNewStationAlarm {
         return InsertNewStationAlarm(userRepo)
     }
+    @Provides
+    fun ProvideGetStationAlarmsFromDatabase(userRepo: UserRepo): GetStationAlarmsFromDatabase {
+        return GetStationAlarmsFromDatabase(userRepo)
+    }
 
 
 
