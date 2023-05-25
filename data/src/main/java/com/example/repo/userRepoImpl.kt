@@ -114,6 +114,26 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun insertNewMessageItemToDatabase(
+        messageItemEntity: MessageItemEntity,
+        result: (Resource<String>) -> Unit
+    ) {
+        try {
+            myDatabase.MessageItemEntityDao().insertMessageItemEntity(messageItemEntity)
+            result.invoke(Resource.Success("Successfully added message data item in database"))
+        }catch (e:Exception){
+            result.invoke(Resource.Failure("Failed inserting MessageItemToDatabase ---> ${e.message}"))
+        }
+    }
+
+    override suspend fun getNewMessageItemFromDatabase(result: (Resource<ArrayList<MessageItemEntity>>) -> Unit) {
+        try {
+            result.invoke(Resource.Success(myDatabase.MessageItemEntityDao().getAllMessageItemEntity()))
+        }catch (e:Exception){
+            result.invoke(Resource.Failure("Failed getting MessageItemFromDatabase ---> ${e.message}"))
+        }
+    }
+
     override suspend fun insertNewStationAlarm(
         stationAlarmEntity: StationAlarmEntity,
         result: (Resource<String>) -> Unit

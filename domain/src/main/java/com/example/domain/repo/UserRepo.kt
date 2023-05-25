@@ -257,4 +257,13 @@ interface UserRepo {
         result: (Resource<ArrayList<TicketItemEntity>>) -> Unit
     )
 
+    suspend fun insertNewMessageItemToDatabase (
+        messageItemEntity: MessageItemEntity,
+        result: (Resource<String>) -> Unit
+    )
+
+    suspend fun getNewMessageItemFromDatabase (
+        result: (Resource<ArrayList<MessageItemEntity>>) -> Unit
+    )
+
 }

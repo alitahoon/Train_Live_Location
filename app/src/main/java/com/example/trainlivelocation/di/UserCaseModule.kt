@@ -305,6 +305,16 @@ object UserCaseModule  {
         return GetNewTicketItemFromDatabase(userRepo)
     }
 
+    @Provides
+    fun ProvideInsertNewMessageItemToDatabase(userRepo: UserRepo): InsertNewMessageItemToDatabase {
+        return InsertNewMessageItemToDatabase(userRepo)
+    }
+
+    @Provides
+    fun ProvideGetNewMessageItemFromDatabase(userRepo: UserRepo): GetNewMessageItemFromDatabase {
+        return GetNewMessageItemFromDatabase(userRepo)
+    }
+
 
 
 }
