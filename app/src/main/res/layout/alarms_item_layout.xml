@@ -1,24 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/_10sdp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="@dimen/_15sdp"
-    android:backgroundTint="@color/PrimaryColor">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="alarm"
+            type="com.example.domain.entity.StationAlarmEntity" />
+        <variable
+            name="listener"
+            type="com.example.trainlivelocation.utli.StationAlarmListener" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_10sdp"
+        app:cardCornerRadius="@dimen/_15sdp"
+        android:backgroundTint="@color/PrimaryColor">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
+
             <de.hdodenhof.circleimageview.CircleImageView
+                android:onClick="@{() -> listener.OnButtonEdtitClicked()}"
                 android:layout_gravity="end"
                 android:padding="@dimen/_5sdp"
                 android:background="@drawable/profile_top_shape"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/setting"/>
+                android:src="@drawable/setting" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -46,6 +59,7 @@
                     android:layout_weight="1.8"
                     app:useMaterialThemeColors="false" />
             </LinearLayout>
+<!--            android:onCheckedChanged="@{(button, bool)-> listener.OnSwitchButtonChecked(bool,alarm)}"-->
 
             <TextView
                 android:layout_width="match_parent"
@@ -57,6 +71,7 @@
                 android:text="Distance : 2 KM"
                 android:textColor="@color/textHintColorFirst"
                 android:textSize="@dimen/_12ssp" />
+
             <TextView
                 android:layout_marginHorizontal="@dimen/_10sdp"
                 android:layout_marginBottom="@dimen/_10sdp"
@@ -72,4 +87,5 @@
 
         </LinearLayout>
 
-</com.google.android.material.card.MaterialCardView >
+    </com.google.android.material.card.MaterialCardView>
+</layout>
