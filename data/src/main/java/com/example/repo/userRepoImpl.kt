@@ -1,14 +1,12 @@
 package com.example.repo
 
 import Resource
-import android.content.Context
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.LiveData
-import androidx.room.RoomDatabase
 import com.example.data.*
 import com.example.domain.entity.*
 import com.example.domain.repo.UserRepo
@@ -93,6 +91,26 @@ class userRepoImpl(
             result.invoke(Resource.Success(myDatabase.TrainItemEntityDao().getAllTrainItemEntity()))
         }catch (e:Exception){
             result.invoke(Resource.Failure("Failed getting TrainItemFromDatabase ---> ${e.message}"))
+        }
+    }
+
+    override suspend fun insertNewTicketItemToDatabase(
+        ticketItemEntity: TicketItemEntity,
+        result: (Resource<String>) -> Unit
+    ) {
+        try {
+            myDatabase.TicketItemEntityDao().insertTicketItemEntity(ticketItemEntity)
+            result.invoke(Resource.Success("Successfully added ticket data item in database"))
+        }catch (e:Exception){
+            result.invoke(Resource.Failure("Failed inserting TicketItemToDatabase ---> ${e.message}"))
+        }
+    }
+
+    override suspend fun getNewTicketItemFromDatabase(result: (Resource<ArrayList<TicketItemEntity>>) -> Unit) {
+        try {
+            result.invoke(Resource.Success(myDatabase.TicketItemEntityDao().getAllTicketItemEntity()))
+        }catch (e:Exception){
+            result.invoke(Resource.Failure("Failed getting TicketItemFromDatabase ---> ${e.message}"))
         }
     }
 

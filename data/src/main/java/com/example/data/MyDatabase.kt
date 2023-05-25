@@ -8,7 +8,7 @@ import com.example.domain.entity.StationAlarmEntity
 import com.example.domain.entity.TrainItemEntity
 import com.example.domain.entity.UserItemEntity
 
-@Database(entities = [StationAlarmEntity::class, UserItemEntity::class, TrainItemEntity::class], version = 1)
+@Database(entities = [StationAlarmEntity::class, UserItemEntity::class, TrainItemEntity::class, TicketItemEntityDao::class], version = 1)
 abstract class MyDatabase(private val context: Context) : RoomDatabase() {
     init {
         getInstance(context)
@@ -18,6 +18,8 @@ abstract class MyDatabase(private val context: Context) : RoomDatabase() {
     abstract fun UserItemEntityDao(): UserItemEntityDao
 
     abstract fun TrainItemEntityDao(): TrainItemEntityDao
+
+    abstract fun TicketItemEntityDao(): TicketItemEntityDao
 
     companion object {
         @Volatile

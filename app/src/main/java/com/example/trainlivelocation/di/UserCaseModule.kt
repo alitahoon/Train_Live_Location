@@ -295,6 +295,16 @@ object UserCaseModule  {
         return GetNewTrainItemFromDatabase(userRepo)
     }
 
+    @Provides
+    fun ProvideInsertNewTicketItemToDatabase(userRepo: UserRepo): InsertNewTicketItemToDatabase {
+        return InsertNewTicketItemToDatabase(userRepo)
+    }
+
+    @Provides
+    fun ProvideGetNewTicketItemFromDatabase(userRepo: UserRepo): GetNewTicketItemFromDatabase {
+        return GetNewTicketItemFromDatabase(userRepo)
+    }
+
 
 
 }
