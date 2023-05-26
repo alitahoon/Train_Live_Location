@@ -64,7 +64,7 @@ dependencies {
     def lifecycle_version = "2.5.1"
     // Room components
     implementation "androidx.room:room-ktx:2.4.0"
-    implementation "androidx.room:room-compiler:2.4.0"
+    annotationProcessor 'androidx.room:room-compiler:2.4.0-beta01'
 
     // Coroutines support for Room
     implementation "androidx.room:room-ktx:2.4.0"

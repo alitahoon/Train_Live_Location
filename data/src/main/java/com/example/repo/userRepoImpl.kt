@@ -26,6 +26,7 @@ class userRepoImpl(
     private val getTrainForgroundService: GetTrainLocationService,
     private val getCurrantLocationJustOnce: GetCurrantLocationJustOnce,
     private val getCurrantLocationLive:GetCurrantLocationLive,
+    private val myDatabase: MyDatabase
     ) : UserRepo {
     private val TAG: String? = "userRepoImpl"
     override suspend fun getUserData(
@@ -45,7 +46,105 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun getStationAlarmsFromDatabase(result: (Resource<ArrayList<StationAlarmEntity>>) -> Unit) {
+        try {
+            result.invoke(Resource.Success(myDatabase.stationAlarmDao().getAllStationAlarmEntity()))
+        }catch (e:Exception){
+            result.invoke(Resource.Failure("Failed getting StationAlarmsFromDatabase ---> ${e.message}"))
+        }
+    }
 
+    override suspend fun insertNewUserItemToDatabase(
+        userItemEntity: UserItemEntity,
+        result: (Resource<String>) -> Unit
+    ) {
+        try {
+            myDatabase.UserItemEntityDao().insertUserItemEntity(userItemEntity)
+            result.invoke(Resource.Success("Successfully added user data item in database"))
+        }catch (e:Exception){
+            result.invoke(Resource.Failure("Failed inserting UserItemToDatabase ---> ${e.message}"))
+        }
+    }
+
+    override suspend fun getNewUserItemFromDatabase(result: (Resource<ArrayList<UserItemEntity>>) -> Unit) {
+        try {
+            result.invoke(Resource.Success(ArrayList(myDatabase.UserItemEntityDao().getAllUserItemEntity())))
+        }catch (e:Exception){
+            result.invoke(Resource.Failure("Failed getting UserItemFromDatabase ---> ${e.message}"))
+        }
+    }
+
+    override suspend fun insertNewTrainItemToDatabase(
+        trainItemEntity: TrainItemEntity,
+        result: (Resource<String>) -> Unit
+    ) {
+        try {
+            myDatabase.TrainItemEntityDao().insertTrainItemEntity(trainItemEntity)
+            result.invoke(Resource.Success("Successfully added train data item in database"))
+        }catch (e:Exception){
+            result.invoke(Resource.Failure("Failed inserting TrainItemToDatabase ---> ${e.message}"))
+        }
+    }
+
+    override suspend fun getNewTrainItemFromDatabase(result: (Resource<ArrayList<TrainItemEntity>>) -> Unit) {
+        try {
+            result.invoke(Resource.Success(ArrayList(myDatabase.TrainItemEntityDao().getAllTrainItemEntity())))
+        }catch (e:Exception){
+            result.invoke(Resource.Failure("Failed getting TrainItemFromDatabase ---> ${e.message}"))
+        }
+    }
+
+    override suspend fun insertNewTicketItemToDatabase(
+        ticketItemEntity: TicketItemEntity,
+        result: (Resource<String>) -> Unit
+    ) {
+        try {
+            myDatabase.TicketItemEntityDao().insertTicketItemEntity(ticketItemEntity)
+            result.invoke(Resource.Success("Successfully added ticket data item in database"))
+        }catch (e:Exception){
+            result.invoke(Resource.Failure("Failed inserting TicketItemToDatabase ---> ${e.message}"))
+        }
+    }
+
+    override suspend fun getNewTicketItemFromDatabase(result: (Resource<ArrayList<TicketItemEntity>>) -> Unit) {
+        try {
+            result.invoke(Resource.Success(ArrayList(myDatabase.TicketItemEntityDao().getAllTicketItemEntity())))
+        }catch (e:Exception){
+            result.invoke(Resource.Failure("Failed getting TicketItemFromDatabase ---> ${e.message}"))
+        }
+    }
+
+    override suspend fun insertNewMessageItemToDatabase(
+        messageItemEntity: MessageItemEntity,
+        result: (Resource<String>) -> Unit
+    ) {
+        try {
+            myDatabase.MessageItemEntityDao().insertMessageItemEntity(messageItemEntity)
+            result.invoke(Resource.Success("Successfully added message data item in database"))
+        }catch (e:Exception){
+            result.invoke(Resource.Failure("Failed inserting MessageItemToDatabase ---> ${e.message}"))
+        }
+    }
+
+    override suspend fun getNewMessageItemFromDatabase(result: (Resource<ArrayList<MessageItemEntity>>) -> Unit) {
+        try {
+            result.invoke(Resource.Success(ArrayList(myDatabase.MessageItemEntityDao().getAllMessageItemEntity())))
+        }catch (e:Exception){
+            result.invoke(Resource.Failure("Failed getting MessageItemFromDatabase ---> ${e.message}"))
+        }
+    }
+
+    override suspend fun insertNewStationAlarm(
+        stationAlarmEntity: StationAlarmEntity,
+        result: (Resource<String>) -> Unit
+    ) {
+         try{
+             myDatabase.stationAlarmDao().insertStationAlarmEntity(stationAlarmEntity)
+             result.invoke(Resource.Success("Insert stationAlarmEntity data success"))
+         }catch (e:Exception){
+             result.invoke(Resource.Failure("Error wihle inserting stationAlarmEntity data ---> ${e.message}"))
+         }
+    }
 
     override suspend fun sendUserNotificationTokenToFirebase(
         token: NotificatonToken?,
