@@ -10,7 +10,6 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ProgressBar
-import android.widget.Switch
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
@@ -23,7 +22,6 @@ import com.example.domain.entity.DoctorResponseItem
 import com.example.domain.entity.Location_Response
 import com.example.domain.entity.Post
 import com.example.trainlivelocation.databinding.UserPostsRcvItemLayoutBinding
-import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.firebase.storage.FirebaseStorage
 import java.util.*
@@ -69,16 +67,6 @@ fun setAdapter(
 fun setAdapter(
     recyclerView: RecyclerView,
     adapter: MessageCustomAdapter
-) {
-    adapter?.let {
-        recyclerView.adapter = it
-    }
-}
-
-@BindingAdapter("setAlarmsAdapter")
-fun setAdapter(
-    recyclerView: RecyclerView,
-    adapter: StationAlarmAdapterCustomAdapter
 ) {
     adapter?.let {
         recyclerView.adapter = it
@@ -134,7 +122,15 @@ fun setAdapter(
     }
 }
 
-
+@BindingAdapter("setAlarmsAdapter")
+fun setAdapter(
+    recyclerView: RecyclerView,
+    adapter: StationAlarmAdapterCustomAdapter
+) {
+    adapter?.let {
+        recyclerView.adapter = it
+    }
+}
 
 @BindingAdapter("setAddressFromLocation")
 fun setAddressFromLocation(

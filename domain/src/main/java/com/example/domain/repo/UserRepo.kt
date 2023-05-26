@@ -221,49 +221,6 @@ interface UserRepo {
         result: (Resource<NotificationTokenResponseInTrain>) -> Unit
     )
 
-    suspend fun insertNewStationAlarm(
-        stationAlarmEntity: StationAlarmEntity,
-        result: (Resource<String>) -> Unit
-    )
 
-    suspend fun getStationAlarmsFromDatabase(
-        result: (Resource<ArrayList<StationAlarmEntity>>) -> Unit
-    )
-
-    suspend fun insertNewUserItemToDatabase (
-        userItemEntity: UserItemEntity,
-        result: (Resource<String>) -> Unit
-    )
-
-    suspend fun getNewUserItemFromDatabase (
-        result: (Resource<ArrayList<UserItemEntity>>) -> Unit
-    )
-
-    suspend fun insertNewTrainItemToDatabase (
-        trainItemEntity: TrainItemEntity,
-        result: (Resource<String>) -> Unit
-    )
-
-    suspend fun getNewTrainItemFromDatabase (
-        result: (Resource<ArrayList<TrainItemEntity>>) -> Unit
-    )
-
-    suspend fun insertNewTicketItemToDatabase (
-        ticketItemEntity: TicketItemEntity,
-        result: (Resource<String>) -> Unit
-    )
-
-    suspend fun getNewTicketItemFromDatabase (
-        result: (Resource<ArrayList<TicketItemEntity>>) -> Unit
-    )
-
-    suspend fun insertNewMessageItemToDatabase (
-        messageItemEntity: MessageItemEntity,
-        result: (Resource<String>) -> Unit
-    )
-
-    suspend fun getNewMessageItemFromDatabase (
-        result: (Resource<ArrayList<MessageItemEntity>>) -> Unit
-    )
 
 }

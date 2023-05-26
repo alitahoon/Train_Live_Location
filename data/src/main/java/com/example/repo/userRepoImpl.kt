@@ -68,7 +68,7 @@ class userRepoImpl(
 
     override suspend fun getNewUserItemFromDatabase(result: (Resource<ArrayList<UserItemEntity>>) -> Unit) {
         try {
-            result.invoke(Resource.Success(myDatabase.UserItemEntityDao().getAllUserItemEntity()))
+            result.invoke(Resource.Success(ArrayList(myDatabase.UserItemEntityDao().getAllUserItemEntity())))
         }catch (e:Exception){
             result.invoke(Resource.Failure("Failed getting UserItemFromDatabase ---> ${e.message}"))
         }
@@ -88,7 +88,7 @@ class userRepoImpl(
 
     override suspend fun getNewTrainItemFromDatabase(result: (Resource<ArrayList<TrainItemEntity>>) -> Unit) {
         try {
-            result.invoke(Resource.Success(myDatabase.TrainItemEntityDao().getAllTrainItemEntity()))
+            result.invoke(Resource.Success(ArrayList(myDatabase.TrainItemEntityDao().getAllTrainItemEntity())))
         }catch (e:Exception){
             result.invoke(Resource.Failure("Failed getting TrainItemFromDatabase ---> ${e.message}"))
         }
@@ -108,7 +108,7 @@ class userRepoImpl(
 
     override suspend fun getNewTicketItemFromDatabase(result: (Resource<ArrayList<TicketItemEntity>>) -> Unit) {
         try {
-            result.invoke(Resource.Success(myDatabase.TicketItemEntityDao().getAllTicketItemEntity()))
+            result.invoke(Resource.Success(ArrayList(myDatabase.TicketItemEntityDao().getAllTicketItemEntity())))
         }catch (e:Exception){
             result.invoke(Resource.Failure("Failed getting TicketItemFromDatabase ---> ${e.message}"))
         }
@@ -128,7 +128,7 @@ class userRepoImpl(
 
     override suspend fun getNewMessageItemFromDatabase(result: (Resource<ArrayList<MessageItemEntity>>) -> Unit) {
         try {
-            result.invoke(Resource.Success(myDatabase.MessageItemEntityDao().getAllMessageItemEntity()))
+            result.invoke(Resource.Success(ArrayList(myDatabase.MessageItemEntityDao().getAllMessageItemEntity())))
         }catch (e:Exception){
             result.invoke(Resource.Failure("Failed getting MessageItemFromDatabase ---> ${e.message}"))
         }
