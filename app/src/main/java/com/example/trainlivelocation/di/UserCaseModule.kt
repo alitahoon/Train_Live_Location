@@ -266,55 +266,6 @@ object UserCaseModule  {
         return ReportPost(userRepo)
     }
 
-    @Provides
-    fun ProvideInsertNewStationAlarm(userRepo: UserRepo): InsertNewStationAlarm {
-        return InsertNewStationAlarm(userRepo)
-    }
-    @Provides
-    fun ProvideGetStationAlarmsFromDatabase(userRepo: UserRepo): GetStationAlarmsFromDatabase {
-        return GetStationAlarmsFromDatabase(userRepo)
-    }
-
-    @Provides
-    fun ProvideInsertNewUserItemToDatabase(userRepo: UserRepo): InsertNewUserItemToDatabase {
-        return InsertNewUserItemToDatabase(userRepo)
-    }
-
-    @Provides
-    fun ProvideGetNewUserItemFromDatabase(userRepo: UserRepo): GetNewUserItemFromDatabase {
-        return GetNewUserItemFromDatabase(userRepo)
-    }
-
-    @Provides
-    fun ProvideInsertNewTrainItemToDatabase(userRepo: UserRepo): InsertNewTrainItemToDatabase {
-        return InsertNewTrainItemToDatabase(userRepo)
-    }
-
-    @Provides
-    fun ProvideGetNewTrainItemFromDatabase(userRepo: UserRepo): GetNewTrainItemFromDatabase {
-        return GetNewTrainItemFromDatabase(userRepo)
-    }
-
-    @Provides
-    fun ProvideInsertNewTicketItemToDatabase(userRepo: UserRepo): InsertNewTicketItemToDatabase {
-        return InsertNewTicketItemToDatabase(userRepo)
-    }
-
-    @Provides
-    fun ProvideGetNewTicketItemFromDatabase(userRepo: UserRepo): GetNewTicketItemFromDatabase {
-        return GetNewTicketItemFromDatabase(userRepo)
-    }
-
-    @Provides
-    fun ProvideInsertNewMessageItemToDatabase(userRepo: UserRepo): InsertNewMessageItemToDatabase {
-        return InsertNewMessageItemToDatabase(userRepo)
-    }
-
-    @Provides
-    fun ProvideGetNewMessageItemFromDatabase(userRepo: UserRepo): GetNewMessageItemFromDatabase {
-        return GetNewMessageItemFromDatabase(userRepo)
-    }
-
 
 
 }
