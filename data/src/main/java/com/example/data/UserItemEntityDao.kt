@@ -10,7 +10,7 @@ import com.example.domain.entity.UserItemEntity
 interface UserItemEntityDao {
 
     @Query("SELECT * FROM UserItemEntity")
-    suspend fun getAllUserItemEntity() : ArrayList<UserItemEntity>
+    suspend fun getAllUserItemEntity() : List<UserItemEntity>
 
     @Insert
     suspend fun insertUserItemEntity(userItemEntity: UserItemEntity)
