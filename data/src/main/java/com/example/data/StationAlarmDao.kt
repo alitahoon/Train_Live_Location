@@ -8,7 +8,7 @@ import com.example.domain.entity.StationAlarmEntity
 @Dao
 interface StationAlarmDao {
     @Query("SELECT * FROM stationAlarm")
-    suspend fun getAllStationAlarmEntity(): ArrayList<StationAlarmEntity>
+    suspend fun getAllStationAlarmEntity(): List<StationAlarmEntity>
 
     @Insert
     suspend fun insertStationAlarmEntity(stationAlarmEntity: StationAlarmEntity)
