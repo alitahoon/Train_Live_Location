@@ -25,7 +25,7 @@ class Alarms : Fragment() ,StationAlarmListener{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        alarms_viewModel.getAlarmsFromDatabase()
     }
 
     override fun onCreateView(
@@ -36,9 +36,19 @@ class Alarms : Fragment() ,StationAlarmListener{
             .apply {
                 this.viewmodel=alarms_viewModel
             }
-        alarms_viewModel.getAlarmsFromDatabase()
-        binding.adapter=setAdapterItems()
+        setAdapterItems()
+        setObservers()
         return binding.root
+    }
+
+    private fun setObservers() {
+        alarms_viewModel.btnAddAlarmClicked.observe(viewLifecycleOwner, Observer {
+            if (it==true){
+                var dialog = Add_station_alarm()
+                var childFragmentManager = getChildFragmentManager()
+                dialog.show(childFragmentManager, "Add_station_alarm")
+            }
+        })
     }
 
     private fun setAdapterItems(): StationAlarmAdapterCustomAdapter {
@@ -47,16 +57,12 @@ class Alarms : Fragment() ,StationAlarmListener{
             when (it) {
                 is Resource.Loading -> {
                     toast("getting alarms....")
+                    Log.i(TAG,"getting alarms....")
                 }
                 is Resource.Success -> {
-                    if (it.data.isEmpty()) {
-                        Log.i(TAG, "${it.data}")
-                        adapter.setData(it.data)
-
-                    } else {
-                        Log.i(TAG, "${it.data}")
-                        adapter.setData(it.data)
-                    }
+                    Log.i(TAG, "${it.data}")
+                    adapter.setData(it.data)
+                    binding.alarmsRcv.adapter=adapter
                 }
                 is Resource.Failure -> {
 
@@ -76,10 +82,16 @@ class Alarms : Fragment() ,StationAlarmListener{
     }
 
     override fun OnButtonEdtitClicked(stationAlarmEntity: StationAlarmEntity) {
-        TODO("Not yet implemented")
+        var dialog = Add_station_alarm()
+        var childFragmentManager = getChildFragmentManager()
+        dialog.show(childFragmentManager, "Add_station_alarm")
     }
 
     override fun OnSwitchButtonChecked(isChecked: Boolean, stationAlarmEntity: StationAlarmEntity) {
-        TODO("Not yet implemented")
+
+    }
+
+    override fun OnDeleteAlarmButtonClicked(stationAlarmEntity: StationAlarmEntity) {
+
     }
 }

@@ -7,9 +7,6 @@
         <variable
             name="viewmodel"
             type="com.example.trainlivelocation.ui.Alarms_viewModel" />
-        <variable
-            name="adapter"
-            type="com.example.trainlivelocation.utli.StationAlarmAdapterCustomAdapter" />
     </data>
 
     <RelativeLayout
@@ -18,38 +15,36 @@
         android:orientation="vertical"
         android:background="@color/DarkPrimaryColor"
         tools:context=".ui.Alarms"
-        android:padding="@dimen/_10sdp">
+        android:paddingHorizontal="@dimen/_10sdp">
 
         <androidx.recyclerview.widget.RecyclerView
-            setAlarmsAdapter="@{adapter}"
             android:id="@+id/alarms_rcv"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_above="@+id/alarm_btn_add_station_alarm"
+            android:layout_height="match_parent"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/alarms_item_layout">
 
         </androidx.recyclerview.widget.RecyclerView>
 
-        <com.google.android.material.button.MaterialButton
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/alarm_btn_add_station_alarm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/_10sdp"
-            android:textAllCaps="true"
-            android:text="Add Other Station"
-            android:textColor="@color/white"
-            android:layout_marginHorizontal="@dimen/_10sdp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
+            android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
             android:layout_alignParentBottom="true"
-            app:iconGravity="end"
-            android:elevation="@dimen/_15sdp"
-            android:backgroundTint="@color/PrimaryColor"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:backgroundTint="@color/textAlarmColor"
+            android:onClick="@{viewmodel::onBtnAddAlarmClicked}"
             app:icon="@drawable/baseline_add_24"
-            app:iconTint="@color/white" />
+            app:iconTint="@color/white"
+            app:layout_behavior="com.google.android.material.floatingactionbutton.FloatingActionButton$Behavior" />
+
 
     </RelativeLayout>
 </layout>

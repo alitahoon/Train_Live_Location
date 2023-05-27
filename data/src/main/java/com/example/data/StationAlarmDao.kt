@@ -12,4 +12,8 @@ interface StationAlarmDao {
 
     @Insert
     suspend fun insertStationAlarmEntity(stationAlarmEntity: StationAlarmEntity)
+
+
+    @Query("DELETE FROM stationAlarm WHERE id = :itemId")
+    suspend fun deleteItemById(itemId: Int)
 }

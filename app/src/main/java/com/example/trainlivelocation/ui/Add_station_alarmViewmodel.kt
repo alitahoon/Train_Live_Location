@@ -10,10 +10,11 @@ import com.example.domain.entity.CommentResponse
 import com.example.domain.entity.StationAlarmEntity
 import com.example.domain.usecase.InsertNewStationAlarm
 import com.example.trainlivelocation.utli.SingleLiveEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
+@HiltViewModel
 class Add_station_alarmViewmodel @Inject constructor(
     private val insertNewStationAlarm: InsertNewStationAlarm
 ) : ViewModel() {

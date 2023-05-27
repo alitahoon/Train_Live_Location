@@ -1,6 +1,7 @@
 package com.example.trainlivelocation.ui
 
 import Resource
+import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.PostCommentsResponseItem
 import com.example.domain.entity.StationAlarmEntity
 import com.example.domain.usecase.GetStationAlarmsFromDatabase
+import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,10 +20,15 @@ import javax.inject.Inject
 class Alarms_viewModel @Inject constructor(
     private val getStationAlarmsFromDatabase: GetStationAlarmsFromDatabase
 ):ViewModel() {
+
+    var btnAddAlarmClicked = SingleLiveEvent<Boolean>()
+
     private val _alarms: MutableLiveData<Resource<ArrayList<StationAlarmEntity>>>? = MutableLiveData(null)
     val alarms: LiveData<Resource<ArrayList<StationAlarmEntity>>>? = _alarms
 
-
+    fun onBtnAddAlarmClicked(view:View){
+        btnAddAlarmClicked.postValue(true)
+    }
 
     fun getAlarmsFromDatabase(){
         viewModelScope.launch {

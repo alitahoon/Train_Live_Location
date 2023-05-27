@@ -13,7 +13,7 @@ class StationAlarmAdapterCustomAdapter(
     private val stationAlarmListener: StationAlarmListener
 ) :
     RecyclerView.Adapter<StationAlarmAdapterViewHolder>(), BindableAdapter<ArrayList<StationAlarmEntity>> {
-    private val TAG: String? = "PassengersCustomAdapter"
+    private val TAG: String? = "StationAlarmAdapterCustomAdapter"
     private var binding: AlarmsItemLayoutBinding? = null
     lateinit var stationArrayList: ArrayList<StationAlarmEntity>
     var stationList = emptyList<StationAlarmEntity>()
@@ -28,7 +28,6 @@ class StationAlarmAdapterCustomAdapter(
             parent,
             false
         )
-
         return StationAlarmAdapterViewHolder(binding!!, stationAlarmListener!!)
     }
 

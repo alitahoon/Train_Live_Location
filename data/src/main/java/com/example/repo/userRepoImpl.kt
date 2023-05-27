@@ -66,6 +66,18 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun deleteStationAlarmFromDatabase(
+        alarmID: Int,
+        result: (Resource<String>) -> Unit
+    ) {
+        try {
+            myDatabase.stationAlarmDao().deleteItemById(alarmID)
+            result.invoke(Resource.Success("Successfully deleted alarm"))
+        }catch (e:Exception){
+            result.invoke(Resource.Failure("Failed deleting alarm---> ${e.message}"))
+        }
+    }
+
     override suspend fun getNewUserItemFromDatabase(result: (Resource<ArrayList<UserItemEntity>>) -> Unit) {
         try {
             result.invoke(Resource.Success(ArrayList(myDatabase.UserItemEntityDao().getAllUserItemEntity())))

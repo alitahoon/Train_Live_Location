@@ -9,4 +9,5 @@ interface StationAlarmListener {
 
      fun OnButtonEdtitClicked(stationAlarmEntity: StationAlarmEntity)
      fun OnSwitchButtonChecked(isChecked: Boolean,stationAlarmEntity: StationAlarmEntity)
+     fun OnDeleteAlarmButtonClicked(stationAlarmEntity: StationAlarmEntity)
 }

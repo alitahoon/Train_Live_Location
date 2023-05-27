@@ -92,7 +92,7 @@ class Tickets : Fragment(), Station_Dialog_Listener, Train_Dialog_Listener,
                                         //set alarm for arriving station
                                         ticketsViewModel.insertAlarm(StationAlarmEntity(
                                             apiId = ticket.data.id,
-                                            name = "Arriving Station Alarm",
+                                            name = arrivalStation!!,
                                             distance = 1,
                                             latitude = Lati!!,
                                             longitude = Longi!!

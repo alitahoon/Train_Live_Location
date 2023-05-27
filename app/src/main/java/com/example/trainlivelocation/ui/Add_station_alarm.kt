@@ -15,8 +15,9 @@ import com.example.trainlivelocation.utli.Station_Dialog_Listener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class Add_station_alarm : BottomSheetDialogFragment(), Station_Dialog_Listener {
 
     private val TAG: String? = "Add_station_alarm"
@@ -29,31 +30,6 @@ class Add_station_alarm : BottomSheetDialogFragment(), Station_Dialog_Listener {
 
     }
 
-    private fun setupFullHeight(bottomSheet: View) {
-        val layoutParams = bottomSheet.layoutParams
-        layoutParams.height = WindowManager.LayoutParams.MATCH_PARENT
-        bottomSheet.layoutParams = layoutParams
-    }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = BottomSheetDialog(requireContext(), theme)
-        dialog.setOnShowListener {
-
-            val bottomSheetDialog = it as BottomSheetDialog
-            val parentLayout =
-                bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
-            parentLayout?.let { it ->
-                val behaviour = BottomSheetBehavior.from(it)
-                setupFullHeight(it)
-                behaviour.state = BottomSheetBehavior.STATE_EXPANDED
-            }
-        }
-        val window: Window? = dialog.window
-        if (window != null) {
-            window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE or WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
-        }
-        return dialog
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,6 +57,7 @@ class Add_station_alarm : BottomSheetDialogFragment(), Station_Dialog_Listener {
                 add_station_alarmViewmodel.insertNewStationAlarmIntoDatabase(
                     StationAlarmEntity(
                         apiId = stationId!!,
+                        name = stationName!!,
                         distance = 0,
                         longitude = Longitude!!,
                         latitude = Latitude!!

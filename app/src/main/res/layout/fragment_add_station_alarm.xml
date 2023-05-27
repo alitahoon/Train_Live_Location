@@ -13,9 +13,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/DarkPrimaryColor"
         android:orientation="vertical"
         android:paddingBottom="@dimen/_10sdp"
+        android:background="@drawable/choose_dialog_fragment_background"
         tools:context=".ui.Add_station_alarm">
 
         <LinearLayout
@@ -29,6 +29,7 @@
                 android:layout_width="@dimen/_30sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:gravity="start"
+                android:layout_margin="@dimen/_10sdp"
                 android:src="@drawable/close_icon"/>
 
             <TextView
@@ -41,6 +42,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14ssp"/>
             <ImageView
+                android:layout_margin="@dimen/_10sdp"
                 android:onClick="@{viewmodel::onBtnAddStationAlarmClicked}"
                 android:id="@+id/alarm_btn_add_station_alarm"
                 android:layout_weight="0.5"
@@ -93,6 +95,7 @@
                 android:textSize="@dimen/_12ssp" />
 
             <NumberPicker
+                setNumberPickerNumbers="@{100}"
                 android:id="@+id/add_station_alarm_txt_distance"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_50sdp"

@@ -266,4 +266,8 @@ interface UserRepo {
         result: (Resource<ArrayList<MessageItemEntity>>) -> Unit
     )
 
+    suspend fun deleteStationAlarmFromDatabase (
+        alarmID:Int,result: (Resource<String>) -> Unit
+    )
+
 }
