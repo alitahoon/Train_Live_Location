@@ -11,7 +11,7 @@ import com.example.domain.entity.TrainItemEntity
 interface TicketItemEntityDao {
 
     @Query("SELECT * FROM TicketItemEntity")
-    suspend fun getAllTicketItemEntity() : ArrayList<TicketItemEntity>
+    suspend fun getAllTicketItemEntity() : List<TicketItemEntity>
 
     @Insert
     suspend fun insertTicketItemEntity(ticketItemEntity: TicketItemEntity)
