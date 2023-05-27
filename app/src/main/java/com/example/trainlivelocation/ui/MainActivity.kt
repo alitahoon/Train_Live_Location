@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
 
                     R.id.home_menu_alarms ->{
                         navController.navigate(R.id.alarms,null,navOptions)
+                        binding.mainActivityDrwerLayout.closeDrawer(GravityCompat.START);
                     }
                 }
                 return true

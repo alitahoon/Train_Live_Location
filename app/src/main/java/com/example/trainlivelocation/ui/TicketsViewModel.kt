@@ -6,14 +6,17 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.domain.entity.StationAlarmEntity
 import com.example.domain.entity.TicketRequestItem
 import com.example.domain.entity.TicketResponseItem
 import com.example.domain.entity.UserResponseItem
 import com.example.domain.usecase.CreateTicket
 import com.example.domain.usecase.GetDataFromSharedPrefrences
+import com.example.domain.usecase.InsertNewStationAlarm
 import com.example.domain.usecase.SubscribeToNewTopic
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,7 +24,8 @@ import javax.inject.Inject
 class TicketsViewModel @Inject constructor(
     private val createTicket: CreateTicket,
     private val getDataFromSharedPrefrences: GetDataFromSharedPrefrences,
-    private val subscribeToNewTopic: SubscribeToNewTopic
+    private val subscribeToNewTopic: SubscribeToNewTopic,
+    private val insertNewStationAlarm: InsertNewStationAlarm
 ):ViewModel() {
     var takroffStationTxtClicked = SingleLiveEvent<Boolean>()
     var arrivalStationTxtClicked = SingleLiveEvent<Boolean>()
@@ -36,6 +40,8 @@ class TicketsViewModel @Inject constructor(
     private val _subscribeTrain:MutableLiveData<Resource<String>> = MutableLiveData(null)
     val subscribeTrain:LiveData<Resource<String>> = _subscribeTrain
 
+    private val _addAlarm:MutableLiveData<Resource<String>> = MutableLiveData(null)
+    val addAlarm:LiveData<Resource<String>> = _addAlarm
 
 
 
@@ -63,6 +69,19 @@ class TicketsViewModel @Inject constructor(
         }
     }
 
+    fun insertAlarm(stationAlarmEntity: StationAlarmEntity){
+        viewModelScope.launch {
+            _addAlarm.value=Resource.Loading
+            val child1=launch (Dispatchers.IO){
+                insertNewStationAlarm(stationAlarmEntity){
+                    val child2=launch (Dispatchers.Main){
+                        _addAlarm.value=it
+                    }
+                }
+            }
+            child1.join()
+        }
+    }
 
     fun subscribeTrain(trainId:Int){
         _subscribeTrain.value=Resource.Loading
