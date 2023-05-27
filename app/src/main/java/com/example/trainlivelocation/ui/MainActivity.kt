@@ -268,7 +268,7 @@ class MainActivity : AppCompatActivity() {
     private fun setBottomBarIcons() {
         binding.bottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC)
         binding.bottomNavigationBar
-            .addItem(BottomNavigationItem(R.drawable.alarm_icon_notifiction, "Notification"))
+            .addItem(BottomNavigationItem(R.drawable.alarm_icon_notifiction, "Alarms"))
             .setActiveColor(R.color.white)
             .addItem(BottomNavigationItem(R.drawable.home, "Home")).setActiveColor(R.color.white)
             .addItem(BottomNavigationItem(R.drawable.inbox, "Inbox"))

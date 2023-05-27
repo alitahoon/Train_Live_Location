@@ -15,8 +15,9 @@ import com.example.trainlivelocation.databinding.FragmentAlarmsBinding
 import com.example.trainlivelocation.utli.StationAlarmAdapterCustomAdapter
 import com.example.trainlivelocation.utli.StationAlarmListener
 import com.example.trainlivelocation.utli.toast
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class Alarms : Fragment() ,StationAlarmListener{
     private val TAG: String? = "Alarms"
     private lateinit var binding: FragmentAlarmsBinding

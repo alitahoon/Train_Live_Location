@@ -8,10 +8,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.PostCommentsResponseItem
 import com.example.domain.entity.StationAlarmEntity
 import com.example.domain.usecase.GetStationAlarmsFromDatabase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
+@HiltViewModel
 class Alarms_viewModel @Inject constructor(
     private val getStationAlarmsFromDatabase: GetStationAlarmsFromDatabase
 ):ViewModel() {
