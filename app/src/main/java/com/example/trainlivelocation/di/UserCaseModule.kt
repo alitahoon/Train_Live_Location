@@ -319,6 +319,10 @@ object UserCaseModule  {
     fun ProvideDeleteStationAlarmFromDatabase(userRepo: UserRepo): DeleteStationAlarmFromDatabase {
         return DeleteStationAlarmFromDatabase(userRepo)
     }
+    @Provides
+    fun ProvideUpdateStationAlarmFromDatabase(userRepo: UserRepo): UpdateStationAlarmFromDatabase {
+        return UpdateStationAlarmFromDatabase(userRepo)
+    }
 
 
 
