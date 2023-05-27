@@ -6,7 +6,7 @@ import com.example.domain.repo.UserRepo
 
 class DeleteStationAlarmFromDatabase(private val userRepo: UserRepo) {
     suspend operator fun invoke(
-        alarmID: Int,
+        alarmID: Long,
         result: (Resource<String>) -> Unit
     ) = userRepo.deleteStationAlarmFromDatabase(alarmID,result)
 }

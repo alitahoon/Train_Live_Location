@@ -79,7 +79,7 @@ class userRepoImpl(
     }
 
     override suspend fun deleteStationAlarmFromDatabase(
-        alarmID: Int,
+        alarmID: Long,
         result: (Resource<String>) -> Unit
     ) {
         try {

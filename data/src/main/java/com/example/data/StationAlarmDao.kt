@@ -19,5 +19,5 @@ interface StationAlarmDao {
 
 
     @Query("DELETE FROM stationAlarm WHERE id = :itemId")
-    suspend fun deleteItemById(itemId: Int)
+    suspend fun deleteItemById(itemId: Long)
 }

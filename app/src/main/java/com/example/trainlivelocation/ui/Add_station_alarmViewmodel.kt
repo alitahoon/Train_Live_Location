@@ -20,6 +20,7 @@ class Add_station_alarmViewmodel @Inject constructor(
 ) : ViewModel() {
     var btnAddStationAlarmClicked = SingleLiveEvent<Boolean>()
     var btnChooseStationClicked = SingleLiveEvent<Boolean>()
+    var btnCloseClicked = SingleLiveEvent<Boolean>()
     var userStation:String? = null
 
 
@@ -33,6 +34,9 @@ class Add_station_alarmViewmodel @Inject constructor(
 
     fun onbtnChooseStationClicked(view: View) {
         btnChooseStationClicked.postValue(true)
+    }
+    fun onBtnCloseClciked(view: View) {
+        btnCloseClicked.postValue(true)
     }
 
     fun insertNewStationAlarmIntoDatabase(stationAlarmEntity: StationAlarmEntity) {
