@@ -16,9 +16,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
-import com.example.domain.entity.AddPostCommentNotificationData
-import com.example.domain.entity.AddPostNotificationData
-import com.example.domain.entity.NotificatonToken
+import com.example.domain.entity.*
 import com.example.domain.repo.UserRepo
 import com.example.domain.usecase.GetDataFromSharedPrefrences
 import com.example.domain.usecase.SendUserNotificationTokenToFirebase
@@ -89,30 +87,25 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     var latitude = remoteMessage.getData()["latitude"]!!.toDouble()
                     val intent = Intent(this, MainActivity::class.java)
                     intent.putExtra("FRAGMENT_NAME", "DoctorLocationInMap")
-                    intent.putExtra("doctorLocationLongitude", longitude)
-                    intent.putExtra("doctorLocationLatitude", latitude)
-
+//                    intent.putExtra("doctorLocationLongitude", longitude)
+//                    intent.putExtra("doctorLocationLatitude", latitude)
+                    intent.putExtra("doctorNotification",DoctorNotificationData(title,message!!,latitude,longitude))
                     val pendingIntent = PendingIntent.getActivity(
                         this,
                         0,
                         intent,
                         PendingIntent.FLAG_IMMUTABLE
                     )
-                    getRemoteView(title!!, message!!, false)?.let {
-                        generateNotification(
-                            it,
-                            pendingIntent
-                        )
-                    }
-                }
-                "stationAlarm" -> {
-
-
-                }
-                "stationHistory" -> {
-                    //create station history notification
-
-
+                    //create doctors notification
+                    var remoteView: RemoteViews? = null
+                    remoteView =
+                        RemoteViews("com.example.trainlivelocation", R.layout.doctor_notification)
+                    remoteView.setTextViewText(R.id.doctor_notification_title, title)
+                    remoteView.setTextViewText(R.id.doctor_notification_content, message)
+                    generateNotification(
+                        remoteView,
+                        pendingIntent
+                    )
                 }
                 "NewPostComment" -> {
                     //create post comment notification
@@ -157,12 +150,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                         intent,
                         PendingIntent.FLAG_IMMUTABLE
                     )
-                    getRemoteView(title, content, false)?.let {
-                        generateNotification(
-                            it,
-                            pendingIntent
-                        )
-                    }
+                    //create doctors notification
+                    var remoteView: RemoteViews? = null
+                    remoteView =
+                        RemoteViews("com.example.trainlivelocation", R.layout.doctor_notification)
+                    remoteView.setTextViewText(R.id.doctor_notification_title, title)
+                    remoteView.setTextViewText(R.id.doctor_notification_content, message)
+                    generateNotification(
+                        remoteView,
+                        pendingIntent
+                    )
 
                 }
                 "postAdded" -> {
@@ -186,12 +183,16 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                         intent,
                         PendingIntent.FLAG_IMMUTABLE
                     )
-                    getRemoteView(title!!, message!!, false)?.let {
-                        generateNotification(
-                            it,
-                            pendingIntent
-                        )
-                    }
+
+                    //create post  notification
+                    val remoteView =
+                        RemoteViews("com.example.trainlivelocation", R.layout.add_post_notification)
+                    remoteView.setTextViewText(R.id.doctor_notification_title, title)
+                    remoteView.setTextViewText(R.id.doctor_notification_content, message)
+                    generateNotification(
+                        remoteView,
+                        pendingIntent
+                    )
 
                 }
                 "getInboxMessage" -> {
@@ -310,46 +311,5 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
         notificationManager.notify(0, builder.build())
 
-    }
-
-
-    private fun getRemoteView(title: String, message: String, criticalPost: Boolean): RemoteViews? {
-        var remoteView: RemoteViews? = null
-        when (title) {
-            "doctors" -> {
-                //create doctors notification
-                remoteView =
-                    RemoteViews("com.example.trainlivelocation", R.layout.doctor_notification)
-                remoteView.setTextViewText(R.id.doctor_notification_title, title)
-                remoteView.setTextViewText(R.id.doctor_notification_content, message)
-            }
-            "postAdded" -> {
-                //create post  notification
-                remoteView =
-                    RemoteViews("com.example.trainlivelocation", R.layout.add_post_notification)
-                remoteView.setTextViewText(R.id.doctor_notification_title, title)
-                remoteView.setTextViewText(R.id.doctor_notification_content, message)
-
-            }
-            "NewPostComment" -> {
-                //create station history notification
-                remoteView =
-                    RemoteViews("com.example.trainlivelocation", R.layout.add_post_notification)
-                remoteView.setTextViewText(R.id.doctor_notification_title, title)
-                remoteView.setTextViewText(R.id.doctor_notification_content, message)
-
-            }
-            "addCommentToPost" -> {
-                //create post comment notification
-
-            }
-            "getInboxMessage" -> {
-                //create get inbox Message notification
-
-            }
-        }
-
-
-        return remoteView
     }
 }

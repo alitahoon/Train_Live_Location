@@ -1,8 +1,6 @@
 package com.example.trainlivelocation.ui
 
 import Resource
-import android.animation.Animator
-import android.animation.Animator.AnimatorListener
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -11,23 +9,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
-import com.example.data.LocationTrackBackgroundService
-import com.example.data.LocationTrackForegroundService
+import com.example.trainlivelocation.utli.LocationTrackBackgroundService
 import com.example.domain.entity.LocationDetails
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentShareLocationBinding
-import com.example.trainlivelocation.utli.LiveLocationListener
 import com.example.trainlivelocation.utli.Train_Dialog_Listener
 import com.example.trainlivelocation.utli.displaySnackbarSuccess
-import com.example.trainlivelocation.utli.toast
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 
@@ -38,7 +30,6 @@ class ShareLocationFeature : Fragment(), Train_Dialog_Listener {
     private val args by navArgs<ShareLocationFeatureArgs>()
 
     private lateinit var binding: FragmentShareLocationBinding
-    lateinit var locationbckgroundSharingService: Intent
     private val shareLocationViewModel: ShareLocationViewModel? by activityViewModels()
 
     override fun onStart() {
@@ -78,7 +69,7 @@ class ShareLocationFeature : Fragment(), Train_Dialog_Listener {
                 this.viewmodel = shareLocationViewModel
             }
         shareLocationViewModel?.setbaseActivity(requireActivity())
-        shareLocationViewModel?.startUpdate()
+//        shareLocationViewModel?.startUpdate()
         setObservers()
         return binding.root
     }
@@ -94,12 +85,13 @@ class ShareLocationFeature : Fragment(), Train_Dialog_Listener {
                 is Resource.Loading->{
                 }
                 is Resource.Success->{
-                    locationbckgroundSharingService= Intent(requireActivity(),LocationTrackBackgroundService::class.java)
-                    if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
-                        ContextCompat.startForegroundService(requireContext(),locationbckgroundSharingService!!)
-                    }else{
-                        Log.e(TAG,"else brunch...")
-                    }
+//                    locationbckgroundSharingService= Intent(requireActivity(),
+//                        LocationTrackBackgroundService::class.java)
+//                    if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
+//                        ContextCompat.startForegroundService(requireContext(),locationbckgroundSharingService!!)
+//                    }else{
+//                        Log.e(TAG,"else brunch...")
+//                    }
                 }
                 else -> {}
             }
@@ -125,7 +117,8 @@ class ShareLocationFeature : Fragment(), Train_Dialog_Listener {
 
         shareLocationViewModel!!.btnShareTrainLocationClicked.observe(viewLifecycleOwner, Observer {
             if (it == true) {
-
+                var locationbckgroundSharingService= Intent(requireActivity(),
+                    LocationTrackBackgroundService::class.java)
                 if ( binding.shareLocationBtnShareTrainLocation.text.equals("Share Location")){
                     binding.shareLocationBtnShareTrainLocation.setBackgroundColor(resources.getColor(R.color.textAlarmColor))
                     binding.shareLocationBtnShareTrainLocation.setText(R.string.stop_sharing)
@@ -137,7 +130,14 @@ class ShareLocationFeature : Fragment(), Train_Dialog_Listener {
                         R.raw.location_share_success,
                         R.color.PrimaryColor
                     )
-                    shareLocationViewModel!!.startSharing(args.userModel.id,binding.shareLocationTxtTrainId.text.toString().toInt())
+//                    shareLocationViewModel!!.startSharing(args.userModel.id,binding.shareLocationTxtTrainId.text.toString().toInt())
+                    locationbckgroundSharingService.putExtra("trainId",binding.shareLocationTxtTrainId.text.toString().toInt())
+                    locationbckgroundSharingService.putExtra("userId",args.userModel.id)
+                    if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
+                        ContextCompat.startForegroundService(requireContext(),locationbckgroundSharingService!!)
+                    }else{
+                        Log.e(TAG,"else brunch...")
+                    }
 //                Log.i(TAG, "Get user location -> Success ${it!!.longitude},${it!!.latitude}")
                 }else{
                     binding.shareLocationBtnShareTrainLocation.setBackgroundColor(resources.getColor(R.color.PrimaryColor))

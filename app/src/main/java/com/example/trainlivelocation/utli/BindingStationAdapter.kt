@@ -7,12 +7,14 @@ import android.location.Address
 import android.location.Geocoder
 import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.NumberPicker
 import android.widget.ProgressBar
 import android.widget.Switch
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -23,10 +25,13 @@ import com.bumptech.glide.Glide
 import com.example.domain.entity.DoctorResponseItem
 import com.example.domain.entity.Location_Response
 import com.example.domain.entity.Post
+import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.UserPostsRcvItemLayoutBinding
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.firebase.storage.FirebaseStorage
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.*
 
 @BindingAdapter("setStaionRCVAdapter")
@@ -47,6 +52,16 @@ fun setAdapter(
     adapter?.let {
         recyclerView.adapter = it
     }
+}
+
+@BindingAdapter("animateItem")
+fun animateItem(
+    cardView: MaterialCardView,
+    animation:Int
+) {
+
+    // Apply animation
+    val animation = AnimationUtils.loadAnimation(cardView.context, R.anim.item_load_animation)
 }
 
 @BindingAdapter("setCommentRCVAdapter")

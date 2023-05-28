@@ -273,4 +273,8 @@ interface UserRepo {
         stationAlarmEntity: StationAlarmEntity,result: (Resource<String>) -> Unit
     )
 
+    suspend fun gettingTrainlocationFromApi (
+        trainId:Int,result: (Resource<Location_Response>) -> Unit
+    )
+
 }

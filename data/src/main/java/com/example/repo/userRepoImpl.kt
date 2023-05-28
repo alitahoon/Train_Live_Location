@@ -17,7 +17,6 @@ import retrofit2.Response
 class userRepoImpl(
     private val apiService: ApiService,
     private val locationLive: LocationLive,
-    private val locationTrackBackgroundService: LocationTrackBackgroundService,
     private val getLocationService: GetLocationService,
     private val getUserLocation: userLocation,
     private val firebaseService: FirebaseService,
@@ -75,6 +74,22 @@ class userRepoImpl(
             result.invoke(Resource.Success("Successfully updated station Alarm data in database"))
         }catch (e:Exception){
             result.invoke(Resource.Failure("Failed updating stationAlarmEntity ---> ${e.message}"))
+        }
+    }
+
+    override suspend fun gettingTrainlocationFromApi(
+        trainId: Int,
+        result: (Resource<Location_Response>) -> Unit
+    ) {
+        var res = apiService.GetLocation(trainId)
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke(Resource.Failure("Error while getting train Location body is null:${res.body()}"))
+            }
+        } else {
+            result.invoke(Resource.Failure("${res.message()}:${res.errorBody()}"))
         }
     }
 
@@ -292,8 +307,7 @@ class userRepoImpl(
         userid: Int,
         result: (Resource<LifecycleService>) -> Unit
     ) {
-        locationTrackBackgroundService.setTrainId_userId(trainid,userid)
-        result.invoke(Resource.Success(locationTrackBackgroundService))
+
     }
 
     override suspend fun getLocationTrackForegroundService(trainid: Int): LifecycleService {

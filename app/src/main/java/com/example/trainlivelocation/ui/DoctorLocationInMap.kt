@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import com.example.domain.entity.Location_Response
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentDoctorLocationInMapBinding
 import com.example.trainlivelocation.databinding.FragmentTrainLocationInMapBinding
@@ -49,50 +50,60 @@ class DoctorLocationInMap : Fragment() ,OnMapReadyCallback{
         val viewModelff = ViewModelProvider(this).get(DoctorLocationInMapViewModel::class.java)
         binding?.viewmodel = viewModelff
         mapView=binding!!.doctorLocationMapMapView
+        binding?.lifecycleOwner=this
         binding!!.doctorLocationMapMapView.onCreate(doctorLocationInMapViewModel?.getMAP_VIEW_KEY())
         binding!!.doctorLocationMapMapView.getMapAsync(this)
-        doctorLocationInMapViewModel!!.getCurrantLocation(args.patientLocation)
+        doctorLocationInMapViewModel!!.getCurrantLocation(Location_Response(args.patientLocation.latitude,args.patientLocation.longitude))
         setObservers()
-        val scaleUpAnimation: Animation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_up)
-        val scaleDownAnimation: Animation = AnimationUtils.loadAnimation(requireContext(), R.anim.scale_down)
+        val scaleUpAnimation: Animation = AnimationUtils.loadAnimation(requireContext(), R.anim.pop_enter)
+        val scaleDownAnimation: Animation = AnimationUtils.loadAnimation(requireContext(), R.anim.pop_exit)
 
         binding!!.patientBtnData.setOnClickListener{
-
-            if (binding!!.materialCardView2.visibility==View.GONE){
-                binding!!.materialCardView2.startAnimation(scaleUpAnimation)
-                scaleUpAnimation.setAnimationListener(object : Animation.AnimationListener{
-                    override fun onAnimationStart(p0: Animation?) {
-                        binding!!.materialCardView2.visibility=View.VISIBLE
-                    }
-
-                    override fun onAnimationEnd(p0: Animation?) {
-                    }
-
-                    override fun onAnimationRepeat(p0: Animation?) {
-                    }
-
-                })
-            }else{
-                binding!!.materialCardView2.startAnimation(scaleDownAnimation)
-                scaleDownAnimation.setAnimationListener(object :Animation.AnimationListener{
-                    override fun onAnimationStart(p0: Animation?) {
-                    }
-
-                    override fun onAnimationEnd(p0: Animation?) {
-                        binding!!.materialCardView2.visibility=View.GONE
-                    }
-
-                    override fun onAnimationRepeat(p0: Animation?) {
-                    }
-
-                })
-            }
+                if(binding!!.materialCardView2.alpha==0f){
+                    animateView(binding!!.materialCardView2,1f)
+                }else{
+                    animateView(binding!!.materialCardView2,0f)
+                }
+//            if (binding!!.materialCardView2.visibility==View.GONE){
+//                binding!!.materialCardView2.startAnimation(scaleUpAnimation)
+//                scaleUpAnimation.setAnimationListener(object : Animation.AnimationListener{
+//                    override fun onAnimationStart(p0: Animation?) {
+//                        binding!!.materialCardView2.visibility=View.VISIBLE
+//                    }
+//
+//                    override fun onAnimationEnd(p0: Animation?) {
+//                    }
+//
+//                    override fun onAnimationRepeat(p0: Animation?) {
+//                    }
+//
+//                })
+//            }else{
+//                binding!!.materialCardView2.startAnimation(scaleDownAnimation)
+//                scaleDownAnimation.setAnimationListener(object :Animation.AnimationListener{
+//                    override fun onAnimationStart(p0: Animation?) {
+//                    }
+//
+//                    override fun onAnimationEnd(p0: Animation?) {
+//                        binding!!.materialCardView2.visibility=View.GONE
+//                    }
+//
+//                    override fun onAnimationRepeat(p0: Animation?) {
+//                    }
+//
+//                })
+//            }
         }
         return binding!!.root
     }
 
     private fun setObservers() {
-
+        doctorLocationInMapViewModel!!.distance.observe(viewLifecycleOwner, Observer {
+            binding!!.doctorInMapTxtDistance.setText(it)
+        })
+        doctorLocationInMapViewModel!!.cars.observe(viewLifecycleOwner, Observer {
+            binding!!.doctorInMapTxtCars.setText(it)
+        })
     }
 
     companion object {
@@ -103,7 +114,7 @@ class DoctorLocationInMap : Fragment() ,OnMapReadyCallback{
         mapView.onResume()
         mMap = googleMap
         mMap?.isMyLocationEnabled()
-        mMap?.setMapType(GoogleMap.MAP_TYPE_NORMAL)
+        mMap?.setMapType(GoogleMap.MAP_TYPE_SATELLITE)
         doctorLocationInMapViewModel!!.userCurrantLocation.observe(viewLifecycleOwner, Observer {
             when(it){
                 is Resource.Loading->{
@@ -138,13 +149,13 @@ class DoctorLocationInMap : Fragment() ,OnMapReadyCallback{
                         val polylineOptions = PolylineOptions()
                             .add(sydnyDoctor, sydnyPatient)
                             .color(R.color.textAlarmColor)
-                            .width(10f)
+                            .width(16f)
 
                         // Animate camera to the calculated bounds
                         // Calculate the padding based on the map size and desired zoom level
                         val mapWidth = mapView.width
                         val mapHeight = mapView.height
-                        val padding = (Math.max(mapWidth, mapHeight) * 0.1).toInt() // Optional padding around the bounds (in pixels)
+                        val padding = (Math.max(mapWidth, mapHeight) * 0.2).toInt() // Optional padding around the bounds (in pixels)
                         val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding)
                         mMap?.animateCamera(cameraUpdate)
                         mMap?.addPolyline(polylineOptions)
@@ -164,4 +175,11 @@ class DoctorLocationInMap : Fragment() ,OnMapReadyCallback{
 
 
     }
+    fun animateView(_view: View,alpha:Float) {
+        _view!!.animate()
+            .alpha(alpha) // Set the final alpha to 1 (fully visible)
+            .setDuration(500) // Set the duration of the animation (in milliseconds)
+            .start()
+    }
+
 }

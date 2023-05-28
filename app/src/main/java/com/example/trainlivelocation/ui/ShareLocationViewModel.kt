@@ -22,7 +22,7 @@ class ShareLocationViewModel @Inject constructor(
     private val addLiveLoctationToApi: AddLiveLoctationToApi,
     private val startLocationUpdate: StartLocationUpdate,
     private val stopLocationUpdate: StopLocationUpdate,
-    private val getLocationTrackBackgroundService: GetLocationTrackBackgroundService,
+//    private val getLocationTrackBackgroundService: GetLocationTrackBackgroundService,
     private val context: Context
 ) : ViewModel() {
     var trainId: String? = null
@@ -61,20 +61,20 @@ class ShareLocationViewModel @Inject constructor(
     }
 
     //handle track train Location
-
-    fun startUpdate(){
-        viewModelScope.launch {
-            startLocationUpdate(6000)
-        }
-    }
-    fun startSharing(userId: Int?,trainId:Int?) {
-        _startSharingtrainLocation.value=Resource.Loading
-        viewModelScope.launch {
-            getLocationTrackBackgroundService(trainId!!,userId!!){
-                _startSharingtrainLocation.value=it
-            }
-        }
-    }
+//
+//    fun startUpdate(){
+//        viewModelScope.launch {
+//            startLocationUpdate(6000)
+//        }
+//    }
+//    fun startSharing(userId: Int?,trainId:Int?) {
+//        _startSharingtrainLocation.value=Resource.Loading
+//        viewModelScope.launch {
+//            getLocationTrackBackgroundService(trainId!!,userId!!){
+//                _startSharingtrainLocation.value=it
+//            }
+//        }
+//    }
 
 
 

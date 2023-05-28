@@ -101,6 +101,9 @@ class MainActivity : AppCompatActivity() {
                     R.id.shareLocationFeature -> {
                         setHeader("Share Location")
                     }
+                    R.id.shareLocationFeature -> {
+                        setHeader("Track Location")
+                    }
                     R.id.userProfile -> {
                         setHeader("Profile")
                     }
@@ -112,6 +115,9 @@ class MainActivity : AppCompatActivity() {
                     }
                     R.id.emergency -> {
                         setHeader("Emergency")
+                    }
+                    R.id.doctorLocationInMap -> {
+                        setHeader("Patient Location")
                     }
                     R.id.home2 -> {
                         setHeader("home")
@@ -164,17 +170,16 @@ class MainActivity : AppCompatActivity() {
         })
 
         //handle notification load fragments
-        val fragmentToLoad: String? = intent.getStringExtra("FRAGMENT_NAME")
-        if (fragmentToLoad != null) {
-            when (fragmentToLoad) {
-                "DoctorLocationInMap" -> {
-                    setHeader("Emergency")
-                    val latitude: Double = intent.getDoubleExtra("doctorLocationLatitude", 0.0)
-                    val longitude: Double = intent.getDoubleExtra("doctorLocationLongitude", 0.0)
+        fragmentToload=intent.getStringExtra("FRAGMENT_NAME")
+        if (fragmentToload!= null) {
+            when (fragmentToload) {
+                 "DoctorLocationInMap" -> {
+                     setHeader("Emergency")
+                    val doctorNotificationData=intent.getSerializableExtra("doctorNotification") as DoctorNotificationData
                     val bundle = Bundle()
                     bundle.putSerializable(
                         "patientLocation",
-                        Location_Response(latitude, longitude)
+                        doctorNotificationData
                     )
                     navController.navigate(R.id.doctorLocationInMap, bundle)
                 }
@@ -264,6 +269,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private var userModel: UserResponseItem? = null
+        private var fragmentToload:String?=null
     }
 
     private fun setBottomBarIcons() {
@@ -299,7 +305,27 @@ class MainActivity : AppCompatActivity() {
                 binding.mainActivityFragmentHeaderNav.setBackgroundColor(resources.getColor(R.color.PrimaryColor))
                 binding.mainActivityFragmentHeaderNavFrName.setText(title)
             }
-            else -> {
+            "Share Location" -> {
+                binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
+                binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
+                binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
+                binding.mainActivityFragmentHeaderNav.setBackgroundColor(resources.getColor(R.color.PrimaryColor))
+                binding.mainActivityFragmentHeaderNavFrName.setText(title)
+            }
+            "Track Location" -> {
+                binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
+                binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
+                binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
+                binding.mainActivityFragmentHeaderNav.setBackgroundColor(resources.getColor(R.color.PrimaryColor))
+                binding.mainActivityFragmentHeaderNavFrName.setText(title)
+            }"Patient Location" -> {
+                binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
+                binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
+                binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
+                binding.mainActivityFragmentHeaderNav.setBackgroundColor(resources.getColor(R.color.PrimaryColor))
+                binding.mainActivityFragmentHeaderNavFrName.setText(title)
+            }
+                else -> {
                 binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
                 binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
                 binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)

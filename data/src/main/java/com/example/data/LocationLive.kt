@@ -47,7 +47,7 @@ class LocationLive(private val context: Context) : LiveData<LocationDetails>() {
         }
     }
 
-    internal  fun startLocationUpdate(locationRequest: LocationRequest) {
+      fun startLocationUpdate(locationRequest: LocationRequest) {
         if (ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -65,7 +65,7 @@ class LocationLive(private val context: Context) : LiveData<LocationDetails>() {
             Looper.getMainLooper()
         )
     }
-    internal fun stopLocationLiveUpdate(){
+     fun stopLocationLiveUpdate(){
         Log.i(TAG,"stopLocationLiveUpdate")
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }

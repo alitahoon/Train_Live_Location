@@ -1,6 +1,7 @@
 package com.example.trainlivelocation.ui
 
 import Resource
+import SlideOutItemAnimator
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -64,6 +65,7 @@ class Alarms : Fragment() ,StationAlarmListener,Add_station_Alarm_listener{
                 is Resource.Success -> {
                     Log.i(TAG, "${it.data}")
                     adapter.setData(it.data)
+                    binding.alarmsRcv.itemAnimator=SlideOutItemAnimator()
                     binding.alarmsRcv.adapter=adapter
                     adapter.notifyDataSetChanged()
                 }

@@ -324,6 +324,11 @@ object UserCaseModule  {
         return UpdateStationAlarmFromDatabase(userRepo)
     }
 
+    @Provides
+    fun ProvideGettingTrainlocationFromApi(userRepo: UserRepo): GettingTrainlocationFromApi {
+        return GettingTrainlocationFromApi(userRepo)
+    }
+
 
 
 }
