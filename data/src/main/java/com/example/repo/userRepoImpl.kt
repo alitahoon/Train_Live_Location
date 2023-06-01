@@ -73,7 +73,7 @@ class userRepoImpl(
             myDatabase.stationAlarmDao().updateItem(stationAlarmEntity)
             result.invoke(Resource.Success("Successfully updated station Alarm data in database"))
         }catch (e:Exception){
-            result.invoke(Resource.Failure("Failed updating stationAlarmEntity ---> ${e.message}"))
+            result.invoke(Resource.Failure("Failed updating stationAlarmEntity.. ---> ${e.message}"))
         }
     }
 
