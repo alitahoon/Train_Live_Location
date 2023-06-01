@@ -197,6 +197,11 @@ interface UserRepo {
         result: (Resource<String>) -> Unit
     )
 
+    suspend fun pushSendMessageNotification(
+        notification: PushMessageNotification,
+        result: (Resource<String>) -> Unit
+    )
+
     suspend fun pushAddPostCommentNotification(
         notification: PushPostCommentNotification,
         result: (Resource<String>) -> Unit
@@ -276,5 +281,6 @@ interface UserRepo {
     suspend fun gettingTrainlocationFromApi (
         trainId:Int,result: (Resource<Location_Response>) -> Unit
     )
+
 
 }

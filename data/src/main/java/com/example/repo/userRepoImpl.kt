@@ -586,6 +586,13 @@ class userRepoImpl(
         firebaseService.sendNewNotificationToAddedPostTopic(notification,result)
     }
 
+    override suspend fun pushSendMessageNotification(
+        notification: PushMessageNotification,
+        result: (Resource<String>) -> Unit
+    ) {
+        firebaseService.sendNewNotificationToMessageTopic(notification,result)
+    }
+
     override suspend fun pushNewTopicNotification(
         notification: PushNotification,
         result: (Resource<String>) -> Unit

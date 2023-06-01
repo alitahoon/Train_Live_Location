@@ -107,6 +107,24 @@ class Chat(val reciver:String?,val reciverUserName:String?,val user:UserResponse
                             Log.e(TAG,"${binding.chatRCVMessages.adapter!!.itemCount-1}")
                             binding.chatRCVMessages.layoutManager!!.smoothScrollToPosition(binding.chatRCVMessages,null,binding.chatRCVMessages.adapter!!.itemCount-1)
 
+                            //send notification to reciver
+                            //get reciver token from api
+                            chatViewmodel.getUserToken(user.id)
+                            chatViewmodel.NotificationToken.observe(viewLifecycleOwner,
+                                Observer {
+                                    when(it){
+                                        is Resource.Loading->{
+                                            Log.i(TAG,"getting token....")
+                                        }
+                                        is Resource.Success->{
+                                            chatViewmodel.sendUserNotification(Pus)
+                                        }
+                                        is Resource.Failure->{
+                                            Log.e(TAG,"${it.error}")
+                                        }
+                                        else -> {}
+                                    }
+                                })
                         }
                         is Resource.Failure->{
                             Log.e(TAG,"${it.error}")

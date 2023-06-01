@@ -512,6 +512,14 @@ class FirebaseService(
             apiManager.postCommentAddedNotification(notification, result)
         }
     }
+    fun sendNewNotificationToMessageTopic(
+        notification: PushMessageNotification, result: (Resource<String>) -> Unit
+    ) {
+        var apiManager: ApiManager = ApiManager()
+        CoroutineScope(Dispatchers.Main).launch {
+            apiManager.MessageNotification(notification, result)
+        }
+    }
 
 
 }
