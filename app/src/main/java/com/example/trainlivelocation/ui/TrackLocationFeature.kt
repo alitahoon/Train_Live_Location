@@ -361,7 +361,8 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
                             Observer {
                                 when(it){
                                     is Resource.Loading->{
-                                        Log.i(TAG,"getting Train Location....")
+
+                                        Log.i(TAG,"getting Train Location.")
                                         binding!!.trackLocationProgressBar.visibility=View.VISIBLE
                                     }
                                     is Resource.Success->{
