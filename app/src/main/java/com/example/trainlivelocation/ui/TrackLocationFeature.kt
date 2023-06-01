@@ -36,16 +36,6 @@ import kotlin.math.acos
 import kotlin.math.cos
 import kotlin.math.sin
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [TrackLocationFeature.newInstance] factory method to
- * create an instance of this fragment.
- */
 @AndroidEntryPoint
 class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Listener,
     OnMapReadyCallback {
@@ -154,9 +144,11 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
                             }
 
                             override fun onAnimationEnd(p0: Animation?) {
+
                             }
 
                             override fun onAnimationRepeat(p0: Animation?) {
+
                             }
 
                         })
@@ -347,15 +339,21 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
         mMap?.setMapType(GoogleMap.MAP_TYPE_SATELLITE)
 //        val trainMarkerIcon = BitmapDescriptorFactory.fromResource(R.drawable.train_location)
 
-        trackLocationFeatureViewModel!!.startGettingUserLocation()
-        trackLocationFeatureViewModel!!.userLiveLocation.observe(viewLifecycleOwner, Observer {
-                    if (it != null){
+        //new flow
+        trackLocationFeatureViewModel!!.userCurrantLocationJustOnce.observe(viewLifecycleOwner,
+            Observer {
+                when(it){
+                    is Resource.Loading->{
+                        Log.i(TAG,"getting user Location...")
+                    }
+
+                    is Resource.Success->{
                         var sydnyUserLocation: LatLng =
-                            LatLng(it.latitude.toDouble(),it.longitude.toDouble())
+                            LatLng(it.data.latitude,it.data.longitude)
 
                         //getting train Location
                         trackLocationFeatureViewModel!!.gettingTrainLocaion(this)
-                         var isCodeExecuted = false
+                        var isCodeExecuted = false
                         trackLocationFeatureViewModel!!.trainLocation.observe(viewLifecycleOwner,
                             Observer {
                                 when(it){
@@ -428,6 +426,21 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
                                     else -> {}
                                 }
                             })
+                    }
+
+                    is Resource.Failure->{
+                        toast("${it.error}")
+                    }
+
+                    else -> {}
+                }
+            })
+
+
+        trackLocationFeatureViewModel!!.startGettingUserLocation()
+        trackLocationFeatureViewModel!!.userLiveLocation.observe(viewLifecycleOwner, Observer {
+                    if (it != null){
+
                     }
         })
     }

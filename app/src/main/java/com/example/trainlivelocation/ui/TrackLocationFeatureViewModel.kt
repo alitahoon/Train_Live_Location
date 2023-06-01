@@ -37,6 +37,7 @@ class TrackLocationFeatureViewModel @Inject constructor(
     private val startLocationUpdate: StartLocationUpdate,
     private val stopLocationUpdate: StopLocationUpdate,
     private val locationLive: LocationLive,
+    private val getUserCurrantLocationJustOnce: GetUserCurrantLocationJustOnce,
     private val gettingTrainlocationFromApi: GettingTrainlocationFromApi
 
 ) : ViewModel() {
@@ -49,6 +50,10 @@ class TrackLocationFeatureViewModel @Inject constructor(
 
     private val _trainLocation: MutableLiveData<Resource<Location_Response>?> = MutableLiveData(null)
     val trainLocation: LiveData<Resource<Location_Response>?> = _trainLocation
+
+
+    private val _userCurrantLocationJustOnce: MutableLiveData<Resource<Location>?> = MutableLiveData(null)
+    val userCurrantLocationJustOnce: LiveData<Resource<Location>?> = _userCurrantLocationJustOnce
 
 
 
@@ -160,6 +165,16 @@ class TrackLocationFeatureViewModel @Inject constructor(
             }
         })
 
+    }
+
+
+    fun gettingUserCurrantLocationJustOnce(){
+        _userCurrantLocationJustOnce.value=Resource.Loading
+        viewModelScope.launch {
+            getUserCurrantLocationJustOnce{
+                _userCurrantLocationJustOnce.value=it
+            }
+        }
     }
 
 }
