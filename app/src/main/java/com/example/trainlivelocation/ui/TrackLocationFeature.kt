@@ -88,6 +88,7 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
     companion object {
         private var scaleUpAnimation: Animation? = null
         private var scaleDownAnimation: Animation? = null
+        private var sydnyTrainLocation:LatLng?=null
     }
 
     override fun onDestroy() {
@@ -340,6 +341,7 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
 //        val trainMarkerIcon = BitmapDescriptorFactory.fromResource(R.drawable.train_location)
 
         //new flow
+        trackLocationFeatureViewModel!!.gettingUserCurrantLocationJustOnce()
         trackLocationFeatureViewModel!!.userCurrantLocationJustOnce.observe(viewLifecycleOwner,
             Observer {
                 when(it){
@@ -348,12 +350,13 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
                     }
 
                     is Resource.Success->{
+                        var isCodeExecuted = true
                         var sydnyUserLocation: LatLng =
                             LatLng(it.data.latitude,it.data.longitude)
+                        mMap!!.addMarker(MarkerOptions().flat(true).position(sydnyUserLocation).title("Your Location"))
 
                         //getting train Location
                         trackLocationFeatureViewModel!!.gettingTrainLocaion(this)
-                        var isCodeExecuted = false
                         trackLocationFeatureViewModel!!.trainLocation.observe(viewLifecycleOwner,
                             Observer {
                                 when(it){
@@ -364,20 +367,22 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
                                     is Resource.Success->{
                                         Log.i(TAG,"${it.data}")
                                         binding!!.trackLocationProgressBar.visibility=View.GONE
-                                        var sydnyTrainLocation: LatLng =
-                                            LatLng(it.data.latitude,it.data.longitude)
-                                        mMap!!.addMarker(MarkerOptions().flat(true).position(sydnyUserLocation).title("Your Location"))
-                                        mMap!!.addMarker(MarkerOptions().flat(true).position(sydnyTrainLocation).title("Train Location"))
+                                        sydnyTrainLocation=
+                                            LatLng(it.data.longitude,it.data.latitude)
+                                        if (isCodeExecuted){
+                                            mMap!!.addMarker(MarkerOptions().flat(true).position(sydnyTrainLocation!!).title("Train Location"))
+                                            isCodeExecuted=false
+                                        }
 //                                        mMap!!.moveCamera(CameraUpdateFactory.newLatLng(sydnyUserLocation))
 //                                        mMap!!.moveCamera(CameraUpdateFactory.newLatLng(sydnyTrainLocation))
                                         // Initialize the GoogleMap instance (googleMap) and add the marker
                                         // Set the initial location of the marker
                                         // Set the OnCameraMoveListener
                                         mMap!!.setOnCameraMoveListener {
-                                            val screenTrainPosition = mMap!!.projection.toScreenLocation(sydnyTrainLocation)
+                                            val screenTrainPosition = mMap!!.projection.toScreenLocation(sydnyTrainLocation!!)
                                             val screenUserPosition = mMap!!.projection.toScreenLocation(sydnyUserLocation)
                                             if (!mMap!!.projection.visibleRegion.latLngBounds.contains(sydnyUserLocation) ||
-                                                !googleMap.projection.visibleRegion.latLngBounds.contains(sydnyTrainLocation)) {
+                                                !googleMap.projection.visibleRegion.latLngBounds.contains(sydnyTrainLocation!!)) {
                                                 val cameraTrainUpdate = CameraUpdateFactory.newLatLng(googleMap.projection.fromScreenLocation(screenTrainPosition))
                                                 val cameraUserUpdate = CameraUpdateFactory.newLatLng(googleMap.projection.fromScreenLocation(screenUserPosition))
                                                 mMap!!.moveCamera(cameraTrainUpdate)
@@ -398,7 +403,7 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
                                         // Calculate bounds that encompass both positions
                                         val bounds = LatLngBounds.Builder()
                                             .include(sydnyUserLocation)
-                                            .include(sydnyTrainLocation)
+                                            .include(sydnyTrainLocation!!)
                                             .build()
 
                                         // Draw a line between the locations
