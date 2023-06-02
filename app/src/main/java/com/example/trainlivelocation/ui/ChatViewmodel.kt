@@ -8,14 +8,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.entity.Message
-import com.example.domain.entity.NotificationTokenResponse
-import com.example.domain.entity.PushPostNotification
-import com.example.domain.entity.UserResponseItem
-import com.example.domain.usecase.GetChatFromFirebase
-import com.example.domain.usecase.GetNotificationTokenByUserIDFromApi
-import com.example.domain.usecase.PushAddPostNotification
-import com.example.domain.usecase.SendMessageToFirebasechat
+import com.example.domain.entity.*
+import com.example.domain.usecase.*
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -28,7 +22,7 @@ class ChatViewmodel @Inject constructor(
     private val context: Context,
     private val getChatFromFirebase: GetChatFromFirebase,
     private val getNotificationTokenByUserIDFromApi: GetNotificationTokenByUserIDFromApi,
-    private val pushAddPostNotification: PushAddPostNotification
+    private val pushSendMessageNotification: PushSendMessageNotification
 ) : ViewModel() {
     var btnSendMessageClicked = SingleLiveEvent<Boolean>()
     var message:String?=" "
@@ -90,11 +84,11 @@ class ChatViewmodel @Inject constructor(
         }
     }
 
-    fun sendUserNotification(pushPostNotification: PushPostNotification){
+    fun sendUserNotification(pushMessageNotification: PushMessageNotification){
         viewModelScope.launch {
             _Notification.value=Resource.Loading
             val child1=launch(Dispatchers.IO) {
-                pushAddPostNotification(pushPostNotification){
+                pushSendMessageNotification(pushMessageNotification){
                     val child2=launch (Dispatchers.Main){
                         _Notification.value=it
                     }

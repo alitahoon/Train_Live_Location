@@ -104,4 +104,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-service:2.4.1'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
     implementation project(path: ':domain')
+
+    implementation 'com.google.android.gms:play-services-maps:17.0.1'
+    implementation 'com.google.maps:google-maps-services:0.19.0'
+
 }

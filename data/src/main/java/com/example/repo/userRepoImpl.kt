@@ -11,7 +11,9 @@ import com.example.data.*
 import com.example.domain.entity.*
 import com.example.domain.repo.UserRepo
 import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.*
+import com.google.maps.model.DirectionsResult
 import retrofit2.Response
 
 class userRepoImpl(
@@ -25,7 +27,8 @@ class userRepoImpl(
     private val getTrainForgroundService: GetTrainLocationService,
     private val getCurrantLocationJustOnce: GetCurrantLocationJustOnce,
     private val getCurrantLocationLive:GetCurrantLocationLive,
-    private val myDatabase: MyDatabase
+    private val myDatabase: MyDatabase,
+    private val googleMapsServices: GoogleMapsServices
     ) : UserRepo {
     private val TAG: String? = "userRepoImpl"
     override suspend fun getUserData(
@@ -584,6 +587,14 @@ class userRepoImpl(
         result: (Resource<String>) -> Unit
     ) {
         firebaseService.sendNewNotificationToAddedPostTopic(notification,result)
+    }
+
+    override suspend fun getLocationDirctionFromGoogleMapsApi(
+        origin: LatLng,
+        destination: LatLng,
+        result: (Resource<DirectionsResult>) -> Unit
+    ) {
+        googleMapsServices.getDirections(origin,destination,result)
     }
 
     override suspend fun pushSendMessageNotification(
