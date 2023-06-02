@@ -10,7 +10,8 @@ import com.google.maps.model.TravelMode
 
 class GoogleMapsServices {
 
-    private val API_KEY = "AIzaSyA6Svik2CpYLPyDE6lfQ18mWOo0mt5cDG0"
+    private val API_KEY = "AIzaSyDo_NcGDWugGSV5q7YC_kye_ekQwvKsg5k"
+    private val OPEN_ROUTE_API_KEY = "5b3ce3597851110001cf6248659904d13c424881b9f1ceb34e8288b6"
 
     fun getDirections(
         origin: LatLng, destination: LatLng, result: (Resource<DirectionsResult>) -> Unit
@@ -37,5 +38,14 @@ class GoogleMapsServices {
         }
 
     }
+
+    fun getDirctionFromOpenRoute(
+        origin: LatLng,
+        destination: LatLng,
+        result: (Resource<DirectionsResult>) -> Unit
+    ){
+        
+    }
+
 
 }

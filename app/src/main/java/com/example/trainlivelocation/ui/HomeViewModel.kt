@@ -134,7 +134,7 @@ class HomeViewModel @Inject constructor(
             _dirction.value=Resource.Loading
             val child1=launch (Dispatchers.IO){
                 getLocationDirctionFromGoogleMapsApi(origin,destination){
-                    val child2=launch {
+                    val child2=launch(Dispatchers.Main) {
                         _dirction.value=it
                     }
                 }

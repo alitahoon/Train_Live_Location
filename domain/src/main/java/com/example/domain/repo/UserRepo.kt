@@ -291,5 +291,11 @@ interface UserRepo {
         result: (Resource<DirectionsResult>) -> Unit
     )
 
+    suspend fun getLocationDirctionFromOpenRouteService(
+        origin: LatLng,
+        destination: LatLng,
+        result: (Resource<DirectionsResult>) -> Unit
+    )
+
 
 }

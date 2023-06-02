@@ -350,9 +350,15 @@ object UserCaseModule {
     fun ProvidePushSendMessageNotification(userRepo: UserRepo): PushSendMessageNotification {
         return PushSendMessageNotification(userRepo)
     }
+
     @Provides
     fun ProvideGetLocationDirctionFromGoogleMapsApi(userRepo: UserRepo): GetLocationDirctionFromGoogleMapsApi {
         return GetLocationDirctionFromGoogleMapsApi(userRepo)
+    }
+
+    @Provides
+    fun ProvideGetLocationDirctionFromOpenRouteService(userRepo: UserRepo): GetLocationDirctionFromOpenRouteService {
+        return GetLocationDirctionFromOpenRouteService(userRepo)
     }
 
 

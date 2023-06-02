@@ -275,10 +275,10 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
                     homeViewModel!!.dirction.observe(viewLifecycleOwner, Observer {
                         when (it) {
                             is Resource.Loading -> {
-
+                                Log.i(TAG,"getting dirctions")
                             }
                             is Resource.Success -> {
-
+                                Log.i(TAG,"${it.data}")
                                 if (it.data != null) {
                                     val route = it.data.routes[0]
                                     val legs = route.legs
@@ -297,6 +297,7 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
                                 }
                             }
                             is Resource.Failure -> {
+                                Log.e(TAG,"${it.error}")
 
                             }
                             else -> {}

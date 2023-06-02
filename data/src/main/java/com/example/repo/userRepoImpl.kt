@@ -597,6 +597,14 @@ class userRepoImpl(
         googleMapsServices.getDirections(origin,destination,result)
     }
 
+    override suspend fun getLocationDirctionFromOpenRouteService(
+        origin: LatLng,
+        destination: LatLng,
+        result: (Resource<DirectionsResult>) -> Unit
+    ) {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun pushSendMessageNotification(
         notification: PushMessageNotification,
         result: (Resource<String>) -> Unit
