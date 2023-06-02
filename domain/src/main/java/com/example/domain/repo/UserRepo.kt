@@ -7,7 +7,9 @@ import android.net.Uri
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.LiveData
 import com.example.domain.entity.*
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.PhoneAuthCredential
+import com.google.maps.model.DirectionsResult
 import retrofit2.Response
 
 interface UserRepo {
@@ -197,6 +199,11 @@ interface UserRepo {
         result: (Resource<String>) -> Unit
     )
 
+    suspend fun pushSendMessageNotification(
+        notification: PushMessageNotification,
+        result: (Resource<String>) -> Unit
+    )
+
     suspend fun pushAddPostCommentNotification(
         notification: PushPostCommentNotification,
         result: (Resource<String>) -> Unit
@@ -230,55 +237,65 @@ interface UserRepo {
         result: (Resource<ArrayList<StationAlarmEntity>>) -> Unit
     )
 
-    suspend fun insertNewUserItemToDatabase (
+    suspend fun insertNewUserItemToDatabase(
         userItemEntity: UserItemEntity,
         result: (Resource<String>) -> Unit
     )
 
-    suspend fun getNewUserItemFromDatabase (
+    suspend fun getNewUserItemFromDatabase(
         result: (Resource<ArrayList<UserItemEntity>>) -> Unit
     )
 
-    suspend fun insertNewTrainItemToDatabase (
+    suspend fun insertNewTrainItemToDatabase(
         trainItemEntity: TrainItemEntity,
         result: (Resource<String>) -> Unit
     )
 
-    suspend fun getNewTrainItemFromDatabase (
+    suspend fun getNewTrainItemFromDatabase(
         result: (Resource<ArrayList<TrainItemEntity>>) -> Unit
     )
 
-    suspend fun insertNewTicketItemToDatabase (
+    suspend fun insertNewTicketItemToDatabase(
         ticketItemEntity: TicketItemEntity,
         result: (Resource<String>) -> Unit
     )
 
-    suspend fun getNewTicketItemFromDatabase (
+    suspend fun getNewTicketItemFromDatabase(
         result: (Resource<ArrayList<TicketItemEntity>>) -> Unit
     )
 
-    suspend fun insertNewMessageItemToDatabase (
+    suspend fun insertNewMessageItemToDatabase(
         messageItemEntity: MessageItemEntity,
         result: (Resource<String>) -> Unit
     )
 
-    suspend fun getNewMessageItemFromDatabase (
+    suspend fun getNewMessageItemFromDatabase(
         result: (Resource<ArrayList<MessageItemEntity>>) -> Unit
     )
 
-    suspend fun deleteStationAlarmFromDatabase (
-        alarmID:Long,result: (Resource<String>) -> Unit
-    )
-    suspend fun updateStationAlarmFromDatabase (
-        stationAlarmEntity: StationAlarmEntity,result: (Resource<String>) -> Unit
+    suspend fun deleteStationAlarmFromDatabase(
+        alarmID: Long, result: (Resource<String>) -> Unit
     )
 
-    suspend fun gettingTrainlocationFromApi (
-        trainId:Int,result: (Resource<Location_Response>) -> Unit
+    suspend fun updateStationAlarmFromDatabase(
+        stationAlarmEntity: StationAlarmEntity, result: (Resource<String>) -> Unit
     )
 
-    suspend fun createReport (
-        result: (Resource<ReportResponseItem>) -> Unit
+    suspend fun gettingTrainlocationFromApi(
+        trainId: Int, result: (Resource<Location_Response>) -> Unit
     )
+
+    suspend fun getLocationDirctionFromGoogleMapsApi(
+        origin: LatLng,
+        destination: LatLng,
+        result: (Resource<DirectionsResult>) -> Unit
+    )
+
+    suspend fun getLocationDirctionFromOpenRouteService(
+        origin: LatLng,
+        destination: LatLng,
+        result: (Resource<OpenRouteDirectionResult>) -> Unit
+    )
+
 
 }

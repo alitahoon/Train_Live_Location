@@ -195,9 +195,32 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     )
 
                 }
-                "getInboxMessage" -> {
+                "Chat" -> {
                     //create get inbox Message notification
+                    Log.d(TAG, "chat notification ")
+                    val senderPhone=remoteMessage.getData()["senderPhone"]
+                    val reciverPhone=remoteMessage.getData()["reciverPhone"]
+                    val senderUsername=remoteMessage.getData()["senderUsername"]
+                    val reciverUsername=remoteMessage.getData()["reciverUsername"]
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("FRAGMENT_NAME", "chatFragment")
+                    MessageNotificationData(title,message!!,senderPhone!!,reciverPhone!!,senderUsername!!,reciverUsername!!)
+                    val pendingIntent = PendingIntent.getActivity(
+                        this,
+                        0,
+                        intent,
+                        PendingIntent.FLAG_IMMUTABLE
+                    )
 
+                    //create post  notification
+                    val remoteView =
+                        RemoteViews("com.example.trainlivelocation", R.layout.add_post_notification)
+                    remoteView.setTextViewText(R.id.doctor_notification_title, title)
+                    remoteView.setTextViewText(R.id.doctor_notification_content, message)
+                    generateNotification(
+                        remoteView,
+                        pendingIntent
+                    )
                 }
             }
 

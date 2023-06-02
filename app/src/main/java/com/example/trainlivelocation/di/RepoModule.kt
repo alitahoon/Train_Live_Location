@@ -21,6 +21,11 @@ object RepoModule {
     }
 
     @Provides
+    fun ProvideGoogleMapsServices(): GoogleMapsServices {
+        return GoogleMapsServices()
+    }
+
+    @Provides
     fun ProvideRepo(
         apiService: ApiService,
         locationLive: LocationLive,
@@ -33,7 +38,8 @@ object RepoModule {
         GetTrainLocationService: GetTrainLocationService,
         getCurrantLocationJustOnce: GetCurrantLocationJustOnce,
         getCurrantLocationLive: GetCurrantLocationLive,
-        myDatabase: MyDatabase
+        myDatabase: MyDatabase,
+        googleMapsServices: GoogleMapsServices
     ): UserRepo {
         return userRepoImpl(
             apiService,
@@ -46,7 +52,8 @@ object RepoModule {
             GetTrainLocationService,
             getCurrantLocationJustOnce,
             getCurrantLocationLive,
-            myDatabase
+            myDatabase,
+            googleMapsServices
         )
     }
 

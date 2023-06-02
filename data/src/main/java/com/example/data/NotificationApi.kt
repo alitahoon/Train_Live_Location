@@ -1,5 +1,6 @@
 package com.example.data
 
+import com.example.domain.entity.PushMessageNotification
 import com.example.domain.entity.PushNotification
 import com.example.domain.entity.PushPostCommentNotification
 import com.example.domain.entity.PushPostNotification
@@ -33,5 +34,11 @@ interface NotificationApi {
     @POST("fcm/send")
     suspend fun postAddedPostCommentNotification(
         @Body notification: PushPostCommentNotification
+    ): Response<ResponseBody>
+
+    @Headers("Authorization: key=${API_KEY}", "Content-Type: $CONTENT_TYPE")
+    @POST("fcm/send")
+    suspend fun MessageNotification(
+        @Body notification: PushMessageNotification
     ): Response<ResponseBody>
 }
