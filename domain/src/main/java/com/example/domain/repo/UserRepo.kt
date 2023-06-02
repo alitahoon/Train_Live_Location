@@ -277,4 +277,8 @@ interface UserRepo {
         trainId:Int,result: (Resource<Location_Response>) -> Unit
     )
 
+    suspend fun createReport (
+        result: (Resource<ReportResponseItem>) -> Unit
+    )
+
 }

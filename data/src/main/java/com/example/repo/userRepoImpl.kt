@@ -93,6 +93,19 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun createReport(result: (Resource<ReportResponseItem>) -> Unit) {
+        var res = apiService.CreateReport()
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke((Resource.Failure("createReport -> Error response body = null :${res.body()}")))
+            }
+        } else {
+            result.invoke((Resource.Failure("createReport -> ${res.message()}")))
+        }
+    }
+
     override suspend fun deleteStationAlarmFromDatabase(
         alarmID: Long,
         result: (Resource<String>) -> Unit

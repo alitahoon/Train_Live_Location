@@ -329,6 +329,11 @@ object UserCaseModule  {
         return GettingTrainlocationFromApi(userRepo)
     }
 
+    @Provides
+    fun ProvideCreateReport(userRepo: UserRepo): CreateReport {
+        return CreateReport(userRepo)
+    }
+
 
 
 }
