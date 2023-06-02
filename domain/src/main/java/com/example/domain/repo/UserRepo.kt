@@ -297,5 +297,9 @@ interface UserRepo {
         result: (Resource<OpenRouteDirectionResult>) -> Unit
     )
 
+    suspend fun createReport (
+        result: (Resource<ReportResponseItem>) -> Unit
+    )
+
 
 }
