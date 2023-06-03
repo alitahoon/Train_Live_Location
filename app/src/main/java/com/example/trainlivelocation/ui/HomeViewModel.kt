@@ -13,6 +13,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.NotificatonToken
+import com.example.domain.entity.OpenRouteDirectionResult
 import com.example.domain.entity.StationResponseItem
 import com.example.domain.entity.UserResponseItem
 import com.example.domain.usecase.*
@@ -30,7 +31,8 @@ class HomeViewModel @Inject constructor(
     private val getTrainLocationInForgroundService: GetTrainLocationInForgroundService,
     private val subscribeToNewTopic: SubscribeToNewTopic,
     private val getAllStations: GetAllStations,
-    private val getLocationDirctionFromGoogleMapsApi: GetLocationDirctionFromGoogleMapsApi
+    private val getLocationDirctionFromGoogleMapsApi: GetLocationDirctionFromGoogleMapsApi,
+    private val getLocationDirctionFromOpenRouteService: GetLocationDirctionFromOpenRouteService
 ) : ViewModel() {
     private val TAG: String = "HomeViewModel"
     private val sharedPrefFile = "UserToken"
@@ -62,9 +64,9 @@ class HomeViewModel @Inject constructor(
     val stations: LiveData<Resource<ArrayList<StationResponseItem>>?> = _stations
 
 
-    private val _dirction: MutableLiveData<Resource<DirectionsResult>?> =
+    private val _dirction: MutableLiveData<Resource<OpenRouteDirectionResult>?> =
         MutableLiveData(null)
-    val dirction: LiveData<Resource<DirectionsResult>?> = _dirction
+    val dirction: LiveData<Resource<OpenRouteDirectionResult>?> = _dirction
 
     fun onLocationBtn(view: View) {
         locationBtn.postValue(true)
@@ -133,7 +135,23 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             _dirction.value=Resource.Loading
             val child1=launch (Dispatchers.IO){
-                getLocationDirctionFromGoogleMapsApi(origin,destination){
+                getLocationDirctionFromOpenRouteService(origin,destination){
+                    val child2=launch(Dispatchers.Main) {
+                        _dirction.value=it
+                    }
+                }
+            }
+            child1.join()
+        }
+    }
+
+    fun getLocationDirctionsForWayPoints(
+        wayPoints:List<LatLng>
+    ) {
+        viewModelScope.launch {
+            _dirction.value=Resource.Loading
+            val child1=launch (Dispatchers.IO){
+                getLocationDirctionFromOpenRouteService(origin,destination){
                     val child2=launch(Dispatchers.Main) {
                         _dirction.value=it
                     }

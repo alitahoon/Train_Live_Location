@@ -366,5 +366,10 @@ object UserCaseModule {
         return GetLocationDirctionFromOpenRouteService(userRepo)
     }
 
+    @Provides
+    fun ProvideGetWayPointsLocationDirctionFromOpenRouteService(userRepo: UserRepo): GetWayPointsLocationDirctionFromOpenRouteService {
+        return GetWayPointsLocationDirctionFromOpenRouteService(userRepo)
+    }
+
 
 }

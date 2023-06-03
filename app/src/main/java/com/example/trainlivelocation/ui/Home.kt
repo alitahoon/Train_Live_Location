@@ -261,12 +261,11 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
                     var origin: LatLng? = null// Alexandria
                     var destination: LatLng? = null  // Ramsis(Cairo)
                     // Draw Polyline for the route
-                    val polylineOptions = PolylineOptions().color(Color.RED).width(5f)
                     for (station in stationSydny) {
                         if (station.stationName.equals("Alexandria")) {
-                            origin=station.stationSydnyvalue
-                        }else if(station.stationName.equals("Ramsis(Cairo)")){
-                            destination=station.stationSydnyvalue
+                            origin = station.stationSydnyvalue
+                        } else if (station.stationName.equals("Ramsis(Cairo)")) {
+                            destination = station.stationSydnyvalue
                         }
                     }
 
@@ -275,29 +274,67 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
                     homeViewModel!!.dirction.observe(viewLifecycleOwner, Observer {
                         when (it) {
                             is Resource.Loading -> {
-                                Log.i(TAG,"getting dirctions")
+                                Log.i(TAG, "getting dirctions")
                             }
                             is Resource.Success -> {
-                                Log.i(TAG,"${it.data}")
+                                Log.i(TAG, "${it.data}")
                                 if (it.data != null) {
-                                    val route = it.data.routes[0]
-                                    val legs = route.legs
+                                    // Decode the polyline string to LatLng points
+                                    val points = PolyUtil.decode(it.data.polyline)
 
-
-                                    for (leg in legs) {
-                                        for (step in leg.steps) {
-                                            val points = PolyUtil.decode(step.polyline.encodedPath)
-                                            for (point in points) {
-                                                polylineOptions.add(LatLng(point.latitude, point.longitude))
-                                            }
-                                        }
-                                    }
-
+                                    // Draw the polyline on the map
+                                    val polylineOptions = PolylineOptions()
+                                        .color(Color.BLUE)
+                                        .width(5f)
+                                        .addAll(points)
+                                    Log.i(TAG, "draw poly.......")
                                     googleMap.addPolyline(polylineOptions)
                                 }
+
+
+                                // Mark Stations with Markers
+                                for (station in stationSydny) {
+                                    val markerOptions = MarkerOptions()
+                                        .position(station.stationSydnyvalue)
+                                        .title(station.stationName)
+                                        .icon(
+                                            BitmapDescriptorFactory.defaultMarker(
+                                                BitmapDescriptorFactory.HUE_RED
+                                            )
+                                        )
+
+                                    val marker = googleMap.addMarker(markerOptions)
+                                    marker!!.showInfoWindow() // Show info window without requiring a click
+                                }
+                                // Move camera to include all the markers
+                                val builder = LatLngBounds.builder()
+                                for (station in stationSydny) {
+                                    builder.include(station.stationSydnyvalue)
+                                }
+                                val bounds = builder.build()
+                                val padding = 100 // Adjust as needed
+                                val cameraUpdate =
+                                    CameraUpdateFactory.newLatLngBounds(bounds, padding)
+                                val center = LatLng(
+                                    (bounds.southwest.latitude + bounds.northeast.latitude) / 2,
+                                    (bounds.southwest.longitude + bounds.northeast.longitude) / 2
+                                )
+                                // Rotate the camera
+                                val rotation = 45f // Rotation angle in degrees
+                                val rotatedCameraUpdate = CameraUpdateFactory.newCameraPosition(
+                                    CameraPosition.Builder()
+                                        .target(center)
+                                        .zoom(googleMap.cameraPosition.zoom)
+                                        .bearing(rotation)
+                                        .build()
+                                )
+
+                                googleMap.moveCamera(rotatedCameraUpdate)
+
+
                             }
                             is Resource.Failure -> {
-                                Log.e(TAG,"${it.error}")
+                                Log.e(TAG, "${it.error}")
 
                             }
                             else -> {}
@@ -305,41 +342,7 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
                     }
                     )
 
-                        // Mark Stations with Markers
-                        for (station in stationSydny) {
-                            val markerOptions = MarkerOptions()
-                                .position(station.stationSydnyvalue)
-                                .title(station.stationName)
-                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-
-                            val marker = googleMap.addMarker(markerOptions)
-                            marker!!.showInfoWindow() // Show info window without requiring a click
-                        }
-                        // Move camera to include all the markers
-                        val builder = LatLngBounds.builder()
-                        for (station in stationSydny) {
-                            builder.include(station.stationSydnyvalue)
-                        }
-                        val bounds = builder.build()
-                        val padding = 100 // Adjust as needed
-                        val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding)
-                        val center = LatLng(
-                            (bounds.southwest.latitude + bounds.northeast.latitude) / 2,
-                            (bounds.southwest.longitude + bounds.northeast.longitude) / 2
-                        )
-                        // Rotate the camera
-                        val rotation = 45f // Rotation angle in degrees
-                        val rotatedCameraUpdate = CameraUpdateFactory.newCameraPosition(
-                            CameraPosition.Builder()
-                                .target(center)
-                                .zoom(googleMap.cameraPosition.zoom)
-                                .bearing(rotation)
-                                .build()
-                        )
-
-                        googleMap.moveCamera(rotatedCameraUpdate)
-
-                    }
+                }
                 else -> {
 
                 }

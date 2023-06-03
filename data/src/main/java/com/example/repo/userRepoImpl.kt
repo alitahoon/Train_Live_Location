@@ -615,7 +615,14 @@ class userRepoImpl(
         destination: LatLng,
         result: (Resource<OpenRouteDirectionResult>) -> Unit
     ) {
-        googleMapsServices.getDirctionFromOpenRoute(origin,destination,result)
+        googleMapsServices.getDirectionFromOpenRoute(origin,destination,result)
+    }
+
+    override suspend fun getWayPointsLocationDirctionFromOpenRouteService(
+        wayPoints: List<LatLng>,
+        result: (Resource<OpenRouteDirectionResult>) -> Unit
+    ) {
+        googleMapsServices.getDirectionFromOpenRouteForWaypoints(wayPoints,result)
     }
 
 
