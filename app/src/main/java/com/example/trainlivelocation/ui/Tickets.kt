@@ -108,12 +108,14 @@ class Tickets : Fragment(), Station_Dialog_Listener, Train_Dialog_Listener,
                                                     }
                                                     is Resource.Success->{
                                                         Log.i(TAG,"${it.data}")
-                                                        displaySnackbarSuccess(
-                                                            requireContext(),
-                                                            binding.root,
-                                                            "Ticket Booked Successfully...",
-                                                            R.raw.success_auth, R.color.PrimaryColor
-                                                        )
+//                                                        displaySnackbarSuccess(
+//                                                            requireContext(),
+//                                                            binding.root,
+//                                                            "Ticket Booked Successfully...",
+//                                                            R.raw.success_auth, R.color.PrimaryColor
+//                                                        )
+                                                        showCustomToast(requireContext(),"Ticket Booked Successfully...")
+
                                                     }
                                                     else -> {}
                                                 }
@@ -134,12 +136,14 @@ class Tickets : Fragment(), Station_Dialog_Listener, Train_Dialog_Listener,
                         }
                         is Resource.Failure -> {
                             Log.e(TAG, "Error from else brunsh---->ticket ${it.error}")
-                            displaySnackbarSuccess(
-                                requireContext(),
-                                binding.root,
-                                "Fialed to book ticket...",
-                                R.raw.failed, R.color.textAlarmColor
-                            )
+//                            displaySnackbarSuccess(
+//                                requireContext(),
+//                                binding.root,
+//                                "Fialed to book ticket...",
+//                                R.raw.failed, R.color.textAlarmColor
+//                            )
+                            showCustomToast(requireContext(),"Fialed to book ticket...")
+
                         }
 
                         else -> {
@@ -217,4 +221,6 @@ class Tickets : Fragment(), Station_Dialog_Listener, Train_Dialog_Listener,
         Lati=latitude
         Longi=latitude
     }
+
+
 }

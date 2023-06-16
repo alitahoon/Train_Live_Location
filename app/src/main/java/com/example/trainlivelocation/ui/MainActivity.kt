@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide
 import com.example.domain.entity.*
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.ActivityMainBinding
+import com.example.trainlivelocation.utli.HomeMapListener
 import com.example.trainlivelocation.utli.getuserModelFromSharedPreferences
 import com.example.trainlivelocation.utli.toast
 import com.google.android.material.navigation.NavigationView
@@ -32,7 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() ,HomeMapListener{
     private lateinit var binding: ActivityMainBinding
     private val mainActivityViewModel: MainActivityViewModel? by viewModels()
     private val TAG: String? = "MainActivity"
@@ -75,6 +76,12 @@ class MainActivity : AppCompatActivity() {
 
                     R.id.home_menu_alarms ->{
                         navController.navigate(R.id.alarms,null,navOptions)
+                        binding.mainActivityDrwerLayout.closeDrawer(GravityCompat.START);
+                    }
+
+                    R.id.home_menu_Settings->{
+                        setHeader("Settings")
+                        navController.navigate(R.id.settings,null,navOptions)
                         binding.mainActivityDrwerLayout.closeDrawer(GravityCompat.START);
                     }
                 }
@@ -125,6 +132,9 @@ class MainActivity : AppCompatActivity() {
                     R.id.passengers -> {
                         setHeader("Passengers")
                     }
+                    R.id.news -> {
+                        setHeader("News")
+                    }
                 }
             }
 
@@ -140,19 +150,16 @@ class MainActivity : AppCompatActivity() {
                         binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
                         binding.mainActivityFragmentHeaderNavFrName.setText("Inbox")
 
-                        toast("Inbox")
                         val bundle = Bundle()
                         bundle.putParcelable("userModel", userModel)
                         Log.i(TAG, "$userModel")
                         navController.navigate(R.id.inbox, bundle, navOptions)
                     }
                     1 -> {
-                        toast("Home")
                         setHeader("home")
                         navController.navigate(R.id.home2, null, navOptions)
                     }
                     0 -> {
-                        toast("Alarms")
                         setHeader("Alarms")
                         navController.navigate(R.id.alarms, null, navOptions)
 
@@ -352,6 +359,18 @@ class MainActivity : AppCompatActivity() {
             mainActivityViewModel!!.getProfileImage("profileImages/+20${userModel!!.phone}")
         }
     }
+
+    override fun onMapOpened() {
+        binding.homeActionBar.setVisibility(View.GONE)
+//        window.statusBarColor =
+//            resources.getColor(R.color.statusBarcolorOnOpenMap)
+    }
+
+    override fun OnMapClosed() {
+        binding.homeActionBar.setVisibility(View.VISIBLE)
+//        window.statusBarColor =
+//            resources.getColor(R.color.DarkPrimaryColor)
+         }
 
 
 }

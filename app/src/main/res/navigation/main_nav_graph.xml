@@ -74,6 +74,27 @@
             app:exitAnim="@anim/exit"
             app:popEnterAnim="@anim/pop_enter"
             app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_home2_to_trainConverters"
+            app:destination="@id/trainConverters"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_home2_to_settings"
+            app:destination="@id/settings"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_home2_to_news"
+            app:destination="@id/news"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
     </fragment>
     <dialog
         android:id="@+id/locationDialogFragment"
@@ -203,5 +224,18 @@
         android:id="@+id/alarms"
         android:name="com.example.trainlivelocation.ui.Alarms"
         android:label="Alarms" />
+    <fragment
+        android:id="@+id/trainConverters"
+        android:name="com.example.trainlivelocation.ui.TrainConverters"
+        android:label="TrainConverters" />
+    <fragment
+        android:id="@+id/settings"
+        android:name="com.example.trainlivelocation.ui.Settings"
+        android:label="fragment_settings"
+        tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/news"
+        android:name="com.example.trainlivelocation.ui.News"
+        android:label="News" />
 
 </navigation>

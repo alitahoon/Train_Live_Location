@@ -1,7 +1,5 @@
 package com.example.trainlivelocation.di
 
-import com.example.domain.entity.PushMessageNotification
-import com.example.domain.entity.PushPostCommentNotification
 import com.example.domain.repo.UserRepo
 import com.example.domain.usecase.*
 import dagger.Module
@@ -370,6 +368,35 @@ object UserCaseModule {
     fun ProvideGetWayPointsLocationDirctionFromOpenRouteService(userRepo: UserRepo): GetWayPointsLocationDirctionFromOpenRouteService {
         return GetWayPointsLocationDirctionFromOpenRouteService(userRepo)
     }
+
+    @Provides
+    fun ProvideInsertNewStationHistroyItemToDatabase(userRepo: UserRepo): InsertNewStationHistroyItemToDatabase {
+        return InsertNewStationHistroyItemToDatabase(userRepo)
+    }
+
+    @Provides
+    fun ProvideGetStationHistroyItemsFromDatabase(userRepo: UserRepo): GetStationHistroyItemsFromDatabase {
+        return GetStationHistroyItemsFromDatabase(userRepo)
+    }
+    @Provides
+    fun ProvideGetNews(userRepo: UserRepo): GetNews {
+        return GetNews(userRepo)
+    }
+
+    @Provides
+    fun ProvideGetNewsById(userRepo: UserRepo): GetNewsById {
+        return GetNewsById(userRepo)
+    }
+    @Provides
+    fun ProvideCreateNews(userRepo: UserRepo): CreateNews {
+        return CreateNews(userRepo)
+    }
+    @Provides
+    fun ProvideGetAllReport(userRepo: UserRepo): GetAllReport {
+        return GetAllReport(userRepo)
+    }
+
+
 
 
 }

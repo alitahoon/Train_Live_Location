@@ -19,11 +19,11 @@ interface UserRepo {
     )
 
     suspend fun getNews(
-        result: (Response<ArrayList<GetNewsResponseItem>>) -> Unit
+        result: (Resource<ArrayList<GetNewsResponseItem>>) -> Unit
     )
 
     suspend fun createNews(
-        result: (Response<CreateNewsResponseItem>) -> Unit
+        result: (Resource<CreateNewsResponseItem>) -> Unit
     )
 
     suspend fun getNewsById(newsId: Int, result: (Resource<GetNewsByIdResponseItem>) -> Unit)
@@ -225,7 +225,11 @@ interface UserRepo {
         postId: Int,
         userID: Int,
         reportReason: String,
-        result: (Resource<NotificationTokenResponseInTrain>) -> Unit
+        result: (Resource<String>) -> Unit
+    )
+
+    suspend fun getAllReport(
+        result: (Resource<ArrayList<ReportPostResponse>>) -> Unit
     )
 
     suspend fun insertNewStationAlarm(
@@ -267,6 +271,15 @@ interface UserRepo {
     suspend fun insertNewMessageItemToDatabase(
         messageItemEntity: MessageItemEntity,
         result: (Resource<String>) -> Unit
+    )
+
+    suspend fun insertNewStationHistroyItemToDatabase(
+        stationHistoryAlarmEntity: StationHistoryAlarmEntity,
+        result: (Resource<String>) -> Unit
+    )
+
+    suspend fun getStationHistroyItemsFromDatabase(
+        result: (Resource<ArrayList<StationHistoryAlarmEntity>>) -> Unit
     )
 
     suspend fun getNewMessageItemFromDatabase(

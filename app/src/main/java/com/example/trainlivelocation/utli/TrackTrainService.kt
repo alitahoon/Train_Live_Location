@@ -16,15 +16,20 @@ import android.view.LayoutInflater
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
 import com.example.data.ApiService
 import com.example.domain.entity.Location_Response
+import com.example.domain.usecase.GetLiveLoctationFromApi
 import com.example.domain.usecase.GetStationAlarmsFromDatabase
+import com.example.domain.usecase.GettingTrainlocationFromApi
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.TrackTrainCustomNotificationLayoutBinding
+import com.google.maps.model.LatLng
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
+import org.greenrobot.eventbus.EventBus
 import java.util.*
 import javax.inject.Inject
 
@@ -41,14 +46,21 @@ class TrackTrainService() : LifecycleService() {
     lateinit var notificationCustomLayout: RemoteViews
     private val TAG: String = "TrackTrainService"
 
+    val eventBus: EventBus = EventBus.getDefault()
+
+
     @Inject
     lateinit var apiService: ApiService
+
+    @Inject
+    lateinit var getLiveLoctationFromApi: GetLiveLoctationFromApi
 
     @Inject
     lateinit var context: Context
 
     @Inject
     lateinit var getStationAlarmsFromDatabase: GetStationAlarmsFromDatabase
+
 
     override fun onCreate() {
         super.onCreate()
@@ -140,16 +152,26 @@ class TrackTrainService() : LifecycleService() {
     private fun fetchDataFromApi(trainId: Int?) {
         val coroutineScope = CoroutineScope(Dispatchers.Main + job)
         coroutineScope.launch {
+            Log.i(TAG, "From courtine scope")
             try {
-                Log.i(TAG, "From courtine scope")
-                val response = apiService.GetLocation(trainId!!)
-                Log.i(TAG, "success")
-                if (response.isSuccessful) {
-                    Log.i(TAG, "success  ${response.body()}")
-                    _locationLLiveDate.value = response.body()
-                    setData(trainId)
-                } else {
-                    Log.e(TAG, "${response.message()}")
+                getLiveLoctationFromApi(trainId!!){
+                    eventBus.post(it)
+                    when(it){
+                        is Resource.Loading->{
+                            Log.i(TAG,"getting train Location From API")
+                        }
+                        is Resource.Success->{
+                            Log.i(TAG, "success  ${it.data}")
+                            _locationLLiveDate.value = it.data!!
+                            setData(trainId)
+                        }
+                        is Resource.Failure->{
+
+                        }
+                        else -> {
+
+                        }
+                    }
                 }
             } catch (e: Exception) {
                 // Handle the exception here
@@ -265,7 +287,7 @@ class TrackTrainService() : LifecycleService() {
         Log.e(TAG, "endLon ${endLon}")
 
         Location.distanceBetween(startLat, startLon, endLat, endLon, results)
-        Log.e(TAG, "distance In Kilo Meter${results[0]}")
+        Log.e(TAG, "distance In Kilo Meter ${results[0].toDouble() / 1000}")
         return results[0].toDouble() / 1000
     }
 }

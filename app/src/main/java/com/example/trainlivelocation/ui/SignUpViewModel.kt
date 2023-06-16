@@ -130,7 +130,8 @@ class SignUpViewModel @Inject constructor(
                 userPassword?.trim()!!,
                 userPhone?.trim()!!,
                 "normal",
-                userToken
+                userToken,
+                null
             )
             Log.i(TAG, "${newUser}")
             viewModelScope.launch {

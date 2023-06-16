@@ -70,7 +70,8 @@ class UserProfile : Fragment() {
                         binding.profileTxtPassword.text.toString(),
                         binding.profileTxtPhone.text.toString(),
                         user!!.role,
-                        user.tokenForNotifications
+                        user.tokenForNotifications,
+                        null
                     )
                 )
 

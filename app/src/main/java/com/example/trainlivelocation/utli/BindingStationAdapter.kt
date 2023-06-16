@@ -27,6 +27,7 @@ import com.example.domain.entity.Location_Response
 import com.example.domain.entity.Post
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.UserPostsRcvItemLayoutBinding
+import com.example.trainlivelocation.ui.News
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.materialswitch.MaterialSwitch
 import com.google.android.material.progressindicator.LinearProgressIndicator
@@ -48,6 +49,15 @@ fun setAdapter(
 fun setAdapter(
     recyclerView: RecyclerView,
     adapter: TrainCustomAdapter
+) {
+    adapter?.let {
+        recyclerView.adapter = it
+    }
+}
+@BindingAdapter("setNewsRCVAdapter")
+fun setAdapter(
+    recyclerView: RecyclerView,
+    adapter: NewsCustomAdapter
 ) {
     adapter?.let {
         recyclerView.adapter = it

@@ -143,7 +143,7 @@
                         android:hint="Station"
                         android:onClick="@{viewmodel::onStationTxtClicked}"
                         android:text="@={viewmodel.userStation}"
-                        android:textColor="@color/PrimaryColor"
+                        android:textColor="@color/white"
                         android:textColorHint="@color/textHintColorFirst"
                         android:textSize="@dimen/_12ssp" />
 
@@ -173,7 +173,7 @@
                         android:onClick="@{viewmodel::onDatePickerTxtClicked}"
                         android:minHeight="@dimen/_48sdp"
                         android:text="@={viewmodel.userBirthDate}"
-                        android:textColor="@color/PrimaryColor"
+                        android:textColor="@color/white"
                         android:textColorHint="@color/textHintColorFirst"
                         android:textSize="@dimen/_12ssp" />
 
@@ -201,7 +201,7 @@
                         android:drawablePadding="@dimen/_10sdp"
                         android:hint="Name"
                         android:text="@={viewmodel.userName}"
-                        android:textColor="@color/PrimaryColor"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -232,7 +232,7 @@
                         android:inputType="textEmailAddress"
                         android:minHeight="@dimen/_48sdp"
                         android:text="@={viewmodel.userEmail}"
-                        android:textColor="@color/PrimaryColor"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
@@ -261,7 +261,7 @@
                         android:hint="Password"
                         android:inputType="textPassword"
                         android:text="@={viewmodel.userPassword}"
-                        android:textColor="@color/PrimaryColor"
+                        android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp" />
                     <RadioGroup
                         android:id="@+id/radioGroup"
@@ -288,7 +288,7 @@
                             android:onClick="@{()->viewmodel.onClickMale()}"
                             android:text="Male"
                             android:textAlignment="center"
-                            android:textColor="@color/PrimaryColor"
+                            android:textColor="@color/textHintColorFirst"
                             android:textSize="@dimen/_12ssp" />
 
                         <RadioButton
@@ -305,7 +305,7 @@
                             android:padding="@dimen/_4sdp"
                             android:text="Female"
                             android:textAlignment="center"
-                            android:textColor="@color/PrimaryColor"
+                            android:textColor="@color/textHintColorFirst"
                             android:textSize="@dimen/_12ssp" />
 
                     </RadioGroup>

@@ -94,9 +94,10 @@ class Add_post_comment(var post: PostModelResponse) : BottomSheetDialogFragment(
                         when (it) {
                             is Resource.Loading -> {
                                 toast("Sending Comment...")
+                                showCustomToast(requireContext(),"\"Sending Comment...\"")
                             }
                             is Resource.Success -> {
-                                toast("Comment send Successfully")
+                                showCustomToast(requireContext(),"Comment send Successfully")
                                 binding.addPostTxtComment.setText("")
                                 Log.i(TAG, "${it.data}")
                                 val comment=it.data
@@ -145,7 +146,7 @@ class Add_post_comment(var post: PostModelResponse) : BottomSheetDialogFragment(
 
                             }
                             is Resource.Failure -> {
-                                toast("Comment send Failure")
+                                showCustomToast(requireContext(),"Comment send Failure")
                                 Log.e(TAG, "${it.error}")
                             }
                             else -> {

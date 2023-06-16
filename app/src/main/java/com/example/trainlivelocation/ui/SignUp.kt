@@ -30,10 +30,7 @@ import com.example.domain.entity.LocationDetails
 import com.example.domain.entity.NotificatonToken
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentSignUpBinding
-import com.example.trainlivelocation.utli.DatePickerListener
-import com.example.trainlivelocation.utli.SignUpListener
-import com.example.trainlivelocation.utli.Station_Dialog_Listener
-import com.example.trainlivelocation.utli.toast
+import com.example.trainlivelocation.utli.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -112,7 +109,7 @@ class SignUp : Fragment(), DatePickerListener, Station_Dialog_Listener {
                                         binding.signUpLayoutProfileImage.setVisibility(View.VISIBLE)
                                     }
                                     is Resource.Failure -> {
-                                        toast(it.error!!)
+                                        showCustomToast(requireContext(),it.error!!)
                                         Log.e(TAG, it.error!!)
                                     }
                                     else -> {

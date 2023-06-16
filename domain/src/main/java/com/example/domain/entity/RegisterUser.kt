@@ -10,5 +10,6 @@ data class RegisterUser(
     val password: String,
     val phone: String,
     val role: String,
-    val tokenForNotifications:String
+    val tokenForNotifications:String,
+    val image:String?
 )

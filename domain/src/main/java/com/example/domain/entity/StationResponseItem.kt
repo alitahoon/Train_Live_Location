@@ -7,5 +7,6 @@ data class StationResponseItem(
     val longitude: Double,
     val name: String,
     val nextStation: String,
-    val trainId: Int
+    val trainId: Int,
+    val Postion:Int
 )

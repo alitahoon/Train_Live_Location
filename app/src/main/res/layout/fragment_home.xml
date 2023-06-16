@@ -21,7 +21,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/home_card_view"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_200sdp"
+            android:layout_height="@dimen/_300sdp"
             android:background="@drawable/home_top_shape"
             android:elevation="@dimen/_15sdp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -287,6 +287,7 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/home_btn_chat"
             android:layout_width="@dimen/_80sdp"
+            android:onClick="@{viewmodel::onTrainConverterBtnClicked}"
             android:layout_height="@dimen/_80sdp"
             android:layout_margin="@dimen/_15sdp"
             android:background="@color/white"
@@ -307,7 +308,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_60sdp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/train_converter" />
+                    app:srcCompat="@drawable/news" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -318,7 +319,7 @@
                     android:letterSpacing="0.1"
                     android:lineHeight="@dimen/_20sdp"
                     android:padding="@dimen/_10sdp"
-                    android:text="converters"
+                    android:text="News"
                     android:textColor="@color/TextIcons"
                     android:textSize="@dimen/_8ssp"
                     android:textStyle="bold" />
