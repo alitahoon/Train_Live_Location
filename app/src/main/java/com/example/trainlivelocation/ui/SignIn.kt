@@ -14,6 +14,7 @@ import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentSignInBinding
 import com.example.trainlivelocation.utli.LoadingDialogListener
 import com.example.trainlivelocation.utli.SignInListener
+import com.example.trainlivelocation.utli.showCustomToast
 import com.example.trainlivelocation.utli.toast
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -77,7 +78,7 @@ class SignIn : Fragment() {
                             is Resource.Success -> {
                                 Log.i(TAG, "Success:${it.data}")
                                 signInViewModel!!.saveUserTokenInSharedPreferences(it.data)
-                                findNavController().navigate(R.id.action_signIn_to_mainActivity)
+                                findNavController().navigate(R.id.action_signIn_to_shareLocationDialog)
                             }
 
                             is Resource.Failure -> {
@@ -98,7 +99,7 @@ class SignIn : Fragment() {
 
 
         signInViewModel!!.PhoneNumberIsNotCorrect.observe(viewLifecycleOwner, Observer {
-            toast("Please Enter Valid Phone number")
+            showCustomToast(requireContext(),"Please Enter Valid Phone number")
         })
 
     }

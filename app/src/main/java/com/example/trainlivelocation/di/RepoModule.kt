@@ -1,12 +1,10 @@
 package com.example.trainlivelocation.di
 
 import android.content.Context
-import androidx.room.RoomDatabase
 import com.example.data.*
 import com.example.domain.repo.UserRepo
-import com.example.domain.usecase.GetUserCurrantLocationJustOnce
 import com.example.repo.userRepoImpl
-import com.google.firebase.storage.FirebaseStorage
+import com.example.trainlivelocation.utli.LocationTrackBackgroundService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,11 +21,15 @@ object RepoModule {
     }
 
     @Provides
+    fun ProvideGoogleMapsServices(): GoogleMapsServices {
+        return GoogleMapsServices()
+    }
+
+    @Provides
     fun ProvideRepo(
         apiService: ApiService,
         locationLive: LocationLive,
         locationTrackForegroundService: LocationTrackForegroundService,
-        locationTrackBackgroundService: LocationTrackBackgroundService,
         getLocationService: GetLocationService,
         location: userLocation,
         firebaseService: FirebaseService,
@@ -36,12 +38,12 @@ object RepoModule {
         GetTrainLocationService: GetTrainLocationService,
         getCurrantLocationJustOnce: GetCurrantLocationJustOnce,
         getCurrantLocationLive: GetCurrantLocationLive,
-        myDatabase: MyDatabase
+        myDatabase: MyDatabase,
+        googleMapsServices: GoogleMapsServices
     ): UserRepo {
         return userRepoImpl(
             apiService,
             locationLive,
-            locationTrackBackgroundService,
             getLocationService,
             location,
             firebaseService,
@@ -50,7 +52,8 @@ object RepoModule {
             GetTrainLocationService,
             getCurrantLocationJustOnce,
             getCurrantLocationLive,
-            myDatabase
+            myDatabase,
+            googleMapsServices
         )
     }
 

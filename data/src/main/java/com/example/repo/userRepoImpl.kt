@@ -11,13 +11,14 @@ import com.example.data.*
 import com.example.domain.entity.*
 import com.example.domain.repo.UserRepo
 import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.*
+import com.google.maps.model.DirectionsResult
 import retrofit2.Response
 
 class userRepoImpl(
     private val apiService: ApiService,
     private val locationLive: LocationLive,
-    private val locationTrackBackgroundService: LocationTrackBackgroundService,
     private val getLocationService: GetLocationService,
     private val getUserLocation: userLocation,
     private val firebaseService: FirebaseService,
@@ -25,9 +26,10 @@ class userRepoImpl(
     private val sharedPreferencesService: SharedPreferencesService,
     private val getTrainForgroundService: GetTrainLocationService,
     private val getCurrantLocationJustOnce: GetCurrantLocationJustOnce,
-    private val getCurrantLocationLive:GetCurrantLocationLive,
-    private val myDatabase: MyDatabase
-    ) : UserRepo {
+    private val getCurrantLocationLive: GetCurrantLocationLive,
+    private val myDatabase: MyDatabase,
+    private val googleMapsServices: GoogleMapsServices
+) : UserRepo {
     private val TAG: String? = "userRepoImpl"
     override suspend fun getUserData(
         userPhone: String?,
@@ -48,8 +50,14 @@ class userRepoImpl(
 
     override suspend fun getStationAlarmsFromDatabase(result: (Resource<ArrayList<StationAlarmEntity>>) -> Unit) {
         try {
-            result.invoke(Resource.Success(myDatabase.stationAlarmDao().getAllStationAlarmEntity()))
-        }catch (e:Exception){
+            result.invoke(
+                Resource.Success(
+                    ArrayList(
+                        myDatabase.stationAlarmDao().getAllStationAlarmEntity()
+                    )
+                )
+            )
+        } catch (e: Exception) {
             result.invoke(Resource.Failure("Failed getting StationAlarmsFromDatabase ---> ${e.message}"))
         }
     }
@@ -61,13 +69,74 @@ class userRepoImpl(
         try {
             myDatabase.UserItemEntityDao().insertUserItemEntity(userItemEntity)
             result.invoke(Resource.Success("Successfully added user data item in database"))
-        }catch (e:Exception){
+        } catch (e: Exception) {
             result.invoke(Resource.Failure("Failed inserting UserItemToDatabase ---> ${e.message}"))
+        }
+    }
+
+    override suspend fun updateStationAlarmFromDatabase(
+        stationAlarmEntity: StationAlarmEntity,
+        result: (Resource<String>) -> Unit
+    ) {
+        try {
+            myDatabase.stationAlarmDao().updateItem(stationAlarmEntity)
+            result.invoke(Resource.Success("Successfully updated station Alarm data in database"))
+        } catch (e: Exception) {
+            result.invoke(Resource.Failure("Failed updating stationAlarmEntity.. ---> ${e.message}"))
+        }
+    }
+
+    override suspend fun gettingTrainlocationFromApi(
+        trainId: Int,
+        result: (Resource<Location_Response>) -> Unit
+    ) {
+        var res = apiService.GetLocation(trainId)
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke(Resource.Failure("Error while getting train Location body is null:${res.body()}"))
+            }
+        } else {
+            result.invoke(Resource.Failure("${res.message()}:${res.errorBody()}"))
+        }
+    }
+
+    override suspend fun createReport(result: (Resource<ReportResponseItem>) -> Unit) {
+        var res = apiService.CreateReport()
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke((Resource.Failure("createReport -> Error response body = null :${res.body()}")))
+            }
+        } else {
+            result.invoke((Resource.Failure("createReport -> ${res.message()}")))
+        }
+    }
+
+    override suspend fun deleteStationAlarmFromDatabase(
+        alarmID: Long,
+        result: (Resource<String>) -> Unit
+    ) {
+        try {
+            myDatabase.stationAlarmDao().deleteItemById(alarmID)
+            result.invoke(Resource.Success("Successfully deleted alarm"))
+        } catch (e: Exception) {
+            result.invoke(Resource.Failure("Failed deleting alarm---> ${e.message}"))
         }
     }
 
     override suspend fun getNewUserItemFromDatabase(result: (Resource<ArrayList<UserItemEntity>>) -> Unit) {
         try {
+            result.invoke(
+                Resource.Success(
+                    ArrayList(
+                        myDatabase.UserItemEntityDao().getAllUserItemEntity()
+                    )
+                )
+            )
+        } catch (e: Exception) {
             result.invoke(Resource.Success(ArrayList(myDatabase.UserItemEntityDao().getAllUserItemEntity())))
         }catch (e:Exception){
             result.invoke(Resource.Failure("Failed getting UserItemFromDatabase ---> ${e.message}"))
@@ -81,13 +150,21 @@ class userRepoImpl(
         try {
             myDatabase.TrainItemEntityDao().insertTrainItemEntity(trainItemEntity)
             result.invoke(Resource.Success("Successfully added train data item in database"))
-        }catch (e:Exception){
+        } catch (e: Exception) {
             result.invoke(Resource.Failure("Failed inserting TrainItemToDatabase ---> ${e.message}"))
         }
     }
 
     override suspend fun getNewTrainItemFromDatabase(result: (Resource<ArrayList<TrainItemEntity>>) -> Unit) {
         try {
+           result.invoke(
+                Resource.Success(
+                    ArrayList(
+                        myDatabase.TrainItemEntityDao().getAllTrainItemEntity()
+                    )
+                )
+            )
+        } catch (e: Exception) {
             result.invoke(Resource.Success(ArrayList(myDatabase.TrainItemEntityDao().getAllTrainItemEntity())))
         }catch (e:Exception){
             result.invoke(Resource.Failure("Failed getting TrainItemFromDatabase ---> ${e.message}"))
@@ -101,13 +178,21 @@ class userRepoImpl(
         try {
             myDatabase.TicketItemEntityDao().insertTicketItemEntity(ticketItemEntity)
             result.invoke(Resource.Success("Successfully added ticket data item in database"))
-        }catch (e:Exception){
+        } catch (e: Exception) {
             result.invoke(Resource.Failure("Failed inserting TicketItemToDatabase ---> ${e.message}"))
         }
     }
 
     override suspend fun getNewTicketItemFromDatabase(result: (Resource<ArrayList<TicketItemEntity>>) -> Unit) {
         try {
+            result.invoke(
+                Resource.Success(
+                    ArrayList(
+                        myDatabase.TicketItemEntityDao().getAllTicketItemEntity()
+                    )
+                )
+            )
+        } catch (e: Exception) {
             result.invoke(Resource.Success(ArrayList(myDatabase.TicketItemEntityDao().getAllTicketItemEntity())))
         }catch (e:Exception){
             result.invoke(Resource.Failure("Failed getting TicketItemFromDatabase ---> ${e.message}"))
@@ -121,13 +206,21 @@ class userRepoImpl(
         try {
             myDatabase.MessageItemEntityDao().insertMessageItemEntity(messageItemEntity)
             result.invoke(Resource.Success("Successfully added message data item in database"))
-        }catch (e:Exception){
+        } catch (e: Exception) {
             result.invoke(Resource.Failure("Failed inserting MessageItemToDatabase ---> ${e.message}"))
         }
     }
 
     override suspend fun getNewMessageItemFromDatabase(result: (Resource<ArrayList<MessageItemEntity>>) -> Unit) {
         try {
+            result.invoke(
+                Resource.Success(
+                    ArrayList(
+                        myDatabase.MessageItemEntityDao().getAllMessageItemEntity()
+                    )
+                )
+            )
+        } catch (e: Exception) {
             result.invoke(Resource.Success(ArrayList(myDatabase.MessageItemEntityDao().getAllMessageItemEntity())))
         }catch (e:Exception){
             result.invoke(Resource.Failure("Failed getting MessageItemFromDatabase ---> ${e.message}"))
@@ -138,19 +231,19 @@ class userRepoImpl(
         stationAlarmEntity: StationAlarmEntity,
         result: (Resource<String>) -> Unit
     ) {
-         try{
-             myDatabase.stationAlarmDao().insertStationAlarmEntity(stationAlarmEntity)
-             result.invoke(Resource.Success("Insert stationAlarmEntity data success"))
-         }catch (e:Exception){
-             result.invoke(Resource.Failure("Error wihle inserting stationAlarmEntity data ---> ${e.message}"))
-         }
+        try {
+            myDatabase.stationAlarmDao().insertStationAlarmEntity(stationAlarmEntity)
+            result.invoke(Resource.Success("Insert stationAlarmEntity data success"))
+        } catch (e: Exception) {
+            result.invoke(Resource.Failure("Error wihle inserting stationAlarmEntity data ---> ${e.message}"))
+        }
     }
 
     override suspend fun sendUserNotificationTokenToFirebase(
         token: NotificatonToken?,
         result: (Resource<String?>) -> Unit
     ) {
-        firebaseService.sendUserNotificatonToken(token,result)
+        firebaseService.sendUserNotificatonToken(token, result)
     }
 
     override suspend fun addNewUser(
@@ -169,6 +262,34 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun insertNewStationHistroyItemToDatabase(
+        stationHistoryAlarmEntity: StationHistoryAlarmEntity,
+        result: (Resource<String>) -> Unit
+    ) {
+        try {
+            myDatabase.StationHistoryAlarmDao()
+                .insertStationHistoryAlarmEntity(stationHistoryAlarmEntity)
+            result.invoke(Resource.Success("Successfully added stationHistoryAlarmEntity data item in database"))
+        } catch (e: Exception) {
+            result.invoke(Resource.Failure("Failed inserting stationHistoryAlarmEntity ---> ${e.message}"))
+        }
+    }
+
+    override suspend fun getStationHistroyItemsFromDatabase(
+        result: (Resource<ArrayList<StationHistoryAlarmEntity>>) -> Unit
+    ) {
+        try {
+            result.invoke(
+                Resource.Success(
+                    ArrayList(
+                        myDatabase.StationHistoryAlarmDao().getStationHistoryAlarmEntity()
+                    )
+                )
+            )
+        } catch (e: Exception) {
+            result.invoke(Resource.Failure("Failed getting getStationHistoryAlarmsEntity... ---> ${e.message}"))
+        }
+    }
 
     override suspend fun sendOtpToPhone(
         phoneNumber: String?,
@@ -179,9 +300,8 @@ class userRepoImpl(
         phoneNumber: String?,
         result: (result: Resource<String>) -> Unit
     ) {
-        firebaseService.resendOtpCode(phoneNumber,result)
+        firebaseService.resendOtpCode(phoneNumber, result)
     }
-
 
 
     override suspend fun signInWithPhoneAuthCredential(
@@ -218,25 +338,42 @@ class userRepoImpl(
             }
         } else {
             result.invoke((Resource.Failure("getNotificationTokenForUsersInTrain -> ${res.message()}")))
-        }    }
+        }
+    }
+
 
     override suspend fun reportPost(
         postId: Int,
         userID: Int,
         reportReason: String,
-        result: (Resource<NotificationTokenResponseInTrain>) -> Unit
+        result: (Resource<String>) -> Unit
     ) {
-//        var res = apiService.GetUsersTokenInTrain(trainId)
-//        if (res.isSuccessful) {
-//            if (res.body() != null) {
-//                result.invoke(Resource.Success(res.body()!!))
-//            } else {
-//                result.invoke((Resource.Failure("getNotificationTokenForUsersInTrain -> Error response body = null :${res.body()}")))
-//            }
-//        } else {
-//            result.invoke((Resource.Failure("getNotificationTokenForUsersInTrain -> ${res.message()}")))
-//        }
-       }
+        var res = apiService.CreatePostRepor(ReportPostRequset(reportReason, postId, userID))
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke((Resource.Failure("reportPost -> Error response body = null :${res.body()}")))
+            }
+        } else {
+            result.invoke((Resource.Failure("reportPost -> ${res.message()}")))
+        }
+    }
+
+    override suspend fun getAllReport(
+        result: (Resource<ArrayList<ReportPostResponse>>) -> Unit
+    ) {
+        var res = apiService.GetAllReports()
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke((Resource.Failure("getAllReport -> Error response body = null :${res.body()}")))
+            }
+        } else {
+            result.invoke((Resource.Failure("getAllReport -> ${res.message()}")))
+        }
+    }
 
     override suspend fun createAPhoneAuthCredential(
         code: String?,
@@ -268,8 +405,7 @@ class userRepoImpl(
         userid: Int,
         result: (Resource<LifecycleService>) -> Unit
     ) {
-        locationTrackBackgroundService.setTrainId_userId(trainid,userid)
-        result.invoke(Resource.Success(locationTrackBackgroundService))
+
     }
 
     override suspend fun getLocationTrackForegroundService(trainid: Int): LifecycleService {
@@ -300,7 +436,12 @@ class userRepoImpl(
         doctorNotification: DoctorNotification,
         result: (Resource<String>) -> Unit
     ) {
-        firebaseService.sendDoctorNotificationUsingFCM(token,serverKey!!,doctorNotification,result)
+        firebaseService.sendDoctorNotificationUsingFCM(
+            token,
+            serverKey!!,
+            doctorNotification,
+            result
+        )
     }
 
     override suspend fun getLiveLoctationFromApi(
@@ -352,7 +493,7 @@ class userRepoImpl(
         notification: PushPostCommentNotification,
         result: (Resource<String>) -> Unit
     ) {
-        firebaseService.sendNewNotificationToAddedPostCommentTopic(notification,result)
+        firebaseService.sendNewNotificationToAddedPostCommentTopic(notification, result)
     }
 
 
@@ -505,21 +646,37 @@ class userRepoImpl(
         recieverUsername: String?,
         result: (Resource<String>) -> Unit
     ) {
-        firebaseService.sendMessageToChat(message, senderPhone, reciverPhone,senderUsername,recieverUsername, result)
+        firebaseService.sendMessageToChat(
+            message,
+            senderPhone,
+            reciverPhone,
+            senderUsername,
+            recieverUsername,
+            result
+        )
     }
 
     override suspend fun subscribeToNewTopic(
         topicInput: String,
         result: (Resource<String>) -> Unit
     ) {
-        firebaseService.subscribeToNewTopic(topicInput,result)
+        firebaseService.subscribeToNewTopic(topicInput, result)
     }
 
-    override suspend fun getNews(result: (Response<ArrayList<GetNewsResponseItem>>) -> Unit) {
-        TODO("Not yet implemented")
+    override suspend fun getNews(result: (Resource<ArrayList<GetNewsResponseItem>>) -> Unit) {
+        var res = apiService.GetNews()
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke((Resource.Failure("getNews -> Error response body = null :${res.body()}")))
+            }
+        } else {
+            result.invoke((Resource.Failure("getNews -> ${res.message()}")))
+        }
     }
 
-    override suspend fun createNews(result: (Response<CreateNewsResponseItem>) -> Unit) {
+    override suspend fun createNews(result: (Resource<CreateNewsResponseItem>) -> Unit) {
 
         TODO("Not yet implemented")
     }
@@ -528,7 +685,16 @@ class userRepoImpl(
         newsId: Int,
         result: (Resource<GetNewsByIdResponseItem>) -> Unit
     ) {
-        TODO("Not yet implemented")
+        var res = apiService.GetNewsById(newsId)
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!))
+            } else {
+                result.invoke((Resource.Failure("getNewsById -> Error response body = null :${res.body()}")))
+            }
+        } else {
+            result.invoke((Resource.Failure("getNewsById -> ${res.message()}")))
+        }
     }
 
     override suspend fun getUserCurrantLocationJustOnce(result: (Resource<Location>) -> Unit) {
@@ -545,14 +711,45 @@ class userRepoImpl(
         notification: PushPostNotification,
         result: (Resource<String>) -> Unit
     ) {
-        firebaseService.sendNewNotificationToAddedPostTopic(notification,result)
+        firebaseService.sendNewNotificationToAddedPostTopic(notification, result)
+    }
+
+    override suspend fun getLocationDirctionFromGoogleMapsApi(
+        origin: LatLng,
+        destination: LatLng,
+        result: (Resource<DirectionsResult>) -> Unit
+    ) {
+        googleMapsServices.getDirections(origin, destination, result)
+    }
+
+    override suspend fun getLocationDirctionFromOpenRouteService(
+        origin: LatLng,
+        destination: LatLng,
+        result: (Resource<OpenRouteDirectionResult>) -> Unit
+    ) {
+        googleMapsServices.getDirectionFromOpenRoute(origin, destination, result)
+    }
+
+    override suspend fun getWayPointsLocationDirctionFromOpenRouteService(
+        wayPoints: List<LatLng>,
+        result: (Resource<OpenRouteDirectionResult>) -> Unit
+    ) {
+        googleMapsServices.getDirectionFromOpenRouteForWaypoints(wayPoints, result)
+    }
+
+
+    override suspend fun pushSendMessageNotification(
+        notification: PushMessageNotification,
+        result: (Resource<String>) -> Unit
+    ) {
+        firebaseService.sendNewNotificationToMessageTopic(notification, result)
     }
 
     override suspend fun pushNewTopicNotification(
         notification: PushNotification,
         result: (Resource<String>) -> Unit
     ) {
-        firebaseService.sendNewNotificationToTopic(notification,result)
+        firebaseService.sendNewNotificationToTopic(notification, result)
     }
 
     override suspend fun getDataFromSharedPrefrences(
@@ -610,7 +807,10 @@ class userRepoImpl(
         }
     }
 
-    override suspend fun getDoctorInTrain(trainId:Int?, result: (Resource<ArrayList<DoctorResponseItem>>) -> Unit) {
+    override suspend fun getDoctorInTrain(
+        trainId: Int?,
+        result: (Resource<ArrayList<DoctorResponseItem>>) -> Unit
+    ) {
         var res = apiService.GetDoctors(trainId!!)
         if (res.isSuccessful) {
             if (res.body() != null) {
@@ -654,20 +854,20 @@ class userRepoImpl(
         doctoreNotification: DoctorNotification,
         result: (Resource<String>) -> Unit
     ) {
-        firebaseService.sendDoctorNotification(doctoreNotification,result)
+        firebaseService.sendDoctorNotification(doctoreNotification, result)
     }
 
     override suspend fun getDoctorNotificationFromFirebase(
         userPhone: String,
         result: (Resource<ArrayList<DoctorNotification>>) -> Unit
     ) {
-        firebaseService.getNotificationFromFirebase(userPhone,result)
+        firebaseService.getNotificationFromFirebase(userPhone, result)
     }
 
     override suspend fun getNotificationTokenFromFirebase(
         userPhone: String?,
         result: (Resource<String>) -> Unit
     ) {
-        firebaseService.getNotificationToken(userPhone!!,result)
+        firebaseService.getNotificationToken(userPhone!!, result)
     }
 }

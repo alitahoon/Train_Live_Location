@@ -4,6 +4,7 @@
     <style name="Theme.TrainLiveLocation" parent="Theme.MaterialComponents.NoActionBar">
         <!-- Primary brand color. -->
         <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
+        <item name="dialogTheme">@style/CustomDialog</item>
         <item name="materialThemeOverlay">@style/ButtonStyleTextColor</item>
         <item name="colorPrimary">@color/PrimaryColor</item>
         <item name="colorPrimaryVariant">@color/PrimaryColor</item>
@@ -56,5 +57,10 @@
         <item name="cornerSizeTopLeft">@dimen/_50sdp</item>
         <item name="cornerSizeBottomRight">0dp</item>
         <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
+    <style name="MyDialogStyle" parent="@style/Theme.MaterialComponents.Light.Dialog">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="behavior_peekHeight">200dp</item>
     </style>
 </resources>

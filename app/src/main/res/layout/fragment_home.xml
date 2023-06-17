@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewmodel"
             type="com.example.trainlivelocation.ui.HomeViewModel" />
@@ -12,17 +13,16 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.Home"
         android:background="@color/white"
-        android:layoutDirection="ltr">
+        android:layoutDirection="ltr"
+        tools:context=".ui.Home">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/home_card_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_300sdp"
             android:background="@drawable/home_top_shape"
-            android:paddingVertical="@dimen/_40sdp"
             android:elevation="@dimen/_15sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,19 +41,19 @@
 
             <TextView
                 android:id="@+id/home_card_train_id"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/_80sdp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_40sdp"
-                android:drawableStart="@drawable/train_id"
-                android:drawablePadding="@dimen/_10sdp"
                 android:gravity="center"
-                android:text="@string/train_id_"
+                android:letterSpacing="0.1"
+                android:lineHeight="@dimen/_20sdp"
+                android:text="No Tracked Train"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_16ssp"
+                android:textSize="@dimen/_14ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/home_card_train_icon"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@id/home_card_train_icon"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/home_card_train_icon" />
 
             <TextView
                 android:id="@+id/home_txt_train_distance"
@@ -65,6 +65,7 @@
                 android:text="@string/_80_km"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_14ssp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -72,28 +73,46 @@
                 app:layout_constraintTop_toBottomOf="@id/home_card_train_id"
                 app:layout_constraintVertical_bias="0.185" />
 
+            <com.google.android.material.card.MaterialCardView
+                android:visibility="gone"
+                android:id="@+id/home_mapCardView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:cardCornerRadius="@dimen/_30sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.gms.maps.MapView
+                    android:id="@+id/home_mapView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </com.google.android.material.card.MaterialCardView>
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <EditText
-            android:layoutDirection="locale"
-            android:hint="@string/choose_train_to_track"
-            android:textColorHint="@color/PrimaryColor"
-            android:focusable="false"
-            android:padding="@dimen/_10sdp"
-            android:elevation="@dimen/_15sdp"
-            android:textColor="@color/PrimaryColor"
-            android:onClick="@{viewmodel::onChooseTrainTxtClicked}"
-            android:text="@{viewmodel.trainId}"
-            android:drawablePadding="@dimen/_5sdp"
-            android:drawableStart="@drawable/train_id_txt_primery"
-            android:textSize="@dimen/_12ssp"
-            android:layout_marginTop="-30dp"
             android:id="@+id/home_track_trainID_txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/_50sdp"
+            android:layout_marginTop="-30dp"
             android:background="@drawable/home_text_reduis"
+            android:drawableStart="@drawable/train_id_txt_primery"
+            android:drawablePadding="@dimen/_5sdp"
+            android:elevation="@dimen/_15sdp"
+            android:focusable="false"
+            android:hint="@string/choose_train_to_track"
+            android:layoutDirection="locale"
+            android:onClick="@{viewmodel::onChooseTrainTxtClicked}"
+            android:padding="@dimen/_10sdp"
+            android:text="@{viewmodel.trainId}"
+            android:textColor="@color/PrimaryColor"
+            android:textColorHint="@color/PrimaryColor"
+            android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/home_card_view" />
@@ -148,12 +167,12 @@
             android:layout_margin="@dimen/_15sdp"
             android:background="@color/white"
             android:backgroundTint="@color/DarkPrimaryColor"
+            android:onClick="@{viewmodel::onPassengersbtnClicked}"
             app:cardCornerRadius="@dimen/_30sdp"
             app:cardElevation="@dimen/_20sdp"
             app:layout_constraintLeft_toRightOf="@id/home_btn_location"
             app:layout_constraintRight_toLeftOf="@id/home_btn_posts"
-            app:layout_constraintTop_toBottomOf="@+id/home_track_trainID_txt"
-            android:onClick="@{viewmodel::onPassengersbtnClicked}">
+            app:layout_constraintTop_toBottomOf="@+id/home_track_trainID_txt">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -226,12 +245,12 @@
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/home_btn_tickets"
-            android:onClick="@{viewmodel::onBtnTicketClicked}"
             android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_80sdp"
             android:layout_margin="@dimen/_15sdp"
             android:background="@color/white"
             android:backgroundTint="@color/DarkPrimaryColor"
+            android:onClick="@{viewmodel::onBtnTicketClicked}"
             app:cardCornerRadius="@dimen/_30sdp"
             app:cardElevation="@dimen/_20sdp"
             app:layout_constraintStart_toStartOf="parent"
@@ -268,6 +287,7 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/home_btn_chat"
             android:layout_width="@dimen/_80sdp"
+            android:onClick="@{viewmodel::onTrainConverterBtnClicked}"
             android:layout_height="@dimen/_80sdp"
             android:layout_margin="@dimen/_15sdp"
             android:background="@color/white"
@@ -288,7 +308,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_60sdp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/chat_icon" />
+                    app:srcCompat="@drawable/news" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -299,7 +319,7 @@
                     android:letterSpacing="0.1"
                     android:lineHeight="@dimen/_20sdp"
                     android:padding="@dimen/_10sdp"
-                    android:text="@string/chat"
+                    android:text="News"
                     android:textColor="@color/TextIcons"
                     android:textSize="@dimen/_8ssp"
                     android:textStyle="bold" />
@@ -311,9 +331,9 @@
             android:layout_width="@dimen/_80sdp"
             android:layout_height="@dimen/_80sdp"
             android:layout_margin="@dimen/_15sdp"
-            android:onClick="@{viewmodel::onbtnEmergancyClicked}"
             android:background="@color/white"
             android:backgroundTint="@color/DarkPrimaryColor"
+            android:onClick="@{viewmodel::onbtnEmergancyClicked}"
             app:cardCornerRadius="@dimen/_30sdp"
             app:cardElevation="@dimen/_20sdp"
             app:layout_constraintEnd_toEndOf="parent"

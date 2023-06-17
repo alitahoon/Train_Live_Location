@@ -129,6 +129,7 @@
                     android:textSize="@dimen/_10ssp" />
 
                 <TextView
+                    android:onClick="@{() -> listener.OnReportClickListener(post)}"
                     android:id="@+id/posts_btn_report"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"

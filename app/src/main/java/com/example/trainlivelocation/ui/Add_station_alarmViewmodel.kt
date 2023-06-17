@@ -10,15 +10,17 @@ import com.example.domain.entity.CommentResponse
 import com.example.domain.entity.StationAlarmEntity
 import com.example.domain.usecase.InsertNewStationAlarm
 import com.example.trainlivelocation.utli.SingleLiveEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
+@HiltViewModel
 class Add_station_alarmViewmodel @Inject constructor(
     private val insertNewStationAlarm: InsertNewStationAlarm
 ) : ViewModel() {
     var btnAddStationAlarmClicked = SingleLiveEvent<Boolean>()
     var btnChooseStationClicked = SingleLiveEvent<Boolean>()
+    var btnCloseClicked = SingleLiveEvent<Boolean>()
     var userStation:String? = null
 
 
@@ -32,6 +34,9 @@ class Add_station_alarmViewmodel @Inject constructor(
 
     fun onbtnChooseStationClicked(view: View) {
         btnChooseStationClicked.postValue(true)
+    }
+    fun onBtnCloseClciked(view: View) {
+        btnCloseClicked.postValue(true)
     }
 
     fun insertNewStationAlarmIntoDatabase(stationAlarmEntity: StationAlarmEntity) {

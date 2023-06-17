@@ -1,4 +1,4 @@
-package com.example.data
+package com.example.trainlivelocation.utli
 
 import android.app.Notification
 import android.app.NotificationChannel
@@ -7,21 +7,20 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Handler
-import android.os.IBinder
 import android.os.PowerManager
 import android.util.Log
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.Observer
+import com.example.data.ApiService
+import com.example.data.LocationLive
+import com.example.data.LocationLiveForTracking
 import com.example.domain.entity.LocationDetails
 import com.example.domain.entity.Location_Request
 import com.google.android.gms.location.LocationRequest
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -37,6 +36,9 @@ class LocationTrackBackgroundService() : LifecycleService() {
     @Inject
     lateinit var locationLiveForTracking: LocationLiveForTracking
 
+    @Inject
+     lateinit var locationLive: LocationLive
+
     companion object {
         var train: Int? = null
         var user: Int? = null
@@ -46,8 +48,9 @@ class LocationTrackBackgroundService() : LifecycleService() {
         private var loction: LocationDetails? = null
     }
 
-    private lateinit var locationLive: LocationLive
-    private val TAG: String? = "LocationTrackForegroundService"
+
+
+    private val TAG: String? = "LocationTrackBackgroundService"
     private var notificationManager: NotificationManager? = null
     override fun onCreate() {
         notificationManager = this.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
@@ -69,7 +72,6 @@ class LocationTrackBackgroundService() : LifecycleService() {
             }
         }
 
-        locationLive = LocationLive(this)
         var locationRequest = LocationRequest()
         locationRequest?.interval = 6000
         locationRequest?.fastestInterval = 6000 / 4
@@ -91,7 +93,7 @@ class LocationTrackBackgroundService() : LifecycleService() {
 
     fun getNotification(): Notification {
         val notification =
-            NotificationCompat.Builder(this,CHANNEL_ID!!)
+            NotificationCompat.Builder(this, CHANNEL_ID!!)
                 .setContentTitle("Train Location Update")
                 .setContentText("Location is sharing now Thank You...")
 //                .setContentText("Location Latitude --> ${loction?.latitude}\nLocation longitude --> ${loction?.longitude}")
@@ -111,12 +113,12 @@ class LocationTrackBackgroundService() : LifecycleService() {
         myObserver=Observer<LocationDetails>{
             Log.i(TAG, it.longitude.toString() + " " + it.latitude.toString())
             loction = it
-            uploadLocationToApi(Location_Request(it.longitude,it.latitude,train!!,user!!))
+            uploadLocationToApi(Location_Request(it.longitude,it.latitude, train!!, user!!))
             EventBus.getDefault().post(LocationDetails(
                 latitude = loction?.latitude!!,
                 longitude = loction?.longitude!!
             ))
-            Log.e(TAG,loction?.latitude.toString()+" "+loction?.longitude.toString())
+            Log.e(TAG, loction?.latitude.toString()+" "+ loction?.longitude.toString())
 
 
         }
@@ -127,6 +129,10 @@ class LocationTrackBackgroundService() : LifecycleService() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
+        val trainID=intent!!.getIntExtra("trainId",0)
+        val userID=intent.getIntExtra("userId",0)
+        setTrainId_userId(trainID,userID)
+        Log.i(TAG,"trainID ${trainID} , userID ${userID}")
         return START_STICKY
     }
     private fun uploadLocationToApi(locationRequest: Location_Request) {

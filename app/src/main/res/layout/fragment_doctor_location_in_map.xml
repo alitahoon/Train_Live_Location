@@ -50,17 +50,17 @@
             android:layout_width="@dimen/_50sdp"
             android:id="@+id/patient_btn_data"
             android:layout_height="@dimen/_50sdp"
-            android:layout_alignParentEnd="true"
+            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="@dimen/_30sdp"
-            android:layout_marginBottom="@dimen/_100sdp"
+            android:layout_marginBottom="@dimen/_30sdp"
             android:backgroundTint="@color/PrimaryColor"
             app:icon="@drawable/patient_data"
             app:iconTint="@color/white" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/materialCardView2"
-            android:visibility="gone"
+            android:alpha="0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/patient_btn_data"
@@ -79,24 +79,25 @@
                 android:padding="@dimen/_10sdp">
 
                 <TextView
+                    android:id="@+id/doctorInMap.txtDistance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/distance"
                     android:drawablePadding="@dimen/_5sdp"
                     android:gravity="bottom"
                     android:padding="@dimen/_5sdp"
-                    android:text="@{viewmodel._distance}"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12ssp" />
 
                 <TextView
+                    android:id="@+id/doctorInMap.txtCars"
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/train_car"
                     android:drawablePadding="@dimen/_5sdp"
                     android:gravity="center"
                     android:padding="@dimen/_5sdp"
-                    android:text="@{viewmodel._cars}"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12ssp" />
 

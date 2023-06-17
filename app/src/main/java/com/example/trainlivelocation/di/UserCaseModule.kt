@@ -1,6 +1,5 @@
 package com.example.trainlivelocation.di
 
-import com.example.domain.entity.PushPostCommentNotification
 import com.example.domain.repo.UserRepo
 import com.example.domain.usecase.*
 import dagger.Module
@@ -10,41 +9,45 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-object UserCaseModule  {
+object UserCaseModule {
 
     @Provides
-    fun provideUserGetCaseUserData(userRepo: UserRepo): GetUserData{
+    fun provideUserGetCaseUserData(userRepo: UserRepo): GetUserData {
         return GetUserData(userRepo)
     }
+
     @Provides
-    fun provideAddNewUser(userRepo: UserRepo):AddNewUser {
+    fun provideAddNewUser(userRepo: UserRepo): AddNewUser {
         return AddNewUser(userRepo)
     }
 
     @Provides
-    fun provideSendOtbToPhone(userRepo: UserRepo):SendOtpToPhone{
+    fun provideSendOtbToPhone(userRepo: UserRepo): SendOtpToPhone {
         return SendOtpToPhone(userRepo)
     }
+
     @Provides
-    fun provideReSendOtbToPhone(userRepo: UserRepo):ResendOtpCode{
+    fun provideReSendOtbToPhone(userRepo: UserRepo): ResendOtpCode {
         return ResendOtpCode(userRepo)
     }
 
     @Provides
-    fun provideSignInWithPhoneAuthCredential(userRepo: UserRepo):SignInWithPhoneAuthCredential{
+    fun provideSignInWithPhoneAuthCredential(userRepo: UserRepo): SignInWithPhoneAuthCredential {
         return SignInWithPhoneAuthCredential(userRepo)
     }
+
     @Provides
-    fun provideSendProfileImageToFirebaseStorage(userRepo: UserRepo):SendImageToFirebaseStorage{
+    fun provideSendProfileImageToFirebaseStorage(userRepo: UserRepo): SendImageToFirebaseStorage {
         return SendImageToFirebaseStorage(userRepo)
     }
+
     @Provides
-    fun provideGetLocationLive(userRepo: UserRepo):GetUserLocationLive{
+    fun provideGetLocationLive(userRepo: UserRepo): GetUserLocationLive {
         return GetUserLocationLive(userRepo)
     }
 
     @Provides
-    fun provideStartLocationUpdate(userRepo: UserRepo):StartLocationUpdate{
+    fun provideStartLocationUpdate(userRepo: UserRepo): StartLocationUpdate {
         return StartLocationUpdate(userRepo)
     }
 
@@ -52,6 +55,7 @@ object UserCaseModule  {
     fun provideGetLocationTrackBackgroundService(userRepo: UserRepo): GetLocationTrackBackgroundService {
         return GetLocationTrackBackgroundService(userRepo)
     }
+
     @Provides
     fun provideGetLocationTrackForegroundService(userRepo: UserRepo): GetLocationTrackForegroundService {
         return GetLocationTrackForegroundService(userRepo)
@@ -64,117 +68,121 @@ object UserCaseModule  {
 
 
     @Provides
-    fun provideAddLiveLoctationToApi(userRepo: UserRepo) :AddLiveLoctationToApi{
+    fun provideAddLiveLoctationToApi(userRepo: UserRepo): AddLiveLoctationToApi {
         return AddLiveLoctationToApi(userRepo)
     }
 
     @Provides
-    fun provideGetUserLocation(userRepo: UserRepo) :GetUserLocation{
+    fun provideGetUserLocation(userRepo: UserRepo): GetUserLocation {
         return GetUserLocation(userRepo)
     }
 
 
     @Provides
-    fun provideCreatePost(userRepo: UserRepo) :CreatePost{
+    fun provideCreatePost(userRepo: UserRepo): CreatePost {
         return CreatePost(userRepo)
     }
+
     @Provides
-    fun provideGetAllPostsFromAPI(userRepo: UserRepo) :GetAllPostsFromAPI{
+    fun provideGetAllPostsFromAPI(userRepo: UserRepo): GetAllPostsFromAPI {
         return GetAllPostsFromAPI(userRepo)
     }
+
     @Provides
-    fun provideStopLocationUpdate(userRepo: UserRepo) :StopLocationUpdate{
+    fun provideStopLocationUpdate(userRepo: UserRepo): StopLocationUpdate {
         return StopLocationUpdate(userRepo)
     }
+
     @Provides
-    fun provideGetUserDataById(userRepo: UserRepo) :GetUserDataById{
+    fun provideGetUserDataById(userRepo: UserRepo): GetUserDataById {
         return GetUserDataById(userRepo)
     }
 
     @Provides
-    fun provideCreateAPhoneAuthCredential(userRepo: UserRepo) :CreateAPhoneAuthCredential{
+    fun provideCreateAPhoneAuthCredential(userRepo: UserRepo): CreateAPhoneAuthCredential {
         return CreateAPhoneAuthCredential(userRepo)
     }
 
     @Provides
-    fun provideSetFirebaseServiceActivity(userRepo: UserRepo) :SetFirebaseServiceActivity{
+    fun provideSetFirebaseServiceActivity(userRepo: UserRepo): SetFirebaseServiceActivity {
         return SetFirebaseServiceActivity(userRepo)
     }
 
     @Provides
-    fun provideGetAllStations(userRepo: UserRepo) :GetAllStations{
+    fun provideGetAllStations(userRepo: UserRepo): GetAllStations {
         return GetAllStations(userRepo)
     }
 
     @Provides
-    fun provideGetImageFromFirebaseStorage(userRepo: UserRepo) :GetImageFromFirebaseStorage{
+    fun provideGetImageFromFirebaseStorage(userRepo: UserRepo): GetImageFromFirebaseStorage {
         return GetImageFromFirebaseStorage(userRepo)
     }
 
 
     @Provides
-    fun provideGetAllTrains(userRepo: UserRepo) :GetAllTrains{
+    fun provideGetAllTrains(userRepo: UserRepo): GetAllTrains {
         return GetAllTrains(userRepo)
     }
 
     @Provides
-    fun providCreatePostComment(userRepo: UserRepo) :CreatePostComment{
+    fun providCreatePostComment(userRepo: UserRepo): CreatePostComment {
         return CreatePostComment(userRepo)
     }
+
     @Provides
-    fun providGetCommentsForPostUsingId(userRepo: UserRepo) :GetCommentsForPostUsingId{
+    fun providGetCommentsForPostUsingId(userRepo: UserRepo): GetCommentsForPostUsingId {
         return GetCommentsForPostUsingId(userRepo)
     }
 
     @Provides
-    fun providDeletePostWithID(userRepo: UserRepo) :DeletePostWithID{
+    fun providDeletePostWithID(userRepo: UserRepo): DeletePostWithID {
         return DeletePostWithID(userRepo)
     }
 
     @Provides
-    fun providGetStationById(userRepo: UserRepo) :GetStationById{
+    fun providGetStationById(userRepo: UserRepo): GetStationById {
         return GetStationById(userRepo)
     }
 
     @Provides
-    fun providUpdateUserData(userRepo: UserRepo) :UpdateUserData{
+    fun providUpdateUserData(userRepo: UserRepo): UpdateUserData {
         return UpdateUserData(userRepo)
     }
 
     @Provides
-    fun providSendMessageToFirebasechat(userRepo: UserRepo) :SendMessageToFirebasechat{
+    fun providSendMessageToFirebasechat(userRepo: UserRepo): SendMessageToFirebasechat {
         return SendMessageToFirebasechat(userRepo)
     }
 
     @Provides
-    fun providGetChatFromFirebase(userRepo: UserRepo) :GetChatFromFirebase{
+    fun providGetChatFromFirebase(userRepo: UserRepo): GetChatFromFirebase {
         return GetChatFromFirebase(userRepo)
     }
 
 
     @Provides
-    fun providGetInboxRecieveChatFromFirebase(userRepo: UserRepo) :GetInboxRecieveChatFromFirebase{
+    fun providGetInboxRecieveChatFromFirebase(userRepo: UserRepo): GetInboxRecieveChatFromFirebase {
         return GetInboxRecieveChatFromFirebase(userRepo)
     }
 
     @Provides
-    fun providGetInboxSentChatFromFirebase(userRepo: UserRepo) :GetInboxSentChatFromFirebase{
+    fun providGetInboxSentChatFromFirebase(userRepo: UserRepo): GetInboxSentChatFromFirebase {
         return GetInboxSentChatFromFirebase(userRepo)
     }
 
     @Provides
-    fun providGetDataFromSharedPrefrences(userRepo: UserRepo) :GetDataFromSharedPrefrences{
+    fun providGetDataFromSharedPrefrences(userRepo: UserRepo): GetDataFromSharedPrefrences {
         return GetDataFromSharedPrefrences(userRepo)
     }
 
 
     @Provides
-    fun providCreateTicket(userRepo: UserRepo) :CreateTicket{
+    fun providCreateTicket(userRepo: UserRepo): CreateTicket {
         return CreateTicket(userRepo)
     }
 
     @Provides
-    fun providGetDoctorInTrain(userRepo: UserRepo) :GetDoctorInTrain{
+    fun providGetDoctorInTrain(userRepo: UserRepo): GetDoctorInTrain {
         return GetDoctorInTrain(userRepo)
     }
 
@@ -182,10 +190,12 @@ object UserCaseModule  {
     fun ProvideGetTrainLocationInForgroundService(userRepo: UserRepo): GetTrainLocationInForgroundService {
         return GetTrainLocationInForgroundService(userRepo)
     }
+
     @Provides
     fun ProvideGetSendDoctorNotificationToFirebase(userRepo: UserRepo): SendDoctorNotificationToFirebase {
         return SendDoctorNotificationToFirebase(userRepo)
     }
+
     @Provides
     fun ProvideGetDoctorNotificationFromFirebase(userRepo: UserRepo): GetDoctorNotificationFromFirebase {
         return GetDoctorNotificationFromFirebase(userRepo)
@@ -200,6 +210,7 @@ object UserCaseModule  {
     fun ProvideGetUserInTrain(userRepo: UserRepo): GetUserInTrain {
         return GetUserInTrain(userRepo)
     }
+
     @Provides
     fun ProvideSendUserNotificationTokenToFirebase(userRepo: UserRepo): SendUserNotificationTokenToFirebase {
         return SendUserNotificationTokenToFirebase(userRepo)
@@ -234,11 +245,13 @@ object UserCaseModule  {
     fun ProvideGetUserCurrantLocationLive(userRepo: UserRepo): GetUserCurrantLocationLive {
         return GetUserCurrantLocationLive(userRepo)
     }
+
     @Provides
     fun ProvidePushAddPostNotification(userRepo: UserRepo): PushAddPostNotification {
         return PushAddPostNotification(userRepo)
     }
-   @Provides
+
+    @Provides
     fun ProvidePushAddPostCommentNotification(userRepo: UserRepo): PushAddPostCommentNotification {
         return PushAddPostCommentNotification(userRepo)
     }
@@ -247,7 +260,6 @@ object UserCaseModule  {
     fun ProvideCreateUserNotificationToken(userRepo: UserRepo): CreateUserNotificationToken {
         return CreateUserNotificationToken(userRepo)
     }
-
 
 
     @Provides
@@ -265,6 +277,126 @@ object UserCaseModule  {
     fun ProvideReportPost(userRepo: UserRepo): ReportPost {
         return ReportPost(userRepo)
     }
+
+    @Provides
+    fun ProvideInsertNewStationAlarm(userRepo: UserRepo): InsertNewStationAlarm {
+        return InsertNewStationAlarm(userRepo)
+    }
+
+    @Provides
+    fun ProvideGetStationAlarmsFromDatabase(userRepo: UserRepo): GetStationAlarmsFromDatabase {
+        return GetStationAlarmsFromDatabase(userRepo)
+    }
+
+    @Provides
+    fun ProvideInsertNewUserItemToDatabase(userRepo: UserRepo): InsertNewUserItemToDatabase {
+        return InsertNewUserItemToDatabase(userRepo)
+    }
+
+    @Provides
+    fun ProvideGetNewUserItemFromDatabase(userRepo: UserRepo): GetNewUserItemFromDatabase {
+        return GetNewUserItemFromDatabase(userRepo)
+    }
+
+    @Provides
+    fun ProvideInsertNewTrainItemToDatabase(userRepo: UserRepo): InsertNewTrainItemToDatabase {
+        return InsertNewTrainItemToDatabase(userRepo)
+    }
+
+    @Provides
+    fun ProvideGetNewTrainItemFromDatabase(userRepo: UserRepo): GetNewTrainItemFromDatabase {
+        return GetNewTrainItemFromDatabase(userRepo)
+    }
+
+    @Provides
+    fun ProvideInsertNewTicketItemToDatabase(userRepo: UserRepo): InsertNewTicketItemToDatabase {
+        return InsertNewTicketItemToDatabase(userRepo)
+    }
+
+    @Provides
+    fun ProvideGetNewTicketItemFromDatabase(userRepo: UserRepo): GetNewTicketItemFromDatabase {
+        return GetNewTicketItemFromDatabase(userRepo)
+    }
+
+    @Provides
+    fun ProvideInsertNewMessageItemToDatabase(userRepo: UserRepo): InsertNewMessageItemToDatabase {
+        return InsertNewMessageItemToDatabase(userRepo)
+    }
+
+    @Provides
+    fun ProvideGetNewMessageItemFromDatabase(userRepo: UserRepo): GetNewMessageItemFromDatabase {
+        return GetNewMessageItemFromDatabase(userRepo)
+    }
+
+    @Provides
+    fun ProvideDeleteStationAlarmFromDatabase(userRepo: UserRepo): DeleteStationAlarmFromDatabase {
+        return DeleteStationAlarmFromDatabase(userRepo)
+    }
+
+    @Provides
+    fun ProvideUpdateStationAlarmFromDatabase(userRepo: UserRepo): UpdateStationAlarmFromDatabase {
+        return UpdateStationAlarmFromDatabase(userRepo)
+    }
+
+    @Provides
+    fun ProvideGettingTrainlocationFromApi(userRepo: UserRepo): GettingTrainlocationFromApi {
+        return GettingTrainlocationFromApi(userRepo)
+    }
+
+    @Provides
+    fun ProvideCreateReport(userRepo: UserRepo): CreateReport {
+        return CreateReport(userRepo)
+    }
+
+
+    @Provides
+    fun ProvidePushSendMessageNotification(userRepo: UserRepo): PushSendMessageNotification {
+        return PushSendMessageNotification(userRepo)
+    }
+
+    @Provides
+    fun ProvideGetLocationDirctionFromGoogleMapsApi(userRepo: UserRepo): GetLocationDirctionFromGoogleMapsApi {
+        return GetLocationDirctionFromGoogleMapsApi(userRepo)
+    }
+
+    @Provides
+    fun ProvideGetLocationDirctionFromOpenRouteService(userRepo: UserRepo): GetLocationDirctionFromOpenRouteService {
+        return GetLocationDirctionFromOpenRouteService(userRepo)
+    }
+
+    @Provides
+    fun ProvideGetWayPointsLocationDirctionFromOpenRouteService(userRepo: UserRepo): GetWayPointsLocationDirctionFromOpenRouteService {
+        return GetWayPointsLocationDirctionFromOpenRouteService(userRepo)
+    }
+
+    @Provides
+    fun ProvideInsertNewStationHistroyItemToDatabase(userRepo: UserRepo): InsertNewStationHistroyItemToDatabase {
+        return InsertNewStationHistroyItemToDatabase(userRepo)
+    }
+
+    @Provides
+    fun ProvideGetStationHistroyItemsFromDatabase(userRepo: UserRepo): GetStationHistroyItemsFromDatabase {
+        return GetStationHistroyItemsFromDatabase(userRepo)
+    }
+    @Provides
+    fun ProvideGetNews(userRepo: UserRepo): GetNews {
+        return GetNews(userRepo)
+    }
+
+    @Provides
+    fun ProvideGetNewsById(userRepo: UserRepo): GetNewsById {
+        return GetNewsById(userRepo)
+    }
+    @Provides
+    fun ProvideCreateNews(userRepo: UserRepo): CreateNews {
+        return CreateNews(userRepo)
+    }
+    @Provides
+    fun ProvideGetAllReport(userRepo: UserRepo): GetAllReport {
+        return GetAllReport(userRepo)
+    }
+
+
 
 
 

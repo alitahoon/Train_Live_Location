@@ -12,10 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
-import com.example.domain.entity.StationResponseItem
-import com.example.domain.entity.TicketRequestItem
-import com.example.domain.entity.Train
-import com.example.domain.entity.UserResponseItem
+import com.example.domain.entity.*
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentInboxRecieveBinding
 import com.example.trainlivelocation.databinding.FragmentTicketsBinding
@@ -80,30 +77,58 @@ class Tickets : Fragment(), Station_Dialog_Listener, Train_Dialog_Listener,
                         }
                         is Resource.Success -> {
                             binding.ticketProgressBar.visibility = View.INVISIBLE
-
-                            Log.i(TAG,"Success To book ticket--->{${it.data}}")
+                            val ticket=it
+                            Log.i(TAG, "Success To book ticket--->{${it.data}}")
 
                             //here we will subscribe to train events
-                            ticketsViewModel.subscribeTrain(binding.ticketTxtTrainId.text!!.toString().toInt())
+                            ticketsViewModel.subscribeTrain(
+                                binding.ticketTxtTrainId.text!!.toString().toInt()
+                            )
                             ticketsViewModel.subscribeTrain.observe(viewLifecycleOwner, Observer {
-                                when(it){
-                                    is Resource.Success->{
-                                        Log.i(TAG,"${it.data}")
-                                        displaySnackbarSuccess(
-                                            requireContext(),
-                                            binding.root,
-                                            "Ticket Booked Successfully...",
-                                            R.raw.success_auth, R.color.PrimaryColor
-                                        )
+                                when (it) {
+                                    is Resource.Success -> {
+                                        Log.i(TAG, "${it.data}")
+
+                                        //set alarm for arriving station
+                                        ticketsViewModel.insertAlarm(StationAlarmEntity(
+                                            apiId = ticket.data.id,
+                                            name = arrivalStation!!,
+                                            distance = 1,
+                                            latitude = Lati!!,
+                                            longitude = Longi!!
+                                        ))
+                                        ticketsViewModel.addAlarm.observe(viewLifecycleOwner,
+                                            Observer {
+                                                when(it){
+                                                    is Resource.Loading->{
+                                                        Log.i(TAG,"Waiting for adding alarm")
+                                                    }
+                                                    is Resource.Failure->{
+                                                        Log.i(TAG,"${it.error}")
+                                                    }
+                                                    is Resource.Success->{
+                                                        Log.i(TAG,"${it.data}")
+//                                                        displaySnackbarSuccess(
+//                                                            requireContext(),
+//                                                            binding.root,
+//                                                            "Ticket Booked Successfully...",
+//                                                            R.raw.success_auth, R.color.PrimaryColor
+//                                                        )
+                                                        showCustomToast(requireContext(),"Ticket Booked Successfully...")
+
+                                                    }
+                                                    else -> {}
+                                                }
+                                            })
                                     }
-                                    is Resource.Failure->{
-                                        Log.i(TAG,"${it.error}")
+                                    is Resource.Failure -> {
+                                        Log.i(TAG, "${it.error}")
                                     }
-                                    is Resource.Loading->{
-                                        Log.i(TAG,"Waiting subscribe posts added for this train")
+                                    is Resource.Loading -> {
+                                        Log.i(TAG, "Waiting subscribe posts added for this train")
                                     }
-                                    else ->{
-                                        Log.i(TAG,"else brunch subscribeTrain...")
+                                    else -> {
+                                        Log.i(TAG, "else brunch subscribeTrain...")
                                     }
                                 }
                             })
@@ -111,12 +136,14 @@ class Tickets : Fragment(), Station_Dialog_Listener, Train_Dialog_Listener,
                         }
                         is Resource.Failure -> {
                             Log.e(TAG, "Error from else brunsh---->ticket ${it.error}")
-                            displaySnackbarSuccess(
-                                requireContext(),
-                                binding.root,
-                                "Fialed to book ticket...",
-                                R.raw.failed, R.color.textAlarmColor
-                            )
+//                            displaySnackbarSuccess(
+//                                requireContext(),
+//                                binding.root,
+//                                "Fialed to book ticket...",
+//                                R.raw.failed, R.color.textAlarmColor
+//                            )
+                            showCustomToast(requireContext(),"Fialed to book ticket...")
+
                         }
 
                         else -> {
@@ -161,6 +188,8 @@ class Tickets : Fragment(), Station_Dialog_Listener, Train_Dialog_Listener,
     }
 
     companion object {
+        private var Lati:Double?=null
+        private var Longi:Double?=null
     }
 
     override fun onStationSelected(
@@ -189,5 +218,9 @@ class Tickets : Fragment(), Station_Dialog_Listener, Train_Dialog_Listener,
     ) {
         binding.ticketTxtArrival.setText(StationName)
         arrivalStation = StationName
+        Lati=latitude
+        Longi=latitude
     }
+
+
 }

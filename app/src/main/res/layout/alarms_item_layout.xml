@@ -12,6 +12,7 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
+        animateItem="@{0}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/_10sdp"
@@ -24,13 +25,15 @@
             android:orientation="vertical">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/alarm_station_delete_button"
+                android:onClick="@{() -> listener.OnDeleteAlarmButtonClicked(alarm)}"
                 android:onClick="@{() -> listener.OnButtonEdtitClicked(alarm)}"
                 android:layout_gravity="end"
                 android:padding="@dimen/_5sdp"
                 android:background="@drawable/profile_top_shape"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/setting" />
+                android:src="@drawable/close_icon" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -45,7 +48,7 @@
                     android:drawableStart="@drawable/alarm_icon_notifiction"
                     android:drawablePadding="@dimen/_10sdp"
                     android:gravity="start|center"
-                    android:text="Arrival Station Alarm"
+                    android:text="@{alarm.name}"
                     android:textColor="@color/white"
                     android:textStyle="bold"
                     android:textSize="@dimen/_12ssp" />
@@ -53,6 +56,7 @@
                 <com.google.android.material.switchmaterial.SwitchMaterial
                     android:id="@+id/switchButton"
                     android:layout_width="match_parent"
+                    android:layout_marginEnd="@dimen/_30sdp"
                     android:layout_height="match_parent"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
@@ -68,7 +72,7 @@
                 android:drawableStart="@drawable/distance3"
                 android:drawablePadding="@dimen/_10sdp"
                 android:gravity="center|start"
-                android:text="Distance : 2 KM"
+                setDistance="@{alarm.distance}"
                 android:textColor="@color/textHintColorFirst"
                 android:textSize="@dimen/_12ssp" />
 
@@ -84,6 +88,14 @@
                 android:text="Ring Once"
                 android:textColor="@color/textHintColorFirst"
                 android:textSize="@dimen/_12ssp" />
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:onClick="@{() -> listener.OnButtonEdtitClicked(alarm)}"
+                android:layout_gravity="end"
+                android:padding="@dimen/_5sdp"
+                android:background="@drawable/alarm_setting_shape"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/setting" />
 
         </LinearLayout>
 

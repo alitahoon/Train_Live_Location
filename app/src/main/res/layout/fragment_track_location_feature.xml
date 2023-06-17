@@ -9,63 +9,85 @@
             type="com.example.trainlivelocation.ui.TrackLocationFeatureViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.TrackLocationFeature"
         android:background="@color/DarkPrimaryColor"
         android:orientation="vertical">
+
         <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:layout_width="match_parent"
             android:id="@+id/track_Location_progress_bar"
+            style="@style/Widget.MaterialComponents.LinearProgressIndicator"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:visibility="invisible"
-            style="@style/Widget.MaterialComponents.LinearProgressIndicator"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginVertical="20dp"
-            android:layout_marginTop="28dp"
             android:textColorHint="@color/textHintColorFirst"
             app:boxStrokeColor="@color/PrimaryColor"
             app:boxStrokeWidth="1dp"
-            >
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/track_Location_progress_bar">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/track_location_txt_train_id"
                 android:layout_width="match_parent"
-                android:gravity="center|start"
-                android:text="@{viewmodel.trainid}"
-                android:focusable="false"
-                android:onClick="@{viewmodel::onTxtChooseTrainIdClicked}"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/DarkPrimaryColor"
                 android:drawableLeft="@drawable/train_id_txt"
                 android:drawablePadding="10dp"
+                android:focusable="false"
+                android:gravity="center|start"
                 android:hint="@string/train_id"
                 android:minHeight="48dp"
+                android:onClick="@{viewmodel::onTxtChooseTrainIdClicked}"
+                android:text="@={viewmodel.trainid}"
                 android:textColor="@color/PrimaryColor"
                 android:textColorHint="@color/textHintColorFirst"
                 android:textSize="18sp" />
         </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/liveLocation_ShareTrainLocation"
+            android:id="@+id/track_btnTrack"
+            android:layout_marginTop="@dimen/_15sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAllCaps="false"
             android:layout_marginHorizontal="@dimen/_70sdp"
+            android:backgroundTint="@color/PrimaryColor"
             android:onClick="@{viewmodel::onBtnTrackTrainLocationClicked}"
             android:padding="15dp"
-            android:backgroundTint="@color/PrimaryColor"
-            android:text="@string/track_location_"
-            android:textSize="@dimen/_12ssp"
+            android:text="Track Train"
+            android:textAllCaps="false"
             android:textColor="@color/white"
-            app:cornerRadius="@dimen/_20sdp" />
+            android:textSize="@dimen/_12ssp"
+            app:cornerRadius="@dimen/_20sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/track_locationMap"
+            android:layout_width="match_parent"
+            android:visibility="gone"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/track_Location_progress_bar">
+
+        </com.google.android.gms.maps.MapView>
 
 
-
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

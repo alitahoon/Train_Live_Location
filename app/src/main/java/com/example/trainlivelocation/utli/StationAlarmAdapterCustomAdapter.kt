@@ -3,6 +3,8 @@ package com.example.trainlivelocation.utli
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.domain.entity.*
 import com.example.trainlivelocation.databinding.AlarmsItemLayoutBinding
@@ -13,7 +15,7 @@ class StationAlarmAdapterCustomAdapter(
     private val stationAlarmListener: StationAlarmListener
 ) :
     RecyclerView.Adapter<StationAlarmAdapterViewHolder>(), BindableAdapter<ArrayList<StationAlarmEntity>> {
-    private val TAG: String? = "PassengersCustomAdapter"
+    private val TAG: String? = "StationAlarmAdapterCustomAdapter"
     private var binding: AlarmsItemLayoutBinding? = null
     lateinit var stationArrayList: ArrayList<StationAlarmEntity>
     var stationList = emptyList<StationAlarmEntity>()
@@ -28,7 +30,6 @@ class StationAlarmAdapterCustomAdapter(
             parent,
             false
         )
-
         return StationAlarmAdapterViewHolder(binding!!, stationAlarmListener!!)
     }
 
@@ -36,6 +37,9 @@ class StationAlarmAdapterCustomAdapter(
 
     override fun onBindViewHolder(holder: StationAlarmAdapterViewHolder, position: Int) {
         val stationAlarm = stationArrayList.get(position)
+        // Bind data to the view holder
+
+        // Apply animation
         holder.bind(stationAlarm)
 
     }

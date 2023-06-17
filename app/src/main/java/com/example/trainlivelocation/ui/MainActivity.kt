@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide
 import com.example.domain.entity.*
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.ActivityMainBinding
+import com.example.trainlivelocation.utli.HomeMapListener
 import com.example.trainlivelocation.utli.getuserModelFromSharedPreferences
 import com.example.trainlivelocation.utli.toast
 import com.google.android.material.navigation.NavigationView
@@ -32,7 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() ,HomeMapListener{
     private lateinit var binding: ActivityMainBinding
     private val mainActivityViewModel: MainActivityViewModel? by viewModels()
     private val TAG: String? = "MainActivity"
@@ -75,6 +76,13 @@ class MainActivity : AppCompatActivity() {
 
                     R.id.home_menu_alarms ->{
                         navController.navigate(R.id.alarms,null,navOptions)
+                        binding.mainActivityDrwerLayout.closeDrawer(GravityCompat.START);
+                    }
+
+                    R.id.home_menu_Settings->{
+                        setHeader("Settings")
+                        navController.navigate(R.id.settings,null,navOptions)
+                        binding.mainActivityDrwerLayout.closeDrawer(GravityCompat.START);
                     }
                 }
                 return true
@@ -100,6 +108,9 @@ class MainActivity : AppCompatActivity() {
                     R.id.shareLocationFeature -> {
                         setHeader("Share Location")
                     }
+                    R.id.shareLocationFeature -> {
+                        setHeader("Track Location")
+                    }
                     R.id.userProfile -> {
                         setHeader("Profile")
                     }
@@ -112,11 +123,17 @@ class MainActivity : AppCompatActivity() {
                     R.id.emergency -> {
                         setHeader("Emergency")
                     }
+                    R.id.doctorLocationInMap -> {
+                        setHeader("Patient Location")
+                    }
                     R.id.home2 -> {
                         setHeader("home")
                     }
                     R.id.passengers -> {
                         setHeader("Passengers")
+                    }
+                    R.id.news -> {
+                        setHeader("News")
                     }
                 }
             }
@@ -133,19 +150,16 @@ class MainActivity : AppCompatActivity() {
                         binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
                         binding.mainActivityFragmentHeaderNavFrName.setText("Inbox")
 
-                        toast("Inbox")
                         val bundle = Bundle()
                         bundle.putParcelable("userModel", userModel)
                         Log.i(TAG, "$userModel")
                         navController.navigate(R.id.inbox, bundle, navOptions)
                     }
                     1 -> {
-                        toast("Home")
                         setHeader("home")
                         navController.navigate(R.id.home2, null, navOptions)
                     }
                     0 -> {
-                        toast("Alarms")
                         setHeader("Alarms")
                         navController.navigate(R.id.alarms, null, navOptions)
 
@@ -163,17 +177,16 @@ class MainActivity : AppCompatActivity() {
         })
 
         //handle notification load fragments
-        val fragmentToLoad: String? = intent.getStringExtra("FRAGMENT_NAME")
-        if (fragmentToLoad != null) {
-            when (fragmentToLoad) {
-                "DoctorLocationInMap" -> {
-                    setHeader("Emergency")
-                    val latitude: Double = intent.getDoubleExtra("doctorLocationLatitude", 0.0)
-                    val longitude: Double = intent.getDoubleExtra("doctorLocationLongitude", 0.0)
+        fragmentToload=intent.getStringExtra("FRAGMENT_NAME")
+        if (fragmentToload!= null) {
+            when (fragmentToload) {
+                 "DoctorLocationInMap" -> {
+                     setHeader("Emergency")
+                    val doctorNotificationData=intent.getSerializableExtra("doctorNotification") as DoctorNotificationData
                     val bundle = Bundle()
                     bundle.putSerializable(
                         "patientLocation",
-                        Location_Response(latitude, longitude)
+                        doctorNotificationData
                     )
                     navController.navigate(R.id.doctorLocationInMap, bundle)
                 }
@@ -263,12 +276,13 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private var userModel: UserResponseItem? = null
+        private var fragmentToload:String?=null
     }
 
     private fun setBottomBarIcons() {
         binding.bottomNavigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC)
         binding.bottomNavigationBar
-            .addItem(BottomNavigationItem(R.drawable.alarm_icon_notifiction, "Notification"))
+            .addItem(BottomNavigationItem(R.drawable.alarm_icon_notifiction, "Alarms"))
             .setActiveColor(R.color.white)
             .addItem(BottomNavigationItem(R.drawable.home, "Home")).setActiveColor(R.color.white)
             .addItem(BottomNavigationItem(R.drawable.inbox, "Inbox"))
@@ -298,7 +312,27 @@ class MainActivity : AppCompatActivity() {
                 binding.mainActivityFragmentHeaderNav.setBackgroundColor(resources.getColor(R.color.PrimaryColor))
                 binding.mainActivityFragmentHeaderNavFrName.setText(title)
             }
-            else -> {
+            "Share Location" -> {
+                binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
+                binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
+                binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
+                binding.mainActivityFragmentHeaderNav.setBackgroundColor(resources.getColor(R.color.PrimaryColor))
+                binding.mainActivityFragmentHeaderNavFrName.setText(title)
+            }
+            "Track Location" -> {
+                binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
+                binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
+                binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
+                binding.mainActivityFragmentHeaderNav.setBackgroundColor(resources.getColor(R.color.PrimaryColor))
+                binding.mainActivityFragmentHeaderNavFrName.setText(title)
+            }"Patient Location" -> {
+                binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
+                binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
+                binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
+                binding.mainActivityFragmentHeaderNav.setBackgroundColor(resources.getColor(R.color.PrimaryColor))
+                binding.mainActivityFragmentHeaderNavFrName.setText(title)
+            }
+                else -> {
                 binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
                 binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
                 binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
@@ -325,6 +359,18 @@ class MainActivity : AppCompatActivity() {
             mainActivityViewModel!!.getProfileImage("profileImages/+20${userModel!!.phone}")
         }
     }
+
+    override fun onMapOpened() {
+        binding.homeActionBar.setVisibility(View.GONE)
+//        window.statusBarColor =
+//            resources.getColor(R.color.statusBarcolorOnOpenMap)
+    }
+
+    override fun OnMapClosed() {
+        binding.homeActionBar.setVisibility(View.VISIBLE)
+//        window.statusBarColor =
+//            resources.getColor(R.color.DarkPrimaryColor)
+         }
 
 
 }

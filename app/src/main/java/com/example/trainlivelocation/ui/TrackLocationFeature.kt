@@ -1,5 +1,6 @@
 package com.example.trainlivelocation.ui
 
+import Resource
 import android.location.Location
 import android.os.Bundle
 import android.os.Handler
@@ -8,6 +9,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
@@ -19,7 +22,12 @@ import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentTrackLocationFeatureBinding
 import com.example.trainlivelocation.utli.TrackLocationListener
 import com.example.trainlivelocation.utli.Train_Dialog_Listener
-import com.google.android.gms.maps.model.LatLng
+import com.example.trainlivelocation.utli.toast
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.model.*
 import com.google.maps.android.SphericalUtil
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
@@ -28,21 +36,15 @@ import kotlin.math.acos
 import kotlin.math.cos
 import kotlin.math.sin
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [TrackLocationFeature.newInstance] factory method to
- * create an instance of this fragment.
- */
 @AndroidEntryPoint
-class TrackLocationFeature : Fragment(), TrackLocationListener ,Train_Dialog_Listener{
+class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Listener,
+    OnMapReadyCallback {
     private val _userLocationMuta: MutableLiveData<LocationDetails?> = MutableLiveData(null)
     private val trackLocationFeatureViewModel: TrackLocationFeatureViewModel? by activityViewModels()
     private var binding: FragmentTrackLocationFeatureBinding? = null
+    private var mMap: GoogleMap? = null
+    lateinit var latlong: LatLng
+
 
     private val TAG: String? = "TrackLocationFeature"
 
@@ -60,8 +62,12 @@ class TrackLocationFeature : Fragment(), TrackLocationListener ,Train_Dialog_Lis
                 this.viewmodel = trackLocationFeatureViewModel
             }
         binding?.viewmodel?.trackLocationListener = this
+        binding?.lifecycleOwner=this
         trackLocationFeatureViewModel?.setbaseActivity(requireActivity())
         trackLocationFeatureViewModel?.getTrainLocationFromApi()
+        scaleUpAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.enter)
+        scaleDownAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.exit)
+
         setObservers()
 
         return binding?.root
@@ -80,7 +86,9 @@ class TrackLocationFeature : Fragment(), TrackLocationListener ,Train_Dialog_Lis
 
 
     companion object {
-
+        private var scaleUpAnimation: Animation? = null
+        private var scaleDownAnimation: Animation? = null
+        private var sydnyTrainLocation:LatLng?=null
     }
 
     override fun onDestroy() {
@@ -122,91 +130,116 @@ class TrackLocationFeature : Fragment(), TrackLocationListener ,Train_Dialog_Lis
             Observer {
 
                 if (it == true) {
-                    binding?.trackLocationProgressBar?.setVisibility(View.VISIBLE)
-                    var trainLocation: LocationDetails? = null
-                    var userLocation: LocationDetails? = null
-                    var distance: Double? = null
 
-                    //get train location
-//                trackLocationFeatureViewModel?.startTrackLocationForgroundService()
-//                get location from API
-                    Log.e(TAG, "get train location")
-                    trackLocationFeatureViewModel?.getTrainLocationFromApi()
-                    trackLocationFeatureViewModel?._trainLocationMuta?.observe(viewLifecycleOwner,
-                        Observer {
-                            it?.let {
-                                Log.e(
-                                    TAG,
-                                    it?.longitude.toString() + "  " + it?.latitude.toString()
-                                )
-                                trainLocation =
-                                    LocationDetails(
-                                        it!!.longitude.toFloat(),
-                                        it!!.latitude.toFloat()
-                                    )
+                    if (binding!!.trackLocationTxtTrainId.text.toString().isEmpty()){
+                        toast("Please Choose train To track")
+                    }else{
+                        binding!!.trackLocationTxtTrainId.visibility=View.GONE
+                        binding!!.trackBtnTrack.visibility=View.GONE
+                        binding!!.trackLocationMap.startAnimation(scaleUpAnimation)
+                        scaleUpAnimation!!.setAnimationListener(object :Animation.AnimationListener{
+                            override fun onAnimationStart(p0: Animation?) {
+                                binding!!.trackLocationMap.visibility=View.VISIBLE
+                                binding!!.trackLocationMap.onCreate(trackLocationFeatureViewModel?.getMAP_VIEW_KEY())
+                                binding!!.trackLocationMap.getMapAsync(this@TrackLocationFeature)
+                            }
+
+                            override fun onAnimationEnd(p0: Animation?) {
+
+                            }
+
+                            override fun onAnimationRepeat(p0: Animation?) {
+
                             }
 
                         })
+                    }
 
-
-                    //get user location
-                    Log.e(TAG, "get user location")
-                    trackLocationFeatureViewModel?.getUserCurrantLocation()
-                    _userLocationMuta?.observe(
-                        viewLifecycleOwner,
-                        Observer {
-                            it?.let {
-                                Log.e(
-                                    TAG,
-                                    it?.longitude.toString() + "  " + it?.latitude.toString()
-                                )
-                                userLocation = it
-                            }
-
-                        })
-
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        if (trainLocation != null && userLocation != null) {
-                            //compute distance between user and train
-                            Log.e(TAG, "compute distance between user and train")
-                            distance = distanceInMeter(
-                                trainLocation?.longitude!!.toDouble(),
-                                trainLocation?.latitude!!.toDouble(),
-                                userLocation?.latitude!!.toDouble(),
-                                userLocation?.longitude!!.toDouble()
-                            )
-//                            distance=getDistanceUsingGoogleMapApi(
-//                                LatLng(
-//                                    trainLocation?.latitude!!.toDouble(),
-//                                    trainLocation?.longitude!!.toDouble()
-//                                ),
-//                                LatLng(
-//                                    userLocation?.latitude!!.toDouble(),
-//                                    userLocation?.longitude!!.toDouble()
+//                    binding?.trackLocationProgressBar?.setVisibility(View.VISIBLE)
+//                    var trainLocation: LocationDetails? = null
+//                    var userLocation: LocationDetails? = null
+//                    var distance: Double? = null
+//
+//                    //get train location
+////                trackLocationFeatureViewModel?.startTrackLocationForgroundService()
+////                get location from API
+//                    Log.e(TAG, "get train location")
+//                    trackLocationFeatureViewModel?.getTrainLocationFromApi()
+//                    trackLocationFeatureViewModel?._trainLocationMuta?.observe(viewLifecycleOwner,
+//                        Observer {
+//                            it?.let {
+//                                Log.e(
+//                                    TAG,
+//                                    it?.longitude.toString() + "  " + it?.latitude.toString()
 //                                )
+//                                trainLocation =
+//                                    LocationDetails(
+//                                        it!!.longitude.toFloat(),
+//                                        it!!.latitude.toFloat()
+//                                    )
+//                            }
+//
+//                        })
+//
+//
+//                    //get user location
+//                    Log.e(TAG, "get user location")
+//                    trackLocationFeatureViewModel?.getUserCurrantLocation()
+//                    _userLocationMuta?.observe(
+//                        viewLifecycleOwner,
+//                        Observer {
+//                            it?.let {
+//                                Log.e(
+//                                    TAG,
+//                                    it?.longitude.toString() + "  " + it?.latitude.toString()
+//                                )
+//                                userLocation = it
+//                            }
+//
+//                        })
+//
+//                    Handler(Looper.getMainLooper()).postDelayed({
+//                        if (trainLocation != null && userLocation != null) {
+//                            //compute distance between user and train
+//                            Log.e(TAG, "compute distance between user and train")
+//                            distance = distanceInMeter(
+//                                trainLocation?.longitude!!.toDouble(),
+//                                trainLocation?.latitude!!.toDouble(),
+//                                userLocation?.latitude!!.toDouble(),
+//                                userLocation?.longitude!!.toDouble()
 //                            )
-
-
-                            if (distance != null) {
-                                Log.e(TAG, "Distance ${distance}")
-                                val bundle = Bundle()
-                                bundle.putFloat("distance", distance!!.toFloat())
-                                binding?.trackLocationProgressBar?.setVisibility(View.INVISIBLE)
-//                                findNavController().navigate(
-//                                    R.id.action_trackLocationFeature_to_home2,
-//                                    bundle
-//                                )
-                                val action: NavDirections =
-                                    TrackLocationFeatureDirections.actionTrackLocationFeatureToTrainLocationInMap(
-                                        userLocation!!,
-                                        trainLocation!!
-                                    )
-                                findNavController().navigate(action)
-                            }
-                        } else {
-                            Log.e(TAG, "Error")
-                        }
-                    }, 10000)
+////                            distance=getDistanceUsingGoogleMapApi(
+////                                LatLng(
+////                                    trainLocation?.latitude!!.toDouble(),
+////                                    trainLocation?.longitude!!.toDouble()
+////                                ),
+////                                LatLng(
+////                                    userLocation?.latitude!!.toDouble(),
+////                                    userLocation?.longitude!!.toDouble()
+////                                )
+////                            )
+//
+//
+//                            if (distance != null) {
+//                                Log.e(TAG, "Distance ${distance}")
+//                                val bundle = Bundle()
+//                                bundle.putFloat("distance", distance!!.toFloat())
+//                                binding?.trackLocationProgressBar?.setVisibility(View.INVISIBLE)
+////                                findNavController().navigate(
+////                                    R.id.action_trackLocationFeature_to_home2,
+////                                    bundle
+////                                )
+//                                val action: NavDirections =
+//                                    TrackLocationFeatureDirections.actionTrackLocationFeatureToTrainLocationInMap(
+//                                        userLocation!!,
+//                                        trainLocation!!
+//                                    )
+//                                findNavController().navigate(action)
+//                            }
+//                        } else {
+//                            Log.e(TAG, "Error")
+//                        }
+//                    }, 10000)
 
 
                 }
@@ -297,7 +330,125 @@ class TrackLocationFeature : Fragment(), TrackLocationListener ,Train_Dialog_Lis
     }
 
     override fun onTrainSelected(trainId: Int?, trainDegree: String?) {
-            binding!!.trackLocationTxtTrainId.setText("${trainId}")
+        binding!!.trackLocationTxtTrainId.setText("${trainId}")
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        binding!!.trackLocationMap.onResume()
+        mMap = googleMap
+        mMap?.isMyLocationEnabled()
+        mMap?.setMapType(GoogleMap.MAP_TYPE_SATELLITE)
+//        val trainMarkerIcon = BitmapDescriptorFactory.fromResource(R.drawable.train_location)
+
+        //new flow
+        trackLocationFeatureViewModel!!.gettingUserCurrantLocationJustOnce()
+        trackLocationFeatureViewModel!!.userCurrantLocationJustOnce.observe(viewLifecycleOwner,
+            Observer {
+                when(it){
+                    is Resource.Loading->{
+                        Log.i(TAG,"getting user Location...")
+                    }
+
+                    is Resource.Success->{
+                        var isCodeExecuted = true
+                        var sydnyUserLocation: LatLng =
+                            LatLng(it.data.latitude,it.data.longitude)
+                        mMap!!.addMarker(MarkerOptions().flat(true).position(sydnyUserLocation).title("Your Location"))
+
+                        //getting train Location
+                        trackLocationFeatureViewModel!!.gettingTrainLocaion(this)
+                        trackLocationFeatureViewModel!!.trainLocation.observe(viewLifecycleOwner,
+                            Observer {
+                                when(it){
+                                    is Resource.Loading->{
+
+                                        Log.i(TAG,"getting Train Location.")
+                                        binding!!.trackLocationProgressBar.visibility=View.VISIBLE
+                                    }
+                                    is Resource.Success->{
+                                        Log.i(TAG,"${it.data}")
+                                        binding!!.trackLocationProgressBar.visibility=View.GONE
+                                        sydnyTrainLocation=
+                                            LatLng(it.data.longitude,it.data.latitude)
+                                        if (isCodeExecuted){
+                                            mMap!!.addMarker(MarkerOptions().flat(true).position(sydnyTrainLocation!!).title("Train Location"))
+                                            isCodeExecuted=false
+                                        }
+//                                        mMap!!.moveCamera(CameraUpdateFactory.newLatLng(sydnyUserLocation))
+//                                        mMap!!.moveCamera(CameraUpdateFactory.newLatLng(sydnyTrainLocation))
+                                        // Initialize the GoogleMap instance (googleMap) and add the marker
+                                        // Set the initial location of the marker
+                                        // Set the OnCameraMoveListener
+                                        mMap!!.setOnCameraMoveListener {
+                                            val screenTrainPosition = mMap!!.projection.toScreenLocation(sydnyTrainLocation!!)
+                                            val screenUserPosition = mMap!!.projection.toScreenLocation(sydnyUserLocation)
+                                            if (!mMap!!.projection.visibleRegion.latLngBounds.contains(sydnyUserLocation) ||
+                                                !googleMap.projection.visibleRegion.latLngBounds.contains(sydnyTrainLocation!!)) {
+                                                val cameraTrainUpdate = CameraUpdateFactory.newLatLng(googleMap.projection.fromScreenLocation(screenTrainPosition))
+                                                val cameraUserUpdate = CameraUpdateFactory.newLatLng(googleMap.projection.fromScreenLocation(screenUserPosition))
+                                                mMap!!.moveCamera(cameraTrainUpdate)
+                                                mMap!!.moveCamera(cameraUserUpdate)
+                                            }
+                                        }
+
+                                        // Add markers to the map
+
+//                        val cameraPosition: CameraPosition = CameraPosition.Builder()
+//                            .target(
+//                                sydnyDoctor
+//                            ) // Sets the center of the map to location user
+//                            .zoom(16F) // Sets the zoom
+//                            .bearing(0F) // Sets the orientation of the camera to east
+////            .tilt(40F) // Sets the tilt of the camera to 30 degrees
+//                            .build() // Creates a CameraPosition from the builder
+                                        // Calculate bounds that encompass both positions
+                                        val bounds = LatLngBounds.Builder()
+                                            .include(sydnyUserLocation)
+                                            .include(sydnyTrainLocation!!)
+                                            .build()
+
+                                        // Draw a line between the locations
+                                        val polylineOptions = PolylineOptions()
+                                            .add(sydnyUserLocation, sydnyTrainLocation)
+                                            .color(R.color.PrimaryColor)
+                                            .width(10f)
+
+                                        // Animate camera to the calculated bounds
+                                        // Calculate the padding based on the map size and desired zoom level
+                                        val mapWidth = binding!!.trackLocationMap.width
+                                        val mapHeight = binding!!.trackLocationMap.height
+                                        val padding = (Math.max(mapWidth, mapHeight) * 0.1).toInt() // Optional padding around the bounds (in pixels)
+                                        val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding)
+                                        mMap?.animateCamera(cameraUpdate)
+                                        mMap?.addPolyline(polylineOptions)
+
+                                        trackLocationFeatureViewModel!!.gettingTrainLocaion(this)
+
+                                    }
+                                    is Resource.Failure->{
+                                        Log.i(TAG,"${it.error}")
+                                    }
+
+                                    else -> {}
+                                }
+                            })
+                    }
+
+                    is Resource.Failure->{
+                        toast("${it.error}")
+                    }
+
+                    else -> {}
+                }
+            })
+
+
+        trackLocationFeatureViewModel!!.startGettingUserLocation()
+        trackLocationFeatureViewModel!!.userLiveLocation.observe(viewLifecycleOwner, Observer {
+                    if (it != null){
+
+                    }
+        })
     }
 
 }

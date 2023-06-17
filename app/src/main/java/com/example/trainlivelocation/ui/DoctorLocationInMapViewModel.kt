@@ -13,56 +13,64 @@ import com.example.domain.usecase.GetUserCurrantLocationLive
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 @HiltViewModel
 class DoctorLocationInMapViewModel @Inject constructor(
     private var getUserCurrantLocationLive: GetUserCurrantLocationLive
 ) : ViewModel() {
-    private var TAG:String?="DoctorLocationInMapViewModel"
+    private var TAG: String? = "DoctorLocationInMapViewModel"
     private var MAP_VIEW_Bundle: Bundle? = null
 
-     val _distance= MutableLiveData<String>()
-     val _cars = MutableLiveData<String>()
-
+    private val _distance = MutableLiveData<String>()
+    val distance: LiveData<String> = _distance
+    private val _cars = MutableLiveData<String>()
+    val cars: LiveData<String> = _cars
 
 
     private val _userCurrantLocation: MutableLiveData<Resource<Location>> = MutableLiveData(null)
     val userCurrantLocation: LiveData<Resource<Location>> = _userCurrantLocation
 
 
-     fun getMAP_VIEW_KEY(): Bundle? {
+    fun getMAP_VIEW_KEY(): Bundle? {
         MAP_VIEW_Bundle?.putString("MapViewBundleKey", "101")
         return MAP_VIEW_Bundle
     }
 
-    fun getCurrantLocation(patientLocation:Location_Response){
-        _userCurrantLocation.value=Resource.Loading
+    fun getCurrantLocation(patientLocation: Location_Response) {
+        _userCurrantLocation.value = Resource.Loading
         viewModelScope.launch {
-            getUserCurrantLocationLive(){
-                when(it){
-                    is Resource.Loading->{
-                        Log.i(TAG,"getting currant location...")
+            getUserCurrantLocationLive() {
+                when (it) {
+                    is Resource.Loading -> {
+                        Log.i(TAG, "getting currant location...")
                     }
-                    is Resource.Success->{
-                        Log.i(TAG,"Success got currant location : ${it.data}")
-                        _userCurrantLocation.value=it
-                        if (it != null){
+                    is Resource.Success -> {
+                        Log.i(TAG, "Success got currant location : ${it.data}")
+                        _userCurrantLocation.value = it
+                        if (it != null) {
                             var results = FloatArray(1)
                             Log.e(TAG, "startLat ${it.data.latitude}")
                             Log.e(TAG, "startLon ${it.data.longitude}")
                             Log.e(TAG, "endLat ${patientLocation.latitude}")
                             Log.e(TAG, "endLon ${patientLocation.longitude}")
 
-                            Location.distanceBetween(it.data.latitude, it.data.longitude, patientLocation.latitude ,patientLocation.longitude, results)
+                            Location.distanceBetween(
+                                it.data.latitude,
+                                it.data.longitude,
+                                patientLocation.latitude,
+                                patientLocation.longitude,
+                                results
+                            )
 
 
                             Log.e(TAG, "distanceInMeter ${results[0]}")
-                            _distance.postValue("Distance : ${results[0]} M")
-                            val carsNumber=(results[0]/10).toInt()
-                            _cars.postValue("car Number : ${carsNumber}")
+                            _distance.value="Distance : ${results[0]} M"
+                            val carsNumber = (results[0] / 10).toInt()
+                            _cars.value="car Number : ${carsNumber}"
                         }
                     }
-                    is Resource.Failure->{
-                        Log.i(TAG,"Failed to get currant location : ${it.error}")
+                    is Resource.Failure -> {
+                        Log.i(TAG, "Failed to get currant location : ${it.error}")
                     }
                     else -> {}
                 }

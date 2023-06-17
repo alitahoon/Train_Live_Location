@@ -91,11 +91,11 @@
     <string name="no">no</string>
     <string name="yes">yes</string>
     <string name="share_location_">Share Location</string>
-    <string name="takeoff_station">takeoff station</string>
-    <string name="arrival_station">arrival_station</string>
+    <string name="takeoff_station">Takeoff Station</string>
+    <string name="arrival_station">Arrival Station</string>
     <string name="train_id___">train id</string>
-    <string name="track_location_">track location</string>
-    <string name="train_distance">train distance</string>
+    <string name="track_location_">Track Location</string>
+    <string name="train_distance">Train Distance</string>
     <string name="_5_km">5 km</string>
     <string name="address">address</string>
     <string name="shamma_ashmoun_menofia">shamma ashmoun menofia</string>

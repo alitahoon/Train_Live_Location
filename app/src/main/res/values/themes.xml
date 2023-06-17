@@ -4,7 +4,6 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/PrimaryColor</item>
         <item name="materialThemeOverlay">@style/ButtonStyleTextColor</item>
-
         <item name="colorPrimaryVariant">@color/PrimaryColor</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -58,6 +57,15 @@
         <item name="shapeAppearanceOverlay">@style/CustomShapeAppearanceBottomSheetDialog</item>
     </style>
 
+    <!--    CustomBottomSheetDialog-->
+    <style name="CustomDialog" parent="@style/ThemeOverlay.MaterialComponents.Dialog">
+        <item name="dialogTheme">@style/CustomDialogStyle</item>
+    </style>
+
+    <style name="CustomDialogStyle" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="shapeAppearanceOverlay">@style/CustomShapeAppearanceDialog</item>
+    </style>
+
     <style name="CustomShapeAppearanceBottomSheetDialog" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="backgroundTint">@color/white</item>
@@ -65,6 +73,14 @@
         <item name="cornerSizeTopLeft">30dp</item>
         <item name="cornerSizeBottomRight">0dp</item>
         <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+    <style name="CustomShapeAppearanceDialog" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="backgroundTint">@color/DarkPrimaryColor</item>
+        <item name="cornerSizeTopRight">30dp</item>
+        <item name="cornerSizeTopLeft">30dp</item>
+        <item name="cornerSizeBottomRight">30dp</item>
+        <item name="cornerSizeBottomLeft">30dp</item>
     </style>
 
     <style name="DialogTheme" parent="Theme.TrainLiveLocation">

@@ -28,5 +28,6 @@
     <color name="PrimaryText">#212121</color>
     <color name="SeconderyText">#757575</color>
     <color name="DividerColor">#BDBDBD</color>
+    <color name="statusBarcolorOnOpenMap">#00DFA2</color>
 
 </resources>

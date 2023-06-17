@@ -9,10 +9,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.domain.entity.Message
+import com.example.domain.entity.MessageNotificationData
+import com.example.domain.entity.PushMessageNotification
 import com.example.domain.entity.UserResponseItem
 import com.example.trainlivelocation.databinding.FragmentChatBinding
 import com.example.trainlivelocation.utli.MessageCustomAdapter
 import com.example.trainlivelocation.utli.MessageListener
+import com.example.trainlivelocation.utli.getuserModelFromSharedPreferences
 import com.example.trainlivelocation.utli.toast
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -107,6 +110,38 @@ class Chat(val reciver:String?,val reciverUserName:String?,val user:UserResponse
                             Log.e(TAG,"${binding.chatRCVMessages.adapter!!.itemCount-1}")
                             binding.chatRCVMessages.layoutManager!!.smoothScrollToPosition(binding.chatRCVMessages,null,binding.chatRCVMessages.adapter!!.itemCount-1)
 
+                            //send notification to reciver
+                            //get reciver token from api
+                            chatViewmodel.getUserToken(user.id)
+                            chatViewmodel.NotificationToken.observe(viewLifecycleOwner,
+                                Observer {
+                                    when(it){
+                                        is Resource.Loading->{
+                                            Log.i(TAG,"getting token....")
+                                        }
+                                        is Resource.Success->{
+                                            chatViewmodel.sendUserNotification(
+                                                PushMessageNotification(
+                                                    MessageNotificationData(
+                                                        "Chat",
+                                                        binding.chatTxtMessage.text.toString().trim(),
+                                                        getuserModelFromSharedPreferences(requireContext()).phone,
+                                                        user.phone,
+                                                        getuserModelFromSharedPreferences(requireContext()).name,
+                                                        user.name
+                                                    )
+                                                   ,
+                                                    it.data.tokenForNotifications
+                                                )
+
+                                            )
+                                        }
+                                        is Resource.Failure->{
+                                            Log.e(TAG,"${it.error}")
+                                        }
+                                        else -> {}
+                                    }
+                                })
                         }
                         is Resource.Failure->{
                             Log.e(TAG,"${it.error}")

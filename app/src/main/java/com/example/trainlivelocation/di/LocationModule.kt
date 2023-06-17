@@ -2,6 +2,7 @@ package com.example.trainlivelocation.di
 
 import android.content.Context
 import com.example.data.*
+import com.example.trainlivelocation.utli.LocationTrackBackgroundService
 import com.example.trainlivelocation.utli.TrackTrainService
 import dagger.Module
 import dagger.Provides
@@ -67,6 +68,10 @@ object LocationModule {
     fun ProvideGetCurrantLocationLive(context: Context): GetCurrantLocationLive {
         return GetCurrantLocationLive(context)
     }
+
+
+
+
 
 
 }

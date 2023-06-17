@@ -2,6 +2,7 @@ package com.example.data
 
 import android.database.Observable
 import com.example.domain.entity.*
+import com.example.domain.usecase.ReportPost
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -193,11 +194,20 @@ interface ApiService {
     @POST("/api/news/CreateNews")
     suspend fun CreateNews(): Response<CreateNewsResponseItem>
 
+    @POST("/api/Report/CreateReport")
+    suspend fun CreatePostRepor(@Body reportPostRequset: ReportPostRequset): Response<String>
+
     @GET("/api/news/GetNewsById")
     suspend fun GetNewsById(@Query("newsId") newsId:Int): Response<GetNewsByIdResponseItem>
+
+    @GET("/api//Report/GetAllReports")
+    suspend fun GetAllReports(): Response<ArrayList<ReportPostResponse>>
     @GET("/api/user/GetUserTokenById")
     suspend fun GetUserTokenById(@Query("id") trainId:Int): Response<NotificationTokenResponse>
 
     @GET("/api/user/UsersTokenInTrain")
     suspend fun GetUsersTokenInTrain(@Query("TrainId") trainId:Int): Response<ArrayList<NotificationTokenResponseInTrain>>
+
+    @POST("/api/Report/CreateReport")
+    suspend fun CreateReport(): Response<ReportResponseItem>
 }

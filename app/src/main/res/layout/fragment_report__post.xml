@@ -13,12 +13,12 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/PrimaryColor"
-        android:padding="@dimen/_10sdp"
+        android:background="@drawable/shape_reduis_dark_primery"
+        android:padding="@dimen/_15sdp"
         tools:context=".ui.Report_Post">
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/postreport_text1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/_10sdp"
@@ -30,30 +30,32 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/report_post_btn_no"
+            android:id="@+id/report_post_btn_yes"
             android:layout_width="wrap_content"
+            android:onClick="@{viewmodel::onBtnYesclciked}"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:layout_marginEnd="@dimen/_10sdp"
-            android:backgroundTint="@color/DarkPrimaryColor"
+            android:backgroundTint="@color/PrimaryColor"
             android:text="Yes"
             android:textColor="@color/white"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/report_post_btn_yes"
-            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+            app:layout_constraintEnd_toStartOf="@+id/report_post_btn_cancel"
+            app:layout_constraintTop_toBottomOf="@+id/postreport_text1" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/report_post_btn_yes"
+            android:id="@+id/report_post_btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:backgroundTint="@color/textAlarmColor"
             android:text="Cancel"
+            android:onClick="@{viewmodel::onBtnCancelClicked}"
             android:textColor="@color/white"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+            app:layout_constraintTop_toBottomOf="@+id/postreport_text1" />
 
         <LinearLayout
             android:visibility="gone"
@@ -76,9 +78,10 @@
                 android:textStyle="bold" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/postReportReason1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/DarkPrimaryColor"
+                android:backgroundTint="@color/PrimaryColor"
                 android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
                 android:padding="@dimen/_5sdp"
                 android:text="It contains the rude are not offensive"
@@ -86,9 +89,10 @@
                 android:textSize="@dimen/_10ssp" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/postReportReason2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/DarkPrimaryColor"
+                android:backgroundTint="@color/PrimaryColor"
                 android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
                 android:padding="@dimen/_5sdp"
                 android:text="False content of facts"
@@ -96,9 +100,10 @@
                 android:textSize="@dimen/_10ssp" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/postReportReason3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/DarkPrimaryColor"
+                android:backgroundTint="@color/PrimaryColor"
                 android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
                 android:padding="@dimen/_5sdp"
                 android:text="Content  create confusion"
@@ -106,9 +111,10 @@
                 android:textSize="@dimen/_10ssp" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/postReportReason4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/DarkPrimaryColor"
+                android:backgroundTint="@color/PrimaryColor"
                 android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
                 android:padding="@dimen/_5sdp"
                 android:text="Inappropriate content "

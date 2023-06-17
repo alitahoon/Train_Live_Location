@@ -3,8 +3,13 @@ package com.example.trainlivelocation.utli
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.domain.entity.UserResponseItem
+import com.example.trainlivelocation.R
 
 
 //fun Context.setCurrentTopic(token: String,){
@@ -54,3 +59,64 @@ fun Context.getuserModelFromSharedPreferences(): UserResponseItem{
 
     )
 }
+
+fun Context.insertUserCurrantTrainIntoSharedPrefrences(trainID:Int?){
+    val trainSharedPreferences: SharedPreferences =
+        getSharedPreferences("userCurrantStation", Context.MODE_PRIVATE)
+
+    var editor=trainSharedPreferences.edit()
+    editor.putInt("trainID",trainID!!)
+
+
+}
+
+fun Fragment.insertUserCurrantTrainIntoSharedPrefrences(context: Context,trainID:Int?){
+    val trainSharedPreferences: SharedPreferences =
+        context.getSharedPreferences("userCurrantStation", Context.MODE_PRIVATE)
+    var editor=trainSharedPreferences.edit()
+    editor.putInt("trainID",trainID!!)
+
+}
+
+fun Fragment.getUserCurrantTrainIntoSharedPrefrences(context: Context):Int?{
+    val trainSharedPreferences: SharedPreferences =
+        context.getSharedPreferences("userCurrantStation", Context.MODE_PRIVATE)
+    return trainSharedPreferences.getInt("trainID",0)
+}
+
+fun Context.getUserCurrantTrainIntoSharedPrefrences():Int?{
+    val trainSharedPreferences: SharedPreferences =
+        getSharedPreferences("userCurrantStation", Context.MODE_PRIVATE)
+    return trainSharedPreferences.getInt("trainID",0)
+}
+
+
+fun Context.showCustomToast(context: Context, message: String) {
+    val inflater = LayoutInflater.from(context)
+    val toastLayout = inflater.inflate(R.layout.custom_toast_layout, null)
+
+    val toastTextView = toastLayout.findViewById<TextView>(R.id.custom_toast_text)
+    toastTextView.text = message
+
+    with(Toast(context)) {
+        setGravity(Gravity.CENTER, 0, 0)
+        duration = Toast.LENGTH_SHORT
+        view = toastLayout
+        show()
+    }
+}
+fun Fragment.showCustomToast(context: Context, message: String) {
+    val inflater = LayoutInflater.from(context)
+    val toastLayout = inflater.inflate(R.layout.custom_toast_layout, null)
+
+    val toastTextView = toastLayout.findViewById<TextView>(R.id.custom_toast_text)
+    toastTextView.text = message
+
+    with(Toast(context)) {
+        setGravity(Gravity.BOTTOM, 10, 10)
+        duration = Toast.LENGTH_SHORT
+        view = toastLayout
+        show()
+    }
+}
+

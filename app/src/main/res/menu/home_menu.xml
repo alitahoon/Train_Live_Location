@@ -18,9 +18,9 @@
         android:icon="@drawable/alarm_icon_notifiction"
         android:title="@string/Alarms"/>
     <item
-        android:id="@+id/home_menu_invite_friend"
-        android:icon="@drawable/invite_icon"
-        android:title="@string/invite_friend"/>
+        android:id="@+id/home_menu_Settings"
+        android:icon="@drawable/setting"
+        android:title="Settings"/>
     <item
         android:id="@+id/home_menu_help"
         android:icon="@drawable/help_icon"

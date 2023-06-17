@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.example.trainlivelocation.ui.ShareLocationDialogViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:padding="@dimen/_30sdp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="@dimen/_30sdp"
+        tools:context=".ui.ShareLocationDialog"
+        android:background="@drawable/shape_reduis_dark_primery">
+
+
+
+        <TextView
+            android:id="@+id/shareLocationDialogQuestionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:text="Are in the train now ?"
+            android:textColor="@color/textHintColorFirst"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/shareLocationDialog_btn_yes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_marginEnd="12dp"
+            android:backgroundTint="@color/PrimaryColor"
+            android:onClick="@{viewmodel::OnBtnYesClciked}"
+            android:text="Yes"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toStartOf="@+id/shareLocationDialog_btn_no"
+            app:layout_constraintTop_toBottomOf="@+id/shareLocationDialogQuestionText" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/shareLocationDialog_btn_no"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/textAlarmColor"
+            android:onClick="@{viewmodel::OnBtnNoClciked}"
+            android:text="No"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/shareLocationDialogQuestionText" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:visibility="gone"
+            android:layout_margin="@dimen/_20sdp"
+            android:id="@+id/share_location_dialog_txt_train_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/DarkPrimaryColor"
+            android:backgroundTint="@color/DarkPrimaryColor"
+            android:drawableLeft="@drawable/train_id_txt"
+            android:drawablePadding="@dimen/_10sdp"
+            android:focusable="false"
+            android:gravity="center|start"
+            android:hint="@string/train_id"
+            android:minHeight="@dimen/_48sdp"
+            android:onClick="@{viewmodel::onTxtTrainIdClicked}"
+            android:text="@={viewmodel.trainId}"
+            android:textColor="@color/textHintColorFirst"
+            android:textColorHint="@color/textHintColorFirst"
+            android:textSize="@dimen/_14ssp"
+            app:layout_constraintTop_toBottomOf="@+id/shareLocationDialogQuestionText"
+            tools:layout_editor_absoluteX="19dp" />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

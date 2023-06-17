@@ -18,10 +18,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.domain.entity.*
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentAddPostFragmentBinding
-import com.example.trainlivelocation.utli.FragmentLifecycle
-import com.example.trainlivelocation.utli.Train_Dialog_Listener
-import com.example.trainlivelocation.utli.getuserModelFromSharedPreferences
-import com.example.trainlivelocation.utli.toast
+import com.example.trainlivelocation.utli.*
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.snackbar.Snackbar.SnackbarLayout
 
@@ -121,10 +118,11 @@ class Add_post_fragment : Fragment(), FragmentLifecycle, Train_Dialog_Listener {
                             }
                             is Resource.Failure -> {
                                 binding.addPostProgressBar.setVisibility(View.INVISIBLE)
-                                getSnakbar(
-                                    binding.addPostBtnSubmit,
-                                    R.layout.custom_snake_bar_add_post_failed_layout
-                                ).show()
+//                                getSnakbar(
+//                                    binding.addPostBtnSubmit,
+//                                    R.layout.custom_snake_bar_add_post_failed_layout
+//                                ).show()
+                                showCustomToast(requireContext(),"Post Published successfully...")
                             }
                             else -> {
                                 Log.i(TAG, "Failed else brunch")

@@ -52,7 +52,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="YOUR_API_KEY" />
+            android:value="AIzaSyA6Svik2CpYLPyDE6lfQ18mWOo0mt5cDG0" />
 
         <activity
             android:name=".ui.AuthCheck"
@@ -94,7 +94,7 @@
             android:enabled="true"
             android:exported="false" />
         <service
-            android:name="com.example.data.LocationTrackBackgroundService"
+            android:name=".utli.LocationTrackBackgroundService"
             android:enabled="true"
             android:exported="false" />
         <service

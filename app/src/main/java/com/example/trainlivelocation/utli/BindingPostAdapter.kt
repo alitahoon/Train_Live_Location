@@ -75,7 +75,13 @@ fun setUserProfileImage(imageView: ImageView, userphone: String?) {
     }.addOnFailureListener{
         Log.i("setUserProfileImage","addOnFailureListener ${it.message}")
     }
+}
 
 
-
+@BindingAdapter("setNewsImage")
+fun setNewsImage(imageView: ImageView, imagURL: String?) {
+    Glide.with(imageView.context)
+        .load(imagURL)
+        .placeholder(R.drawable.emptyicon)
+        .into(imageView)
 }

@@ -149,7 +149,9 @@ class AllPosts : Fragment() , PostListener, FragmentLifecycle,DeletePostListener
     }
 
     override fun OnReportClickListener(post: PostModelResponse) {
-        TODO("Not yet implemented")
+        var dialog = Report_Post(post)
+        var childFragmentManager = getChildFragmentManager()
+        dialog.show(childFragmentManager, "Report_Post")
     }
 
     override fun OnDeleteClickListener(post: PostModelResponse) {

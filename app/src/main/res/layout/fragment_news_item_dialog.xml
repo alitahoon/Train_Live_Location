@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="news"
+            type="com.example.domain.entity.GetNewsResponseItem" />
+    </data>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.NewsItemDialog"
+            android:background="@drawable/choose_dialog_fragment_background">
+
+            <ImageView
+                android:id="@+id/newsDialogImage"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150sdp"
+                android:scaleType="centerCrop"
+                setNewsImage="@{news.img}"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/train" />
+
+            <TextView
+                android:id="@+id/newsDialogTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/newsDialogImage"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:background="@color/textAlarmColor"
+                android:padding="@dimen/_5sdp"
+                android:text="@{news.title}"
+                android:textSize="@dimen/_16ssp"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/newsDialogDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/newsDialogImage"
+                android:layout_alignParentStart="true"
+                android:background="#CA506D"
+                android:paddingStart="@dimen/_10sdp"
+                android:text="@{news.date}"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12ssp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/newsDialogTitle"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:background="#9A000000"
+                android:padding="@dimen/_10sdp"
+                android:gravity="center"
+                android:text="@{news.contentOfPost}"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12ssp" />
+
+
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</layout>
