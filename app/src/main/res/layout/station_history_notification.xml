@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_height="match_parent"
+    android:background="@color/DarkPrimaryColor">
+
+    <TextView
+        android:id="@+id/stationHistoryNotificationStationName"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_5sdp"
+        android:text="StationName"
+        android:drawableStart="@drawable/station_white"
+        android:gravity="center|start"
+        android:drawablePadding="@dimen/_10sdp"/>
+    <TextView
+        android:id="@+id/stationHistoryNotificationStationDuration"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_5sdp"
+        android:text="00:00:00"
+        android:drawableStart="@drawable/timer"
+        android:gravity="center|start"
+        android:drawablePadding="@dimen/_10sdp"/>
+
+
+
+
+</LinearLayout>

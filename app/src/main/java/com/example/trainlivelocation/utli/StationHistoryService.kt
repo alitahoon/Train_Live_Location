@@ -1,16 +1,25 @@
 package com.example.trainlivelocation.utli
 
 import Resource
+import android.app.Notification
+import android.app.NotificationManager
+import android.content.Context
 import android.location.Location
 import android.os.Build
+import android.os.Handler
 import android.util.Log
+import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleService
+import androidx.lifecycle.MutableLiveData
+import com.example.domain.entity.Location_Response
 import com.example.domain.entity.StationHistoryAlarmEntity
 import com.example.domain.entity.StationResponseItem
 import com.example.domain.entity.TrainConverterDistanceModel
 import com.example.domain.usecase.*
+import com.example.trainlivelocation.R
 import com.google.maps.model.LatLng
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -20,11 +29,13 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class StationHistoryService : LifecycleService() {
     private var job: Job = Job()
-    val coroutineScope = CoroutineScope(Dispatchers.IO + job)
+    val coroutineScope = CoroutineScope(Dispatchers.Main + job)
     private val TAG = "StationHistoryService"
 
     private var stationIDTrainGoingTo: Int? = null
-
+    var _locationLLiveDate = MutableLiveData<Location_Response>()
+    private var notificationManager: NotificationManager? = null
+    lateinit var notificationCustomLayout: RemoteViews
 
     private var trainLocationsDitanceAfter = arrayListOf<TrainConverterDistanceModel>()
     private var trainLocationsDitanceBefore = arrayListOf<TrainConverterDistanceModel>()
@@ -42,13 +53,16 @@ class StationHistoryService : LifecycleService() {
     lateinit var insertNewStationHistroyItemToDatabase: InsertNewStationHistroyItemToDatabase
 
     @Inject
-    lateinit var getLiveLoctationFromApi: GetLiveLoctationFromApi
+    lateinit var getUserCurrantLocationJustOnce: GetUserCurrantLocationJustOnce
 
     @Inject
     lateinit var getAllStations: GetAllStations
 
     @Inject
     lateinit var getStationById: GetStationById
+
+    @Inject
+    lateinit var context: Context
 
 
     @Inject
@@ -58,9 +72,11 @@ class StationHistoryService : LifecycleService() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
+        bindNotificationItem()
+        startForeground(NOTIFICATION_ID!!,getStationAlarmNotification())
         //first we should compute train speed
         coroutineScope.launch {
-            getLiveLoctationFromApi(getUserCurrantTrainIntoSharedPrefrences()!!) {
+            getUserCurrantLocationJustOnce() {
                 when (it) {
                     is Resource.Success -> {
                         Log.i(TAG, "${it.data}")
@@ -118,7 +134,7 @@ class StationHistoryService : LifecycleService() {
             }
             // waiting 30 seconds for getting the second location
             delay(30000)
-            getLiveLoctationFromApi(getUserCurrantTrainIntoSharedPrefrences()!!) {
+            getUserCurrantLocationJustOnce() {
                 when (it) {
                     is Resource.Success -> {
                         Log.i(TAG, "Location after 30 seconds ${it.data}")
@@ -149,12 +165,9 @@ class StationHistoryService : LifecycleService() {
 
                         //decide side
                         for (i in 1..trainLocationsDitanceBefore.size - 1) {
-                            if (trainLocationsDitanceBefore.get(i).distance <= trainLocationsDitanceAfter.get(
-                                    i
-                                ).distance &&
-                                trainLocationsDitanceBefore.get(i).trainId == trainLocationsDitanceAfter.get(
-                                    i
-                                ).trainId
+                            if (trainLocationsDitanceBefore.get(i).distance <= trainLocationsDitanceAfter.get(i).distance
+                                &&
+                                trainLocationsDitanceBefore.get(i).trainId == trainLocationsDitanceAfter.get(i).trainId
                                 && trainLocationsDitanceBefore.get(i).trainId == nearbyStationBefore &&
                                 trainLocationsDitanceAfter.get(i).trainId == nearbyStationAfter
                             ) {
@@ -184,6 +197,7 @@ class StationHistoryService : LifecycleService() {
                         // compute train  Speed = Distance / Time
                         trainSpeed = (distance / duration)
                         Log.i(TAG, "Train Speed ${trainSpeed} KM/H")
+                        getStationPostion()
                     }
 
                     is Resource.Loading -> {
@@ -202,9 +216,16 @@ class StationHistoryService : LifecycleService() {
         }
 
 
+
+
+
+    }
+
+    fun getStationPostion(){
         //here will set alarm for the stations after that station
         //first get station postion
         coroutineScope.launch {
+            Log.i(TAG, "stationIDTrainGoingTo ${stationIDTrainGoingTo}")
             getStationById(stationIDTrainGoingTo) {
                 when (it) {
                     is Resource.Loading -> {
@@ -254,10 +275,7 @@ class StationHistoryService : LifecycleService() {
                 }
             }
         }
-
-
     }
-
 
     private fun getDistanceInKM(
         startLat: Double,
@@ -305,6 +323,93 @@ class StationHistoryService : LifecycleService() {
     }
 
     fun getStationHistoryItemsfromdatabase(){
+        coroutineScope.launch (Dispatchers.IO){
+            getStationHistroyItemsFromDatabase(){
+                when(it){
+                    is Resource.Loading->{
+                        Log.i(TAG,"getting station history alarms...")
+                    }
+                    is Resource.Failure->{
+                        Log.e(TAG,"${it.error}")
+                    }
+                    is Resource.Success->{
+                        Log.i(TAG,"${it.data}")
+                        setData(it.data[0].stationName,it.data[0].duration)
+                    }
+                    else -> {}
+                }
+            }
+        }
+    }
 
+    fun getNotification(): Notification {
+        val packageName = applicationContext.packageName
+        val notification =
+            NotificationCompat.Builder(this, CHANNEL_ID!!).setContentTitle("Stations History")
+                .setSmallIcon(R.drawable.app_logo)
+                .setOnlyAlertOnce(true) // Set to true to update notification without showing popup
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCustomContentView(notificationCustomLayout)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notification.setChannelId(CHANNEL_ID)
+        }
+        return notification.build()
+    }
+    companion object {
+        private var trainID: Int? = null
+        private val CHANNEL_ID: String? = "126"
+        private val NOTIFICATION_ID: Int? = 111
+    }
+    fun getStationAlarmNotification(): Notification {
+        val packageName = applicationContext.packageName
+        val notification =
+            NotificationCompat.Builder(this, CHANNEL_ID!! + 1)
+                .setContentTitle("Stations History")
+                .setSmallIcon(R.drawable.app_logo)
+                .setOnlyAlertOnce(true) // Set to true to update notification without showing popup
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setVibrate(longArrayOf(100, 200, 300, 400, 500)) // Set custom vibration pattern
+                .setCustomContentView(notificationCustomLayout)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            notification.setChannelId(CHANNEL_ID + 1)
+        }
+        return notification.build()
+    }
+
+    fun bindNotificationItem() {
+        // Set the custom layout for the notification item using data binding
+//        notificationCustomLayout = TrackTrainCustomNotificationLayoutBinding.inflate(
+//            LayoutInflater.from(this), null, false
+//        )
+        notificationCustomLayout = RemoteViews(
+            packageName,R.layout.station_history_notification
+        )
+    }
+    fun setData(stationname:String?,stationDuration:Double?){
+        val handler = Handler()
+        val notificationId = 1
+        val updateIntervalMillis = 1000L // 1 second
+
+        // Start the timer
+        var elapsedTime = stationDuration
+        val updateRunnable = object : Runnable {
+            override fun run() {
+                elapsedTime = elapsedTime?.plus(updateIntervalMillis)
+
+                // Build the updated notification
+                val notificationBuilder = NotificationCompat.Builder(context, CHANNEL_ID!!)
+                    .setSmallIcon(R.drawable.logo_icon_white)
+                    .setContentTitle("${stationname}")
+                    .setContentText("Elapsed time: ${elapsedTime?.div(1000)} seconds")
+
+                val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                notificationManager.notify(notificationId, notificationBuilder.build())
+
+                // Schedule the next update
+                handler.postDelayed(this, updateIntervalMillis)
+            }
+        }
+
+        handler.postDelayed(updateRunnable, updateIntervalMillis)
     }
 }

@@ -52,6 +52,8 @@
                 android:layout_marginEnd="@dimen/_30sdp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
+                android:checked="@{viewmodel.switchStationHistoryState}"
+                android:onCheckedChanged="@{(buttonView, isChecked) -> viewmodel.onSwitchChanged(isChecked)}"
                 android:layout_marginTop="8dp"
                 android:layout_weight="1.8"
                 app:useMaterialThemeColors="false" />
