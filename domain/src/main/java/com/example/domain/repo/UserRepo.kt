@@ -259,6 +259,19 @@ interface UserRepo {
         result: (Resource<String>) -> Unit
     )
 
+    suspend fun insertLocationItemToDatabase(
+        locationItemEntity: LocationItemEntity,
+        result: (Resource<String>) -> Unit
+    )
+
+    suspend fun updateLocationItemFromDatabase(
+        locationItemEntity: LocationItemEntity, result: (Resource<String>) -> Unit
+    )
+
+    suspend fun deleteLocationItemFromDatabase(
+        locationID: Long, result: (Resource<String>) -> Unit
+    )
+
     suspend fun insertNewTrainItemToDatabase(
         trainItemEntity: TrainItemEntity,
         result: (Resource<String>) -> Unit

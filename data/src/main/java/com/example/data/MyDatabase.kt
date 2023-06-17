@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.domain.entity.*
 
-@Database(entities = [StationAlarmEntity::class, UserItemEntity::class, TrainItemEntity::class, TicketItemEntity::class, MessageItemEntity::class,StationHistoryAlarmEntity::class, NewsItemEntity::class], version = 3)
+@Database(entities = [StationAlarmEntity::class, UserItemEntity::class, TrainItemEntity::class, TicketItemEntity::class, MessageItemEntity::class,StationHistoryAlarmEntity::class, NewsItemEntity::class, LocationItemEntity::class], version = 3)
 abstract class MyDatabase : RoomDatabase() {
 
     abstract fun stationAlarmDao(): StationAlarmDao
@@ -16,6 +16,7 @@ abstract class MyDatabase : RoomDatabase() {
     abstract fun MessageItemEntityDao(): MessageItemEntityDao
     abstract fun StationHistoryAlarmDao(): StationHistoryAlarmDao
     abstract fun NewsItemEntityDao(): NewsItemEntityDao
+    abstract fun LocationItemEntityDao(): LocationItemEntityDao
 
     companion object {
         @Volatile

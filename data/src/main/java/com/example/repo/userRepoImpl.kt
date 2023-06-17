@@ -154,6 +154,42 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun insertLocationItemToDatabase(
+        locationItemEntity: LocationItemEntity,
+        result: (Resource<String>) -> Unit
+    ) {
+        try {
+            myDatabase.LocationItemEntityDao().insertLocationItemEntity(locationItemEntity)
+            result.invoke(Resource.Success("Successfully added Location data item in database"))
+        } catch (e: Exception) {
+            result.invoke(Resource.Failure("Failed inserting LocationItemToDatabase ---> ${e.message}"))
+        }
+    }
+
+    override suspend fun updateLocationItemFromDatabase(
+        locationItemEntity: LocationItemEntity,
+        result: (Resource<String>) -> Unit
+    ) {
+        try {
+            myDatabase.LocationItemEntityDao().updateLocationItemEntity(locationItemEntity)
+            result.invoke(Resource.Success("Successfully updated location data in database"))
+        } catch (e: Exception) {
+            result.invoke(Resource.Failure("Failed updating locationItemEntity.. ---> ${e.message}"))
+        }
+    }
+
+    override suspend fun deleteLocationItemFromDatabase(
+        locationID: Long,
+        result: (Resource<String>) -> Unit
+    ) {
+        try {
+            myDatabase.LocationItemEntityDao().deleteLocationItemEntity(locationID)
+            result.invoke(Resource.Success("Successfully deleted location"))
+        } catch (e: Exception) {
+            result.invoke(Resource.Failure("Failed deleting location---> ${e.message}"))
+        }
+    }
+
     override suspend fun insertNewTrainItemToDatabase(
         trainItemEntity: TrainItemEntity,
         result: (Resource<String>) -> Unit

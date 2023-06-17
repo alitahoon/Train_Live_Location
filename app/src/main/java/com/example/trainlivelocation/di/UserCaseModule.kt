@@ -402,7 +402,20 @@ object UserCaseModule {
         return InsertNewsItemToDatabase(userRepo)
     }
 
+    @Provides
+    fun ProvideInsertLocationItemToDatabase(userRepo: UserRepo): InsertLocationItemToDatabase {
+        return InsertLocationItemToDatabase(userRepo)
+    }
 
+    @Provides
+    fun ProvideUpdateLocationItemFromDatabase(userRepo: UserRepo): UpdateLocationItemFromDatabase {
+        return UpdateLocationItemFromDatabase(userRepo)
+    }
+
+    @Provides
+    fun ProvideDeleteLocationItemFromDatabase(userRepo: UserRepo): DeleteLocationItemFromDatabase {
+        return DeleteLocationItemFromDatabase(userRepo)
+    }
 
 
 }
