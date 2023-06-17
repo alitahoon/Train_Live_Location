@@ -7,7 +7,6 @@ import androidx.room.RoomDatabase
 import com.example.domain.entity.*
 
 @Database(entities = [StationAlarmEntity::class, UserItemEntity::class, TrainItemEntity::class, TicketItemEntity::class, MessageItemEntity::class,StationHistoryAlarmEntity::class], version = 3)
-@Database(entities = [StationAlarmEntity::class, UserItemEntity::class, TrainItemEntity::class, TicketItemEntityDao::class, MessageItemEntity::class], version = 1)
 abstract class MyDatabase : RoomDatabase() {
 
     abstract fun stationAlarmDao(): StationAlarmDao
