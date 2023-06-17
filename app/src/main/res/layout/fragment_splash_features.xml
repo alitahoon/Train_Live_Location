@@ -1,122 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.splash_features"
     android:orientation="vertical"
-    android:gravity="center"
-    android:background="@color/white">
+    android:background="@color/DarkPrimaryColor">
 
-    <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/_30sdp"
-        android:paddingVertical="@dimen/_10sdp"
-        android:gravity="center">
-        <ImageView
-            app:srcCompat="@drawable/location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_10sdp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/features1"
-            android:textColor="@color/new_UI_color"
-            android:gravity="center"
-            android:textSize="@dimen/_25ssp"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginHorizontal="@dimen/_30sdp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/_30sdp"
-        android:paddingVertical="@dimen/_10sdp"
-        android:gravity="center">
-        <ImageView
-            app:srcCompat="@drawable/baseline_add_alert_24"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_10sdp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/features2"
-            android:textColor="@color/new_UI_color"
-            android:gravity="center"
-            android:textSize="@dimen/_25ssp"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+    <com.airbnb.lottie.LottieAnimationView
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
         android:layout_marginTop="@dimen/_100sdp"
-        android:paddingVertical="@dimen/_10sdp"
-        android:gravity="center">
-        <ImageView
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:layout_marginHorizontal="1dp"
-            android:background="@drawable/circle_dark_blue"
-            android:layout_marginLeft="@dimen/_15sdp"
-            android:layout_marginRight="@dimen/_15sdp"/>
-        <ImageView
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:layout_marginHorizontal="@dimen/_1sdp"
-            android:background="@drawable/circle_light_blue"
-            android:layout_marginLeft="@dimen/_15sdp"
-            android:layout_marginRight="@dimen/_15sdp"/>
-        <ImageView
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:layout_marginHorizontal="@dimen/_1sdp"
-            android:background="@drawable/circle_light_blue"
-            android:layout_marginLeft="@dimen/_15sdp"
-            android:layout_marginRight="@dimen/_15sdp"/>
-        <ImageView
-            android:layout_width="@dimen/_20sdp"
-            android:layout_height="@dimen/_20sdp"
-            android:layout_marginHorizontal="@dimen/_1sdp"
-            android:background="@drawable/circle_light_blue"
-            android:layout_marginLeft="@dimen/_15sdp"
-            android:layout_marginRight="@dimen/_15sdp"/>
-    </LinearLayout>
+        android:id="@+id/splashFeatureLotti"
+        android:layout_width="@dimen/_150sdp"
+        android:layout_height="@dimen/_150sdp"
+        android:layout_centerHorizontal="true"
+        app:lottie_rawRes="@raw/location_track" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/splashFeatureTitle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="@dimen/_30sdp"
-        android:layout_marginBottom="@dimen/_1sdp"
-        android:paddingVertical="@dimen/_10sdp"
-        android:gravity="center">
-        <Button
-            android:id="@+id/signup_btn_signup"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/next"
-            android:textAllCaps="true"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:textSize="@dimen/_30ssp"
-            android:layout_weight="1"
-            android:layout_marginLeft="@dimen/_90sdp"
-            android:layout_marginRight="@dimen/_90sdp"
-            android:background="@drawable/signin_fragment_btn_shape" />
-    </LinearLayout>
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/splashFeatureLotti"
+        android:padding="@dimen/_15sdp"
+        android:text="Feature Title"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_14ssp"
+        android:textStyle="bold" />
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/splashFeaturePara"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/splashFeatureTitle"
+        android:padding="@dimen/_15sdp"
+        android:text="Feature splashFeatureTitlesplashFeatureTitlesplashFeatureTitlesplashFeatureTitlesplashFeatureTitlesplashFeatureTitlesplashFeatureTitlesplashFeatureTitle"
+        android:textColor="@color/textHintColorFirst"
+        android:textSize="@dimen/_14ssp"
+         />
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/splashFeaturePara"
+        android:paddingVertical="@dimen/_10sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:text="Next"
+        app:cornerRadius="@dimen/_15sdp"
+        android:paddingHorizontal="@dimen/_50sdp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/white" />
+
+
+</RelativeLayout>
