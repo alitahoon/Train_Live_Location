@@ -1,5 +1,8 @@
 package com.example.domain.entity
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
 @Entity(tableName = "stationAlarm")
 data class StationAlarmEntity (
@@ -11,10 +14,3 @@ data class StationAlarmEntity (
     @ColumnInfo(name = "longitude") val longitude: Double,
     @ColumnInfo(name = "latitude") val latitude: Double
         )
-
-data class StationAlarmEntity(
-    val alarmName:String,
-    val distance: Int,
-    val longitude: Double,
-    val latitude: Double
-)
