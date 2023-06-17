@@ -250,6 +250,15 @@ interface UserRepo {
         result: (Resource<ArrayList<UserItemEntity>>) -> Unit
     )
 
+    suspend fun getNewsItemFromDatabase(
+        result: (Resource<ArrayList<NewsItemEntity>>) -> Unit
+    )
+
+    suspend fun insertNewsItemToDatabase(
+        newsItemEntity: NewsItemEntity,
+        result: (Resource<String>) -> Unit
+    )
+
     suspend fun insertNewTrainItemToDatabase(
         trainItemEntity: TrainItemEntity,
         result: (Resource<String>) -> Unit

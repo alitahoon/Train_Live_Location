@@ -392,6 +392,15 @@ object UserCaseModule {
         return GetAllReport(userRepo)
     }
 
+    @Provides
+    fun ProvideGetNewsItemFromDatabase(userRepo: UserRepo): GetNewsItemFromDatabase {
+        return GetNewsItemFromDatabase(userRepo)
+    }
+
+    @Provides
+    fun ProvideInsertNewsItemToDatabase(userRepo: UserRepo): InsertNewsItemToDatabase {
+        return InsertNewsItemToDatabase(userRepo)
+    }
 
 
 

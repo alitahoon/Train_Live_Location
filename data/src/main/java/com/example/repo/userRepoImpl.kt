@@ -128,6 +128,32 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun getNewsItemFromDatabase(result: (Resource<ArrayList<NewsItemEntity>>) -> Unit) {
+        try {
+            result.invoke(
+                Resource.Success(
+                    ArrayList(
+                        myDatabase.NewsItemEntityDao().getAllNewsItemEntity()
+                    )
+                )
+            )
+        } catch (e: Exception) {
+            result.invoke(Resource.Failure("Failed getting NewsItemFromDatabase ---> ${e.message}"))
+        }
+    }
+
+    override suspend fun insertNewsItemToDatabase(
+        newsItemEntity: NewsItemEntity,
+        result: (Resource<String>) -> Unit
+    ) {
+        try {
+            myDatabase.NewsItemEntityDao().insertNewsItemEntity(newsItemEntity)
+            result.invoke(Resource.Success("Successfully added news data item in database"))
+        } catch (e: Exception) {
+            result.invoke(Resource.Failure("Failed inserting NewsItemToDatabase ---> ${e.message}"))
+        }
+    }
+
     override suspend fun insertNewTrainItemToDatabase(
         trainItemEntity: TrainItemEntity,
         result: (Resource<String>) -> Unit
