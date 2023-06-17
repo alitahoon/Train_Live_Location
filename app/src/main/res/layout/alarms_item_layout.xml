@@ -27,6 +27,7 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/alarm_station_delete_button"
                 android:onClick="@{() -> listener.OnDeleteAlarmButtonClicked(alarm)}"
+                android:onClick="@{() -> listener.OnButtonEdtitClicked(alarm)}"
                 android:layout_gravity="end"
                 android:padding="@dimen/_5sdp"
                 android:background="@drawable/profile_top_shape"

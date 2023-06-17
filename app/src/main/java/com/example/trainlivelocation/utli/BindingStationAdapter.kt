@@ -12,7 +12,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.NumberPicker
 import android.widget.ProgressBar
-import android.widget.Switch
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
@@ -102,16 +101,6 @@ fun setAdapter(
     }
 }
 
-@BindingAdapter("setAlarmsAdapter")
-fun setAdapter(
-    recyclerView: RecyclerView,
-    adapter: StationAlarmAdapterCustomAdapter
-) {
-    adapter?.let {
-        recyclerView.adapter = it
-    }
-}
-
 
 @BindingAdapter("setDocotrRCVAdapter")
 fun setAdapter(
@@ -192,6 +181,15 @@ fun setAdapter(
     }
 }
 
+@BindingAdapter("setAlarmsAdapter")
+fun setAdapter(
+    recyclerView: RecyclerView,
+    adapter: StationAlarmAdapterCustomAdapter
+) {
+    adapter?.let {
+        recyclerView.adapter = it
+    }
+}
 
 @BindingAdapter("setAddressFromLocation")
 fun setAddressFromLocation(

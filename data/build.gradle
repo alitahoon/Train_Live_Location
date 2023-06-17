@@ -56,6 +56,7 @@ dependencies {
     annotationProcessor 'androidx.room:room-compiler:2.4.0-beta01'
     kapt "androidx.room:room-compiler:2.4.0"
 
+
     // Coroutines support for Room
     implementation "androidx.room:room-ktx:2.4.0"
     // Add the dependency for the Cloud Storage library

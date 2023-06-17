@@ -137,6 +137,8 @@ class userRepoImpl(
                 )
             )
         } catch (e: Exception) {
+            result.invoke(Resource.Success(ArrayList(myDatabase.UserItemEntityDao().getAllUserItemEntity())))
+        }catch (e:Exception){
             result.invoke(Resource.Failure("Failed getting UserItemFromDatabase ---> ${e.message}"))
         }
     }
@@ -155,7 +157,7 @@ class userRepoImpl(
 
     override suspend fun getNewTrainItemFromDatabase(result: (Resource<ArrayList<TrainItemEntity>>) -> Unit) {
         try {
-            result.invoke(
+           result.invoke(
                 Resource.Success(
                     ArrayList(
                         myDatabase.TrainItemEntityDao().getAllTrainItemEntity()
@@ -163,6 +165,8 @@ class userRepoImpl(
                 )
             )
         } catch (e: Exception) {
+            result.invoke(Resource.Success(ArrayList(myDatabase.TrainItemEntityDao().getAllTrainItemEntity())))
+        }catch (e:Exception){
             result.invoke(Resource.Failure("Failed getting TrainItemFromDatabase ---> ${e.message}"))
         }
     }
@@ -189,6 +193,8 @@ class userRepoImpl(
                 )
             )
         } catch (e: Exception) {
+            result.invoke(Resource.Success(ArrayList(myDatabase.TicketItemEntityDao().getAllTicketItemEntity())))
+        }catch (e:Exception){
             result.invoke(Resource.Failure("Failed getting TicketItemFromDatabase ---> ${e.message}"))
         }
     }
@@ -215,6 +221,8 @@ class userRepoImpl(
                 )
             )
         } catch (e: Exception) {
+            result.invoke(Resource.Success(ArrayList(myDatabase.MessageItemEntityDao().getAllMessageItemEntity())))
+        }catch (e:Exception){
             result.invoke(Resource.Failure("Failed getting MessageItemFromDatabase ---> ${e.message}"))
         }
     }
