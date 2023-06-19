@@ -343,6 +343,10 @@ object UserCaseModule {
         return GettingTrainlocationFromApi(userRepo)
     }
 
+    @Provides
+    fun ProvideInsertnewDirctionRouteInDatabase(userRepo: UserRepo): InsertnewDirctionRouteInDatabase {
+        return InsertnewDirctionRouteInDatabase(userRepo)
+    }
 
 
     @Provides

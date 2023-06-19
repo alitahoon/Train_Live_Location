@@ -268,6 +268,17 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun insertnewDirctionRouteInDatabase(
+        routeDirctionEntity: RouteDirctionEntity,
+        result: (Resource<String>) -> Unit
+    ) {
+        try {
+            myDatabase.RouteDirctionsEntityDao().insertTrainItemEntity(routeDirctionEntity)
+            result.invoke(Resource.Success("Successfully added route data item in database"))
+        } catch (e: Exception) {
+            result.invoke(Resource.Failure("Failed inserting Route Item To Database ---> ${e.message}"))
+        }    }
+
     override suspend fun insertNewStationAlarm(
         stationAlarmEntity: StationAlarmEntity,
         result: (Resource<String>) -> Unit

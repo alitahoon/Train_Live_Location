@@ -337,6 +337,7 @@ interface UserRepo {
         result: (Resource<OpenRouteDirectionResult>) -> Unit
     )
     suspend fun insertnewDirctionRouteInDatabase(
+        routeDirctionEntity: RouteDirctionEntity,
         result: (Resource<String>) -> Unit
     )
 
