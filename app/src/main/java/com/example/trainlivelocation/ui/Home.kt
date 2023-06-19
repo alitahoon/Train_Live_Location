@@ -26,10 +26,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.domain.entity.Location_Response
-import com.example.domain.entity.StationResponseItem
-import com.example.domain.entity.StationSydny
-import com.example.domain.entity.UserResponseItem
+import com.example.domain.entity.*
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentHomeBinding
 import com.example.trainlivelocation.utli.*
@@ -444,61 +441,96 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
 
                     }
 
-                    var c: Int? = 1
-                    getAllStationsRouteParrllel()
-//                    homeViewModel!!.getLocationDirctions(origin1!!, destination1!!)
-                    homeViewModel!!.dirction.observe(viewLifecycleOwner, Observer {
-                        when (it) {
-                            is Resource.Loading -> {
-                                Log.i(TAG, "getting directions...")
+                    //check if routes all ready exists in database
+                    homeViewModel!!.gettingRoutesFromDatabase()
+                    homeViewModel!!.getRoutes.observe(viewLifecycleOwner, Observer {
+                        when(it){
+                            is Resource.Loading->{
+                                Log.i(TAG,"getting routes directions from database ")
                             }
-                            is Resource.Success -> {
-                                Log.i(TAG, "Success ${it.data}")
-                                if (it.data != null) {
-                                    // Decode the polyline string to LatLng points
-                                    val points = PolyUtil.decode(it.data.polyline)
+                            is Resource.Success->{
+                                Log.e(TAG,"${it.data}")
+                                if (it.data.isEmpty()){
+                                    var c: Int? = 1
+                                    getAllStationsRouteParrllel()
+                                    homeViewModel!!.dirction.observe(viewLifecycleOwner, Observer {
+                                        when (it) {
+                                            is Resource.Loading -> {
+                                                Log.i(TAG, "getting directions...")
+                                            }
+                                            is Resource.Success -> {
+                                                Log.i(TAG, "Success ${it.data}")
+                                                if (it.data != null) {
+                                                    // Decode the polyline string to LatLng points
+                                                    val points = PolyUtil.decode(it.data.polyline)
+                                                    val routeInfo=it.data
 
-                                    // Draw the polyline on the map
-                                    val polylineOptions = PolylineOptions()
-                                        .color(Color.BLUE)
-                                        .width(5f)
-                                        .addAll(points)
-                                    Log.i(TAG, "draw poly.......")
-                                    googleMap.addPolyline(polylineOptions)
-                                }
+                                                    //inserting routes in database
+                                                    homeViewModel!!.insertingRoutesInDatabase(RouteDirctionEntity(
+                                                        polyline =routeInfo.polyline, distance = routeInfo.distance,
+                                                        duration = routeInfo.duration
+                                                    ))
+
+                                                    homeViewModel!!.insertRoutes.observe(viewLifecycleOwner,
+                                                        Observer {
+                                                            when(it){
+                                                                is Resource.Loading->{
+                                                                    Log.i(TAG, "inserting routes into database ")
+
+                                                                }
+                                                                is Resource.Success->{
+                                                                    Log.i(TAG, "${it.data}")
+                                                                }
+                                                                is Resource.Failure->{
+                                                                    Log.e(TAG, "${it.error}")
+                                                                }
+                                                                else -> {
+
+                                                                }
+                                                            }
+                                                        })
+
+                                                    // Draw the polyline on the map
+                                                    val polylineOptions = PolylineOptions()
+                                                        .color(Color.BLUE)
+                                                        .width(5f)
+                                                        .addAll(points)
+                                                    Log.i(TAG, "draw poly.......")
+                                                    googleMap.addPolyline(polylineOptions)
+                                                }
 
 
-                                // Mark Stations with Markers
-                                val builder = LatLngBounds.builder()
-                                // Alternatively, create a BitmapDescriptor from a vector drawable
-
-                                for (station in stationSydny) {
-                                    Log.i(TAG, "station ---> ${station.stationName}")
-                                    builder.include(station.stationSydnyvalue)
-                                    val markerOptions = MarkerOptions()
-                                        .position(station.stationSydnyvalue)
-                                        .title(station.stationName)
-                                        .icon(bitmapDescriptorFromVector(R.drawable.station_in_map))
-
-                                    val marker = googleMap.addMarker(markerOptions)
-                                    marker!!.showInfoWindow() // Show info window without requiring a click
-                                }
-
-                                // Move camera to include all the markers with zoom
-                                val bounds = builder.build()
-                                val padding = 100 // Adjust as needed
-                                val cameraUpdate =
-                                    CameraUpdateFactory.newLatLngBounds(bounds, padding)
-
-                                // Calculate the zoom level based on the bounding box
-                                val width = resources.displayMetrics.widthPixels
-                                val height = resources.displayMetrics.heightPixels
-                                val zoomLevel = calculateZoomLevel(bounds, width, height)
-
-                                // Zoom the camera to the desired zoom level
-                                val zoomUpdate = CameraUpdateFactory.zoomTo(zoomLevel)
-                                // Apply both camera updates
-                                mMap.animateCamera(cameraUpdate)
+//                                                // Mark Stations with Markers
+//                                                val builder = LatLngBounds.builder()
+//                                                // Alternatively, create a BitmapDescriptor from a vector drawable
+//
+//                                                for (station in stationSydny) {
+//                                                    Log.i(TAG, "station ---> ${station.stationName}")
+//                                                    builder.include(station.stationSydnyvalue)
+//                                                    val markerOptions = MarkerOptions()
+//                                                        .position(station.stationSydnyvalue)
+//                                                        .title(station.stationName)
+//                                                        .icon(bitmapDescriptorFromVector(R.drawable.station_in_map))
+//
+//                                                    val marker = googleMap.addMarker(markerOptions)
+//                                                    marker!!.showInfoWindow() // Show info window without requiring a click
+//                                                }
+//
+//                                                // Move camera to include all the markers with zoom
+//                                                val bounds = builder.build()
+//                                                val padding = 100 // Adjust as needed
+//                                                val cameraUpdate =
+//                                                    CameraUpdateFactory.newLatLngBounds(bounds, padding)
+//
+//                                                // Calculate the zoom level based on the bounding box
+//                                                val width = resources.displayMetrics.widthPixels
+//                                                val height = resources.displayMetrics.heightPixels
+//                                                val zoomLevel = calculateZoomLevel(bounds, width, height)
+//
+//                                                // Zoom the camera to the desired zoom level
+//                                                val zoomUpdate = CameraUpdateFactory.zoomTo(zoomLevel)
+//                                                // Apply both camera updates
+//                                                mMap.animateCamera(cameraUpdate)
 //                                c = c!! + 1
 //                                homeViewModel!!.getLocationDirctions(
 //                                    origin2!!,
@@ -665,40 +697,138 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
 //                                        c = 1
 //                                    }
 //                                }
+//                                                var trainMarker:Marker?=null
+//                                                val markerOptions = MarkerOptions()
+//                                                    .position(LatLng(stationSydny[0].stationSydnyvalue.latitude,stationSydny[0].stationSydnyvalue.longitude))
+//                                                    .title("Train Location")
+//                                                trainMarker = googleMap.addMarker(markerOptions)
+//                                                trainMarker!!.showInfoWindow() // Show info window without requiring a click
+//                                                trainMarker.isVisible=false
+//                                                lifecycleScope.launch (Dispatchers.IO){
+//                                                    _locationStateFlow.collect{
+//                                                        Log.i(TAG, "Location from  locationStateFlow collecting ${it}")
+//                                                        if (it.latitude != 0.0 ){
+//                                                            lifecycleScope.launch (Dispatchers.Main){
+//                                                                if (trainMarker.isVisible){
+//                                                                    trainMarker.setPosition(LatLng(it.longitude,it.latitude))
+//                                                                }else{
+//                                                                    trainMarker.isVisible=true
+//                                                                }
+//                                                            }
+//
+//                                                        }
+//                                                    }
+//
+//                                                }
+
+
+                                            }
+                                            is Resource.Failure -> {
+                                                Log.e(TAG, "Faieled ${it.error}")
+
+                                            }
+                                            else -> {}
+                                        }
+                                    }
+                                    )
+                                }else{
+                                    when(it){
+                                        is Resource.Success->{
+                                            Log.e(TAG,"${it.data}")
+                                            Log.i(TAG, "Success ${it.data}")
+                                            if (it.data.isNotEmpty()) {
+                                                // Decode the polyline string to LatLng points
+                                                for (route in it.data){
+
+
+                                                    val points = PolyUtil.decode(route.polyline)
+
+                                                    // Draw the polyline on the map
+                                                    val polylineOptions = PolylineOptions()
+                                                        .color(Color.BLUE)
+                                                        .width(5f)
+                                                        .addAll(points)
+                                                    Log.i(TAG, "draw poly.......")
+                                                    googleMap.addPolyline(polylineOptions)
+                                                }
+                                            }
+                                        }
+                                        is Resource.Loading->{
+                                            Log.i(TAG,"getlting routes from database ")
+                                        }
+                                        is Resource.Failure->{
+                                            Log.e(TAG,"${it.error}")
+                                        }
+                                        else -> {}
+                                    }
+                                }
+
+
+                                // Mark Stations with Markers
+                                val builder = LatLngBounds.builder()
+                                // Alternatively, create a BitmapDescriptor from a vector drawable
+
+                                for (station in stationSydny) {
+                                    Log.i(TAG, "station ---> ${station.stationName}")
+                                    builder.include(station.stationSydnyvalue)
+                                    val markerOptions = MarkerOptions()
+                                        .position(station.stationSydnyvalue)
+                                        .title(station.stationName)
+                                        .icon(bitmapDescriptorFromVector(R.drawable.station_in_map))
+
+                                    val marker = googleMap.addMarker(markerOptions)
+                                    marker!!.showInfoWindow() // Show info window without requiring a click
+                                }
+
+                                // Move camera to include all the markers with zoom
+                                val bounds = builder.build()
+                                val padding = 100 // Adjust as needed
+                                val cameraUpdate =
+                                    CameraUpdateFactory.newLatLngBounds(bounds, padding)
+
+                                // Calculate the zoom level based on the bounding box
+                                val width = resources.displayMetrics.widthPixels
+                                val height = resources.displayMetrics.heightPixels
+                                val zoomLevel = calculateZoomLevel(bounds, width, height)
+
+                                // Zoom the camera to the desired zoom level
+                                val zoomUpdate = CameraUpdateFactory.zoomTo(zoomLevel)
+                                // Apply both camera updates
+                                mMap.animateCamera(cameraUpdate)
                                 var trainMarker:Marker?=null
                                 val markerOptions = MarkerOptions()
                                     .position(LatLng(stationSydny[0].stationSydnyvalue.latitude,stationSydny[0].stationSydnyvalue.longitude))
                                     .title("Train Location")
                                 trainMarker = googleMap.addMarker(markerOptions)
                                 trainMarker!!.showInfoWindow() // Show info window without requiring a click
-                                trainMarker.isVisible=false
+                                trainMarker!!.isVisible=false
                                 lifecycleScope.launch (Dispatchers.IO){
                                     _locationStateFlow.collect{
                                         Log.i(TAG, "Location from  locationStateFlow collecting ${it}")
-                                       if (it.latitude != 0.0 ){
-                                           lifecycleScope.launch (Dispatchers.Main){
-                                               if (trainMarker.isVisible){
-                                                   trainMarker.setPosition(LatLng(it.longitude,it.latitude))
-                                               }else{
-                                                   trainMarker.isVisible=true
-                                               }
-                                           }
+                                        if (it.latitude != 0.0 ){
+                                            lifecycleScope.launch (Dispatchers.Main){
+                                                if (trainMarker!!.isVisible){
+                                                    trainMarker!!.setPosition(LatLng(it.longitude,it.latitude))
+                                                }else{
+                                                    trainMarker!!.isVisible=true
+                                                }
+                                            }
 
-                                       }
+                                        }
                                     }
 
                                 }
-
-
                             }
-                            is Resource.Failure -> {
-                                Log.e(TAG, "Faieled ${it.error}")
+                            is Resource.Failure->{
+                                Log.e(TAG,"${it.error}")
 
                             }
                             else -> {}
                         }
-                    }
-                    )
+                    })
+
+
+
 
                 }
                 else -> {
@@ -760,23 +890,10 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
     }
 
     @Subscribe
-    fun onMyEvent(trainLocation: Resource<Location_Response>) {
+    fun onMyEvent(trainLocation: Location_Response) {
         // Handle the event here
 //        _trainLocationFromService.value = trainLocation
-        when(trainLocation){
-            is Resource.Loading->{
-                Log.i(TAG,"getting Location ")
-            }
-            is Resource.Success->{
-                _locationStateFlow.value=trainLocation.data
-            }
-            is Resource.Failure->{
-                Log.e(TAG,"${trainLocation.error}")
-            }
-            else -> {
-
-            }
-        }
+        _locationStateFlow.value=trainLocation
     }
 
     fun getAllStationsRouteParrllel(){

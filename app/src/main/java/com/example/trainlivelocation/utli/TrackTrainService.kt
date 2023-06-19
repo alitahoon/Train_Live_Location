@@ -160,7 +160,7 @@ class TrackTrainService() : LifecycleService() {
                             _locationStateFlow.value=it.data
                             val resource=it
                             coroutineScope.launch (Dispatchers.Main){
-                                eventBus.post(resource)
+                                eventBus.post(resource.data)
                                 setData(trainId)
                             }
 

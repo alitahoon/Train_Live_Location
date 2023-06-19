@@ -178,6 +178,19 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun getDirctionRoutesFromDatabase(result: (Resource<ArrayList<RouteDirctionEntity>>) -> Unit) {
+        try {
+            result.invoke(
+                Resource.Success(
+                    ArrayList(
+                        myDatabase.RouteDirctionsEntityDao().getAllTrainItemEntity()
+                    )
+                )
+            )
+        } catch (e: Exception) {
+            result.invoke(Resource.Failure("Failed getting Route Dirctions Items ---> ${e.message}"))
+        }    }
+
     override suspend fun deleteLocationItemFromDatabase(
         locationID: Long,
         result: (Resource<String>) -> Unit

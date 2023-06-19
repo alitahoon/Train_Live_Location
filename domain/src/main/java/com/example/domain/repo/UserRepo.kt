@@ -333,12 +333,17 @@ interface UserRepo {
     )
 
     suspend fun getWayPointsLocationDirctionFromOpenRouteService(
-        wayPoints:List<LatLng>,
+        wayPoints: List<LatLng>,
         result: (Resource<OpenRouteDirectionResult>) -> Unit
     )
+
     suspend fun insertnewDirctionRouteInDatabase(
         routeDirctionEntity: RouteDirctionEntity,
         result: (Resource<String>) -> Unit
+    )
+
+    suspend fun getDirctionRoutesFromDatabase(
+        result: (Resource<ArrayList<RouteDirctionEntity>>) -> Unit
     )
 
 

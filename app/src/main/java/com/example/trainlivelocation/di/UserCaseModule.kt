@@ -378,6 +378,7 @@ object UserCaseModule {
     fun ProvideGetStationHistroyItemsFromDatabase(userRepo: UserRepo): GetStationHistroyItemsFromDatabase {
         return GetStationHistroyItemsFromDatabase(userRepo)
     }
+
     @Provides
     fun ProvideGetNews(userRepo: UserRepo): GetNews {
         return GetNews(userRepo)
@@ -387,14 +388,17 @@ object UserCaseModule {
     fun ProvideGetNewsById(userRepo: UserRepo): GetNewsById {
         return GetNewsById(userRepo)
     }
+
     @Provides
     fun ProvideCreateNews(userRepo: UserRepo): CreateNews {
         return CreateNews(userRepo)
     }
+
     @Provides
     fun ProvideGetAllReport(userRepo: UserRepo): GetAllReport {
         return GetAllReport(userRepo)
     }
+
 
     @Provides
     fun ProvideGetNewsItemFromDatabase(userRepo: UserRepo): GetNewsItemFromDatabase {
@@ -419,6 +423,13 @@ object UserCaseModule {
     @Provides
     fun ProvideDeleteLocationItemFromDatabase(userRepo: UserRepo): DeleteLocationItemFromDatabase {
         return DeleteLocationItemFromDatabase(userRepo)
+
+
+    }
+
+    @Provides
+    fun ProvideGetDirctionRoutesFromDatabase(userRepo: UserRepo): GetDirctionRoutesFromDatabase {
+        return GetDirctionRoutesFromDatabase(userRepo)
     }
 
 

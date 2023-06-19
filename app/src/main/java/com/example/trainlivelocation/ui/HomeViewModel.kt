@@ -12,10 +12,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.domain.entity.NotificatonToken
-import com.example.domain.entity.OpenRouteDirectionResult
-import com.example.domain.entity.StationResponseItem
-import com.example.domain.entity.UserResponseItem
+import com.example.domain.entity.*
 import com.example.domain.usecase.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.model.DirectionsResult
@@ -34,7 +31,9 @@ class HomeViewModel @Inject constructor(
     private val getAllStations: GetAllStations,
     private val getLocationDirctionFromGoogleMapsApi: GetLocationDirctionFromGoogleMapsApi,
     private val getLocationDirctionFromOpenRouteService: GetLocationDirctionFromOpenRouteService,
-    private val getWayPointsLocationDirctionFromOpenRouteService: GetWayPointsLocationDirctionFromOpenRouteService
+    private val getWayPointsLocationDirctionFromOpenRouteService: GetWayPointsLocationDirctionFromOpenRouteService,
+    private val insertnewDirctionRouteInDatabase: InsertnewDirctionRouteInDatabase,
+    private val getDirctionRoutesFromDatabase: GetDirctionRoutesFromDatabase
 ) : ViewModel() {
     private val TAG: String = "HomeViewModel"
     private val sharedPrefFile = "UserToken"
@@ -78,6 +77,17 @@ class HomeViewModel @Inject constructor(
     private val _stations: MutableLiveData<Resource<ArrayList<StationResponseItem>>?> =
         MutableLiveData(null)
     val stations: LiveData<Resource<ArrayList<StationResponseItem>>?> = _stations
+
+
+    private val _insertRoutes: MutableLiveData<Resource<String>?> =
+        MutableLiveData(null)
+    val insertRoutes: LiveData<Resource<String>?> = _insertRoutes
+
+
+
+    private val _getRoutes: MutableLiveData<Resource<ArrayList<RouteDirctionEntity>>?> =
+        MutableLiveData(null)
+    val getRoutes: LiveData<Resource<ArrayList<RouteDirctionEntity>>?> = _getRoutes
 
 
     private val _dirction: MutableLiveData<Resource<OpenRouteDirectionResult>?> =
@@ -190,6 +200,33 @@ class HomeViewModel @Inject constructor(
                 getAllStations {
                     val child2 = launch(Dispatchers.Main) {
                         _stations.value = it
+                    }
+                }
+            }
+            child1.join()
+        }
+    }
+
+    fun insertingRoutesInDatabase(routeDirctionEntity: RouteDirctionEntity){
+        viewModelScope.launch {
+            _insertRoutes.value=Resource.Loading
+            val child1=launch (Dispatchers.IO){
+                insertnewDirctionRouteInDatabase(routeDirctionEntity){
+                    val child2=launch(Dispatchers.Main) {
+                        _insertRoutes.value=it
+                    }
+                }
+            }
+            child1.join()
+        }
+    }
+    fun gettingRoutesFromDatabase(){
+        viewModelScope.launch {
+            _getRoutes.value=Resource.Loading
+            val child1=launch (Dispatchers.IO){
+                getDirctionRoutesFromDatabase(){
+                    val child2=launch(Dispatchers.Main) {
+                        _getRoutes.value=it
                     }
                 }
             }
