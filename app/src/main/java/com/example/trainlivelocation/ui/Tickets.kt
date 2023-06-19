@@ -1,6 +1,7 @@
 package com.example.trainlivelocation.ui
 
 import Resource
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -9,8 +10,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.domain.entity.*
 import com.example.trainlivelocation.R
@@ -31,10 +34,12 @@ class Tickets : Fragment(), Station_Dialog_Listener, Train_Dialog_Listener,
     private var trainId: Int? = null
     private var trainDegree: String? = null
     private var trainNumber: String? = null
+    private var stationAlarmService:Intent?=null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        stationAlarmService= Intent(requireActivity(),
+            StationAlarmService::class.java)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -80,58 +85,61 @@ class Tickets : Fragment(), Station_Dialog_Listener, Train_Dialog_Listener,
                             val ticket=it
                             Log.i(TAG, "Success To book ticket--->{${it.data}}")
 
-                            //here we will subscribe to train events
-                            ticketsViewModel.subscribeTrain(
-                                binding.ticketTxtTrainId.text!!.toString().toInt()
-                            )
-                            ticketsViewModel.subscribeTrain.observe(viewLifecycleOwner, Observer {
-                                when (it) {
-                                    is Resource.Success -> {
-                                        Log.i(TAG, "${it.data}")
+//                            //here we will subscribe to train events
+//                            ticketsViewModel.subscribeTrain(
+//                                binding.ticketTxtTrainId.text!!.toString().toInt()
+//                            )
+//                            ticketsViewModel.subscribeTrain.observe(viewLifecycleOwner, Observer {
+//                                when (it) {
+//                                    is Resource.Success -> {
+//                                        Log.i(TAG, "${it.data}")
+//
+//                                    }
+//                                    is Resource.Failure -> {
+//                                        Log.i(TAG, "${it.error}")
+//                                    }
+//                                    is Resource.Loading -> {
+//                                        Log.i(TAG, "Waiting subscribe posts added for this train")
+//                                    }
+//                                    else -> {
+//                                        Log.i(TAG, "else brunch subscribeTrain...")
+//                                    }
+//                                }
+//                            })
 
-                                        //set alarm for arriving station
-                                        ticketsViewModel.insertAlarm(StationAlarmEntity(
-                                            apiId = ticket.data.id,
-                                            name = arrivalStation!!,
-                                            distance = 1,
-                                            latitude = Lati!!,
-                                            longitude = Longi!!
-                                        ))
-                                        ticketsViewModel.addAlarm.observe(viewLifecycleOwner,
-                                            Observer {
-                                                when(it){
-                                                    is Resource.Loading->{
-                                                        Log.i(TAG,"Waiting for adding alarm")
-                                                    }
-                                                    is Resource.Failure->{
-                                                        Log.i(TAG,"${it.error}")
-                                                    }
-                                                    is Resource.Success->{
-                                                        Log.i(TAG,"${it.data}")
+
+                            //set alarm for arriving station
+                            ticketsViewModel.insertAlarm(StationAlarmEntity(
+                                apiId = ticket.data.id,
+                                name = arrivalStation!!,
+                                distance = 1,
+                                latitude = Lati!!,
+                                longitude = Longi!!
+                            ))
+                            ticketsViewModel.addAlarm.observe(viewLifecycleOwner,
+                                Observer {
+                                    when(it){
+                                        is Resource.Loading->{
+                                            Log.i(TAG,"Waiting for adding alarm")
+                                        }
+                                        is Resource.Failure->{
+                                            Log.i(TAG,"${it.error}")
+                                        }
+                                        is Resource.Success->{
+                                            Log.i(TAG,"${it.data}")
 //                                                        displaySnackbarSuccess(
 //                                                            requireContext(),
 //                                                            binding.root,
 //                                                            "Ticket Booked Successfully...",
 //                                                            R.raw.success_auth, R.color.PrimaryColor
 //                                                        )
-                                                        showCustomToast(requireContext(),"Ticket Booked Successfully...")
+                                            startStationAlarmsService()
+                                            showCustomToast(requireContext(),"Ticket Booked Successfully...")
 
-                                                    }
-                                                    else -> {}
-                                                }
-                                            })
+                                        }
+                                        else -> {}
                                     }
-                                    is Resource.Failure -> {
-                                        Log.i(TAG, "${it.error}")
-                                    }
-                                    is Resource.Loading -> {
-                                        Log.i(TAG, "Waiting subscribe posts added for this train")
-                                    }
-                                    else -> {
-                                        Log.i(TAG, "else brunch subscribeTrain...")
-                                    }
-                                }
-                            })
+                                })
 
                         }
                         is Resource.Failure -> {
@@ -219,7 +227,20 @@ class Tickets : Fragment(), Station_Dialog_Listener, Train_Dialog_Listener,
         binding.ticketTxtArrival.setText(StationName)
         arrivalStation = StationName
         Lati=latitude
-        Longi=latitude
+        Longi=longitude
+    }
+
+
+    fun startStationAlarmsService(){
+
+        if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
+            ContextCompat.startForegroundService(requireContext(),stationAlarmService!!)
+        }else{
+            requireContext().startService(stationAlarmService)
+        }
+    }
+    fun stopStationAlarmService(){
+        requireContext().stopService(stationAlarmService)
     }
 
 

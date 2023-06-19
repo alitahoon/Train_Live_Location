@@ -29,7 +29,9 @@ import com.example.trainlivelocation.databinding.TrackTrainCustomNotificationLay
 import com.google.maps.model.LatLng
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.greenrobot.eventbus.EventBus
+import java.io.IOException
 import java.util.*
 import javax.inject.Inject
 
@@ -42,11 +44,13 @@ class TrackTrainService() : LifecycleService() {
 
     //    val trainId: Int? = trainID
     var _locationLLiveDate = MutableLiveData<Location_Response>()
+    var _locationStateFlow :MutableStateFlow<Location_Response> = MutableStateFlow(Location_Response(0.0,0.0))
     private var notificationManager: NotificationManager? = null
     lateinit var notificationCustomLayout: RemoteViews
     private val TAG: String = "TrackTrainService"
 
     val eventBus: EventBus = EventBus.getDefault()
+    val coroutineScope = CoroutineScope(Dispatchers.IO + job)
 
 
     @Inject
@@ -73,6 +77,7 @@ class TrackTrainService() : LifecycleService() {
                 NotificationManager.IMPORTANCE_HIGH
             )
             notificationManager?.createNotificationChannel(notificationChannel)
+
         }
     }
 
@@ -81,29 +86,21 @@ class TrackTrainService() : LifecycleService() {
         val notification =
             NotificationCompat.Builder(this, CHANNEL_ID!!).setContentTitle("Train Location Update")
                 .setSmallIcon(R.drawable.app_logo)
-                .setOnlyAlertOnce(true) // Set to true to update notification without showing popup
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setCustomContentView(notificationCustomLayout)
+                .setOnlyAlertOnce(true) // Set to true to update notification without showing popup
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notification.setChannelId(CHANNEL_ID)
         }
         return notification.build()
     }
 
-    fun getStationAlarmNotification(stationName: String?): Notification {
-        val packageName = applicationContext.packageName
-        val notification =
-            NotificationCompat.Builder(this, CHANNEL_ID!! + 1)
-                .setContentTitle("${stationName} is almost nearby ....")
-                .setSmallIcon(R.drawable.app_logo)
-                .setOnlyAlertOnce(true) // Set to true to update notification without showing popup
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setVibrate(longArrayOf(100, 200, 300, 400, 500)) // Set custom vibration pattern
-                .setCustomContentView(notificationCustomLayout)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            notification.setChannelId(CHANNEL_ID + 1)
-        }
-        return notification.build()
+    fun getStationAlarmNotification(stationName: String?) {
+
+        startForeground(NOTIFICATION_ID!!,getNotification())
+
+
     }
 
     fun bindNotificationItem() {
@@ -120,10 +117,9 @@ class TrackTrainService() : LifecycleService() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
         // Perform desired actions here
-        trainID = intent!!.getIntExtra("trainId", 0)
-        trainID
+        trainID = getUserCurrantTrainIntoSharedPrefrences()
         // Create a new handler and runnable to fetch data from the API
-        fetchDataFromApi(trainID)
+        fetchDataFromApi(1)
 //
 //        handler = Handler()
 //        runnable = Runnable {
@@ -150,20 +146,25 @@ class TrackTrainService() : LifecycleService() {
     }
 
     private fun fetchDataFromApi(trainId: Int?) {
-        val coroutineScope = CoroutineScope(Dispatchers.Main + job)
-        coroutineScope.launch {
+        coroutineScope.launch (Dispatchers.IO){
             Log.i(TAG, "From courtine scope")
             try {
                 getLiveLoctationFromApi(trainId!!){
-                    eventBus.post(it)
                     when(it){
                         is Resource.Loading->{
                             Log.i(TAG,"getting train Location From API")
                         }
                         is Resource.Success->{
                             Log.i(TAG, "success  ${it.data}")
-                            _locationLLiveDate.value = it.data!!
-                            setData(trainId)
+//                            _locationLLiveDate.value = it.data!!
+                            _locationStateFlow.value=it.data
+                            val resource=it
+                            coroutineScope.launch (Dispatchers.Main){
+                                eventBus.post(resource)
+                                setData(trainId)
+                            }
+
+
                         }
                         is Resource.Failure->{
 
@@ -186,91 +187,71 @@ class TrackTrainService() : LifecycleService() {
             R.id.track_train_custom_notification_train_txt_id,
             "TrainId : ${trainID}"
         )
-        _locationLLiveDate.observe(this, androidx.lifecycle.Observer {
-            Log.i(
-                "setAddressFromLocation",
-                "${it.longitude},${it.latitude}"
-            )
-            notificationCustomLayout!!.setTextViewText(
-                R.id.track_train_custom_notification_train_longitude_value,
-                "Longitude : ${it.longitude}"
-            )
-            notificationCustomLayout!!.setTextViewText(
-                R.id.track_train_custom_notification_train_latitude_value,
-                "Longitude : ${it.latitude}"
-            )
-            val geocoder: Geocoder
-            val addresses: List<Address>?
-            geocoder = Geocoder(context, Locale.getDefault())
-
-            addresses = geocoder.getFromLocation(
-                it.longitude, it.latitude, 4
-            ) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-
-            val address: String =
-                addresses!![0].getAddressLine(0) // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-
-            if (addresses[0] == null) {
-                val city: String = addresses!![0].locality
-                val state: String = addresses!![0].adminArea
-                val country: String = addresses!![0].countryName
-                val postalCode: String = addresses!![0].postalCode
-                val knownName: String =
-                    addresses!![0].featureName // Only if available else return NULL
+        coroutineScope.launch(Dispatchers.IO) {
+            _locationStateFlow.collect {
+                Log.i(
+                    "setAddressFromLocation",
+                    "${it.longitude},${it.latitude}"
+                )
+                notificationCustomLayout!!.setTextViewText(
+                    R.id.track_train_custom_notification_train_longitude_value,
+                    "Longitude : ${it.latitude}"
+                )
+                notificationCustomLayout!!.setTextViewText(
+                    R.id.track_train_custom_notification_train_latitude_value,
+                    "Longitude : ${it.longitude}"
+                )
                 notificationCustomLayout!!.setTextViewText(
                     R.id.track_train_custom_notification_train_address_value,
-                    "Address : "
+                    "Address : ${getLocationInfo(it.longitude,it.latitude)}"
                 )
-            } else {
-                //get first name of state
-                val stateArr = addresses!![0].adminArea.split(" ")
-                notificationCustomLayout!!.setTextViewText(
-                    R.id.track_train_custom_notification_train_address_value,
-                    "Address : ${addresses!![0].locality},${stateArr[0]},${addresses!![0].countryName}"
-                )
-
-            }
-        })
-        startForeground(NOTIFICATION_ID!!, getNotification())
-
-        //check for alarm
-        val courtineScope = CoroutineScope(Dispatchers.Main)
-        courtineScope.launch {
-            getStationAlarmsFromDatabase() {
-                when (it) {
-                    is Resource.Loading -> {
-                        Log.i(TAG, "getting Alarms from Database...")
-                    }
-                    is Resource.Failure -> {
-                        Log.i(TAG, "${it.error}")
-                    }
-                    is Resource.Success -> {
-                        for (station in it.data) {
-                            //observe location of train
-                            _locationLLiveDate.observe(
-                                this@TrackTrainService,
-                                androidx.lifecycle.Observer {
-                                    if (it != null) {
-                                        //compute distance
-                                        val distance:Int = getDistanceInKM(it.latitude, it.longitude,station.latitude,station.longitude).toInt()
-                                        Log.i(TAG,"distance between staion ${station.name} and train = ${distance}")
-                                        if (distance <= station.distance){
-                                            getStationAlarmNotification(station.name)
-                                        }
-                                    }
-                                })
-                        }
-                    }
-
-                    else -> {
-
-                    }
-                }
+                startForeground(NOTIFICATION_ID!!, getNotification())
+                fetchDataFromApi(trainId)
             }
         }
 
 
-        fetchDataFromApi(trainId)
+
+//
+//        //check for alarm
+//        val courtineScope = CoroutineScope(Dispatchers.Main)
+//        courtineScope.launch {
+//            getStationAlarmsFromDatabase() {
+//                when (it) {
+//                    is Resource.Loading -> {
+//                        Log.i(TAG, "getting Alarms from Database...")
+//                    }
+//                    is Resource.Failure -> {
+//                        Log.i(TAG, "${it.error}")
+//                    }
+//                    is Resource.Success -> {
+//                        for (station in it.data) {
+//                            //observe location of train
+//                            Log.i(TAG,"Stations ${station}")
+//                            _locationLLiveDate.observe(
+//                                this@TrackTrainService,
+//                                androidx.lifecycle.Observer {
+//                                    if (it != null) {
+//                                        //compute distance
+//                                        val distance:Int = getDistanceInKM( it.longitude,it.latitude,station.latitude,station.longitude).toInt()
+//                                        Log.i(TAG,"distance between staion ${station.name} and train = ${distance}")
+//                                        if (distance <= station.distance){
+//
+//                                            getStationAlarmNotification(station.name)
+//                                        }
+//                                    }
+//                                })
+//                        }
+//                    }
+//
+//                    else -> {
+//
+//                    }
+//                }
+//            }
+//        }
+
+
     }
 
 
@@ -289,5 +270,43 @@ class TrackTrainService() : LifecycleService() {
         Location.distanceBetween(startLat, startLon, endLat, endLon, results)
         Log.e(TAG, "distance In Kilo Meter ${results[0].toDouble() / 1000}")
         return results[0].toDouble() / 1000
+    }
+
+
+    fun getLocationInfo(latitude: Double, longitude: Double): String {
+        try {
+            val geocoder = Geocoder(applicationContext)
+            val addresses = geocoder.getFromLocation(latitude, longitude, 1)
+
+            if (addresses!!.isNotEmpty()) {
+                val address = addresses[0]
+                if (address == null){
+                    return " No Address Available for this place..."
+                }else{
+                    // Process the address information
+                    val city: String = addresses!![0].locality
+                    val state: String = addresses!![0].adminArea
+                    val country: String = addresses!![0].countryName
+                    val postalCode: String = addresses!![0].postalCode
+                    val knownName: String = addresses!![0].featureName // Only if available else return NULL
+                    return "$city,$state,$country"
+                }
+
+            }else{
+                return " No Address Available for this place..."
+            }
+        } catch (e: IOException) {
+            if (e.message?.contains("Service not Available") == true) {
+                // Handle the "Service not Available" exception
+                // Display an error message to the user or provide an alternative solution
+                return "Geocoder service is not available."
+            } else {
+                // Handle other IOExceptions
+                // Log the exception or handle it based on your requirements
+                return "Error occurred while retrieving location information."
+            }
+        }
+
+        return "No location information found."
     }
 }

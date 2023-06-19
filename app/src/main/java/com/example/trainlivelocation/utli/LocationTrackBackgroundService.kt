@@ -129,10 +129,34 @@ class LocationTrackBackgroundService() : LifecycleService() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        val trainID=intent!!.getIntExtra("trainId",0)
-        val userID=intent.getIntExtra("userId",0)
-        setTrainId_userId(trainID,userID)
-        Log.i(TAG,"trainID ${trainID} , userID ${userID}")
+
+
+        val sharedPreferences = getSharedPreferences("MyTrainLocationPreferences", Context.MODE_PRIVATE)
+
+        // Retrieve the saved values from SharedPreferences
+        val savedTrainId = sharedPreferences.getInt("trainId", 0)
+        val savedUserId = sharedPreferences.getInt("userId", 0)
+
+        if (savedTrainId == 0 && savedUserId == 0) {
+            // Values are not saved yet, save them now
+            val trainId = intent?.getIntExtra("trainId", 0)
+            val userId = intent?.getIntExtra("userId", 0)
+
+            if (trainId != null && userId != null) {
+                with(sharedPreferences.edit()) {
+                    putInt("trainId", trainId)
+                    putInt("userId", userId)
+                    apply()
+                }
+
+                Log.i(TAG, "First time service run, trainId $trainId, userId $userId")
+            } else {
+                Log.i(TAG, "trainId or userId is null")
+            }
+        } else {
+            // Values are already saved, use the saved values
+            Log.i(TAG, "Service already ran, saved trainId $savedTrainId, saved userId $savedUserId")
+        }
         return START_STICKY
     }
     private fun uploadLocationToApi(locationRequest: Location_Request) {

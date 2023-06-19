@@ -55,6 +55,7 @@ class SettingsViewModel @Inject constructor(
     var _locationLLiveDate = MutableLiveData<Location_Response>()
     private var stationsList = arrayListOf<StationResponseItem>()
     private var currantTrainLocation = LatLng()
+    private var trainLocationAfter30s = LatLng()
 
     private var currantTime = Date()
     private var trainSpeed: Double? = null
@@ -114,6 +115,7 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun getDistanceBetweenUserInTrainAndStation(){
         viewModelScope.launch {
             getUserCurrantLocationJustOnce() {
@@ -135,7 +137,7 @@ class SettingsViewModel @Inject constructor(
                                         for (station in stationsList) {
                                             trainLocationsDitanceBefore.add(
                                                 TrainConverterDistanceModel(
-                                                    119,
+                                                    station.id,
                                                     getDistanceInKM(
                                                         currantTrainLocation.lat,
                                                         currantTrainLocation.lng,
@@ -145,6 +147,7 @@ class SettingsViewModel @Inject constructor(
                                                 )
                                             )
                                         }
+                                        getBestStation()
 
                                     }
                                     is Resource.Failure -> {
@@ -186,7 +189,7 @@ class SettingsViewModel @Inject constructor(
                 when (it) {
                     is Resource.Success -> {
                         Log.i(TAG, "Location after 30 seconds ${it.data}")
-
+                        trainLocationAfter30s = LatLng(it.data.latitude, it.data.longitude)
                         //first we should detect train side
                         //get distance between train and stations after 30s
                         for (station in stationsList) {
@@ -202,55 +205,13 @@ class SettingsViewModel @Inject constructor(
                                 )
                             )
                         }
-
-                        //get nearby station before
-                        var nearbyStationBefore =
-                            trainLocationsDitanceBefore.minByOrNull { it.distance }!!.trainId
-
-                        //get nearby station After
-                        var nearbyStationAfter =
-                            trainLocationsDitanceAfter.minByOrNull { it.distance }!!.trainId
-
-                        //decide side
-                        for (i in 1..trainLocationsDitanceBefore.size - 1) {
-                            if (trainLocationsDitanceBefore.get(i).distance <= trainLocationsDitanceAfter.get(i).distance
-                                &&
-                                trainLocationsDitanceBefore.get(i).trainId == trainLocationsDitanceAfter.get(i).trainId
-                                && trainLocationsDitanceBefore.get(i).trainId == nearbyStationBefore &&
-                                trainLocationsDitanceAfter.get(i).trainId == nearbyStationAfter
-                            ) {
-                                //the station is going to this station
-                                stationIDTrainGoingTo = trainLocationsDitanceBefore.get(i).trainId
-                            }
-                            else{
-                                Log.e(TAG,"Error getting best station....")
-                            }
-
-                        }
-
-
+                        computeTrainSpeed()
                         //now we will compute time it takes between fetching tow locations
-                        val duration: Double = java.time.Duration.between(
-                            currantTime.toInstant(),
-                            Calendar.getInstance().time.toInstant()
-                        ).toHours().toDouble()
-
-                        Log.i(TAG, "Duration $duration")
-
-                        //here we are getting distance
-                        val distance: Double = getDistanceInKM(
-                            currantTrainLocation.lat,
-                            currantTrainLocation.lng,
-                            it.data.latitude,
-                            it.data.longitude
-                        )
-
-                        // compute train  Speed = Distance / Time
-                        trainSpeed = (distance / duration)
-                        Log.i(TAG, "Train Speed ${trainSpeed} KM/H")
-                        getStationPostion()
+//                        val duration: Double = java.time.Duration.between(
+//                            currantTime.toInstant(),
+//                            Calendar.getInstance().time.toInstant()
+//                        ).toHours().toDouble()
                     }
-
                     is Resource.Loading -> {
                         Log.i(TAG, "getting train Location after 30 seconds....")
                     }
@@ -263,6 +224,56 @@ class SettingsViewModel @Inject constructor(
                     }
                 }
             }
+
+
+        }
+    }
+
+
+    fun computeTrainSpeed(){
+        val duration =  0.00833333333
+        Log.i(TAG, "Duration $duration")
+
+        //get nearby station before
+        var nearbyStationBefore =
+            trainLocationsDitanceBefore.minByOrNull { it.distance }!!.trainId
+
+        Log.i(TAG,"nearbyStationBefore ${nearbyStationBefore}")
+
+        //get nearby station After
+        var nearbyStationAfter =
+            trainLocationsDitanceAfter.minByOrNull { it.distance }!!.trainId
+        Log.i(TAG,"nearbyStationAfter ${nearbyStationAfter}")
+
+
+        //decide side
+        for (i in 1..trainLocationsDitanceBefore.size - 1) {
+            Log.i(TAG,"trainLocationsDitanceBefore.get(i).distance---->${trainLocationsDitanceBefore.get(i).distance}")
+            Log.i(TAG,"trainLocationsDitanceAfter.get(i).distance---->${trainLocationsDitanceAfter.get(i).distance}")
+            Log.i(TAG,"trainLocationsDitanceBefore.get(i).trainId---->${trainLocationsDitanceBefore.get(i).trainId}")
+            Log.i(TAG,"trainLocationsDitanceAfter.get(i).trainId---->${trainLocationsDitanceAfter.get(i).trainId}")
+            if (trainLocationsDitanceBefore.get(i).distance <= trainLocationsDitanceAfter.get(i).distance) {
+                //the station is going to this station
+                stationIDTrainGoingTo = trainLocationsDitanceBefore.get(i).trainId
+
+                //here we are getting distance
+                val distance: Double = getDistanceInKM(
+                    currantTrainLocation.lat,
+                    currantTrainLocation.lng,
+                    trainLocationAfter30s.lat,
+                    trainLocationAfter30s.lng
+                )
+
+                // compute train  Speed = Distance / Time
+                trainSpeed = (distance / duration)
+                Log.i(TAG, "Train Speed ${trainSpeed} KM/H")
+                getStationPostion()
+                break
+            }
+            else{
+                Log.e(TAG,"Error getting best station....")
+            }
+
         }
     }
 

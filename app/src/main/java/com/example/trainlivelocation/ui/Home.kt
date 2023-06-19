@@ -39,10 +39,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.PolyUtil
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import kotlin.math.log2
@@ -58,8 +56,76 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
     private var listener: HomeMapListener? = null
     private val _trainLocationFromService: MutableLiveData<Resource<Location_Response>> =
         MutableLiveData()
+    var _locationStateFlow : MutableStateFlow<Location_Response> = MutableStateFlow(
+        Location_Response(0.0,0.0)
+    )
+
     var trainLocationFromService: LiveData<Resource<Location_Response>> = _trainLocationFromService
 
+
+
+
+    var origin1: LatLng? = null// Ramsis(Cairo)
+    var destination1: LatLng? = null  // Shubra El-Kheima
+
+    var origin2: LatLng? = null// Qalyoub
+    var destination2: LatLng? = null  // Qalyoub Al , Balad
+
+    var origin3: LatLng? = null// al-qanater al-khairieh al-jadideh
+    var destination3: LatLng? = null  // Droh
+
+    var origin4: LatLng? = null// shatanov
+    var destination4: LatLng? = null  // al-halawasi al-balad
+
+    var origin5: LatLng? = null// al-halawasi
+    var destination5: LatLng? = null  // Ashmon
+
+
+    var origin6: LatLng? = null// al-halawasi
+    var destination6: LatLng? = null  // Ashmon
+
+    var origin7: LatLng? = null// al-halawasi
+    var destination7: LatLng? = null  // Ashmon
+
+    var origin8: LatLng? = null// al-halawasi
+    var destination8: LatLng? = null  // Ashmon
+
+    var origin9: LatLng? = null// al-halawasi
+    var destination9: LatLng? = null  // Ashmon
+
+    var origin10: LatLng? = null// al-halawasi
+    var destination10: LatLng? = null  // Ashmon
+
+    var origin11: LatLng? = null// al-halawasi
+    var destination11: LatLng? = null  // Ashmon
+
+    var origin12: LatLng? = null// al-halawasi
+    var destination12: LatLng? = null  // Ashmon
+
+
+    var origin13: LatLng? = null// al-halawasi
+    var destination13: LatLng? = null  // Ashmon
+
+    var origin14: LatLng? = null// al-halawasi
+    var destination14: LatLng? = null  // Ashmon
+
+    var origin15: LatLng? = null// al-halawasi
+    var destination15: LatLng? = null  // Ashmon
+
+    var origin16: LatLng? = null// al-halawasi
+    var destination16: LatLng? = null  // Ashmon
+
+    var origin17: LatLng? = null// al-halawasi
+    var destination17: LatLng? = null  // Ashmon
+
+    var origin18: LatLng? = null// al-halawasi
+    var destination18: LatLng? = null  // Ashmon
+
+    var origin19: LatLng? = null// al-halawasi
+    var destination19: LatLng? = null  // Ashmon
+
+    var origin20: LatLng? = null// al-halawasi
+    var destination20: LatLng? = null  // Ashmon
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -252,9 +318,10 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
         homeViewModel!!.getTrainLocationInbackground(trainId)
         var locationForegrondservice: Intent? =
             Intent(requireActivity(), TrackTrainService::class.java)
-        locationForegrondservice!!.putExtra(
-            "trainId", binding!!.homeTrackTrainIDTxt.text.toString().toInt()
-        )
+        insertUserCurrantTrainIntoSharedPrefrences(requireContext(),trainId)
+//        locationForegrondservice!!.putExtra(
+////            "trainId", binding!!.homeTrackTrainIDTxt.text.toString().toInt()
+//        )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             requireActivity().startForegroundService(locationForegrondservice)
             //check if track services is running
@@ -310,68 +377,6 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
                     Log.i(TAG, "${it.data}")
                     val stationSydny = genenrateStationsSydny(ArrayList(it.data.distinct()))
 
-
-                    var origin1: LatLng? = null// Ramsis(Cairo)
-                    var destination1: LatLng? = null  // Shubra El-Kheima
-
-                    var origin2: LatLng? = null// Qalyoub
-                    var destination2: LatLng? = null  // Qalyoub Al , Balad
-
-                    var origin3: LatLng? = null// al-qanater al-khairieh al-jadideh
-                    var destination3: LatLng? = null  // Droh
-
-                    var origin4: LatLng? = null// shatanov
-                    var destination4: LatLng? = null  // al-halawasi al-balad
-
-                    var origin5: LatLng? = null// al-halawasi
-                    var destination5: LatLng? = null  // Ashmon
-
-
-                    var origin6: LatLng? = null// al-halawasi
-                    var destination6: LatLng? = null  // Ashmon
-
-                    var origin7: LatLng? = null// al-halawasi
-                    var destination7: LatLng? = null  // Ashmon
-
-                    var origin8: LatLng? = null// al-halawasi
-                    var destination8: LatLng? = null  // Ashmon
-
-                    var origin9: LatLng? = null// al-halawasi
-                    var destination9: LatLng? = null  // Ashmon
-
-                    var origin10: LatLng? = null// al-halawasi
-                    var destination10: LatLng? = null  // Ashmon
-
-                    var origin11: LatLng? = null// al-halawasi
-                    var destination11: LatLng? = null  // Ashmon
-
-                    var origin12: LatLng? = null// al-halawasi
-                    var destination12: LatLng? = null  // Ashmon
-
-
-                    var origin13: LatLng? = null// al-halawasi
-                    var destination13: LatLng? = null  // Ashmon
-
-                    var origin14: LatLng? = null// al-halawasi
-                    var destination14: LatLng? = null  // Ashmon
-
-                    var origin15: LatLng? = null// al-halawasi
-                    var destination15: LatLng? = null  // Ashmon
-
-                    var origin16: LatLng? = null// al-halawasi
-                    var destination16: LatLng? = null  // Ashmon
-
-                    var origin17: LatLng? = null// al-halawasi
-                    var destination17: LatLng? = null  // Ashmon
-
-                    var origin18: LatLng? = null// al-halawasi
-                    var destination18: LatLng? = null  // Ashmon
-
-                    var origin19: LatLng? = null// al-halawasi
-                    var destination19: LatLng? = null  // Ashmon
-
-                    var origin20: LatLng? = null// al-halawasi
-                    var destination20: LatLng? = null  // Ashmon
 
                     val waypoints = mutableListOf<LatLng>()
                     // Draw Polyline for the route
@@ -440,7 +445,8 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
                     }
 
                     var c: Int? = 1
-                    homeViewModel!!.getLocationDirctions(origin1!!, destination1!!)
+                    getAllStationsRouteParrllel()
+//                    homeViewModel!!.getLocationDirctions(origin1!!, destination1!!)
                     homeViewModel!!.dirction.observe(viewLifecycleOwner, Observer {
                         when (it) {
                             is Resource.Loading -> {
@@ -478,190 +484,211 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
                                     marker!!.showInfoWindow() // Show info window without requiring a click
                                 }
 
-                                when (c) {
-                                    1 -> {
+                                // Move camera to include all the markers with zoom
+                                val bounds = builder.build()
+                                val padding = 100 // Adjust as needed
+                                val cameraUpdate =
+                                    CameraUpdateFactory.newLatLngBounds(bounds, padding)
 
-                                        // Move camera to include all the markers with zoom
-                                        val bounds = builder.build()
-                                        val padding = 100 // Adjust as needed
-                                        val cameraUpdate =
-                                            CameraUpdateFactory.newLatLngBounds(bounds, padding)
+                                // Calculate the zoom level based on the bounding box
+                                val width = resources.displayMetrics.widthPixels
+                                val height = resources.displayMetrics.heightPixels
+                                val zoomLevel = calculateZoomLevel(bounds, width, height)
 
-                                        // Calculate the zoom level based on the bounding box
-                                        val width = resources.displayMetrics.widthPixels
-                                        val height = resources.displayMetrics.heightPixels
-                                        val zoomLevel = calculateZoomLevel(bounds, width, height)
+                                // Zoom the camera to the desired zoom level
+                                val zoomUpdate = CameraUpdateFactory.zoomTo(zoomLevel)
+                                // Apply both camera updates
+                                mMap.animateCamera(cameraUpdate)
+//                                c = c!! + 1
+//                                homeViewModel!!.getLocationDirctions(
+//                                    origin2!!,
+//                                    destination2!!
+//                                )
 
-                                        // Zoom the camera to the desired zoom level
-                                        val zoomUpdate = CameraUpdateFactory.zoomTo(zoomLevel)
 
-                                        // Apply both camera updates
-                                        mMap.animateCamera(cameraUpdate)
-                                        c = c!! + 1
-                                        homeViewModel!!.getLocationDirctions(
-                                            origin2!!,
-                                            destination2!!
-                                        )
-
-                                    }
-                                    2 -> {
-
-                                        c = c!! + 1
-                                        homeViewModel!!.getLocationDirctions(
-                                            origin3!!,
-                                            destination3!!
-                                        )
-                                    }
-                                    3 -> {
-
-                                        c = c!! + 1
-                                        homeViewModel!!.getLocationDirctions(
-                                            origin4!!,
-                                            destination4!!
-                                        )
-                                    }
-                                    4 -> {
-
-                                        c = c!! + 1
-                                        homeViewModel!!.getLocationDirctions(
-                                            origin5!!,
-                                            destination5!!
-                                        )
-                                    }
-                                    5 -> {
-
-                                        c = c!! + 1
-                                        homeViewModel!!.getLocationDirctions(
-                                            origin6!!,
-                                            destination6!!
-                                        )
-                                    }
-                                    6 -> {
-
-                                        c = c!! + 1
-                                        homeViewModel!!.getLocationDirctions(
-                                            origin7!!,
-                                            destination7!!
-                                        )
-                                    }
-                                    7 -> {
-
-                                        c = c!! + 1
-                                        homeViewModel!!.getLocationDirctions(
-                                            origin8!!,
-                                            destination8!!
-                                        )
-                                    }
-                                    8 -> {
-
-                                        c = c!! + 1
-                                        homeViewModel!!.getLocationDirctions(
-                                            origin9!!,
-                                            destination9!!
-                                        )
-                                    }
-                                    9 -> {
-
-                                        c = c!! + 1
-                                        homeViewModel!!.getLocationDirctions(
-                                            origin10!!,
-                                            destination10!!
-                                        )
-                                    }
-                                    10 -> {
-                                        c = c!! + 1
-                                        homeViewModel!!.getLocationDirctions(
-                                            origin11!!,
-                                            destination11!!
-                                        )
-                                    }
-                                    11 -> {
-                                        c = c!! + 1
-                                        homeViewModel!!.getLocationDirctions(
-                                            origin12!!,
-                                            destination12!!
-                                        )
-                                    }
-                                    12 -> {
-                                        c = c!! + 1
-                                        homeViewModel!!.getLocationDirctions(
-                                            origin13!!,
-                                            destination13!!
-                                        )
-                                    }
-                                    13 -> {
-                                        c = c!! + 1
-                                        homeViewModel!!.getLocationDirctions(
-                                            origin14!!,
-                                            destination14!!
-                                        )
-                                    }
-                                    14 -> {
-                                        c = c!! + 1
-                                        homeViewModel!!.getLocationDirctions(
-                                            origin15!!,
-                                            destination15!!
-                                        )
-                                    }
-                                    15 -> {
-                                        c = c!! + 1
-                                        homeViewModel!!.getLocationDirctions(
-                                            origin16!!,
-                                            destination16!!
-                                        )
-                                    }
-                                    16 -> {
-                                        c = c!! + 1
-                                        homeViewModel!!.getLocationDirctions(
-                                            origin17!!,
-                                            destination17!!
-                                        )
-                                    }
-                                    17 -> {
-                                        c = c!! + 1
-                                        homeViewModel!!.getLocationDirctions(
-                                            origin18!!,
-                                            destination18!!
-                                        )
-                                    }
-                                    18 -> {
-                                        c = c!! + 1
-                                        homeViewModel!!.getLocationDirctions(
-                                            origin19!!,
-                                            destination19!!
-                                        )
-                                    }
-                                    19 -> {
-                                        c = 1
-                                    }19 -> {
-                                        c = 1
-                                    }
-                                }
+//                                when (c) {
+//                                    1 -> {
+//
+//                                        // Move camera to include all the markers with zoom
+//                                        val bounds = builder.build()
+//                                        val padding = 100 // Adjust as needed
+//                                        val cameraUpdate =
+//                                            CameraUpdateFactory.newLatLngBounds(bounds, padding)
+//
+//                                        // Calculate the zoom level based on the bounding box
+//                                        val width = resources.displayMetrics.widthPixels
+//                                        val height = resources.displayMetrics.heightPixels
+//                                        val zoomLevel = calculateZoomLevel(bounds, width, height)
+//
+//                                        // Zoom the camera to the desired zoom level
+//                                        val zoomUpdate = CameraUpdateFactory.zoomTo(zoomLevel)
+//
+//                                        // Apply both camera updates
+//                                        mMap.animateCamera(cameraUpdate)
+//                                        c = c!! + 1
+//                                        homeViewModel!!.getLocationDirctions(
+//                                            origin2!!,
+//                                            destination2!!
+//                                        )
+//
+//                                    }
+//                                    2 -> {
+//
+//                                        c = c!! + 1
+//                                        homeViewModel!!.getLocationDirctions(
+//                                            origin3!!,
+//                                            destination3!!
+//                                        )
+//                                    }
+//                                    3 -> {
+//
+//                                        c = c!! + 1
+//                                        homeViewModel!!.getLocationDirctions(
+//                                            origin4!!,
+//                                            destination4!!
+//                                        )
+//                                    }
+//                                    4 -> {
+//
+//                                        c = c!! + 1
+//                                        homeViewModel!!.getLocationDirctions(
+//                                            origin5!!,
+//                                            destination5!!
+//                                        )
+//                                    }
+//                                    5 -> {
+//
+//                                        c = c!! + 1
+//                                        homeViewModel!!.getLocationDirctions(
+//                                            origin6!!,
+//                                            destination6!!
+//                                        )
+//                                    }
+//                                    6 -> {
+//
+//                                        c = c!! + 1
+//                                        homeViewModel!!.getLocationDirctions(
+//                                            origin7!!,
+//                                            destination7!!
+//                                        )
+//                                    }
+//                                    7 -> {
+//
+//                                        c = c!! + 1
+//                                        homeViewModel!!.getLocationDirctions(
+//                                            origin8!!,
+//                                            destination8!!
+//                                        )
+//                                    }
+//                                    8 -> {
+//
+//                                        c = c!! + 1
+//                                        homeViewModel!!.getLocationDirctions(
+//                                            origin9!!,
+//                                            destination9!!
+//                                        )
+//                                    }
+//                                    9 -> {
+//
+//                                        c = c!! + 1
+//                                        homeViewModel!!.getLocationDirctions(
+//                                            origin10!!,
+//                                            destination10!!
+//                                        )
+//                                    }
+//                                    10 -> {
+//                                        c = c!! + 1
+//                                        homeViewModel!!.getLocationDirctions(
+//                                            origin11!!,
+//                                            destination11!!
+//                                        )
+//                                    }
+//                                    11 -> {
+//                                        c = c!! + 1
+//                                        homeViewModel!!.getLocationDirctions(
+//                                            origin12!!,
+//                                            destination12!!
+//                                        )
+//                                    }
+//                                    12 -> {
+//                                        c = c!! + 1
+//                                        homeViewModel!!.getLocationDirctions(
+//                                            origin13!!,
+//                                            destination13!!
+//                                        )
+//                                    }
+//                                    13 -> {
+//                                        c = c!! + 1
+//                                        homeViewModel!!.getLocationDirctions(
+//                                            origin14!!,
+//                                            destination14!!
+//                                        )
+//                                    }
+//                                    14 -> {
+//                                        c = c!! + 1
+//                                        homeViewModel!!.getLocationDirctions(
+//                                            origin15!!,
+//                                            destination15!!
+//                                        )
+//                                    }
+//                                    15 -> {
+//                                        c = c!! + 1
+//                                        homeViewModel!!.getLocationDirctions(
+//                                            origin16!!,
+//                                            destination16!!
+//                                        )
+//                                    }
+//                                    16 -> {
+//                                        c = c!! + 1
+//                                        homeViewModel!!.getLocationDirctions(
+//                                            origin17!!,
+//                                            destination17!!
+//                                        )
+//                                    }
+//                                    17 -> {
+//                                        c = c!! + 1
+//                                        homeViewModel!!.getLocationDirctions(
+//                                            origin18!!,
+//                                            destination18!!
+//                                        )
+//                                    }
+//                                    18 -> {
+//                                        c = c!! + 1
+//                                        homeViewModel!!.getLocationDirctions(
+//                                            origin19!!,
+//                                            destination19!!
+//                                        )
+//                                    }
+//                                    19 -> {
+//                                        c = 1
+//                                    }19 -> {
+//                                        c = 1
+//                                    }
+//                                }
                                 var trainMarker:Marker?=null
-                                trainLocationFromService.observe(viewLifecycleOwner, Observer {
-                                    when (it) {
-                                        is Resource.Loading -> {
-                                            Log.i(TAG, "getting train location.....")
-                                            if (trainMarker!=null){
-                                                trainMarker!!.remove()
-                                            }
-                                        }
-                                        is Resource.Success -> {
-                                            Log.i(TAG, "${it.data}")
-                                            val markerOptions = MarkerOptions()
-                                                .position(LatLng(it.data.longitude,it.data.latitude))
-                                                .title("Train Location")
-                                                .icon(bitmapDescriptorFromVector(R.drawable.train_marker))
-                                            trainMarker = googleMap.addMarker(markerOptions)
-                                            trainMarker!!.showInfoWindow() // Show info window without requiring a click
-                                            // Remove the marker
-                                        }
-                                        is Resource.Failure -> {
-                                            Log.i(TAG, "${it.error}")
-                                        }
-                                        else -> {}
+                                val markerOptions = MarkerOptions()
+                                    .position(LatLng(stationSydny[0].stationSydnyvalue.latitude,stationSydny[0].stationSydnyvalue.longitude))
+                                    .title("Train Location")
+                                trainMarker = googleMap.addMarker(markerOptions)
+                                trainMarker!!.showInfoWindow() // Show info window without requiring a click
+                                trainMarker.isVisible=false
+                                lifecycleScope.launch (Dispatchers.IO){
+                                    _locationStateFlow.collect{
+                                        Log.i(TAG, "Location from  locationStateFlow collecting ${it}")
+                                       if (it.latitude != 0.0 ){
+                                           lifecycleScope.launch (Dispatchers.Main){
+                                               if (trainMarker.isVisible){
+                                                   trainMarker.setPosition(LatLng(it.longitude,it.latitude))
+                                               }else{
+                                                   trainMarker.isVisible=true
+                                               }
+                                           }
+
+                                       }
                                     }
-                                })
+
+                                }
+
 
                             }
                             is Resource.Failure -> {
@@ -735,6 +762,71 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
     @Subscribe
     fun onMyEvent(trainLocation: Resource<Location_Response>) {
         // Handle the event here
-        _trainLocationFromService.value = trainLocation
+//        _trainLocationFromService.value = trainLocation
+        when(trainLocation){
+            is Resource.Loading->{
+                Log.i(TAG,"getting Location ")
+            }
+            is Resource.Success->{
+                _locationStateFlow.value=trainLocation.data
+            }
+            is Resource.Failure->{
+                Log.e(TAG,"${trainLocation.error}")
+            }
+            else -> {
+
+            }
+        }
     }
+
+    fun getAllStationsRouteParrllel(){
+        // Create a CoroutineScope
+        val coroutineScope = CoroutineScope(Dispatchers.Main)
+
+
+        val origin1Distenation1=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin1!!,destination1!!) }
+        val origin2Distenation2=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin2!!,destination2!!) }
+        val origin3Distenation3=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin3!!,destination3!!) }
+        val origin4Distenation4=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin4!!,destination4!!) }
+        val origin5Distenation5=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin5!!,destination5!!) }
+        val origin6Distenation6=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin6!!,destination6!!) }
+        val origin7Distenation7=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin7!!,destination7!!) }
+        val origin8Distenation8=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin8!!,destination8!!) }
+        val origin9Distenation9=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin9!!,destination9!!) }
+        val origin10Distenation10=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin10!!,destination10!!) }
+        val origin11Distenation11=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin11!!,destination11!!) }
+        val origin12Distenation12=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin12!!,destination12!!) }
+        val origin13Distenation13=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin13!!,destination13!!) }
+        val origin14Distenation14=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin14!!,destination14!!) }
+        val origin15Distenation15=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin15!!,destination15!!) }
+        val origin16Distenation16=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin16!!,destination16!!) }
+        val origin17Distenation17=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin17!!,destination17!!) }
+        val origin18Distenation18=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin18!!,destination18!!) }
+        val origin19Distenation19=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin19!!,destination19!!) }
+
+
+        coroutineScope.launch (Dispatchers.IO){
+            val result1=origin1Distenation1.await()
+            val result2=origin2Distenation2.await()
+            val result3=origin3Distenation3.await()
+            val result4=origin4Distenation4.await()
+            val result5=origin5Distenation5.await()
+            val result6=origin6Distenation6.await()
+            val result7=origin7Distenation7.await()
+            val result8=origin8Distenation8.await()
+            val result9=origin9Distenation9.await()
+            val result10=origin10Distenation10.await()
+            val result11=origin11Distenation11.await()
+            val result12=origin12Distenation12.await()
+            val result13=origin13Distenation13.await()
+            val result14=origin14Distenation14.await()
+            val result15=origin15Distenation15.await()
+            val result16=origin16Distenation16.await()
+            val result17=origin17Distenation17.await()
+            val result18=origin18Distenation18.await()
+            val result19=origin19Distenation19.await()
+        }
+
+    }
+
 }

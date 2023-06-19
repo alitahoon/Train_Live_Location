@@ -47,6 +47,19 @@ class HomeViewModel @Inject constructor(
     var passengersbtnClicked = SingleLiveEvent<Boolean>()
     var trainConverterbtnClicked = SingleLiveEvent<Boolean>()
 
+    companion object{
+        private var allReadyZooming=false
+
+    }
+
+    fun setZooming(zoom:Boolean){
+        allReadyZooming=true
+    }
+
+    fun isZooming():Boolean{
+        return allReadyZooming
+    }
+
     private var MAP_VIEW_Bundle: Bundle? = null
 
     var trainId: String? = null
@@ -146,7 +159,6 @@ class HomeViewModel @Inject constructor(
                     val child2 = launch(Dispatchers.Main) {
                         _dirction.value = it
                         Log.i(TAG, "from getLocationDirections method")
-                        delay(1000)
                     }
                 }
             }

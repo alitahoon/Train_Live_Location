@@ -336,6 +336,9 @@ interface UserRepo {
         wayPoints:List<LatLng>,
         result: (Resource<OpenRouteDirectionResult>) -> Unit
     )
+    suspend fun insertnewDirctionRouteInDatabase(
+        result: (Resource<String>) -> Unit
+    )
 
 
 }
