@@ -12,8 +12,9 @@ data class StationItemEntity(
     @ColumnInfo(name = "apiID") val apiID: Int,
     @ColumnInfo(name = "latitude") val latitude: Double,
     @ColumnInfo(name = "longitude") val longitude: Double,
+    @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "nextStation") val nextStation: String,
-    @ColumnInfo(name = "nextStation") val Postion: Int,
+    @ColumnInfo(name = "Postion") val Postion: Int,
     @ColumnInfo(name = "trainId") val trainId: Int,
 
 )

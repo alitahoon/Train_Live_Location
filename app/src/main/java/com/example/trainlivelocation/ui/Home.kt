@@ -53,13 +53,11 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
     private var listener: HomeMapListener? = null
     private val _trainLocationFromService: MutableLiveData<Resource<Location_Response>> =
         MutableLiveData()
-    var _locationStateFlow : MutableStateFlow<Location_Response> = MutableStateFlow(
-        Location_Response(0.0,0.0)
+    var _locationStateFlow: MutableStateFlow<Location_Response> = MutableStateFlow(
+        Location_Response(0.0, 0.0)
     )
 
     var trainLocationFromService: LiveData<Resource<Location_Response>> = _trainLocationFromService
-
-
 
 
     var origin1: LatLng? = null// Ramsis(Cairo)
@@ -318,7 +316,7 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
         homeViewModel!!.getTrainLocationInbackground(trainId)
         var locationForegrondservice: Intent? =
             Intent(requireActivity(), TrackTrainService::class.java)
-        insertUserCurrantTrainIntoSharedPrefrences(requireContext(),trainId)
+        insertUserCurrantTrainIntoSharedPrefrences(requireContext(), trainId)
 //        locationForegrondservice!!.putExtra(
 ////            "trainId", binding!!.homeTrackTrainIDTxt.text.toString().toInt()
 //        )
@@ -363,7 +361,325 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
         val mMap = googleMap
         mMap?.isMyLocationEnabled()
         mMap?.setMapType(GoogleMap.MAP_TYPE_NORMAL)
-        //first we will get all stations from api
+        //first we will get all stations from database if it exits ok if not get it from api and cashing it on database local
+
+        homeViewModel!!.gettingStationsFromDatabase()
+        homeViewModel!!.getStationsFromDatabase.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is Resource.Failure -> {
+                    Log.e(TAG, "${it.error}")
+                }
+                is Resource.Loading -> {
+                    Log.i(TAG, "getting stations from database....")
+                }
+                is Resource.Success -> {
+                    var stationSydny = arrayListOf<StationSydny>()
+                    if (it.data.isNotEmpty()) {
+                        //it all ready cashed before
+                        stationSydny =
+                            genenrateStationsSydnyFromDatbaseStationsItems(ArrayList(it.data.distinct()))
+
+                    } else {
+                        homeViewModel!!.getAllStation()
+                        homeViewModel!!.stations.observe(viewLifecycleOwner, Observer {
+                            when (it) {
+                                is Resource.Failure -> {
+                                    Log.e(TAG, "${it.error}")
+                                }
+                                is Resource.Loading -> {
+                                    Log.i(TAG, "getting stations....")
+                                }
+                                is Resource.Success -> {
+                                    stationSydny =
+                                        genenrateStationsSydny(ArrayList(it.data.distinct()))
+                                    for (station in it.data) {
+                                        homeViewModel!!.insertingNewStationsToDatabase(
+                                            StationItemEntity(
+                                                description = station.description,
+                                                latitude = station.latitude,
+                                                longitude = station.longitude,
+                                                name = station.name,
+                                                apiID = station.id,
+                                                Postion = station.Postion,
+                                                nextStation = station.nextStation,
+                                                trainId = station.trainId
+                                            )
+                                        )
+                                    }
+
+                                }
+                                else -> {
+
+                                }
+                            }
+                        })
+
+                        Log.i(TAG, "${it.data}")
+
+
+                    }
+                    if (stationSydny.isNotEmpty()){
+
+                        val waypoints = mutableListOf<LatLng>()
+                        // Draw Polyline for the route
+                        for (station in stationSydny) {
+                            waypoints.add(station.stationSydnyvalue)
+                            if (station.stationName.equals("cairo")) {
+                                origin1 = station.stationSydnyvalue
+                            } else if (station.stationName.equals("Shubra El-Kheima")) {
+                                destination1 = station.stationSydnyvalue
+                                origin2 = station.stationSydnyvalue
+                            } else if (station.stationName.equals("Qelyoub")) {
+                                destination2 = station.stationSydnyvalue
+                                origin3 = station.stationSydnyvalue
+                            } else if (station.stationName.equals("Qelyoub Al-Balad")) {
+                                destination3 = station.stationSydnyvalue
+                                origin4 = station.stationSydnyvalue
+                            } else if (station.stationName.equals("Al-Qanatir Al-Khairiya")) {
+                                destination4 = station.stationSydnyvalue
+                                origin5 = station.stationSydnyvalue
+                            } else if (station.stationName.equals("Darwah")) {
+                                destination5 = station.stationSydnyvalue
+                                origin6 = station.stationSydnyvalue
+                            } else if (station.stationName.equals("Shatanof")) {
+                                destination6 = station.stationSydnyvalue
+                                origin7 = station.stationSydnyvalue
+                            } else if (station.stationName.equals("Al Hilwasi Al-Balad")) {
+                                destination7 = station.stationSydnyvalue
+                                origin8 = station.stationSydnyvalue
+                            } else if (station.stationName.equals("Al Hilwasi")) {
+                                destination8 = station.stationSydnyvalue
+                                origin9 = station.stationSydnyvalue
+                            } else if (station.stationName.equals("Ashmoun")) {
+                                destination9 = station.stationSydnyvalue
+                                origin10 = station.stationSydnyvalue
+                            } else if (station.stationName.equals("Samadun")) {
+                                destination10 = station.stationSydnyvalue
+                                origin11 = station.stationSydnyvalue
+                            } else if (station.stationName.equals("Ramlet Alonhab")) {
+                                destination11 = station.stationSydnyvalue
+                                origin12 = station.stationSydnyvalue
+                            } else if (station.stationName.equals("Menouf")) {
+                                destination12 = station.stationSydnyvalue
+                                origin13 = station.stationSydnyvalue
+                            } else if (station.stationName.equals("Al-Hamul")) {
+                                destination13 = station.stationSydnyvalue
+                                origin14 = station.stationSydnyvalue
+                            } else if (station.stationName.equals("Shanwan")) {
+                                destination14 = station.stationSydnyvalue
+                                origin15 = station.stationSydnyvalue
+                            } else if (station.stationName.equals("Shebin El-Kom")) {
+                                destination15 = station.stationSydnyvalue
+                                origin16 = station.stationSydnyvalue
+                            } else if (station.stationName.equals("New Shebin El-Kom")) {
+                                destination16 = station.stationSydnyvalue
+                                origin17 = station.stationSydnyvalue
+                            } else if (station.stationName.equals("Al-Batanoun")) {
+                                destination17 = station.stationSydnyvalue
+                                origin18 = station.stationSydnyvalue
+                            } else if (station.stationName.equals("Tala")) {
+                                destination18 = station.stationSydnyvalue
+                                origin19 = station.stationSydnyvalue
+                            } else if (station.stationName.equals("Tanta")) {
+                                destination19 = station.stationSydnyvalue
+                            }
+
+                        }
+
+                        //check if routes all ready exists in database
+                        homeViewModel!!.gettingRoutesFromDatabase()
+                        homeViewModel!!.getRoutes.observe(viewLifecycleOwner, Observer {
+                            when (it) {
+                                is Resource.Loading -> {
+                                    Log.i(TAG, "getting routes directions from database ")
+                                }
+                                is Resource.Success -> {
+                                    Log.e(TAG, "${it.data}")
+                                    if (it.data.isEmpty()) {
+                                        var c: Int? = 1
+                                        getAllStationsRouteParrllel()
+                                        homeViewModel!!.dirction.observe(viewLifecycleOwner, Observer {
+                                            when (it) {
+                                                is Resource.Loading -> {
+                                                    Log.i(TAG, "getting directions...")
+                                                }
+                                                is Resource.Success -> {
+                                                    Log.i(TAG, "Success ${it.data}")
+                                                    if (it.data != null) {
+                                                        // Decode the polyline string to LatLng points
+                                                        val points = PolyUtil.decode(it.data.polyline)
+                                                        val routeInfo = it.data
+
+                                                        //inserting routes in database
+                                                        homeViewModel!!.insertingRoutesInDatabase(
+                                                            RouteDirctionEntity(
+                                                                polyline = routeInfo.polyline,
+                                                                distance = routeInfo.distance,
+                                                                duration = routeInfo.duration
+                                                            )
+                                                        )
+
+                                                        homeViewModel!!.insertRoutes.observe(
+                                                            viewLifecycleOwner,
+                                                            Observer {
+                                                                when (it) {
+                                                                    is Resource.Loading -> {
+                                                                        Log.i(
+                                                                            TAG,
+                                                                            "inserting routes into database "
+                                                                        )
+
+                                                                    }
+                                                                    is Resource.Success -> {
+                                                                        Log.i(TAG, "${it.data}")
+                                                                    }
+                                                                    is Resource.Failure -> {
+                                                                        Log.e(TAG, "${it.error}")
+                                                                    }
+                                                                    else -> {
+
+                                                                    }
+                                                                }
+                                                            })
+
+                                                        // Draw the polyline on the map
+                                                        val polylineOptions = PolylineOptions()
+                                                            .color(Color.BLUE)
+                                                            .width(5f)
+                                                            .addAll(points)
+                                                        Log.i(TAG, "draw poly.......")
+                                                        googleMap.addPolyline(polylineOptions)
+                                                    }
+
+
+                                                }
+                                                is Resource.Failure -> {
+                                                    Log.e(TAG, "Faieled ${it.error}")
+
+                                                }
+                                                else -> {}
+                                            }
+                                        }
+                                        )
+                                    } else {
+                                        when (it) {
+                                            is Resource.Success -> {
+                                                Log.e(TAG, "${it.data}")
+                                                Log.i(TAG, "Success ${it.data}")
+                                                if (it.data.isNotEmpty()) {
+                                                    // Decode the polyline string to LatLng points
+                                                    for (route in it.data) {
+
+
+                                                        val points = PolyUtil.decode(route.polyline)
+
+                                                        // Draw the polyline on the map
+                                                        val polylineOptions = PolylineOptions()
+                                                            .color(Color.BLUE)
+                                                            .width(5f)
+                                                            .addAll(points)
+                                                        Log.i(TAG, "draw poly.......")
+                                                        googleMap.addPolyline(polylineOptions)
+                                                    }
+                                                }
+                                            }
+                                            is Resource.Loading -> {
+                                                Log.i(TAG, "getting routes from database ")
+                                            }
+                                            is Resource.Failure -> {
+                                                Log.e(TAG, "${it.error}")
+                                            }
+                                            else -> {}
+                                        }
+                                    }
+
+
+                                    // Mark Stations with Markers
+                                    val builder = LatLngBounds.builder()
+                                    // Alternatively, create a BitmapDescriptor from a vector drawable
+
+                                    for (station in stationSydny) {
+                                        Log.i(TAG, "station ---> ${station.stationName}")
+                                        builder.include(station.stationSydnyvalue)
+                                        val markerOptions = MarkerOptions()
+                                            .position(station.stationSydnyvalue)
+                                            .title(station.stationName)
+                                            .icon(bitmapDescriptorFromVector(R.drawable.station_in_map))
+
+                                        val marker = googleMap.addMarker(markerOptions)
+                                        marker!!.showInfoWindow() // Show info window without requiring a click
+                                    }
+
+                                    // Move camera to include all the markers with zoom
+                                    val bounds = builder.build()
+                                    val padding = 100 // Adjust as needed
+                                    val cameraUpdate =
+                                        CameraUpdateFactory.newLatLngBounds(bounds, padding)
+
+                                    // Calculate the zoom level based on the bounding box
+                                    val width = resources.displayMetrics.widthPixels
+                                    val height = resources.displayMetrics.heightPixels
+                                    val zoomLevel = calculateZoomLevel(bounds, width, height)
+
+                                    // Zoom the camera to the desired zoom level
+                                    val zoomUpdate = CameraUpdateFactory.zoomTo(zoomLevel)
+                                    // Apply both camera updates
+                                    mMap.animateCamera(cameraUpdate)
+                                    var trainMarker: Marker? = null
+                                    val markerOptions = MarkerOptions()
+                                        .position(
+                                            LatLng(
+                                                stationSydny[0].stationSydnyvalue.latitude,
+                                                stationSydny[0].stationSydnyvalue.longitude
+                                            )
+                                        )
+                                        .title("Train Location")
+                                    trainMarker = googleMap.addMarker(markerOptions)
+                                    trainMarker!!.showInfoWindow() // Show info window without requiring a click
+                                    trainMarker!!.isVisible = false
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        _locationStateFlow.collect {
+                                            Log.i(
+                                                TAG,
+                                                "Location from  locationStateFlow collecting ${it}"
+                                            )
+                                            if (it.latitude != 0.0) {
+                                                lifecycleScope.launch(Dispatchers.Main) {
+                                                    if (trainMarker!!.isVisible) {
+                                                        trainMarker!!.setPosition(
+                                                            LatLng(
+                                                                it.longitude,
+                                                                it.latitude
+                                                            )
+                                                        )
+                                                    } else {
+                                                        trainMarker!!.isVisible = true
+                                                    }
+                                                }
+
+                                            }
+                                        }
+
+                                    }
+                                }
+                                is Resource.Failure -> {
+                                    Log.e(TAG, "${it.error}")
+
+                                }
+                                else -> {}
+                            }
+                        })
+                    }else{
+                        showCustomToast(requireContext(),"can't load stations")
+                    }
+
+
+                }
+                else -> {
+
+                }
+            }
+        })
         homeViewModel!!.getAllStation()
         homeViewModel!!.stations.observe(viewLifecycleOwner, Observer {
             when (it) {
@@ -374,241 +690,6 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
                     Log.i(TAG, "getting stations....")
                 }
                 is Resource.Success -> {
-                    Log.i(TAG, "${it.data}")
-                    val stationSydny = genenrateStationsSydny(ArrayList(it.data.distinct()))
-
-
-                    val waypoints = mutableListOf<LatLng>()
-                    // Draw Polyline for the route
-                    for (station in stationSydny) {
-                        waypoints.add(station.stationSydnyvalue)
-                        if (station.stationName.equals("cairo")) {
-                            origin1 = station.stationSydnyvalue
-                        } else if (station.stationName.equals("Shubra El-Kheima")) {
-                            destination1 = station.stationSydnyvalue
-                            origin2 = station.stationSydnyvalue
-                        } else if (station.stationName.equals("Qelyoub")) {
-                            destination2 = station.stationSydnyvalue
-                            origin3 = station.stationSydnyvalue
-                        } else if (station.stationName.equals("Qelyoub Al-Balad")) {
-                            destination3 = station.stationSydnyvalue
-                            origin4 = station.stationSydnyvalue
-                        } else if (station.stationName.equals("Al-Qanatir Al-Khairiya")) {
-                            destination4 = station.stationSydnyvalue
-                            origin5 = station.stationSydnyvalue
-                        } else if (station.stationName.equals("Darwah")) {
-                            destination5 = station.stationSydnyvalue
-                            origin6 = station.stationSydnyvalue
-                        } else if (station.stationName.equals("Shatanof")) {
-                            destination6 = station.stationSydnyvalue
-                            origin7 = station.stationSydnyvalue
-                        } else if (station.stationName.equals("Al Hilwasi Al-Balad")) {
-                            destination7 = station.stationSydnyvalue
-                            origin8 = station.stationSydnyvalue
-                        } else if (station.stationName.equals("Al Hilwasi")) {
-                            destination8 = station.stationSydnyvalue
-                            origin9 = station.stationSydnyvalue
-                        } else if (station.stationName.equals("Ashmoun")) {
-                            destination9 = station.stationSydnyvalue
-                            origin10 = station.stationSydnyvalue
-                        } else if (station.stationName.equals("Samadun")) {
-                            destination10 = station.stationSydnyvalue
-                            origin11 = station.stationSydnyvalue
-                        } else if (station.stationName.equals("Ramlet Alonhab")) {
-                            destination11 = station.stationSydnyvalue
-                            origin12 = station.stationSydnyvalue
-                        } else if (station.stationName.equals("Menouf")) {
-                            destination12 = station.stationSydnyvalue
-                            origin13 = station.stationSydnyvalue
-                        } else if (station.stationName.equals("Al-Hamul")) {
-                            destination13 = station.stationSydnyvalue
-                            origin14 = station.stationSydnyvalue
-                        } else if (station.stationName.equals("Shanwan")) {
-                            destination14 = station.stationSydnyvalue
-                            origin15 = station.stationSydnyvalue
-                        } else if (station.stationName.equals("Shebin El-Kom")) {
-                            destination15 = station.stationSydnyvalue
-                            origin16 = station.stationSydnyvalue
-                        } else if (station.stationName.equals("New Shebin El-Kom")) {
-                            destination16 = station.stationSydnyvalue
-                            origin17 = station.stationSydnyvalue
-                        } else if (station.stationName.equals("Al-Batanoun")) {
-                            destination17 = station.stationSydnyvalue
-                            origin18 = station.stationSydnyvalue
-                        } else if (station.stationName.equals("Tala")) {
-                            destination18 = station.stationSydnyvalue
-                            origin19 = station.stationSydnyvalue
-                        } else if (station.stationName.equals("Tanta")) {
-                            destination19 = station.stationSydnyvalue
-                        }
-
-                    }
-
-                    //check if routes all ready exists in database
-                    homeViewModel!!.gettingRoutesFromDatabase()
-                    homeViewModel!!.getRoutes.observe(viewLifecycleOwner, Observer {
-                        when(it){
-                            is Resource.Loading->{
-                                Log.i(TAG,"getting routes directions from database ")
-                            }
-                            is Resource.Success->{
-                                Log.e(TAG,"${it.data}")
-                                if (it.data.isEmpty()){
-                                    var c: Int? = 1
-                                    getAllStationsRouteParrllel()
-                                    homeViewModel!!.dirction.observe(viewLifecycleOwner, Observer {
-                                        when (it) {
-                                            is Resource.Loading -> {
-                                                Log.i(TAG, "getting directions...")
-                                            }
-                                            is Resource.Success -> {
-                                                Log.i(TAG, "Success ${it.data}")
-                                                if (it.data != null) {
-                                                    // Decode the polyline string to LatLng points
-                                                    val points = PolyUtil.decode(it.data.polyline)
-                                                    val routeInfo=it.data
-
-                                                    //inserting routes in database
-                                                    homeViewModel!!.insertingRoutesInDatabase(RouteDirctionEntity(
-                                                        polyline =routeInfo.polyline, distance = routeInfo.distance,
-                                                        duration = routeInfo.duration
-                                                    ))
-
-                                                    homeViewModel!!.insertRoutes.observe(viewLifecycleOwner,
-                                                        Observer {
-                                                            when(it){
-                                                                is Resource.Loading->{
-                                                                    Log.i(TAG, "inserting routes into database ")
-
-                                                                }
-                                                                is Resource.Success->{
-                                                                    Log.i(TAG, "${it.data}")
-                                                                }
-                                                                is Resource.Failure->{
-                                                                    Log.e(TAG, "${it.error}")
-                                                                }
-                                                                else -> {
-
-                                                                }
-                                                            }
-                                                        })
-
-                                                    // Draw the polyline on the map
-                                                    val polylineOptions = PolylineOptions()
-                                                        .color(Color.BLUE)
-                                                        .width(5f)
-                                                        .addAll(points)
-                                                    Log.i(TAG, "draw poly.......")
-                                                    googleMap.addPolyline(polylineOptions)
-                                                }
-
-
-                                            }
-                                            is Resource.Failure -> {
-                                                Log.e(TAG, "Faieled ${it.error}")
-
-                                            }
-                                            else -> {}
-                                        }
-                                    }
-                                    )
-                                }else{
-                                    when(it){
-                                        is Resource.Success->{
-                                            Log.e(TAG,"${it.data}")
-                                            Log.i(TAG, "Success ${it.data}")
-                                            if (it.data.isNotEmpty()) {
-                                                // Decode the polyline string to LatLng points
-                                                for (route in it.data){
-
-
-                                                    val points = PolyUtil.decode(route.polyline)
-
-                                                    // Draw the polyline on the map
-                                                    val polylineOptions = PolylineOptions()
-                                                        .color(Color.BLUE)
-                                                        .width(5f)
-                                                        .addAll(points)
-                                                    Log.i(TAG, "draw poly.......")
-                                                    googleMap.addPolyline(polylineOptions)
-                                                }
-                                            }
-                                        }
-                                        is Resource.Loading->{
-                                            Log.i(TAG,"getting routes from database ")
-                                        }
-                                        is Resource.Failure->{
-                                            Log.e(TAG,"${it.error}")
-                                        }
-                                        else -> {}
-                                    }
-                                }
-
-
-                                // Mark Stations with Markers
-                                val builder = LatLngBounds.builder()
-                                // Alternatively, create a BitmapDescriptor from a vector drawable
-
-                                for (station in stationSydny) {
-                                    Log.i(TAG, "station ---> ${station.stationName}")
-                                    builder.include(station.stationSydnyvalue)
-                                    val markerOptions = MarkerOptions()
-                                        .position(station.stationSydnyvalue)
-                                        .title(station.stationName)
-                                        .icon(bitmapDescriptorFromVector(R.drawable.station_in_map))
-
-                                    val marker = googleMap.addMarker(markerOptions)
-                                    marker!!.showInfoWindow() // Show info window without requiring a click
-                                }
-
-                                // Move camera to include all the markers with zoom
-                                val bounds = builder.build()
-                                val padding = 100 // Adjust as needed
-                                val cameraUpdate =
-                                    CameraUpdateFactory.newLatLngBounds(bounds, padding)
-
-                                // Calculate the zoom level based on the bounding box
-                                val width = resources.displayMetrics.widthPixels
-                                val height = resources.displayMetrics.heightPixels
-                                val zoomLevel = calculateZoomLevel(bounds, width, height)
-
-                                // Zoom the camera to the desired zoom level
-                                val zoomUpdate = CameraUpdateFactory.zoomTo(zoomLevel)
-                                // Apply both camera updates
-                                mMap.animateCamera(cameraUpdate)
-                                var trainMarker:Marker?=null
-                                val markerOptions = MarkerOptions()
-                                    .position(LatLng(stationSydny[0].stationSydnyvalue.latitude,stationSydny[0].stationSydnyvalue.longitude))
-                                    .title("Train Location")
-                                trainMarker = googleMap.addMarker(markerOptions)
-                                trainMarker!!.showInfoWindow() // Show info window without requiring a click
-                                trainMarker!!.isVisible=false
-                                lifecycleScope.launch (Dispatchers.IO){
-                                    _locationStateFlow.collect{
-                                        Log.i(TAG, "Location from  locationStateFlow collecting ${it}")
-                                        if (it.latitude != 0.0 ){
-                                            lifecycleScope.launch (Dispatchers.Main){
-                                                if (trainMarker!!.isVisible){
-                                                    trainMarker!!.setPosition(LatLng(it.longitude,it.latitude))
-                                                }else{
-                                                    trainMarker!!.isVisible=true
-                                                }
-                                            }
-
-                                        }
-                                    }
-
-                                }
-                            }
-                            is Resource.Failure->{
-                                Log.e(TAG,"${it.error}")
-
-                            }
-                            else -> {}
-                        }
-                    })
-
-
 
 
                 }
@@ -634,6 +715,18 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
     }
 
     fun genenrateStationsSydny(stationsList: ArrayList<StationResponseItem>): ArrayList<StationSydny> {
+        val stationSydnyList = ArrayList<StationSydny>()
+        for (station in stationsList) {
+            stationSydnyList.add(
+                StationSydny(
+                    LatLng(station.latitude, station.longitude), station.name
+                )
+            )
+        }
+        return stationSydnyList
+    }
+
+    fun genenrateStationsSydnyFromDatbaseStationsItems(stationsList: ArrayList<StationItemEntity>): ArrayList<StationSydny> {
         val stationSydnyList = ArrayList<StationSydny>()
         for (station in stationsList) {
             stationSydnyList.add(
@@ -674,55 +767,114 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
     fun onMyEvent(trainLocation: Location_Response) {
         // Handle the event here
 //        _trainLocationFromService.value = trainLocation
-        _locationStateFlow.value=trainLocation
+        _locationStateFlow.value = trainLocation
     }
 
-    fun getAllStationsRouteParrllel(){
+    fun getAllStationsRouteParrllel() {
         // Create a CoroutineScope
         val coroutineScope = CoroutineScope(Dispatchers.Main)
 
 
-        val origin1Distenation1=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin1!!,destination1!!) }
-        val origin2Distenation2=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin2!!,destination2!!) }
-        val origin3Distenation3=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin3!!,destination3!!) }
-        val origin4Distenation4=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin4!!,destination4!!) }
-        val origin5Distenation5=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin5!!,destination5!!) }
-        val origin6Distenation6=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin6!!,destination6!!) }
-        val origin7Distenation7=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin7!!,destination7!!) }
-        val origin8Distenation8=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin8!!,destination8!!) }
-        val origin9Distenation9=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin9!!,destination9!!) }
-        val origin10Distenation10=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin10!!,destination10!!) }
-        val origin11Distenation11=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin11!!,destination11!!) }
-        val origin12Distenation12=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin12!!,destination12!!) }
-        val origin13Distenation13=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin13!!,destination13!!) }
-        val origin14Distenation14=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin14!!,destination14!!) }
-        val origin15Distenation15=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin15!!,destination15!!) }
-        val origin16Distenation16=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin16!!,destination16!!) }
-        val origin17Distenation17=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin17!!,destination17!!) }
-        val origin18Distenation18=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin18!!,destination18!!) }
-        val origin19Distenation19=coroutineScope.async { homeViewModel!!.getLocationDirctions(origin19!!,destination19!!) }
+        val origin1Distenation1 =
+            coroutineScope.async { homeViewModel!!.getLocationDirctions(origin1!!, destination1!!) }
+        val origin2Distenation2 =
+            coroutineScope.async { homeViewModel!!.getLocationDirctions(origin2!!, destination2!!) }
+        val origin3Distenation3 =
+            coroutineScope.async { homeViewModel!!.getLocationDirctions(origin3!!, destination3!!) }
+        val origin4Distenation4 =
+            coroutineScope.async { homeViewModel!!.getLocationDirctions(origin4!!, destination4!!) }
+        val origin5Distenation5 =
+            coroutineScope.async { homeViewModel!!.getLocationDirctions(origin5!!, destination5!!) }
+        val origin6Distenation6 =
+            coroutineScope.async { homeViewModel!!.getLocationDirctions(origin6!!, destination6!!) }
+        val origin7Distenation7 =
+            coroutineScope.async { homeViewModel!!.getLocationDirctions(origin7!!, destination7!!) }
+        val origin8Distenation8 =
+            coroutineScope.async { homeViewModel!!.getLocationDirctions(origin8!!, destination8!!) }
+        val origin9Distenation9 =
+            coroutineScope.async { homeViewModel!!.getLocationDirctions(origin9!!, destination9!!) }
+        val origin10Distenation10 = coroutineScope.async {
+            homeViewModel!!.getLocationDirctions(
+                origin10!!,
+                destination10!!
+            )
+        }
+        val origin11Distenation11 = coroutineScope.async {
+            homeViewModel!!.getLocationDirctions(
+                origin11!!,
+                destination11!!
+            )
+        }
+        val origin12Distenation12 = coroutineScope.async {
+            homeViewModel!!.getLocationDirctions(
+                origin12!!,
+                destination12!!
+            )
+        }
+        val origin13Distenation13 = coroutineScope.async {
+            homeViewModel!!.getLocationDirctions(
+                origin13!!,
+                destination13!!
+            )
+        }
+        val origin14Distenation14 = coroutineScope.async {
+            homeViewModel!!.getLocationDirctions(
+                origin14!!,
+                destination14!!
+            )
+        }
+        val origin15Distenation15 = coroutineScope.async {
+            homeViewModel!!.getLocationDirctions(
+                origin15!!,
+                destination15!!
+            )
+        }
+        val origin16Distenation16 = coroutineScope.async {
+            homeViewModel!!.getLocationDirctions(
+                origin16!!,
+                destination16!!
+            )
+        }
+        val origin17Distenation17 = coroutineScope.async {
+            homeViewModel!!.getLocationDirctions(
+                origin17!!,
+                destination17!!
+            )
+        }
+        val origin18Distenation18 = coroutineScope.async {
+            homeViewModel!!.getLocationDirctions(
+                origin18!!,
+                destination18!!
+            )
+        }
+        val origin19Distenation19 = coroutineScope.async {
+            homeViewModel!!.getLocationDirctions(
+                origin19!!,
+                destination19!!
+            )
+        }
 
 
-        coroutineScope.launch (Dispatchers.IO){
-            val result1=origin1Distenation1.await()
-            val result2=origin2Distenation2.await()
-            val result3=origin3Distenation3.await()
-            val result4=origin4Distenation4.await()
-            val result5=origin5Distenation5.await()
-            val result6=origin6Distenation6.await()
-            val result7=origin7Distenation7.await()
-            val result8=origin8Distenation8.await()
-            val result9=origin9Distenation9.await()
-            val result10=origin10Distenation10.await()
-            val result11=origin11Distenation11.await()
-            val result12=origin12Distenation12.await()
-            val result13=origin13Distenation13.await()
-            val result14=origin14Distenation14.await()
-            val result15=origin15Distenation15.await()
-            val result16=origin16Distenation16.await()
-            val result17=origin17Distenation17.await()
-            val result18=origin18Distenation18.await()
-            val result19=origin19Distenation19.await()
+        coroutineScope.launch(Dispatchers.IO) {
+            val result1 = origin1Distenation1.await()
+            val result2 = origin2Distenation2.await()
+            val result3 = origin3Distenation3.await()
+            val result4 = origin4Distenation4.await()
+            val result5 = origin5Distenation5.await()
+            val result6 = origin6Distenation6.await()
+            val result7 = origin7Distenation7.await()
+            val result8 = origin8Distenation8.await()
+            val result9 = origin9Distenation9.await()
+            val result10 = origin10Distenation10.await()
+            val result11 = origin11Distenation11.await()
+            val result12 = origin12Distenation12.await()
+            val result13 = origin13Distenation13.await()
+            val result14 = origin14Distenation14.await()
+            val result15 = origin15Distenation15.await()
+            val result16 = origin16Distenation16.await()
+            val result17 = origin17Distenation17.await()
+            val result18 = origin18Distenation18.await()
+            val result19 = origin19Distenation19.await()
         }
 
     }

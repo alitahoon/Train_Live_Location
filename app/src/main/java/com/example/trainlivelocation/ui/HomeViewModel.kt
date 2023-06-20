@@ -33,7 +33,9 @@ class HomeViewModel @Inject constructor(
     private val getLocationDirctionFromOpenRouteService: GetLocationDirctionFromOpenRouteService,
     private val getWayPointsLocationDirctionFromOpenRouteService: GetWayPointsLocationDirctionFromOpenRouteService,
     private val insertnewDirctionRouteInDatabase: InsertnewDirctionRouteInDatabase,
-    private val getDirctionRoutesFromDatabase: GetDirctionRoutesFromDatabase
+    private val getDirctionRoutesFromDatabase: GetDirctionRoutesFromDatabase,
+    private val insertNewStationToDatabase: InsertNewStationToDatabase,
+    private val getAllStationsFromDatabase: GetAllStationsFromDatabase
 ) : ViewModel() {
     private val TAG: String = "HomeViewModel"
     private val sharedPrefFile = "UserToken"
@@ -77,6 +79,17 @@ class HomeViewModel @Inject constructor(
     private val _stations: MutableLiveData<Resource<ArrayList<StationResponseItem>>?> =
         MutableLiveData(null)
     val stations: LiveData<Resource<ArrayList<StationResponseItem>>?> = _stations
+
+
+
+  private val _getStationsFromDatabase: MutableLiveData<Resource<ArrayList<StationItemEntity>>?> =
+        MutableLiveData(null)
+    val getStationsFromDatabase: LiveData<Resource<ArrayList<StationItemEntity>>?> = _getStationsFromDatabase
+
+
+ private val _insertingStationsToDatabase: MutableLiveData<Resource<String>?> =
+        MutableLiveData(null)
+    val insertingStationsToDatabase: LiveData<Resource<String>?> = _insertingStationsToDatabase
 
 
     private val _insertRoutes: MutableLiveData<Resource<String>?> =
@@ -227,6 +240,35 @@ class HomeViewModel @Inject constructor(
                 getDirctionRoutesFromDatabase(){
                     val child2=launch(Dispatchers.Main) {
                         _getRoutes.value=it
+                    }
+                }
+            }
+            child1.join()
+        }
+    }
+
+    fun gettingStationsFromDatabase(){
+        viewModelScope.launch {
+            _getStationsFromDatabase.value=Resource.Loading
+            val child1=launch (Dispatchers.IO){
+                getAllStationsFromDatabase(){
+                    val child2=launch(Dispatchers.Main) {
+                        _getStationsFromDatabase.value=it
+                    }
+                }
+            }
+            child1.join()
+        }
+    }
+
+
+    fun insertingNewStationsToDatabase(stationItemEntity: StationItemEntity){
+        viewModelScope.launch {
+            _insertingStationsToDatabase.value=Resource.Loading
+            val child1=launch (Dispatchers.IO){
+                insertNewStationToDatabase(stationItemEntity){
+                    val child2=launch(Dispatchers.Main) {
+                        _insertingStationsToDatabase.value=it
                     }
                 }
             }
