@@ -928,6 +928,30 @@ class userRepoImpl(
         firebaseService.getNotificationFromFirebase(userPhone, result)
     }
 
+    override suspend fun getAllStationsFromDatabase(result: (Resource<ArrayList<StationItemEntity>>) -> Unit) {
+        try {
+            result.invoke(
+                Resource.Success(
+                    ArrayList(
+                        myDatabase.StationItemEntityDao().getStationItemEntityDao()
+                    )
+                )
+            )
+        } catch (e: Exception) {
+            result.invoke(Resource.Failure("Failed getting Station Items Entity ---> ${e.message}"))
+        }    }
+
+    override suspend fun insertnewStationToDatabase(
+        stationItemEntity: StationItemEntity,
+        result: (Resource<String>) -> Unit
+    ) {
+        try {
+            myDatabase.StationItemEntityDao().insertStationItemEntityDao(stationItemEntity)
+            result.invoke(Resource.Success("Successfully added station data item in database"))
+        } catch (e: Exception) {
+            result.invoke(Resource.Failure("Failed inserting station item ---> ${e.message}"))
+        }    }
+
     override suspend fun getNotificationTokenFromFirebase(
         userPhone: String?,
         result: (Resource<String>) -> Unit

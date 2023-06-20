@@ -347,4 +347,14 @@ interface UserRepo {
     )
 
 
+    suspend fun getAllStationsFromDatabase(
+        result: (Resource<ArrayList<StationItemEntity>>) -> Unit
+    )
+
+    suspend fun insertnewStationToDatabase(
+        stationItemEntity: StationItemEntity,
+        result: (Resource<String>) -> Unit
+    )
+
+
 }

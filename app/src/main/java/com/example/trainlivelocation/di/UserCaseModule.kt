@@ -428,8 +428,17 @@ object UserCaseModule {
     }
 
     @Provides
+    fun ProvideGetAllStationsFromDatabase(userRepo: UserRepo): GetAllStationsFromDatabase {
+        return GetAllStationsFromDatabase(userRepo)
+    }
+    @Provides
     fun ProvideGetDirctionRoutesFromDatabase(userRepo: UserRepo): GetDirctionRoutesFromDatabase {
         return GetDirctionRoutesFromDatabase(userRepo)
+    }
+
+    @Provides
+    fun ProvideInsertNewStationToDatabase(userRepo: UserRepo): InsertNewStationToDatabase {
+        return InsertNewStationToDatabase(userRepo)
     }
 
 
