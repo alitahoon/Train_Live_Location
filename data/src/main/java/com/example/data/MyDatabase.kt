@@ -10,7 +10,7 @@ import com.example.domain.entity.*
     entities = [StationAlarmEntity::class, UserItemEntity::class, RouteDirctionEntity::class,
         TrainItemEntity::class, TicketItemEntity::class, MessageItemEntity::class,
         StationHistoryAlarmEntity::class, LocationItemEntity::class, NewsItemEntity::class,StationItemEntity::class],
-    version = 4
+    version = 5
 )
 abstract class MyDatabase : RoomDatabase() {
 
