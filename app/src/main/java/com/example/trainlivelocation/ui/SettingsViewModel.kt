@@ -72,7 +72,7 @@ class SettingsViewModel @Inject constructor(
     private val _switchtraintrackState = MutableLiveData<Boolean>()
     val switchtraintrackState: LiveData<Boolean> get() = _switchtraintrackState
 
-    fun onSwitchChanged(checked: Boolean) {
+    fun onSwitchStationHistoryState(checked: Boolean) {
         _switchStationHistoryState.value = checked
     }
     fun onSwitchtraintrackState(checked: Boolean) {

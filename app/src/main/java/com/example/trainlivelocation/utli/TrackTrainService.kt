@@ -42,6 +42,8 @@ class TrackTrainService() : LifecycleService() {
 //    private lateinit var runnable: Runnable
     private var job: Job = Job()
 
+    private val stopRunningService=MutableStateFlow<Boolean>(false)
+
     //    val trainId: Int? = trainID
     var _locationLLiveDate = MutableLiveData<Location_Response>()
     var _locationStateFlow :MutableStateFlow<Location_Response> = MutableStateFlow(Location_Response(0.0,0.0))
@@ -141,43 +143,52 @@ class TrackTrainService() : LifecycleService() {
 
     override fun onDestroy() {
         super.onDestroy()
+        stopRunningService.value=true
 //        handler.removeCallbacks(runnable) // Stop the handler when the service is destroyed
+        stopForeground(true) // Remove the service from the foreground
         stopSelf()
     }
 
     private fun fetchDataFromApi(trainId: Int?) {
         coroutineScope.launch (Dispatchers.IO){
-            Log.i(TAG, "From courtine scope")
-            try {
-                getLiveLoctationFromApi(trainId!!){
-                    when(it){
-                        is Resource.Loading->{
-                            Log.i(TAG,"getting train Location From API")
-                        }
-                        is Resource.Success->{
-                            Log.i(TAG, "success  ${it.data}")
+            stopRunningService.collect{
+                if (it==false){
+                    coroutineScope.launch (Dispatchers.IO){
+                        Log.i(TAG, "From courtine scope")
+                        try {
+                            getLiveLoctationFromApi(trainId!!){
+                                when(it){
+                                    is Resource.Loading->{
+                                        Log.i(TAG,"getting train Location From API")
+                                    }
+                                    is Resource.Success->{
+                                        Log.i(TAG, "success  ${it.data}")
 //                            _locationLLiveDate.value = it.data!!
-                            _locationStateFlow.value=it.data
-                            val resource=it
-                            coroutineScope.launch (Dispatchers.Main){
-                                eventBus.post(resource.data)
-                                setData(trainId)
+                                        _locationStateFlow.value=it.data
+                                        val resource=it
+                                        coroutineScope.launch (Dispatchers.Main){
+                                            eventBus.post(resource.data)
+                                            setData(trainId)
+                                        }
+
+
+                                    }
+                                    is Resource.Failure->{
+
+                                    }
+                                    else -> {
+
+                                    }
+                                }
                             }
-
-
-                        }
-                        is Resource.Failure->{
-
-                        }
-                        else -> {
-
+                        } catch (e: Exception) {
+                            // Handle the exception here
+                            Log.i(TAG, "${e.message}")
                         }
                     }
                 }
-            } catch (e: Exception) {
-                // Handle the exception here
-                Log.i(TAG, "${e.message}")
             }
+
         }
 
     }

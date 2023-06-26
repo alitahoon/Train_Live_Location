@@ -78,6 +78,8 @@ class StationHistoryService : LifecycleService() {
     override fun onDestroy() {
         super.onDestroy()
         timerHandler.removeCallbacks(timerRunnable)
+        stopForeground(true) // Remove the service from the foreground
+        stopSelf()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

@@ -39,8 +39,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:drawableStart="@drawable/alarm_icon_notifiction"
-                android:drawablePadding="@dimen/_10sdp"
                 android:gravity="start|center"
                 android:text="Stations History Notification"
                 android:textColor="@color/textHintColorFirst"
@@ -53,7 +51,35 @@
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
                 android:checked="@{viewmodel.switchStationHistoryState}"
-                android:onCheckedChanged="@{(buttonView, isChecked) -> viewmodel.onSwitchChanged(isChecked)}"
+                android:onCheckedChanged="@{(buttonView, isChecked) -> viewmodel.onSwitchStationHistoryState(isChecked)}"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1.8"
+                app:useMaterialThemeColors="false" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginHorizontal="@dimen/_15sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/_5sdp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="start|center"
+                android:text="Track Train Notification"
+                android:textColor="@color/textHintColorFirst"
+                android:textSize="@dimen/_12ssp" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/settings_tracktrain_switchBtn"
+                android:layout_width="match_parent"
+                android:layout_marginEnd="@dimen/_30sdp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:checked="@{viewmodel.switchtraintrackState}"
+                android:onCheckedChanged="@{(buttonView, isChecked) -> viewmodel.onSwitchtraintrackState(isChecked)}"
                 android:layout_marginTop="8dp"
                 android:layout_weight="1.8"
                 app:useMaterialThemeColors="false" />
@@ -76,10 +102,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:drawableStart="@drawable/alarm_icon_notifiction"
-                android:drawablePadding="@dimen/_10sdp"
                 android:gravity="start|center"
-                android:text="Posts Notification"
+                android:text="Station Alarm Notification"
                 android:textColor="@color/textHintColorFirst"
                 android:textSize="@dimen/_12ssp" />
 
@@ -100,34 +124,6 @@
             android:background="@color/PrimaryColor"
             android:layout_marginHorizontal="@dimen/_15sdp" />
 
-        <LinearLayout
-            android:layout_marginHorizontal="@dimen/_15sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/_5sdp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:drawableStart="@drawable/alarm_icon_notifiction"
-                android:drawablePadding="@dimen/_10sdp"
-                android:gravity="start|center"
-                android:text="Posts Comments Notification"
-                android:textColor="@color/textHintColorFirst"
-                android:textSize="@dimen/_12ssp" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/settings_postCommentsNotification_switchBtn"
-                android:layout_width="match_parent"
-                android:layout_marginEnd="@dimen/_30sdp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1.8"
-                app:useMaterialThemeColors="false" />
-        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -135,34 +131,6 @@
             android:background="@color/PrimaryColor"
             android:layout_marginHorizontal="@dimen/_15sdp" />
 
-        <LinearLayout
-            android:layout_marginHorizontal="@dimen/_15sdp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/_5sdp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:drawableStart="@drawable/alarm_icon_notifiction"
-                android:drawablePadding="@dimen/_10sdp"
-                android:gravity="start|center"
-                android:text="Messages Notification"
-                android:textColor="@color/textHintColorFirst"
-                android:textSize="@dimen/_12ssp" />
-
-            <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/settings_MessagesNotification_switchBtn"
-                android:layout_width="match_parent"
-                android:layout_marginEnd="@dimen/_30sdp"
-                android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_weight="1.8"
-                app:useMaterialThemeColors="false" />
-        </LinearLayout>
 
         <View
             android:layout_width="match_parent"
@@ -193,8 +161,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:drawableStart="@drawable/alarm_icon_notifiction"
-                android:drawablePadding="@dimen/_10sdp"
                 android:gravity="start|center"
                 android:text="Sharing Location"
                 android:textColor="@color/textHintColorFirst"

@@ -13,6 +13,7 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -25,6 +26,7 @@ import com.bumptech.glide.Glide
 import com.example.domain.entity.*
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.ActivityMainBinding
+import com.example.trainlivelocation.databinding.HeaderNavMenuLayoutBinding
 import com.example.trainlivelocation.utli.HomeMapListener
 import com.example.trainlivelocation.utli.getuserModelFromSharedPreferences
 import com.example.trainlivelocation.utli.toast
@@ -48,6 +50,8 @@ class MainActivity : AppCompatActivity() ,HomeMapListener{
         setBottomBarIcons()
         setHeaderData()
         setObservers()
+        val headerBinding = DataBindingUtil.bind<HeaderNavMenuLayoutBinding>(binding.mainActivityNavigationView.getHeaderView(0))
+        headerBinding?.context = this
         binding.mainActivityBtnDrawerMenu.setOnClickListener {
             binding.mainActivityDrwerLayout.openDrawer(GravityCompat.START)
         }
@@ -326,6 +330,12 @@ class MainActivity : AppCompatActivity() ,HomeMapListener{
                 binding.mainActivityFragmentHeaderNav.setBackgroundColor(resources.getColor(R.color.PrimaryColor))
                 binding.mainActivityFragmentHeaderNavFrName.setText(title)
             }"Patient Location" -> {
+                binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
+                binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
+                binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)
+                binding.mainActivityFragmentHeaderNav.setBackgroundColor(resources.getColor(R.color.PrimaryColor))
+                binding.mainActivityFragmentHeaderNavFrName.setText(title)
+            }"Settings" -> {
                 binding.mainActivityLayoutAfterLoading.setVisibility(View.GONE)
                 binding.mainActivityBtnDrawerMenu.setVisibility(View.GONE)
                 binding.mainActivityFragmentHeaderNav.setVisibility(View.VISIBLE)

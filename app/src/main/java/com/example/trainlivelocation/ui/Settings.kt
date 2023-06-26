@@ -81,11 +81,11 @@ class Settings : Fragment() {
                 if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
                     ContextCompat.startForegroundService(requireContext(),trackTrainService!!)
                 }else{
-                    requireContext().startService(stationHistoryService!!)
+                    requireContext().startService(trackTrainService!!)
                 }
             }else{
                 showCustomToast(requireContext(),"Closing service")
-                requireContext().stopService(stationHistoryService)
+                requireContext().stopService(trackTrainService)
             }
         })
 

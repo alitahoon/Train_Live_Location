@@ -1,5 +1,7 @@
 package com.example.trainlivelocation.utli
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -21,6 +23,7 @@ import com.example.trainlivelocation.ui.Add_post_fragment
 import com.facebook.shimmer.Shimmer
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.firebase.storage.FirebaseStorage
+import de.hdodenhof.circleimageview.CircleImageView
 
 @BindingAdapter("setAdapter")
 fun setAdapter(
@@ -67,6 +70,24 @@ fun setUserProfileImage(imageView: ImageView, userphone: String?) {
     val storageRef = storage.reference
     Log.i("setUserProfileImage","${storageRef}ProfileImages/+20${userphone}")
     storageRef.child("/profileImages/+20${userphone}").downloadUrl.addOnSuccessListener {
+        Glide.with(imageView.context)
+            .load(it)
+            .placeholder(R.drawable.post_profile_icon)
+            .into(imageView)
+
+    }.addOnFailureListener{
+        Log.i("setUserProfileImage","addOnFailureListener ${it.message}")
+    }
+}
+@BindingAdapter("setUserProfileImageForHeader")
+fun setUserProfileImageForHeader(imageView: de.hdodenhof.circleimageview.CircleImageView, context: Context) {
+    val storage: FirebaseStorage = FirebaseStorage.getInstance()
+    // Create a storage reference from our app
+    val storageRef = storage.reference
+    val userSharedPreferences: SharedPreferences = context.getSharedPreferences("UserToken", Context.MODE_PRIVATE)
+
+    Log.i("setUserProfileImageForHeader","${storageRef}ProfileImages/+20${userSharedPreferences.getString("userPhone","empty")!!}")
+    storageRef.child("/profileImages/+20${userSharedPreferences.getString("userPhone","empty")!!}").downloadUrl.addOnSuccessListener {
         Glide.with(imageView.context)
             .load(it)
             .placeholder(R.drawable.post_profile_icon)
