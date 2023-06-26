@@ -3,13 +3,17 @@ package com.example.trainlivelocation.utli
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.domain.entity.StationDistanceModel
 import com.example.domain.entity.UserResponseItem
 import com.example.trainlivelocation.R
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 
 
 //fun Context.setCurrentTopic(token: String,){
@@ -88,6 +92,20 @@ fun Context.getUserCurrantTrainIntoSharedPrefrences():Int?{
     val trainSharedPreferences: SharedPreferences =
         getSharedPreferences("userCurrantStation", Context.MODE_PRIVATE)
     return trainSharedPreferences.getInt("trainID",0)
+}
+
+fun Context.getStationHistoryAlarm(): StationDistanceModel?{
+    var stationModel:StationDistanceModel?=null
+    val trainSharedPreferences: SharedPreferences =
+        getSharedPreferences("stationHistory", Context.MODE_PRIVATE)
+    val gsonBuilder = GsonBuilder()
+    gsonBuilder.registerTypeAdapter(StationDistanceModel::class.java, StationDistanceDeserializer())
+    val gson = gsonBuilder.create()
+    val res=trainSharedPreferences.getString("stationData", null)
+        Log.i("getStationHistoryAlarm","$res")
+    stationModel = gson.fromJson(res, StationDistanceModel::class.java)
+
+    return stationModel
 }
 
 

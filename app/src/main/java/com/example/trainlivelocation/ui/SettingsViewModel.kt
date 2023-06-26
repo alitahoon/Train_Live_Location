@@ -1,8 +1,10 @@
 package com.example.trainlivelocation.ui
 
+import Resource
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.location.Location
 import android.os.Build
 import android.util.Log
@@ -14,20 +16,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
-import com.example.domain.entity.Location_Response
-import com.example.domain.entity.StationHistoryAlarmEntity
-import com.example.domain.entity.StationResponseItem
-import com.example.domain.entity.TrainConverterDistanceModel
+import com.example.domain.entity.*
 import com.example.domain.usecase.*
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.utli.LocationTrackBackgroundService
 import com.example.trainlivelocation.utli.StationHistoryService
 import com.example.trainlivelocation.utli.getUserCurrantTrainIntoSharedPrefrences
 import com.example.trainlivelocation.utli.getuserModelFromSharedPreferences
+import com.google.gson.Gson
 import com.google.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.Subscribe
 import java.util.*
 import javax.inject.Inject
 @HiltViewModel
@@ -38,7 +40,8 @@ class SettingsViewModel @Inject constructor(
     private val getStationById: GetStationById,
     private val getAllStations: GetAllStations,
     private val getStationHistroyItemsFromDatabase: GetStationHistroyItemsFromDatabase,
-    private val getUserCurrantLocationJustOnce: GetUserCurrantLocationJustOnce
+    private val getUserCurrantLocationJustOnce: GetUserCurrantLocationJustOnce,
+    private val getLocationDirctionFromOpenRouteService: GetLocationDirctionFromOpenRouteService
 ) :ViewModel(){
     val switchStatestationHistroyAlarms = ObservableBoolean()
     val switchStatePostsNotification = ObservableBoolean()
@@ -59,12 +62,21 @@ class SettingsViewModel @Inject constructor(
 
     private var currantTime = Date()
     private var trainSpeed: Double? = null
-
+    private var stationsDistatnceList = arrayListOf<StationDistanceModel>()
     private val _switchStationHistoryState = MutableLiveData<Boolean>()
     val switchStationHistoryState: LiveData<Boolean> get() = _switchStationHistoryState
 
+    private val _startServices = MutableLiveData<Boolean>(false)
+    var startServices: LiveData<Boolean> = _startServices
+
+    private val _switchtraintrackState = MutableLiveData<Boolean>()
+    val switchtraintrackState: LiveData<Boolean> get() = _switchtraintrackState
+
     fun onSwitchChanged(checked: Boolean) {
         _switchStationHistoryState.value = checked
+    }
+    fun onSwitchtraintrackState(checked: Boolean) {
+        _switchtraintrackState.value = checked
     }
 
 
@@ -234,6 +246,18 @@ class SettingsViewModel @Inject constructor(
         val duration =  0.00833333333
         Log.i(TAG, "Duration $duration")
 
+        //here we are getting distance
+        val distance: Double = getDistanceInKM(
+            currantTrainLocation.lat,
+            currantTrainLocation.lng,
+            trainLocationAfter30s.lat,
+            trainLocationAfter30s.lng
+        )
+
+        // compute train  Speed = Distance / Time
+        trainSpeed = (distance / duration)
+        Log.i(TAG, "Train Speed ${trainSpeed} KM/H")
+
         //get nearby station before
         var nearbyStationBefore =
             trainLocationsDitanceBefore.minByOrNull { it.distance }!!.trainId
@@ -244,37 +268,42 @@ class SettingsViewModel @Inject constructor(
         var nearbyStationAfter =
             trainLocationsDitanceAfter.minByOrNull { it.distance }!!.trainId
         Log.i(TAG,"nearbyStationAfter ${nearbyStationAfter}")
+//
+//        stationIDTrainGoingTo = trainLocationsDitanceBefore.get(i).trainId
+//
+//        //decide side
+//        if (nearbyStationBefore>nearbyStationAfter){
+//
+//        }else{
+//
+//        }
+//        for (i in 1..trainLocationsDitanceBefore.size - 1) {
+//            Log.i(TAG,"trainLocationsDitanceBefore.get(i).distance---->${trainLocationsDitanceBefore.get(i).distance}")
+//            Log.i(TAG,"trainLocationsDitanceAfter.get(i).distance---->${trainLocationsDitanceAfter.get(i).distance}")
+//            Log.i(TAG,"trainLocationsDitanceBefore.get(i).trainId---->${trainLocationsDitanceBefore.get(i).trainId}")
+//            Log.i(TAG,"trainLocationsDitanceAfter.get(i).trainId---->${trainLocationsDitanceAfter.get(i).trainId}")
+//            if (trainLocationsDitanceBefore.get(i).distance <= trainLocationsDitanceAfter.get(i).distance) {
+//                //the station is going to this station
 
-
-        //decide side
-        for (i in 1..trainLocationsDitanceBefore.size - 1) {
-            Log.i(TAG,"trainLocationsDitanceBefore.get(i).distance---->${trainLocationsDitanceBefore.get(i).distance}")
-            Log.i(TAG,"trainLocationsDitanceAfter.get(i).distance---->${trainLocationsDitanceAfter.get(i).distance}")
-            Log.i(TAG,"trainLocationsDitanceBefore.get(i).trainId---->${trainLocationsDitanceBefore.get(i).trainId}")
-            Log.i(TAG,"trainLocationsDitanceAfter.get(i).trainId---->${trainLocationsDitanceAfter.get(i).trainId}")
-            if (trainLocationsDitanceBefore.get(i).distance <= trainLocationsDitanceAfter.get(i).distance) {
-                //the station is going to this station
-                stationIDTrainGoingTo = trainLocationsDitanceBefore.get(i).trainId
-
-                //here we are getting distance
-                val distance: Double = getDistanceInKM(
-                    currantTrainLocation.lat,
-                    currantTrainLocation.lng,
-                    trainLocationAfter30s.lat,
-                    trainLocationAfter30s.lng
-                )
-
-                // compute train  Speed = Distance / Time
-                trainSpeed = (distance / duration)
-                Log.i(TAG, "Train Speed ${trainSpeed} KM/H")
-                getStationPostion()
-                break
-            }
-            else{
-                Log.e(TAG,"Error getting best station....")
-            }
-
-        }
+//                //here we are getting distance
+//                val distance: Double = getDistanceInKM(
+//                    currantTrainLocation.lat,
+//                    currantTrainLocation.lng,
+//                    trainLocationAfter30s.lat,
+//                    trainLocationAfter30s.lng
+//                )
+//
+//                // compute train  Speed = Distance / Time
+//                trainSpeed = (distance / duration)
+//                Log.i(TAG, "Train Speed ${trainSpeed} KM/H")
+//                getStationPostion()
+//                break
+//            }
+//            else{
+//                Log.e(TAG,"Error getting best station....")
+//            }
+//
+//        }
     }
 
     fun getStationPostion(){
@@ -377,6 +406,122 @@ class SettingsViewModel @Inject constructor(
         return description
     }
 
+
+    fun getTrainLocation(trainId: Int?) {
+        // Handle the event here
+//        _trainLocationFromService.value = trainLocation
+        //find nearby station
+        viewModelScope.launch(Dispatchers.Main) {
+            getUserCurrantLocationJustOnce(){
+                when(it){
+                    is Resource.Success->{
+                        var trainLocation=it.data
+                        viewModelScope.launch (Dispatchers.IO){
+                            getAllStations {
+                                when (it) {
+                                    is Resource.Success -> {
+                                        Log.i(TAG, "${it.data}")
+                                        for (station in it.data) {
+                                            stationsDistatnceList.add(
+                                                StationDistanceModel(
+                                                    station, getDistanceInKM(
+                                                        trainLocation.latitude,
+                                                        trainLocation.longitude, station.latitude, station.longitude
+                                                    )
+                                                )
+                                            )
+                                        }
+                                        Log.i(TAG,"StationDistanceModel   ${stationsDistatnceList}")
+                                        viewModelScope.launch (Dispatchers.Main){
+                                            //get nearby station
+                                            var nearbyStationsdistance =
+                                                stationsDistatnceList.minByOrNull { it.distance }!!.distance
+
+                                            Log.i(TAG,"nearbyStationsPostion   ${nearbyStationsdistance}")
+
+                                            val nearbyStations =
+                                                stationsDistatnceList.find { it.distance == nearbyStationsdistance}
+
+                                            Log.i(TAG,"nearbyStations   ${nearbyStations}")
+
+                                            val indexOfnearbyStations =
+                                                stationsDistatnceList.indexOf(nearbyStations)
+
+                                            Log.i(TAG,"indexOfnearbyStations   ${indexOfnearbyStations}")
+
+                                            var stationToAlarm = stationsDistatnceList.get(indexOfnearbyStations+ 1)
+
+                                            var duration =getDurationBetweentrainAndStation(
+                                                com.google.android.gms.maps.model.LatLng(
+                                                    trainLocation.longitude,
+                                                    trainLocation.latitude
+                                                ),
+                                                com.google.android.gms.maps.model.LatLng(
+                                                    stationToAlarm.station.latitude,
+                                                    stationToAlarm.station.longitude
+                                                )
+                                            )
+                                            Log.i(TAG,"station to alarm ${stationToAlarm}")
+                                            //set alarm
+                                            val stationSharedPreferences: SharedPreferences =
+                                                context.getSharedPreferences("stationHistory", Context.MODE_PRIVATE)
+                                            var editor=stationSharedPreferences.edit()
+                                            val gson = Gson()
+                                            val json = gson.toJson(stationToAlarm)
+                                            editor.putString("stationData",json!!)
+                                            editor.commit()
+                                        _startServices.value = true
+                                    }
+                                    }
+                                    is Resource.Failure -> {
+                                        Log.e(TAG, "${it.error}")
+                                    }
+                                    is Resource.Loading -> {
+                                        Log.i(TAG, "getting stations")
+                                    }
+
+                                    else -> {}
+                                }
+                            }
+                        }
+
+                    }
+                    is Resource.Failure->{
+
+                    }
+                    is Resource.Loading->{
+
+                    }
+                    else -> {}
+                }
+            }
+
+        }
+    }
+    private fun getDurationBetweentrainAndStation(
+        origin: com.google.android.gms.maps.model.LatLng,
+        destination: com.google.android.gms.maps.model.LatLng
+    ): Double? {
+        var duration: Double? = null
+        viewModelScope.launch(Dispatchers.IO) {
+            getLocationDirctionFromOpenRouteService(origin, destination) {
+                when (it) {
+                    is Resource.Loading -> {
+                        Log.i(TAG, "getting duration ...")
+                    }
+                    is Resource.Failure -> {
+                        Log.e(TAG, "${it.error}")
+                    }
+                    is Resource.Success -> {
+                        Log.i(TAG, "${it.data.duration}")
+                        duration = it.data.duration
+                    }
+                    else -> {}
+                }
+            }
+        }
+        return duration
+    }
 
 
 

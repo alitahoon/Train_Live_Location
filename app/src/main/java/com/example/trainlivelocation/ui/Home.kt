@@ -168,18 +168,11 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
         if (isRunning) {
             // Service is running here we will show the map
             //start mapView
-            binding!!.homeCardTrainId.visibility = View.GONE
-            binding!!.homeCardTrainIcon.visibility = View.GONE
-            binding!!.homeMapCardView.visibility = View.VISIBLE
-            binding!!.homeMapView.onCreate(homeViewModel!!.getMAP_VIEW_KEY())
-            binding!!.homeMapView.getMapAsync(this)
-
-
+            requireContext().stopService(Intent(requireActivity(),
+                TrackTrainService::class.java))
         } else {
             // Service is not running
-            binding!!.homeCardTrainId.visibility = View.VISIBLE
-            binding!!.homeCardTrainIcon.visibility = View.VISIBLE
-            binding!!.homeMapCardView.visibility = View.GONE
+
         }
 
 
@@ -204,6 +197,20 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
 
 
         return binding!!.root
+    }
+
+    fun startHomeMap(){
+        binding!!.homeCardTrainId.visibility = View.GONE
+        binding!!.homeCardTrainIcon.visibility = View.GONE
+        binding!!.homeMapCardView.visibility = View.VISIBLE
+        binding!!.homeMapView.onCreate(homeViewModel!!.getMAP_VIEW_KEY())
+        binding!!.homeMapView.getMapAsync(this)
+    }
+
+    fun stopHomeMap(){
+        binding!!.homeCardTrainId.visibility = View.VISIBLE
+        binding!!.homeCardTrainIcon.visibility = View.VISIBLE
+        binding!!.homeMapCardView.visibility = View.GONE
     }
 
     private fun setObservers() {
@@ -313,36 +320,10 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
 
     override fun onTrainSelected(trainId: Int?, trainDegree: String?) {
         binding!!.homeTrackTrainIDTxt.setText(trainId!!.toString())
-        homeViewModel!!.getTrainLocationInbackground(trainId)
-        var locationForegrondservice: Intent? =
-            Intent(requireActivity(), TrackTrainService::class.java)
+        listener!!.onMapOpened()
         insertUserCurrantTrainIntoSharedPrefrences(requireContext(), trainId)
-//        locationForegrondservice!!.putExtra(
-////            "trainId", binding!!.homeTrackTrainIDTxt.text.toString().toInt()
-//        )
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            requireActivity().startForegroundService(locationForegrondservice)
-            //check if track services is running
-            val serviceClass = TrackTrainService::class.java
-            val isRunning = isServiceRunning(serviceClass)
-            if (isRunning) {
-                // Service is running here we will show the map
-                //start mapView
-                binding!!.homeCardTrainId.visibility = View.GONE
-                binding!!.homeCardTrainIcon.visibility = View.GONE
-                listener!!.onMapOpened()
-                binding!!.homeMapCardView.visibility = View.VISIBLE
-                binding!!.homeMapView.onCreate(homeViewModel!!.getMAP_VIEW_KEY())
-                binding!!.homeMapView.getMapAsync(this)
-
-
-            } else {
-                // Service is not running
-                listener!!.OnMapClosed()
-            }
-        } else {
-            requireActivity().startService(locationForegrondservice)
-        }
+        homeViewModel!!.geTrainLocation(trainId)
+        startHomeMap()
     }
 
     private fun isServiceRunning(serviceClass: Class<*>): Boolean {
@@ -402,7 +383,7 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
                                                 apiID = station.id,
                                                 Postion = station.Postion,
                                                 nextStation = station.nextStation,
-                                                trainId = station.trainId
+                                                trainId = 0
                                             )
                                         )
                                     }
@@ -636,25 +617,20 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
                                         .title("Train Location")
                                     trainMarker = googleMap.addMarker(markerOptions)
                                     trainMarker!!.showInfoWindow() // Show info window without requiring a click
-                                    trainMarker!!.isVisible = false
                                     lifecycleScope.launch(Dispatchers.IO) {
-                                        _locationStateFlow.collect {
+                                        homeViewModel!!.currantTrainLocation.collect {
                                             Log.i(
                                                 TAG,
                                                 "Location from  locationStateFlow collecting ${it}"
                                             )
-                                            if (it.latitude != 0.0) {
+                                            if (it!!.latitude != 0.0) {
                                                 lifecycleScope.launch(Dispatchers.Main) {
-                                                    if (trainMarker!!.isVisible) {
-                                                        trainMarker!!.setPosition(
-                                                            LatLng(
-                                                                it.longitude,
-                                                                it.latitude
-                                                            )
+                                                    trainMarker!!.setPosition(
+                                                        LatLng(
+                                                            it!!.longitude,
+                                                            it!!.latitude
                                                         )
-                                                    } else {
-                                                        trainMarker!!.isVisible = true
-                                                    }
+                                                    )
                                                 }
 
                                             }

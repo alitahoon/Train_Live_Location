@@ -372,5 +372,9 @@ class MainActivity : AppCompatActivity() ,HomeMapListener{
 //            resources.getColor(R.color.DarkPrimaryColor)
          }
 
+    override fun onMoveFromHome() {
+        binding.homeActionBar.setVisibility(View.VISIBLE)
+    }
+
 
 }

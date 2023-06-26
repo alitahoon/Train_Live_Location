@@ -1,5 +1,6 @@
 package com.example.trainlivelocation.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,6 +13,7 @@ import com.example.domain.entity.GetNewsResponseItem
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentHomeBinding
 import com.example.trainlivelocation.databinding.FragmentNewsBinding
+import com.example.trainlivelocation.utli.HomeMapListener
 import com.example.trainlivelocation.utli.NewsCustomAdapter
 import com.example.trainlivelocation.utli.NewsListener
 import com.example.trainlivelocation.utli.PostCustomAdapter
@@ -24,6 +26,7 @@ class News : Fragment(),NewsListener {
     private val TAG: String? = "News";
     private val newsViewModel: NewsViewModel? by activityViewModels()
     private var binding: FragmentNewsBinding? = null
+    private var listener: HomeMapListener? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,6 +38,7 @@ class News : Fragment(),NewsListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        listener!!.onMoveFromHome()
         binding= FragmentNewsBinding.inflate(inflater,container,false)
             .apply {
                 this.viewmodel=newsViewModel
@@ -73,7 +77,19 @@ class News : Fragment(),NewsListener {
         })
         return adapter
     }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is HomeMapListener) {
+            listener = context
+        } else {
+            throw RuntimeException("$context must implement ActionListener")
+        }
+    }
 
+    override fun onDetach() {
+        super.onDetach()
+        listener=null
+    }
     companion object {
 
     }

@@ -1,5 +1,6 @@
 package com.example.trainlivelocation.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -16,12 +17,14 @@ import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentPostsBinding
 import com.example.trainlivelocation.databinding.PostCustomTabBinding
 import com.example.trainlivelocation.utli.FragmentLifecycle
+import com.example.trainlivelocation.utli.HomeMapListener
 import com.example.trainlivelocation.utli.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 
 
 class Posts : Fragment() {
     private val TAG:String?="Posts"
+    private var listener: HomeMapListener? = null
     private val args: PostsArgs by navArgs()
     private val postsViewModel:PostsViewModel? by activityViewModels()
     private var binding: FragmentPostsBinding? = null
@@ -39,6 +42,7 @@ class Posts : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        listener!!.onMoveFromHome()
 
         // Inflate the layout for this fragment
         binding= FragmentPostsBinding.inflate(inflater,container,false)
@@ -125,7 +129,19 @@ class Posts : Fragment() {
 //
 //    }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is HomeMapListener) {
+            listener = context
+        } else {
+            throw RuntimeException("$context must implement ActionListener")
+        }
+    }
 
+    override fun onDetach() {
+        super.onDetach()
+        listener=null
+    }
 
     companion object {
 

@@ -2,6 +2,7 @@ package com.example.trainlivelocation.utli
 
 import Resource
 import android.app.Notification
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.location.Location
@@ -11,18 +12,17 @@ import android.util.Log
 import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import androidx.lifecycle.Lifecycle
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleService
-import androidx.lifecycle.MutableLiveData
-import com.example.domain.entity.Location_Response
-import com.example.domain.entity.StationHistoryAlarmEntity
-import com.example.domain.entity.StationResponseItem
-import com.example.domain.entity.TrainConverterDistanceModel
+import com.example.domain.entity.*
 import com.example.domain.usecase.*
 import com.example.trainlivelocation.R
-import com.google.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
 import java.util.*
 import javax.inject.Inject
 
@@ -33,21 +33,22 @@ class StationHistoryService : LifecycleService() {
     private val TAG = "StationHistoryService"
 
     private var stationIDTrainGoingTo: Int? = null
-    var _locationLLiveDate = MutableLiveData<Location_Response>()
+    var _trainLocation = MutableStateFlow<Location_Response?>(null)
     private var notificationManager: NotificationManager? = null
     lateinit var notificationCustomLayout: RemoteViews
 
-    private var trainLocationsDitanceAfter = arrayListOf<TrainConverterDistanceModel>()
-    private var trainLocationsDitanceBefore = arrayListOf<TrainConverterDistanceModel>()
 
     private var stationsList = arrayListOf<StationResponseItem>()
 
-
-    private var currantTime = Date()
     private var trainSpeed: Double? = null
 
 
-    private var currantTrainLocation = LatLng()
+    private var timerCount = 0
+    private lateinit var timerHandler: Handler
+    private lateinit var timerRunnable: Runnable
+
+
+    private var stationsDistatnceList = arrayListOf<StationDistanceModel>()
 
     @Inject
     lateinit var insertNewStationHistroyItemToDatabase: InsertNewStationHistroyItemToDatabase
@@ -61,219 +62,131 @@ class StationHistoryService : LifecycleService() {
     @Inject
     lateinit var getStationById: GetStationById
 
+
+
+
+
+    @Inject
+    lateinit var getLocationDirctionFromOpenRouteService: GetLocationDirctionFromOpenRouteService
+
     @Inject
     lateinit var context: Context
 
 
     @Inject
     lateinit var getStationHistroyItemsFromDatabase: GetStationHistroyItemsFromDatabase
-
+    override fun onDestroy() {
+        super.onDestroy()
+        timerHandler.removeCallbacks(timerRunnable)
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
-        bindNotificationItem()
-        startForeground(NOTIFICATION_ID!!,getStationAlarmNotification())
-        //first we should compute train speed
-        coroutineScope.launch {
-            getUserCurrantLocationJustOnce() {
-                when (it) {
-                    is Resource.Success -> {
-                        Log.i(TAG, "${it.data}")
-                        currantTrainLocation = LatLng(it.data.latitude, it.data.longitude)
-                        currantTime = Calendar.getInstance().time
+        timerHandler = Handler()
+        createNotificationChannel()
+        coroutineScope.launch (Dispatchers.Main){
+            getUserCurrantLocationJustOnce{
+                when(it){
+                    is Resource.Loading->{
+                        Log.i(TAG,"getting currant location")
+                    }
+                    is Resource.Success->{
+                        Log.i(TAG,"${it.data}")
+                        Log.i(TAG,"from shared ${getStationHistoryAlarm()!!.station}")
+//                        var duration =getDurationBetweentrainAndStation(
+//                            LatLng(
+//                                it.data.latitude,
+//                                it.data.longitude
+//                            ),
+//                           LatLng(
+//                                getStationHistoryAlarm()!!.station.latitude,
+//                                getStationHistoryAlarm()!!.station.longitude,
+//                            )
+//                        )
 
-                        //getting  train location at currant time
-                        coroutineScope.launch {
-                            getAllStations() {
+                        coroutineScope.launch(Dispatchers.IO) {
+                            getLocationDirctionFromOpenRouteService(  LatLng(
+                                it.data.latitude,
+                                it.data.longitude
+                            ),    LatLng(
+                                getStationHistoryAlarm()!!.station.latitude,
+                                getStationHistoryAlarm()!!.station.longitude,
+                            )) {
                                 when (it) {
-                                    is Resource.Success -> {
-                                        Log.i(TAG, "${it.data}")
-                                        stationsList = it.data
-
-                                        //get distance between train and stations
-                                        for (station in stationsList) {
-                                            trainLocationsDitanceBefore.add(
-                                                TrainConverterDistanceModel(
-                                                    getUserCurrantTrainIntoSharedPrefrences()!!,
-                                                    getDistanceInKM(
-                                                        currantTrainLocation.lat,
-                                                        currantTrainLocation.lng,
-                                                        station.latitude,
-                                                        station.longitude
-                                                    )
-                                                )
-                                            )
-                                        }
-
+                                    is Resource.Loading -> {
+                                        Log.i(TAG, "getting duration ...")
                                     }
                                     is Resource.Failure -> {
-                                        Log.i(TAG, "${it.error}")
+                                        Log.e(TAG, "${it.error}")
                                     }
-                                    is Resource.Loading -> {
-                                        Log.i(TAG, "getting stations....")
+                                    is Resource.Success -> {
+                                        Log.i(TAG, " duration -------> ${it.data.duration}")
+//                                        duration = it.data.duration
+                                        coroutineScope.launch (Dispatchers.Main){
+                                            startNotificationTimer(it.data.duration!!.toInt())
+                                        }
+
                                     }
                                     else -> {}
                                 }
                             }
-
                         }
                     }
-
-                    is Resource.Loading -> {
-                        Log.i(TAG, "getting train Location....")
-                    }
-
-                    is Resource.Failure -> {
-                        Log.i(TAG, "${it.error}")
-                    }
-                    else -> {
-
-                    }
-                }
-            }
-            // waiting 30 seconds for getting the second location
-            delay(30000)
-            getUserCurrantLocationJustOnce() {
-                when (it) {
-                    is Resource.Success -> {
-                        Log.i(TAG, "Location after 30 seconds ${it.data}")
-
-                        //first we should detect train side
-                        //get distance between train and stations after 30s
-                        for (station in stationsList) {
-                            trainLocationsDitanceAfter.add(
-                                TrainConverterDistanceModel(
-                                    station.id,
-                                    getDistanceInKM(
-                                        currantTrainLocation.lat,
-                                        currantTrainLocation.lng,
-                                        station.latitude,
-                                        station.longitude
-                                    )
-                                )
-                            )
-                        }
-
-                        //get nearby station before
-                        var nearbyStationBefore =
-                            trainLocationsDitanceBefore.minByOrNull { it.distance }!!.trainId
-
-                        //get nearby station After
-                        var nearbyStationAfter =
-                            trainLocationsDitanceAfter.minByOrNull { it.distance }!!.trainId
-
-                        //decide side
-                        for (i in 1..trainLocationsDitanceBefore.size - 1) {
-                            if (trainLocationsDitanceBefore.get(i).distance <= trainLocationsDitanceAfter.get(i).distance
-                                &&
-                                trainLocationsDitanceBefore.get(i).trainId == trainLocationsDitanceAfter.get(i).trainId
-                                && trainLocationsDitanceBefore.get(i).trainId == nearbyStationBefore &&
-                                trainLocationsDitanceAfter.get(i).trainId == nearbyStationAfter
-                            ) {
-                                //the station is going to this station
-                                stationIDTrainGoingTo = trainLocationsDitanceBefore.get(i).trainId
-                            }
-
-                        }
-
-
-                        //now we will compute time it takes between fetching tow locations
-                        val duration: Double = java.time.Duration.between(
-                            currantTime.toInstant(),
-                            Calendar.getInstance().time.toInstant()
-                        ).toHours().toDouble()
-
-                        Log.i(TAG, "Duration $duration")
-
-                        //here we are getting distance
-                        val distance: Double = getDistanceInKM(
-                            currantTrainLocation.lat,
-                            currantTrainLocation.lng,
-                            it.data.latitude,
-                            it.data.longitude
-                        ).toDouble()
-
-                        // compute train  Speed = Distance / Time
-                        trainSpeed = (distance / duration)
-                        Log.i(TAG, "Train Speed ${trainSpeed} KM/H")
-                        getStationPostion()
-                    }
-
-                    is Resource.Loading -> {
-                        Log.i(TAG, "getting train Location after 30 seconds....")
-                    }
-
-                    is Resource.Failure -> {
-                        Log.i(TAG, "${it.error}")
-                    }
-                    else -> {
-
-                    }
-                }
-            }
-
-        }
-
-
-
-
-
-    }
-
-    fun getStationPostion(){
-        //here will set alarm for the stations after that station
-        //first get station postion
-        coroutineScope.launch {
-            Log.i(TAG, "stationIDTrainGoingTo ${stationIDTrainGoingTo}")
-            getStationById(stationIDTrainGoingTo) {
-                when (it) {
-                    is Resource.Loading -> {
-                        Log.i(TAG, "getting station data...")
-                    }
-
-                    is Resource.Success -> {
-                        Log.i(TAG, "${it.data}")
-                        for (i in it.data.Postion..stationsList.size - 1) {
-                            //that are the station which we shoude get it's data and store it as alarms in database
-                            coroutineScope.launch {
-                                insertNewStationHistroyItemToDatabase(
-                                    StationHistoryAlarmEntity(
-                                        distance = trainLocationsDitanceBefore[i].distance!!,
-                                        stationName = stationsList[i].name,
-                                        discription = getStationDecriptionByID(
-                                            trainLocationsDitanceBefore[i].trainId
-                                        )!!,
-                                        duration = getDurationBetweenTrainAndStation(
-                                            trainSpeed!!,
-                                            trainLocationsDitanceAfter[i].distance
-                                        )
-                                    )
-                                ) {
-                                    when (it) {
-                                        is Resource.Failure -> {
-                                            Log.e(TAG, "${it.error}")
-                                        }
-                                        is Resource.Success -> {
-                                            Log.i(TAG, "${it.data}")
-
-                                        }
-                                        is Resource.Loading -> {
-                                            Log.e(TAG, "Adding station history item to database")
-                                        }
-                                        else -> {}
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    is Resource.Failure -> {
-                        Log.e(TAG, "${it.error}")
+                    is Resource.Failure->{
+                        Log.i(TAG,"${it.error}")
                     }
                     else -> {}
                 }
             }
+        }
+    }
+    private fun startNotificationTimer(durationInSeconds:Int?) {
+        timerCount = durationInSeconds!!
+        timerRunnable = object : Runnable {
+            override fun run() {
+                timerCount--
+                updateNotification(timerCount)
+                if (timerCount > 0) {
+                    timerHandler.postDelayed(this, 1000) // 1 second interval
+                } else {
+                    // Timer finished, perform your action here
+                    sendHistoryNotification()
+                }
+            }
+        }
+        timerHandler.postDelayed(timerRunnable, 1000) // initial delay
+    }
+    private fun sendHistoryNotification() {
+        // Perform history notification
+    }
+
+    private fun updateNotification(timerCount: Int) {
+        val hours = timerCount / 3600
+        val minutes = (timerCount % 3600) / 60
+        val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID!!)
+            .setSmallIcon(R.drawable.app_logo)
+            .setContentTitle("station Description Notificationion")
+            .setContentText("Time remaining for the station ${getStationHistoryAlarm()!!.station.name} \n ${String.format("%02d Hours : %02d Minutes", hours, minutes)}")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setOnlyAlertOnce(true) // Set to true to update notification without showing popup
+            .setAutoCancel(true)
+
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(NOTIFICATION_ID!!, notificationBuilder.build())
+        startForeground(NOTIFICATION_ID!!, notificationBuilder.build())
+    }
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                CHANNEL_ID!!,
+                "Notification Channel",
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+            val notificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
         }
     }
 
@@ -293,6 +206,7 @@ class StationHistoryService : LifecycleService() {
         Log.e(TAG, "distance In Kilo Meter ${results[0].toDouble() / 1000}")
         return results[0].toDouble() / 1000
     }
+
 
 
     fun getStationDecriptionByID(stationID: Int?): String? {
@@ -318,23 +232,34 @@ class StationHistoryService : LifecycleService() {
         return description
     }
 
+
+
+//    private fun getDurationBetweentrainAndStation(
+//        origin: LatLng,
+//        destination:LatLng
+//    ): Double? {
+//        var duration: Double? = null
+//
+//        return duration
+//    }
+
     fun getDurationBetweenTrainAndStation(trainSpeed: Double, stationDistance: Double): Double {
         return trainSpeed / stationDistance
     }
 
-    fun getStationHistoryItemsfromdatabase(){
-        coroutineScope.launch (Dispatchers.IO){
-            getStationHistroyItemsFromDatabase(){
-                when(it){
-                    is Resource.Loading->{
-                        Log.i(TAG,"getting station history alarms...")
+    fun getStationHistoryItemsfromdatabase() {
+        coroutineScope.launch(Dispatchers.IO) {
+            getStationHistroyItemsFromDatabase() {
+                when (it) {
+                    is Resource.Loading -> {
+                        Log.i(TAG, "getting station history alarms...")
                     }
-                    is Resource.Failure->{
-                        Log.e(TAG,"${it.error}")
+                    is Resource.Failure -> {
+                        Log.e(TAG, "${it.error}")
                     }
-                    is Resource.Success->{
-                        Log.i(TAG,"${it.data}")
-                        setData(it.data[0].stationName,it.data[0].duration)
+                    is Resource.Success -> {
+                        Log.i(TAG, "${it.data}")
+                        setData(it.data[0].stationName, it.data[0].duration)
                     }
                     else -> {}
                 }
@@ -355,11 +280,13 @@ class StationHistoryService : LifecycleService() {
         }
         return notification.build()
     }
+
     companion object {
         private var trainID: Int? = null
         private val CHANNEL_ID: String? = "126"
         private val NOTIFICATION_ID: Int? = 111
     }
+
     fun getStationAlarmNotification(): Notification {
         val packageName = applicationContext.packageName
         val notification =
@@ -376,16 +303,18 @@ class StationHistoryService : LifecycleService() {
         return notification.build()
     }
 
+
     fun bindNotificationItem() {
         // Set the custom layout for the notification item using data binding
 //        notificationCustomLayout = TrackTrainCustomNotificationLayoutBinding.inflate(
 //            LayoutInflater.from(this), null, false
 //        )
         notificationCustomLayout = RemoteViews(
-            packageName,R.layout.station_history_notification
+            packageName, R.layout.station_history_notification
         )
     }
-    fun setData(stationname:String?,stationDuration:Double?){
+
+    fun setData(stationname: String?, stationDuration: Double?) {
         val handler = Handler()
         val notificationId = 1
         val updateIntervalMillis = 1000L // 1 second
@@ -398,13 +327,17 @@ class StationHistoryService : LifecycleService() {
 
                 // Build the updated notification
                 val notificationBuilder = NotificationCompat.Builder(context, CHANNEL_ID!!)
-                    .setSmallIcon(R.drawable.logo_icon_white)
                     .setContentTitle("${stationname}")
                     .setContentText("Elapsed time: ${elapsedTime?.div(1000)} seconds")
+                    .setSmallIcon(R.drawable.app_logo)
+                    .setOnlyAlertOnce(true) // Set to true to update notification without showing popup
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .setVibrate(longArrayOf(100, 200, 300, 400, 500)) // Set custom vibration pattern
 
-                val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                val notificationManager =
+                    getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 notificationManager.notify(notificationId, notificationBuilder.build())
-
+                startForeground(NOTIFICATION_ID!!,notificationBuilder.build()!!)
                 // Schedule the next update
                 handler.postDelayed(this, updateIntervalMillis)
             }

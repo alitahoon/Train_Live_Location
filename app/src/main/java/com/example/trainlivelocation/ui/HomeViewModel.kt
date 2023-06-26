@@ -19,6 +19,7 @@ import com.google.maps.model.DirectionsResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,7 +36,8 @@ class HomeViewModel @Inject constructor(
     private val insertnewDirctionRouteInDatabase: InsertnewDirctionRouteInDatabase,
     private val getDirctionRoutesFromDatabase: GetDirctionRoutesFromDatabase,
     private val insertNewStationToDatabase: InsertNewStationToDatabase,
-    private val getAllStationsFromDatabase: GetAllStationsFromDatabase
+    private val getAllStationsFromDatabase: GetAllStationsFromDatabase,
+    private val getLiveLoctationFromApi: GetLiveLoctationFromApi
 ) : ViewModel() {
     private val TAG: String = "HomeViewModel"
     private val sharedPrefFile = "UserToken"
@@ -79,6 +81,12 @@ class HomeViewModel @Inject constructor(
     private val _stations: MutableLiveData<Resource<ArrayList<StationResponseItem>>?> =
         MutableLiveData(null)
     val stations: LiveData<Resource<ArrayList<StationResponseItem>>?> = _stations
+
+
+    val _currantTrainLocation: MutableStateFlow<Location_Response?> =
+        MutableStateFlow(null)
+
+    val currantTrainLocation=_currantTrainLocation
 
 
 
@@ -273,6 +281,27 @@ class HomeViewModel @Inject constructor(
                 }
             }
             child1.join()
+        }
+    }
+
+    fun geTrainLocation(trainId: Int?){
+        viewModelScope.launch (Dispatchers.IO){
+            getLiveLoctationFromApi(trainId!!){
+                when(it){
+                    is Resource.Loading->{
+                        Log.i(TAG,"getting train Location...")
+                    }
+                    is Resource.Failure->{
+                        Log.e(TAG,"${it.error}")
+                    }
+                    is Resource.Success->{
+                        Log.e(TAG,"train Location from  homeViewmodel : ${it.data}")
+                        _currantTrainLocation.value=it.data
+                        geTrainLocation(trainId)
+                    }
+                    else -> {}
+                }
+            }
         }
     }
 

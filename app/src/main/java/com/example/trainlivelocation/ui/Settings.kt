@@ -15,9 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentAddPostCommentBinding
 import com.example.trainlivelocation.databinding.FragmentSettingsBinding
-import com.example.trainlivelocation.utli.LocationTrackBackgroundService
-import com.example.trainlivelocation.utli.StationHistoryService
-import com.example.trainlivelocation.utli.getuserModelFromSharedPreferences
+import com.example.trainlivelocation.utli.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -52,23 +50,48 @@ class Settings : Fragment() {
     private fun setObservers() {
         var stationHistoryService= Intent(requireActivity(),
             StationHistoryService::class.java)
+        var trackTrainService= Intent(requireActivity(),
+            TrackTrainService::class.java)
+
+
+        settingsViewModel.startServices.observe(viewLifecycleOwner, Observer {
+            if (it){
+                if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
+                    ContextCompat.startForegroundService(requireContext(),stationHistoryService!!)
+                }else{
+                    requireContext().startService(stationHistoryService!!)
+                }
+            }
+        })
 
         settingsViewModel.switchStationHistoryState.observe(viewLifecycleOwner, Observer {
             if (it){
-//                Log.i(TAG,"hhh")
-//                if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
-//                    ContextCompat.startForegroundService(requireContext(),stationHistoryService!!)
-//                }else{
-//                    requireContext().startService(stationHistoryService!!)
-                settingsViewModel.getDistanceBetweenUserInTrainAndStation()
-//                }
+                settingsViewModel.getTrainLocation(getUserCurrantTrainIntoSharedPrefrences(requireContext()))
+                showCustomToast(requireContext(),"Opening service")
+
             }else{
-//                Log.i(TAG,"hhh")
-//                requireContext().stopService(stationHistoryService)
+                showCustomToast(requireContext(),"Closing service")
+                requireContext().stopService(stationHistoryService)
+            }
+        })
+
+        settingsViewModel.switchtraintrackState.observe(viewLifecycleOwner, Observer {
+            if (it){
+                showCustomToast(requireContext(),"Opening service")
+                if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
+                    ContextCompat.startForegroundService(requireContext(),trackTrainService!!)
+                }else{
+                    requireContext().startService(stationHistoryService!!)
+                }
+            }else{
+                showCustomToast(requireContext(),"Closing service")
+                requireContext().stopService(stationHistoryService)
             }
         })
 
     }
+
+
 
     companion object {
 
