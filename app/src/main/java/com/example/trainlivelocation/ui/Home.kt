@@ -125,6 +125,14 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        toast("Map State ${isMapOpen(requireContext())}"01)
+
+        if(isMapOpen(requireContext())){
+            listener!!.onMapOpened()
+            homeViewModel!!.geTrainLocation(getUserCurrantTrainIntoSharedPrefrences(requireContext()))
+            startHomeMap()
+        }
+
     }
 
     override fun onAttach(context: Context) {
@@ -323,6 +331,7 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
         listener!!.onMapOpened()
         insertUserCurrantTrainIntoSharedPrefrences(requireContext(), trainId)
         homeViewModel!!.geTrainLocation(trainId)
+        setMapFlag(requireContext(),true)
         startHomeMap()
     }
 

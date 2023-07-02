@@ -64,6 +64,36 @@ fun Context.getuserModelFromSharedPreferences(): UserResponseItem{
     )
 }
 
+fun Fragment.setMapFlag(context: Context, flag: Boolean){
+    val mapSharedPreferences: SharedPreferences = context.getSharedPreferences("map",Context.MODE_PRIVATE)
+
+    val editor = mapSharedPreferences.edit()
+
+    editor.putBoolean("mapFlag", flag)
+    editor.commit()
+}
+
+fun Context.setMapFlag(flag: Boolean){
+    val mapSharedPreferences: SharedPreferences = getSharedPreferences("map",Context.MODE_PRIVATE)
+
+    val editor = mapSharedPreferences.edit()
+
+    editor.putBoolean("mapFlag", flag)
+    editor.commit()
+}
+
+fun Fragment.isMapOpen(context: Context): Boolean{
+    val mapSharedPreferences: SharedPreferences = context.getSharedPreferences("map",Context.MODE_PRIVATE)
+
+    return mapSharedPreferences.getBoolean("mapFlag", false)
+}
+
+fun Context.isMapOpen(): Boolean{
+    val mapSharedPreferences: SharedPreferences = getSharedPreferences("map",Context.MODE_PRIVATE)
+
+    return mapSharedPreferences.getBoolean("mapFlag", false)
+}
+
 fun Context.insertUserCurrantTrainIntoSharedPrefrences(trainID:Int?){
     val trainSharedPreferences: SharedPreferences =
         getSharedPreferences("userCurrantStation", Context.MODE_PRIVATE)
