@@ -49,6 +49,8 @@ class CriticalPost : Fragment() , PostListener ,FragmentLifecycle {
         criticalpostsViewModel?.postLiveData?.observe(viewLifecycleOwner, Observer {
 //            adapter.setData(it)
             binding.crticalProgressBar.setVisibility(View.INVISIBLE)
+
+
         })
         return adapter
     }

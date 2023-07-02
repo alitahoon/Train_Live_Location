@@ -35,7 +35,7 @@
                 android:layout_below="@+id/newsDialogImage"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
-                android:background="@color/textAlarmColor"
+                android:background="@color/AccentColor"
                 android:padding="@dimen/_5sdp"
                 android:text="@{news.title}"
                 android:textSize="@dimen/_16ssp"

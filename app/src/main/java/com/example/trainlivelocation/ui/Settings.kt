@@ -1,5 +1,7 @@
 package com.example.trainlivelocation.ui
 
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -24,6 +26,12 @@ class Settings : Fragment() {
     private val TAG: String? = "Settings"
     private lateinit var binding: FragmentSettingsBinding
     private val settingsViewModel: SettingsViewModel by activityViewModels()
+    private var stationHistoryService: Intent?= null
+    private var trackTrainService: Intent?= null
+    private var locationTrackBackgroundService: Intent?= null
+    private var stationAlarmService: Intent?= null
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,17 +50,41 @@ class Settings : Fragment() {
                 this.lifecycleOwner=this@Settings
             }
 
+        stationHistoryService= Intent(requireActivity(),
+            StationHistoryService::class.java)
+        trackTrainService= Intent(requireActivity(),
+            TrackTrainService::class.java)
+        locationTrackBackgroundService= Intent(requireActivity(),
+            LocationTrackBackgroundService::class.java)
+        stationAlarmService= Intent(requireActivity(),
+            StationAlarmService::class.java)
+
         setObservers()
 
         return binding.root
     }
 
     private fun setObservers() {
-        var stationHistoryService= Intent(requireActivity(),
-            StationHistoryService::class.java)
-        var trackTrainService= Intent(requireActivity(),
-            TrackTrainService::class.java)
 
+
+        if(isServiceRunning(StationHistoryService::class.java)){
+            binding.settingsStationHistroyAlarmsSwitchBtn.isChecked = true
+        }
+        else{
+            Log.i(TAG, "StationHistoryService")
+        }
+
+        if(isServiceRunning(TrackTrainService::class.java)){
+            binding.settingsTracktrainSwitchBtn.isChecked = true
+        }
+
+        if(isServiceRunning(LocationTrackBackgroundService::class.java)){
+            binding.settingsSharingLocationSwitchBtn.isChecked = true
+        }
+
+        if(isServiceRunning(StationAlarmService::class.java)){
+            binding.settingsStationAlarmSwitchBtn.isChecked = true
+        }
 
         settingsViewModel.startServices.observe(viewLifecycleOwner, Observer {
             if (it){
@@ -61,6 +93,32 @@ class Settings : Fragment() {
                 }else{
                     requireContext().startService(stationHistoryService!!)
                 }
+            }
+        })
+
+        settingsViewModel.switchStationAlarmState.observe(viewLifecycleOwner, Observer{
+            if(it){
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                    ContextCompat.startForegroundService(requireContext(), stationAlarmService!!)
+                }else{
+                    requireContext().startService(stationAlarmService)
+                }
+            }
+            else{
+                requireContext().stopService(stationAlarmService)
+            }
+        })
+
+        settingsViewModel.switchShareLocationState.observe(viewLifecycleOwner, Observer{
+            if(it){
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                    ContextCompat.startForegroundService(requireContext(), locationTrackBackgroundService!!)
+                }else{
+                    requireContext().startService(locationTrackBackgroundService)
+                }
+            }
+            else{
+                requireContext().stopService(locationTrackBackgroundService)
             }
         })
 
@@ -90,6 +148,22 @@ class Settings : Fragment() {
         })
 
     }
+
+
+    private fun isServiceRunning(serviceClass: Class<*>): Boolean {
+        val manager =
+            requireActivity().getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                return true
+            }
+        }
+        return false
+    }
+
+
+
+
 
 
 

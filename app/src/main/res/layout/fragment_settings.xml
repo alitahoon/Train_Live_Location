@@ -108,9 +108,11 @@
                 android:textSize="@dimen/_12ssp" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/settings_postNotification_switchBtn"
+                android:id="@+id/settings_stationAlarm_switchBtn"
                 android:layout_width="match_parent"
                 android:layout_marginEnd="@dimen/_30sdp"
+                android:checked="@{viewmodel.switchStationAlarmState}"
+                android:onCheckedChanged="@{(buttonView, isChecked) -> viewmodel.onSwitchStationAlarmState(isChecked)}"
                 android:layout_height="match_parent"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
@@ -167,10 +169,12 @@
                 android:textSize="@dimen/_12ssp" />
 
             <com.google.android.material.switchmaterial.SwitchMaterial
-                android:id="@+id/settings_StopSharingLocation_switchBtn"
+                android:id="@+id/settings_SharingLocation_switchBtn"
                 android:layout_width="match_parent"
                 android:layout_marginEnd="@dimen/_30sdp"
                 android:layout_height="match_parent"
+                android:checked="@{viewmodel.switchShareLocationState}"
+                android:onCheckedChanged="@{(buttonView, isChecked) -> viewmodel.onSwitchShareLocationState(isChecked)}"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_weight="1.8"

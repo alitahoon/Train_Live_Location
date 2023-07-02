@@ -133,7 +133,7 @@ class Tickets : Fragment(), Station_Dialog_Listener, Train_Dialog_Listener,
 //                                                            "Ticket Booked Successfully...",
 //                                                            R.raw.success_auth, R.color.PrimaryColor
 //                                                        )
-                                            startStationAlarmsService()
+                                            //startStationAlarmsService()
                                             showCustomToast(requireContext(),"Ticket Booked Successfully...")
 
                                         }

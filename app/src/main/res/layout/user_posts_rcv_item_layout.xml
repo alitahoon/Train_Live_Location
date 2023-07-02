@@ -84,8 +84,6 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_270sdp"
-                    app:userphone="@{post.userPhone}"
-                    app:imageId="@{post.id}"
                     android:scaleType="centerCrop"
                     android:src="@drawable/emptyicon"/>
 

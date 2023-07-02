@@ -72,6 +72,12 @@ class SettingsViewModel @Inject constructor(
     private val _switchtraintrackState = MutableLiveData<Boolean>()
     val switchtraintrackState: LiveData<Boolean> get() = _switchtraintrackState
 
+    private val _switchStationAlarmState = MutableLiveData<Boolean>()
+    val switchStationAlarmState: LiveData<Boolean> get() = _switchStationAlarmState
+
+    private val _switchShareLocationState = MutableLiveData<Boolean>()
+    val switchShareLocationState: LiveData<Boolean> get() = _switchShareLocationState
+
     fun onSwitchStationHistoryState(checked: Boolean) {
         _switchStationHistoryState.value = checked
     }
@@ -79,6 +85,13 @@ class SettingsViewModel @Inject constructor(
         _switchtraintrackState.value = checked
     }
 
+    fun onSwitchStationAlarmState(checked: Boolean) {
+        _switchStationAlarmState.value = checked
+    }
+
+    fun onSwitchShareLocationState(checked: Boolean) {
+        _switchShareLocationState.value = checked
+    }
 
 
     // Observer for switchState

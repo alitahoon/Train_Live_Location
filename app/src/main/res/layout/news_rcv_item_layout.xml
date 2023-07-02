@@ -11,57 +11,67 @@
             type="com.example.domain.entity.GetNewsResponseItem" />
     </data>
 
-    <RelativeLayout
-        android:onClick="@{() -> listener.OnNewsClickListener(news)}"
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_200sdp"
-        android:layout_marginBottom="@dimen/_1sdp"
-        android:background="@color/PrimaryColor">
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="@dimen/_15sdp"
+        android:layout_marginVertical="@dimen/_2sdp">
 
-        <ImageView
-            setNewsImage="@{news.img}"
+        <RelativeLayout
+            android:onClick="@{() -> listener.OnNewsClickListener(news)}"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:scaleType="centerCrop"
-            android:src="@color/DarkPrimaryColor" />
+            android:layout_height="@dimen/_200sdp"
+            android:layout_marginBottom="@dimen/_1sdp"
+            android:background="@color/PrimaryColor">
 
-        <TextView
-            android:layout_centerVertical="true"
-            android:maxLines="2"
-            android:id="@+id/newsTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="18dp"
-            android:background="@color/textAlarmColor"
-            android:padding="@dimen/_5sdp"
-            android:text="@{news.title}"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_14sdp" />
+            <ImageView
+                setNewsImage="@{news.img}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:scaleType="centerCrop"
+                android:src="@color/DarkPrimaryColor" />
 
-        <TextView
-            android:maxLines="3"
-            android:id="@+id/newsContent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/newsTitle"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:background="#86000000"
-            android:padding="@dimen/_5sdp"
-            android:text="@{news.contentOfPost}"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_14sdp" />
+            <TextView
+                android:layout_centerVertical="true"
+                android:maxLines="2"
+                android:id="@+id/newsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="18dp"
+                android:background="@color/AccentColor"
+                android:padding="@dimen/_5sdp"
+                android:text="@{news.title}"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/_14sdp" />
+
+            <TextView
+                android:maxLines="3"
+                android:id="@+id/newsContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/newsTitle"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:background="#86000000"
+                android:padding="@dimen/_5sdp"
+                android:text="@{news.contentOfPost}"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/_14sdp" />
 
 
 
-    </RelativeLayout>
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
 
 
 </layout>
