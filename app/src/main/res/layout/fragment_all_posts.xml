@@ -21,14 +21,16 @@
         android:orientation="vertical"
         tools:context=".ui.AllPosts"
         >
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/all_posts_RCV_Posts"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/user_posts_rcv_item_layout"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:orientation="vertical"
-            app:setAdapter="@{adapter}"/>
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:setAdapter="@{adapter}"
+            tools:listitem="@layout/user_posts_rcv_item_layout" />
+
         <com.facebook.shimmer.ShimmerFrameLayout
             android:visibility="gone"
             android:id="@+id/all_posts_post_shimmer_layout"

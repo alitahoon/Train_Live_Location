@@ -15,9 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.LocationLive
-import com.example.domain.entity.LocationDetails
-import com.example.domain.entity.Location_Request
-import com.example.domain.entity.Location_Response
+import com.example.domain.entity.*
 import com.example.domain.usecase.*
 import com.example.trainlivelocation.utli.LocationTrackBackgroundService
 import com.example.trainlivelocation.utli.SingleLiveEvent
@@ -25,6 +23,7 @@ import com.example.trainlivelocation.utli.TrackLocationListener
 import com.google.android.gms.location.LocationRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import javax.inject.Inject
@@ -38,7 +37,10 @@ class TrackLocationFeatureViewModel @Inject constructor(
     private val stopLocationUpdate: StopLocationUpdate,
     private val locationLive: LocationLive,
     private val getUserCurrantLocationJustOnce: GetUserCurrantLocationJustOnce,
-    private val gettingTrainlocationFromApi: GettingTrainlocationFromApi
+    private val gettingTrainlocationFromApi: GettingTrainlocationFromApi,
+    private val getAllStationsFromDatabase: GetAllStationsFromDatabase,
+    private val getAllStations: GetAllStations,
+    private val insertNewStationToDatabase: InsertNewStationToDatabase
 
 ) : ViewModel() {
     private var TAG: String? = "TrackLocationFeatureViewModel"
@@ -48,14 +50,25 @@ class TrackLocationFeatureViewModel @Inject constructor(
     private val _userLocationMuta: MutableLiveData<LocationDetails?> = MutableLiveData(null)
     val userLocation: LiveData<LocationDetails?> = _userLocationMuta
 
-    private val _trainLocation: MutableLiveData<Resource<Location_Response>?> = MutableLiveData(null)
-    val trainLocation: LiveData<Resource<Location_Response>?> = _trainLocation
+    private val _trainLocation = MutableStateFlow<Location_Response>(Location_Response(0.0,0.0))
+    val trainLocation= _trainLocation
 
 
     private val _userCurrantLocationJustOnce: MutableLiveData<Resource<Location>?> = MutableLiveData(null)
     val userCurrantLocationJustOnce: LiveData<Resource<Location>?> = _userCurrantLocationJustOnce
 
+    private val _stations: MutableLiveData<Resource<ArrayList<StationResponseItem>>?> =
+        MutableLiveData(null)
+    val stations: LiveData<Resource<ArrayList<StationResponseItem>>?> = _stations
 
+    private val _getStationsFromDatabase: MutableLiveData<Resource<ArrayList<StationItemEntity>>?> =
+        MutableLiveData(null)
+    val getStationsFromDatabase: LiveData<Resource<ArrayList<StationItemEntity>>?> = _getStationsFromDatabase
+
+
+    private val _insertingStationsToDatabase: MutableLiveData<Resource<String>?> =
+        MutableLiveData(null)
+    val insertingStationsToDatabase: LiveData<Resource<String>?> = _insertingStationsToDatabase
 
     val userLiveLocation = locationLive
 
@@ -149,21 +162,30 @@ class TrackLocationFeatureViewModel @Inject constructor(
         locationLive.stopLocationLiveUpdate()
     }
 
-    fun gettingTrainLocaion(lifecycleOwner: LifecycleOwner){
-        trainid.observe(lifecycleOwner, Observer {
+    fun gettingTrainLocaion(trinID:Int?){
             viewModelScope.launch {
                 Log.i(TAG,"trainId : ${trainid}")
-                _trainLocation.value=Resource.Loading
                 val child1=launch (Dispatchers.IO){
-                    gettingTrainlocationFromApi(it!!.toInt()){
+                    gettingTrainlocationFromApi(trinID!!){
                         val child2=launch (Dispatchers.Main){
-                            _trainLocation.value=it
+                            when(it){
+                                is Resource.Loading->{
+                                    Log.i(TAG,"getting train location")
+                                }
+                                is Resource.Success->{
+                                    Log.i(TAG,"train location ---> ${it.data}")
+                                    _trainLocation.value=it.data
+                                }
+                                is Resource.Failure->{
+                                    Log.e(TAG,"${it.error}")
+                                }
+                                else -> {}
+                            }
                         }
                     }
                 }
                 child1.join()
             }
-        })
 
     }
 
@@ -174,6 +196,55 @@ class TrackLocationFeatureViewModel @Inject constructor(
             getUserCurrantLocationJustOnce{
                 _userCurrantLocationJustOnce.value=it
             }
+        }
+    }
+
+    //station fun
+
+
+
+
+
+    fun getAllStation() {
+        viewModelScope.launch {
+            _stations.value = Resource.Loading
+            val child1 = launch(Dispatchers.IO) {
+                getAllStations {
+                    val child2 = launch(Dispatchers.Main) {
+                        _stations.value = it
+                    }
+                }
+            }
+            child1.join()
+        }
+    }
+
+    fun gettingStationsFromDatabase(){
+        viewModelScope.launch {
+            _getStationsFromDatabase.value=Resource.Loading
+            val child1=launch (Dispatchers.IO){
+                getAllStationsFromDatabase(){
+                    val child2=launch(Dispatchers.Main) {
+                        _getStationsFromDatabase.value=it
+                    }
+                }
+            }
+            child1.join()
+        }
+    }
+
+
+    fun insertingNewStationsToDatabase(stationItemEntity: StationItemEntity){
+        viewModelScope.launch {
+            _insertingStationsToDatabase.value=Resource.Loading
+            val child1=launch (Dispatchers.IO){
+                insertNewStationToDatabase(stationItemEntity){
+                    val child2=launch(Dispatchers.Main) {
+                        _insertingStationsToDatabase.value=it
+                    }
+                }
+            }
+            child1.join()
         }
     }
 

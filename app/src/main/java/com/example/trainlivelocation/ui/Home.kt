@@ -577,8 +577,6 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
 
                                     // Mark Stations with Markers
                                     val builder = LatLngBounds.builder()
-                                    // Alternatively, create a BitmapDescriptor from a vector drawable
-
                                     for (station in stationSydny) {
                                         Log.i(TAG, "station ---> ${station.stationName}")
                                         builder.include(station.stationSydnyvalue)

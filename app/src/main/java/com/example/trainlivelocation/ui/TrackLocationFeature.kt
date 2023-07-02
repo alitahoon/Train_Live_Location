@@ -1,6 +1,9 @@
 package com.example.trainlivelocation.ui
 
 import Resource
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.Drawable
 import android.location.Location
 import android.os.Bundle
 import android.os.Handler
@@ -11,13 +14,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.example.domain.entity.LocationDetails
+import com.example.domain.entity.StationItemEntity
+import com.example.domain.entity.StationResponseItem
+import com.example.domain.entity.StationSydny
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentTrackLocationFeatureBinding
 import com.example.trainlivelocation.utli.TrackLocationListener
@@ -30,8 +39,12 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.SphericalUtil
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.overlay.Marker
 import kotlin.math.acos
 import kotlin.math.cos
 import kotlin.math.sin
@@ -62,7 +75,7 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
                 this.viewmodel = trackLocationFeatureViewModel
             }
         binding?.viewmodel?.trackLocationListener = this
-        binding?.lifecycleOwner=this
+        binding?.lifecycleOwner = this
         trackLocationFeatureViewModel?.setbaseActivity(requireActivity())
         trackLocationFeatureViewModel?.getTrainLocationFromApi()
         scaleUpAnimation = AnimationUtils.loadAnimation(requireContext(), R.anim.enter)
@@ -88,7 +101,7 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
     companion object {
         private var scaleUpAnimation: Animation? = null
         private var scaleDownAnimation: Animation? = null
-        private var sydnyTrainLocation:LatLng?=null
+        private var sydnyTrainLocation: LatLng? = null
     }
 
     override fun onDestroy() {
@@ -130,16 +143,18 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
             Observer {
 
                 if (it == true) {
+//                    findNavController().navigate(R.id.action_trackLocationFeature_to_trackTrainInOpenStreetMap)
 
-                    if (binding!!.trackLocationTxtTrainId.text.toString().isEmpty()){
+                    if (binding!!.trackLocationTxtTrainId.text.toString().isEmpty()) {
                         toast("Please Choose train To track")
-                    }else{
-                        binding!!.trackLocationTxtTrainId.visibility=View.GONE
-                        binding!!.trackBtnTrack.visibility=View.GONE
+                    } else {
+                        binding!!.trackLocationTxtTrainId.visibility = View.GONE
+                        binding!!.trackBtnTrack.visibility = View.GONE
                         binding!!.trackLocationMap.startAnimation(scaleUpAnimation)
-                        scaleUpAnimation!!.setAnimationListener(object :Animation.AnimationListener{
+                        scaleUpAnimation!!.setAnimationListener(object :
+                            Animation.AnimationListener {
                             override fun onAnimationStart(p0: Animation?) {
-                                binding!!.trackLocationMap.visibility=View.VISIBLE
+                                binding!!.trackLocationMap.visibility = View.VISIBLE
                                 binding!!.trackLocationMap.onCreate(trackLocationFeatureViewModel?.getMAP_VIEW_KEY())
                                 binding!!.trackLocationMap.getMapAsync(this@TrackLocationFeature)
                             }
@@ -155,6 +170,10 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
                         })
                     }
 
+
+//
+//
+//
 //                    binding?.trackLocationProgressBar?.setVisibility(View.VISIBLE)
 //                    var trainLocation: LocationDetails? = null
 //                    var userLocation: LocationDetails? = null
@@ -334,64 +353,89 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
+        var trainId=binding!!.trackLocationTxtTrainId.text.toString().toInt()
         binding!!.trackLocationMap.onResume()
         mMap = googleMap
         mMap?.isMyLocationEnabled()
-        mMap?.setMapType(GoogleMap.MAP_TYPE_SATELLITE)
+        mMap?.setMapType(GoogleMap.MAP_TYPE_NORMAL)
+        var trainMarker:MarkerOptions?=null
 //        val trainMarkerIcon = BitmapDescriptorFactory.fromResource(R.drawable.train_location)
-
+        addStationsMarkersToMap(mMap!!)
         //new flow
         trackLocationFeatureViewModel!!.gettingUserCurrantLocationJustOnce()
         trackLocationFeatureViewModel!!.userCurrantLocationJustOnce.observe(viewLifecycleOwner,
             Observer {
-                when(it){
-                    is Resource.Loading->{
-                        Log.i(TAG,"getting user Location...")
+                when (it) {
+                    is Resource.Loading -> {
+                        Log.i(TAG, "getting user Location...")
                     }
 
-                    is Resource.Success->{
+                    is Resource.Success -> {
                         var isCodeExecuted = true
                         var sydnyUserLocation: LatLng =
-                            LatLng(it.data.latitude,it.data.longitude)
-                        mMap!!.addMarker(MarkerOptions().flat(true).position(sydnyUserLocation).title("Your Location"))
+                            LatLng(it.data.latitude, it.data.longitude)
+                        addMarkersToMap(mMap!!, sydnyUserLocation, "Your Location", "user")
 
                         //getting train Location
-                        trackLocationFeatureViewModel!!.gettingTrainLocaion(this)
-                        trackLocationFeatureViewModel!!.trainLocation.observe(viewLifecycleOwner,
-                            Observer {
-                                when(it){
-                                    is Resource.Loading->{
+                        trackLocationFeatureViewModel!!.gettingTrainLocaion(trainId)
+                        lifecycleScope.launch (Dispatchers.IO){
+                            trackLocationFeatureViewModel!!.trainLocation.collect{
+                                Log.i(TAG, "Train location from track fragment ----> ${it}")
+                                sydnyTrainLocation =
+                                    LatLng(it.longitude, it.latitude)
 
-                                        Log.i(TAG,"getting Train Location.")
-                                        binding!!.trackLocationProgressBar.visibility=View.VISIBLE
+                                if (isCodeExecuted) {
+                                    lifecycleScope.launch (Dispatchers.Main){
+                                        trainMarker=addMarkersToMap(
+                                            mMap!!,
+                                            sydnyTrainLocation!!,
+                                            "Train Location",
+                                            "train"
+                                        )
                                     }
-                                    is Resource.Success->{
-                                        Log.i(TAG,"${it.data}")
-                                        binding!!.trackLocationProgressBar.visibility=View.GONE
-                                        sydnyTrainLocation=
-                                            LatLng(it.data.longitude,it.data.latitude)
-                                        if (isCodeExecuted){
-                                            mMap!!.addMarker(MarkerOptions().flat(true).position(sydnyTrainLocation!!).title("Train Location"))
-                                            isCodeExecuted=false
-                                        }
+                                    isCodeExecuted = false
+                                }
+                                lifecycleScope.launch(Dispatchers.Main){
+                                    moveMarker(trainMarker!!,LatLng(it.latitude,it.longitude))
+                                    trackLocationFeatureViewModel!!.gettingTrainLocaion(trainId)
+                                }
 //                                        mMap!!.moveCamera(CameraUpdateFactory.newLatLng(sydnyUserLocation))
 //                                        mMap!!.moveCamera(CameraUpdateFactory.newLatLng(sydnyTrainLocation))
-                                        // Initialize the GoogleMap instance (googleMap) and add the marker
-                                        // Set the initial location of the marker
-                                        // Set the OnCameraMoveListener
-                                        mMap!!.setOnCameraMoveListener {
-                                            val screenTrainPosition = mMap!!.projection.toScreenLocation(sydnyTrainLocation!!)
-                                            val screenUserPosition = mMap!!.projection.toScreenLocation(sydnyUserLocation)
-                                            if (!mMap!!.projection.visibleRegion.latLngBounds.contains(sydnyUserLocation) ||
-                                                !googleMap.projection.visibleRegion.latLngBounds.contains(sydnyTrainLocation!!)) {
-                                                val cameraTrainUpdate = CameraUpdateFactory.newLatLng(googleMap.projection.fromScreenLocation(screenTrainPosition))
-                                                val cameraUserUpdate = CameraUpdateFactory.newLatLng(googleMap.projection.fromScreenLocation(screenUserPosition))
-                                                mMap!!.moveCamera(cameraTrainUpdate)
-                                                mMap!!.moveCamera(cameraUserUpdate)
-                                            }
-                                        }
+                                // Initialize the GoogleMap instance (googleMap) and add the marker
+                                // Set the initial location of the marker
+                                // Set the OnCameraMoveListener
+//                                        mMap!!.setOnCameraMoveListener {
+//                                            val screenTrainPosition =
+//                                                mMap!!.projection.toScreenLocation(
+//                                                    sydnyTrainLocation!!
+//                                                )
+//                                            val screenUserPosition =
+//                                                mMap!!.projection.toScreenLocation(sydnyUserLocation)
+//                                            if (!mMap!!.projection.visibleRegion.latLngBounds.contains(
+//                                                    sydnyUserLocation
+//                                                ) ||
+//                                                !googleMap.projection.visibleRegion.latLngBounds.contains(
+//                                                    sydnyTrainLocation!!
+//                                                )
+//                                            ) {
+//                                                val cameraTrainUpdate =
+//                                                    CameraUpdateFactory.newLatLng(
+//                                                        googleMap.projection.fromScreenLocation(
+//                                                            screenTrainPosition
+//                                                        )
+//                                                    )
+//                                                val cameraUserUpdate =
+//                                                    CameraUpdateFactory.newLatLng(
+//                                                        googleMap.projection.fromScreenLocation(
+//                                                            screenUserPosition
+//                                                        )
+//                                                    )
+//                                                mMap!!.moveCamera(cameraTrainUpdate)
+//                                                mMap!!.moveCamera(cameraUserUpdate)
+//                                            }
+//                                        }
 
-                                        // Add markers to the map
+                                // Add markers to the map
 
 //                        val cameraPosition: CameraPosition = CameraPosition.Builder()
 //                            .target(
@@ -401,40 +445,38 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
 //                            .bearing(0F) // Sets the orientation of the camera to east
 ////            .tilt(40F) // Sets the tilt of the camera to 30 degrees
 //                            .build() // Creates a CameraPosition from the builder
-                                        // Calculate bounds that encompass both positions
-                                        val bounds = LatLngBounds.Builder()
-                                            .include(sydnyUserLocation)
-                                            .include(sydnyTrainLocation!!)
-                                            .build()
+                                // Calculate bounds that encompass both positions
+//                                        val bounds = LatLngBounds.Builder()
+//                                            .include(sydnyUserLocation)
+//                                            .include(sydnyTrainLocation!!)
+//                                            .build()
+//
+//                                        // Draw a line between the locations
+//                                        val polylineOptions = PolylineOptions()
+//                                            .add(sydnyUserLocation, sydnyTrainLocation)
+//                                            .color(R.color.PrimaryColor)
+//                                            .width(10f)
+//
+//                                        // Animate camera to the calculated bounds
+//                                        // Calculate the padding based on the map size and desired zoom level
+//                                        val mapWidth = binding!!.trackLocationMap.width
+//                                        val mapHeight = binding!!.trackLocationMap.height
+//                                        val padding = (Math.max(
+//                                            mapWidth,
+//                                            mapHeight
+//                                        ) * 0.1).toInt() // Optional padding around the bounds (in pixels)
+//                                        val cameraUpdate =
+//                                            CameraUpdateFactory.newLatLngBounds(bounds, padding)
+//                                        mMap?.animateCamera(cameraUpdate)
+//                                        mMap?.addPolyline(polylineOptions)
 
-                                        // Draw a line between the locations
-                                        val polylineOptions = PolylineOptions()
-                                            .add(sydnyUserLocation, sydnyTrainLocation)
-                                            .color(R.color.PrimaryColor)
-                                            .width(10f)
 
-                                        // Animate camera to the calculated bounds
-                                        // Calculate the padding based on the map size and desired zoom level
-                                        val mapWidth = binding!!.trackLocationMap.width
-                                        val mapHeight = binding!!.trackLocationMap.height
-                                        val padding = (Math.max(mapWidth, mapHeight) * 0.1).toInt() // Optional padding around the bounds (in pixels)
-                                        val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, padding)
-                                        mMap?.animateCamera(cameraUpdate)
-                                        mMap?.addPolyline(polylineOptions)
+                            }
 
-                                        trackLocationFeatureViewModel!!.gettingTrainLocaion(this)
-
-                                    }
-                                    is Resource.Failure->{
-                                        Log.i(TAG,"${it.error}")
-                                    }
-
-                                    else -> {}
-                                }
-                            })
+                        }
                     }
 
-                    is Resource.Failure->{
+                    is Resource.Failure -> {
                         toast("${it.error}")
                     }
 
@@ -445,10 +487,185 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
 
         trackLocationFeatureViewModel!!.startGettingUserLocation()
         trackLocationFeatureViewModel!!.userLiveLocation.observe(viewLifecycleOwner, Observer {
-                    if (it != null){
+            if (it != null) {
 
-                    }
+            }
         })
     }
 
+
+    private fun addMarkersToMap(
+        mapView: GoogleMap,
+        markerSydny: LatLng,
+        markerName: String?,
+        iconType: String?
+    ):MarkerOptions{
+        var marker:MarkerOptions?=null
+        when (iconType) {
+            "station" -> {
+                marker=
+                    MarkerOptions().flat(true).position(markerSydny).title(markerName)
+                        .icon(bitmapDescriptorFromVector(R.drawable.station_in_map))
+                mapView.addMarker(marker)
+            }
+            else -> {
+                marker=
+                    MarkerOptions().flat(true).position(markerSydny).title(markerName)
+                mapView.addMarker(marker)
+            }
+        }
+        return marker
+    }
+
+    fun moveMarker(marker:MarkerOptions,newPostion:LatLng){
+        marker.position(newPostion)
+    }
+
+    private fun bitmapDescriptorFromVector(
+        @DrawableRes vectorDrawableResourceId: Int
+    ): BitmapDescriptor? {
+        val background: Drawable =
+            ContextCompat.getDrawable(requireContext(), vectorDrawableResourceId)!!
+        background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight())
+        val vectorDrawable: Drawable =
+            ContextCompat.getDrawable(requireContext(), vectorDrawableResourceId)!!
+        vectorDrawable.setBounds(
+            40,
+            20,
+            vectorDrawable.getIntrinsicWidth() + 40,
+            vectorDrawable.getIntrinsicHeight() + 20
+        )
+        val bitmap = Bitmap.createBitmap(
+            background.getIntrinsicWidth(),
+            background.getIntrinsicHeight(),
+            Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(bitmap)
+        background.draw(canvas)
+        vectorDrawable.draw(canvas)
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
+    }
+
+
+    fun addStationsMarkersToMap(mapView: GoogleMap) {
+        val builder = LatLngBounds.builder()
+        var stationSydny = arrayListOf<StationSydny>()
+        //get stations from database
+        trackLocationFeatureViewModel!!.gettingStationsFromDatabase()
+        trackLocationFeatureViewModel!!.getStationsFromDatabase.observe(viewLifecycleOwner,
+            Observer {
+                when (it) {
+                    is Resource.Success -> {
+                        Log.i(TAG, "${it.data}")
+                        if (it.data.isEmpty()) {
+                            trackLocationFeatureViewModel!!.getAllStation()
+                            trackLocationFeatureViewModel!!.stations.observe(viewLifecycleOwner,
+                                Observer {
+                                    when (it) {
+                                        is Resource.Loading -> {
+                                            Log.i(TAG, "getting from API stations ")
+                                        }
+                                        is Resource.Failure -> {
+                                            Log.i(TAG, "${it.error}")
+                                        }
+                                        is Resource.Success -> {
+                                            Log.i(TAG, "${it.data}")
+                                            stationSydny =
+                                                genenrateStationsSydny(ArrayList(it.data.distinct()))
+                                            //inserting stations to database
+                                            for (station in it.data) {
+                                                builder.include(
+                                                    LatLng(
+                                                        station.latitude,
+                                                        station.longitude
+                                                    )
+                                                )
+                                                addMarkersToMap(
+                                                    mapView,
+                                                    LatLng(station.latitude, station.longitude),
+                                                    station.name,
+                                                    "station"
+                                                )
+                                                trackLocationFeatureViewModel!!.insertingNewStationsToDatabase(
+                                                    StationItemEntity(
+                                                        description = station.description,
+                                                        latitude = station.latitude,
+                                                        longitude = station.longitude,
+                                                        name = station.name,
+                                                        apiID = station.id,
+                                                        Postion = station.Postion,
+                                                        nextStation = station.nextStation,
+                                                        trainId = 0
+                                                    )
+                                                )
+                                            }
+                                            zoomingOnStations(mMap!!, builder, stationSydny)
+                                        }
+                                        else -> {}
+                                    }
+                                })
+                        } else {
+                            //it all ready cashed before
+                            stationSydny =
+                                genenrateStationsSydnyFromDatbaseStationsItems(ArrayList(it.data.distinct()))
+                            for (station in it.data) {
+                                builder.include(LatLng(station.latitude, station.longitude))
+                                addMarkersToMap(
+                                    mapView,
+                                    LatLng(station.latitude, station.longitude),
+                                    station.name,
+                                    "station"
+                                )
+                            }
+                            zoomingOnStations(mMap!!, builder, stationSydny)
+                        }
+                    }
+                    is Resource.Loading -> {
+                        Log.i(TAG, "getting stations ")
+                    }
+                    is Resource.Failure -> {
+                        Log.i(TAG, "${it.error}")
+                    }
+                    else -> {}
+                }
+            })
+    }
+
+    fun genenrateStationsSydny(stationsList: ArrayList<StationResponseItem>): ArrayList<StationSydny> {
+        val stationSydnyList = ArrayList<StationSydny>()
+        for (station in stationsList) {
+            stationSydnyList.add(
+                StationSydny(
+                    LatLng(station.latitude, station.longitude), station.name
+                )
+            )
+        }
+        return stationSydnyList
+    }
+
+    fun genenrateStationsSydnyFromDatbaseStationsItems(stationsList: ArrayList<StationItemEntity>): ArrayList<StationSydny> {
+        val stationSydnyList = ArrayList<StationSydny>()
+        for (station in stationsList) {
+            stationSydnyList.add(
+                StationSydny(
+                    LatLng(station.latitude, station.longitude), station.name
+                )
+            )
+        }
+        return stationSydnyList
+    }
+
+    fun zoomingOnStations(
+        mapView: GoogleMap,
+        builder: LatLngBounds.Builder,
+        stationSydny: ArrayList<StationSydny>
+    ) {
+        // Move camera to include all the markers with zoom
+        val bounds = builder.build()
+        val padding = 100 // Adjust as needed
+        val cameraUpdate =
+            CameraUpdateFactory.newLatLngBounds(bounds, padding)
+        // Apply both camera updates
+        mapView.animateCamera(cameraUpdate)
+    }
 }

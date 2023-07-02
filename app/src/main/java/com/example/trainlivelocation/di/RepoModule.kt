@@ -4,7 +4,6 @@ import android.content.Context
 import com.example.data.*
 import com.example.domain.repo.UserRepo
 import com.example.repo.userRepoImpl
-import com.example.trainlivelocation.utli.LocationTrackBackgroundService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,8 +15,8 @@ import dagger.hilt.components.SingletonComponent
 object RepoModule {
 
     @Provides
-    fun ProvideFirebaseStorage(context: Context): MyDatabase {
-        return MyDatabase.getInstance(context) as MyDatabase
+    fun ProvideMyDatabase(context: Context): MyDatabase {
+        return MyDatabase.getInstance(context)
     }
 
     @Provides

@@ -186,6 +186,7 @@ class MainActivity : AppCompatActivity() ,HomeMapListener{
             when (fragmentToload) {
                  "DoctorLocationInMap" -> {
                      setHeader("Emergency")
+                     Log.i(TAG,"Emergency DoctorLocationInMap")
                     val doctorNotificationData=intent.getSerializableExtra("doctorNotification") as DoctorNotificationData
                     val bundle = Bundle()
                     bundle.putSerializable(

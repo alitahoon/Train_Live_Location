@@ -145,6 +145,13 @@
             app:exitAnim="@anim/exit"
             app:popEnterAnim="@anim/pop_enter"
             app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_trackLocationFeature_to_trackTrainInOpenStreetMap"
+            app:destination="@id/trackTrainInOpenStreetMap"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
     </fragment>
     <fragment
         android:id="@+id/posts2"
@@ -237,5 +244,9 @@
         android:id="@+id/news"
         android:name="com.example.trainlivelocation.ui.News"
         android:label="News" />
+    <fragment
+        android:id="@+id/trackTrainInOpenStreetMap"
+        android:name="com.example.trainlivelocation.ui.TrackTrainInOpenStreetMap"
+        android:label="TrackTrainInOpenStreetMap" />
 
 </navigation>

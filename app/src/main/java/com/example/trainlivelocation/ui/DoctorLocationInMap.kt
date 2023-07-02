@@ -45,7 +45,7 @@ class DoctorLocationInMap : Fragment() ,OnMapReadyCallback{
     ): View? {
        binding= FragmentDoctorLocationInMapBinding.inflate(inflater,container,false)
            .apply {
-//               this.viewmodel=doctorLocationInMapViewModel
+               this.doctorLocationMapMapView.onCreate(doctorLocationInMapViewModel?.getMAP_VIEW_KEY())
            }
         val viewModelff = ViewModelProvider(this).get(DoctorLocationInMapViewModel::class.java)
         binding?.viewmodel = viewModelff

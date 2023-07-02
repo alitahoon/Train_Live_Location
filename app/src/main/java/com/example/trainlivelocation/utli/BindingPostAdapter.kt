@@ -43,23 +43,7 @@ fun setAdapter(
 //    }
 //}
 
-@BindingAdapter("userphone","imageId")
-fun setImage(imageView: ImageView, userphone: String?,imageId:Int?) {
-    val storage: FirebaseStorage = FirebaseStorage.getInstance()
-    // Create a storage reference from our app
-    val storageRef = storage.reference
-    Log.i("setImage","${storageRef}postsImages/${userphone}/${imageId}")
-    storageRef.child("postsImages/${userphone}/${imageId}").downloadUrl.addOnSuccessListener {
-        Glide.with(imageView.context)
-            .load(it)
-            .placeholder(R.drawable.emptyicon)
-            .into(imageView)
 
-    }.addOnFailureListener{
-        Log.i("setImageAdapterBinding","addOnFailureListener ${it.message}")
-    }
-
-}
 
 
 

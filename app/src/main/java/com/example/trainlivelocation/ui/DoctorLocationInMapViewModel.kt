@@ -32,7 +32,7 @@ class DoctorLocationInMapViewModel @Inject constructor(
 
 
     fun getMAP_VIEW_KEY(): Bundle? {
-        MAP_VIEW_Bundle?.putString("MapViewBundleKey", "101")
+        MAP_VIEW_Bundle?.putString("MapViewBundleKey", "104")
         return MAP_VIEW_Bundle
     }
 
