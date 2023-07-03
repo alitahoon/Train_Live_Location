@@ -59,6 +59,7 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
 
     var trainLocationFromService: LiveData<Resource<Location_Response>> = _trainLocationFromService
 
+    private var isCameraAnimated: Boolean = false
 
     var origin1: LatLng? = null// Ramsis(Cairo)
     var destination1: LatLng? = null  // Shubra El-Kheima
@@ -125,14 +126,6 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        toast("Map State ${isMapOpen(requireContext())}"01)
-
-        if(isMapOpen(requireContext())){
-            listener!!.onMapOpened()
-            homeViewModel!!.geTrainLocation(getUserCurrantTrainIntoSharedPrefrences(requireContext()))
-            startHomeMap()
-        }
-
     }
 
     override fun onAttach(context: Context) {
@@ -181,6 +174,17 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
         } else {
             // Service is not running
 
+        }
+
+
+        toast("Map State ${isMapOpen(requireContext())}")
+
+        if(isMapOpen(requireContext())){
+            listener!!.onMapOpened()
+            homeViewModel!!.geTrainLocation(getUserCurrantTrainIntoSharedPrefrences(requireContext()))
+            binding!!.homeTrackTrainIDTxt.setHint("Stop Map Tracking")
+            startHomeMap()
+            isCameraAnimated = true
         }
 
 
@@ -288,9 +292,21 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
 
         homeViewModel?.chooseTrainTxtClicked!!.observe(viewLifecycleOwner, Observer {
             if (it == true) {
-                var dialog = ChooseTrainDialogFragment(this)
-                var childFragmentManager = getChildFragmentManager()
-                dialog.show(childFragmentManager, "ChooseTrainDialogFragment")
+                if(isMapOpen(requireContext()) && binding!!.homeTrackTrainIDTxt.hint.equals("Stop Map Tracking")){
+                    listener!!.onMoveFromHome()
+                    binding!!.homeCardTrainIcon.visibility=View.VISIBLE
+                    binding!!.homeCardTrainId.visibility=View.VISIBLE
+                    binding!!.homeMapCardView.visibility = View.GONE
+                    isCameraAnimated = false
+                    binding!!.homeTrackTrainIDTxt.setHint("Choose Train To Track")
+                    setMapFlag(requireContext(),false)
+                }
+                else{
+                    var dialog = ChooseTrainDialogFragment(this)
+                    var childFragmentManager = getChildFragmentManager()
+                    dialog.show(childFragmentManager, "ChooseTrainDialogFragment")
+                }
+
             }
         })
 
@@ -327,7 +343,8 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
     }
 
     override fun onTrainSelected(trainId: Int?, trainDegree: String?) {
-        binding!!.homeTrackTrainIDTxt.setText(trainId!!.toString())
+        binding!!.homeTrackTrainIDTxt.setHint(trainId!!.toString())
+        binding!!.homeTrackTrainIDTxt.setHint("Stop Map Tracking")
         listener!!.onMapOpened()
         insertUserCurrantTrainIntoSharedPrefrences(requireContext(), trainId)
         homeViewModel!!.geTrainLocation(trainId)
@@ -612,7 +629,12 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
                                     // Zoom the camera to the desired zoom level
                                     val zoomUpdate = CameraUpdateFactory.zoomTo(zoomLevel)
                                     // Apply both camera updates
-                                    mMap.animateCamera(cameraUpdate)
+                                    if(!isCameraAnimated){
+                                        mMap.animateCamera(cameraUpdate)
+                                    }
+                                    else{
+                                        mMap.moveCamera(cameraUpdate)
+                                    }
                                     var trainMarker: Marker? = null
                                     val markerOptions = MarkerOptions()
                                         .position(

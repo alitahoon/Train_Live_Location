@@ -73,15 +73,29 @@ class InboxSent : Fragment() ,MessageListener{
                     Log.i(TAG, "messages is loading ....")
                     binding.inboxChatRCV.setVisibility(View.GONE)
                     binding.inboxLoadinigShimmer.setVisibility(View.VISIBLE)
+                    binding!!.inboxSentImgViewEmptyMsg.setVisibility(View.GONE)
+                    binding!!.inboxSentTxtViewEmptyMsg.setVisibility(View.GONE)
                 }
                 is Resource.Success -> {
-                    binding.inboxChatRCV.setVisibility(View.VISIBLE)
-                    binding.inboxLoadinigShimmer.setVisibility(View.GONE)
                     Log.i(TAG, "data : ${it.data}")
-                    if (it.data.size>1){
-                        adapter.setData(filterSentMessages(it.data))
-                    }else{
-                        adapter.setData(it.data)
+
+                    if(it.data.isEmpty()){
+                        binding!!.inboxChatRCV.visibility = View.GONE
+                        binding!!.inboxSentImgViewEmptyMsg.visibility = View.VISIBLE
+                        binding!!.inboxSentTxtViewEmptyMsg.visibility = View.VISIBLE
+                        binding!!.inboxLoadinigShimmer.visibility = View.GONE
+                    }
+                    else{
+                        binding!!.inboxChatRCV.visibility = View.VISIBLE
+                        binding!!.inboxSentImgViewEmptyMsg.visibility = View.GONE
+                        binding!!.inboxSentTxtViewEmptyMsg.visibility = View.GONE
+                        binding!!.inboxLoadinigShimmer.visibility = View.GONE
+
+                        if (it.data.size>1){
+                            adapter.setData(filterSentMessages(it.data))
+                        }else{
+                            adapter.setData(it.data)
+                        }
                     }
                 }
                 is Resource.Failure -> {
