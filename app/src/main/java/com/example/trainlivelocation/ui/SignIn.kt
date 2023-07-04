@@ -35,12 +35,43 @@ class SignIn : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         signInViewModel!!.checkingUserData()
-        signInViewModel!!.getUserSignInData.observe(viewLifecycleOwner, Observer{
-            when(it){
-                Resource.Loading
+        signInViewModel!!.getUserSignInData.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is Resource.Loading -> {
+                    Log.i(TAG, "getting user date")
+                }
+                is Resource.Success -> {
+                    Log.i(TAG, "${it.data}")
+                    for (user in it.data) {
+                        signInViewModel!!.checkIfUserIsSignIn(
+                            userPhone = user.userName,
+                            userPassword = user.password
+                        )
+                    }
+                    signInViewModel!!.userLoginDataLive.observe(viewLifecycleOwner, Observer {
+                        when (it) {
+                            is Resource.Failure -> {
+                                Log.e(TAG, "${it.error}")
+                            }
+                            is Resource.Success -> {
+                                Log.i(TAG, "${it.data}")
+                                signInViewModel!!.saveUserTokenInSharedPreferences(it.data)
+                                findNavController().navigate(R.id.action_signIn_to_shareLocationDialog)
+
+                            }
+                            is Resource.Loading -> {
+                                Log.i(TAG, "check user info")
+
+                            }
+                            else -> {}
+                        }
+                    })
+                }
+                is Resource.Failure -> {
+                    Log.e(TAG, "${it.error}")
+                }
+                else -> {}
             }
-            for(user in ArrayList)
-            signInViewModel!!.checkIfUserIsSignIn()
         })
     }
 
@@ -72,7 +103,16 @@ class SignIn : Fragment() {
 
         signInViewModel!!.signInBtnClicked.observe(viewLifecycleOwner, Observer {
             if (it == true) {
-                signInViewModel!!.checkIfUserIsSignIn()
+                signInViewModel!!.cashingUserData(
+                    UserSignInDataEntity(
+                        userName = binding.signinTxtPhone.text!!.trim().toString(),
+                        password = binding.signinEdittxtPassword.text!!.trim().toString()
+                    )
+                )
+                signInViewModel!!.checkIfUserIsSignIn(
+                    binding.signinTxtPhone.text!!.trim().toString(),
+                    binding.signinEdittxtPassword.text!!.trim().toString()
+                )
                 signInViewModel?.userLoginDataLive?.observe(viewLifecycleOwner,
                     Observer {
                         when (it) {
@@ -108,7 +148,7 @@ class SignIn : Fragment() {
 
 
         signInViewModel!!.PhoneNumberIsNotCorrect.observe(viewLifecycleOwner, Observer {
-            showCustomToast(requireContext(),"Please Enter Valid Phone number")
+            showCustomToast(requireContext(), "Please Enter Valid Phone number")
         })
 
     }
@@ -122,7 +162,7 @@ class SignIn : Fragment() {
     fun resetDiffultDesign() {
         binding.signInLoadingLayout.setVisibility(View.GONE)
         binding.signInInputLayout.setVisibility(View.VISIBLE)
-        binding.signBtnSignIn.isEnabled=true
+        binding.signBtnSignIn.isEnabled = true
         binding.signBtnSignIn.setBackgroundColor(requireContext().getColor(R.color.PrimaryColor))
 
     }

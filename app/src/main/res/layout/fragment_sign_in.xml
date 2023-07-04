@@ -39,6 +39,7 @@
                     app:boxStrokeWidth="@dimen/_1sdp"
                     android:textColorHint="@color/textHintColorFirst">
                     <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/signin_txt_phone"
                         android:layout_width="match_parent"
                         android:inputType="number"
                         android:layout_height="wrap_content"
@@ -75,6 +76,7 @@
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
+                        android:id="@+id/signin_edittxt_password"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/white"
                         android:drawableStart="@drawable/password_icon"
