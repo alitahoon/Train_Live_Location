@@ -259,6 +259,15 @@ interface UserRepo {
         result: (Resource<String>) -> Unit
     )
 
+    suspend fun getAllUserSignInDataEntity(
+        result: (Resource<ArrayList<UserSignInDataEntity>>) -> Unit
+    )
+
+    suspend fun insertUserSignInDataEntity(
+        userSignInDataEntity: UserSignInDataEntity,
+        result: (Resource<String>) -> Unit
+    )
+
     suspend fun insertLocationItemToDatabase(
         locationItemEntity: LocationItemEntity,
         result: (Resource<String>) -> Unit

@@ -423,8 +423,6 @@ object UserCaseModule {
     @Provides
     fun ProvideDeleteLocationItemFromDatabase(userRepo: UserRepo): DeleteLocationItemFromDatabase {
         return DeleteLocationItemFromDatabase(userRepo)
-
-
     }
 
     @Provides
@@ -439,6 +437,16 @@ object UserCaseModule {
     @Provides
     fun ProvideInsertNewStationToDatabase(userRepo: UserRepo): InsertNewStationToDatabase {
         return InsertNewStationToDatabase(userRepo)
+    }
+
+    @Provides
+    fun ProvideInsertUserSignInDataEntity(userRepo: UserRepo): InsertUserSignInDataEntity {
+        return InsertUserSignInDataEntity(userRepo)
+    }
+
+    @Provides
+    fun ProvideGetAllUserSignInDataEntity(userRepo: UserRepo): GetAllUserSignInDataEntity {
+        return GetAllUserSignInDataEntity(userRepo)
     }
 
 

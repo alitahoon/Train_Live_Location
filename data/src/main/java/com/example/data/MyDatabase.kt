@@ -9,8 +9,8 @@ import com.example.domain.entity.*
 @Database(
     entities = [StationAlarmEntity::class, UserItemEntity::class, RouteDirctionEntity::class,
         TrainItemEntity::class, TicketItemEntity::class, MessageItemEntity::class,
-        StationHistoryAlarmEntity::class, LocationItemEntity::class, NewsItemEntity::class,StationItemEntity::class],
-    version = 5
+        StationHistoryAlarmEntity::class, LocationItemEntity::class, NewsItemEntity::class, StationItemEntity::class, UserSignInDataEntity::class],
+    version = 6
 )
 abstract class MyDatabase : RoomDatabase() {
 
@@ -24,6 +24,7 @@ abstract class MyDatabase : RoomDatabase() {
     abstract fun LocationItemEntityDao(): LocationItemEntityDao
     abstract fun NewsItemEntityDao(): NewsItemEntityDao
     abstract fun StationItemEntityDao(): StationItemEntityDao
+    abstract fun UserSignInDataEntityDao(): UserSignInDataEntityDao
 
     companion object {
         @Volatile

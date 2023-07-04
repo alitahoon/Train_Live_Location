@@ -154,6 +154,32 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun getAllUserSignInDataEntity(result: (Resource<ArrayList<UserSignInDataEntity>>) -> Unit) {
+        try {
+            result.invoke(
+                Resource.Success(
+                    ArrayList(
+                        myDatabase.UserSignInDataEntityDao().getAllUserSignInDataEntity()
+                    )
+                )
+            )
+        } catch (e: Exception) {
+            result.invoke(Resource.Failure("Failed getting UserSignInDataEntity ---> ${e.message}"))
+        }
+    }
+
+    override suspend fun insertUserSignInDataEntity(
+        userSignInDataEntity: UserSignInDataEntity,
+        result: (Resource<String>) -> Unit
+    ) {
+        try {
+            myDatabase.UserSignInDataEntityDao().insertUserSignInDataEntity(userSignInDataEntity)
+            result.invoke(Resource.Success("Successfully added user sign in data in database"))
+        } catch (e: Exception) {
+            result.invoke(Resource.Failure("Failed inserting UserSignInDataEntity ---> ${e.message}"))
+        }
+    }
+
     override suspend fun insertLocationItemToDatabase(
         locationItemEntity: LocationItemEntity,
         result: (Resource<String>) -> Unit
