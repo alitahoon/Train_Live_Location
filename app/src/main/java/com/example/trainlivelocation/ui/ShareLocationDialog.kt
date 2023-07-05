@@ -68,7 +68,7 @@ class ShareLocationDialog : DialogFragment(), Train_Dialog_Listener {
         shareLocationDialogViewModel.btnNo.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 dismiss()
-                findNavController().navigate(R.id.action_shareLocationDialog_to_mainActivity)
+                findNavController().navigate(ShareLocationDialogDirections.actionShareLocationDialog2ToMainActivity2())
             }
         })
 
