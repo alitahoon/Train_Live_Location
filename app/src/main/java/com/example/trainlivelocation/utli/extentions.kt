@@ -124,21 +124,33 @@ fun Context.getUserCurrantTrainIntoSharedPrefrences():Int?{
     return trainSharedPreferences.getInt("trainID",0)
 }
 
-fun Context.getStationHistoryAlarm(): StationDistanceModel?{
-    var stationModel:StationDistanceModel?=null
+//fun Context.getStationHistoryAlarm(): StationDistanceModel?{
+//    var stationModel:StationDistanceModel?=null
+//    val trainSharedPreferences: SharedPreferences =
+//        getSharedPreferences("stationHistory", Context.MODE_PRIVATE)
+//    val gsonBuilder = GsonBuilder()
+//    gsonBuilder.registerTypeAdapter(StationDistanceModel::class.java, StationDistanceDeserializer())
+//    val gson = gsonBuilder.create()
+//    val res=trainSharedPreferences.getString("stationData", null)
+//        Log.i("getStationHistoryAlarm","$res")
+//    stationModel = gson.fromJson(res, StationDistanceModel::class.java)
+//
+//    return stationModel
+//}
+
+fun Context.getStationHistoryAlarm(): StationDistanceModel? {
+    var stationModel: StationDistanceModel? = null
     val trainSharedPreferences: SharedPreferences =
         getSharedPreferences("stationHistory", Context.MODE_PRIVATE)
     val gsonBuilder = GsonBuilder()
     gsonBuilder.registerTypeAdapter(StationDistanceModel::class.java, StationDistanceDeserializer())
     val gson = gsonBuilder.create()
-    val res=trainSharedPreferences.getString("stationData", null)
-        Log.i("getStationHistoryAlarm","$res")
+    val res = trainSharedPreferences.getString("stationData", null)
+    Log.i("getStationHistoryAlarm", "$res")
     stationModel = gson.fromJson(res, StationDistanceModel::class.java)
 
     return stationModel
 }
-
-
 fun Context.showCustomToast(context: Context, message: String) {
     val inflater = LayoutInflater.from(context)
     val toastLayout = inflater.inflate(R.layout.custom_toast_layout, null)

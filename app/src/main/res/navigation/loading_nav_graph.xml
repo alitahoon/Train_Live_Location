@@ -24,12 +24,12 @@
             app:popEnterAnim="@anim/fade"
             app:popExitAnim="@anim/fade" />
         <action
-            android:id="@+id/action_logo_loading_to_chooseTrainDialogFragment"
-            app:destination="@id/chooseTrainDialogFragment"
-            app:enterAnim="@anim/enter"
-            app:exitAnim="@anim/exit"
-            app:popEnterAnim="@anim/pop_enter"
-            app:popExitAnim="@anim/pop_exit" />
+            android:id="@+id/action_logo_loading_to_shareLocationDialog2"
+            app:destination="@id/shareLocationDialog2"
+            app:enterAnim="@anim/fade"
+            app:exitAnim="@anim/slide_in_up"
+            app:popEnterAnim="@anim/fade"
+            app:popExitAnim="@anim/slide_out_down" />
     </fragment>
     <fragment
         android:id="@+id/splash_features"
@@ -41,7 +41,15 @@
         android:label="activity_splash"
         tools:layout="@layout/activity_splash" />
     <dialog
-        android:id="@+id/chooseTrainDialogFragment"
-        android:name="com.example.trainlivelocation.ui.ChooseTrainDialogFragment"
-        android:label="ChooseTrainDialogFragment" />
+        android:id="@+id/shareLocationDialog2"
+        android:name="com.example.trainlivelocation.ui.ShareLocationDialog"
+        android:label="ShareLocationDialog" >
+        <action
+            android:id="@+id/action_shareLocationDialog2_to_mainActivity2"
+            app:destination="@id/mainActivity2" />
+    </dialog>
+    <activity
+        android:id="@+id/mainActivity2"
+        android:name="com.example.trainlivelocation.ui.MainActivity"
+        android:label="MainActivity" />
 </navigation>

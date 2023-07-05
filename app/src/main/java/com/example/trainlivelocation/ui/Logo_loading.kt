@@ -23,7 +23,7 @@ class Logo_loading : Fragment() {
     private val TAG="Logo_loading"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        logo_loading_Viewmodel!!.clearUserData()
+//        logo_loading_Viewmodel!!.clearUserData()
     }
 
     override fun onCreateView(
@@ -75,7 +75,7 @@ class Logo_loading : Fragment() {
                                             Log.e(TAG, "${it.error}")
                                         }
                                         is Resource.Success -> {
-                                            findNavController().navigate(R.id.action_logo_loading_to_chooseTrainDialogFragment)
+                                            findNavController().navigate(R.id.action_logo_loading_to_shareLocationDialog2)
                                         }
                                         is Resource.Loading -> {
                                             Log.i(TAG, "checking user info")
