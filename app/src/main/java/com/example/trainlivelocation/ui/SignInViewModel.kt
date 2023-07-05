@@ -94,9 +94,15 @@ class SignInViewModel @Inject constructor(
     fun checkIfUserIsSignIn(userPhone: String, userPassword: String) {
         _userLoginDataMuta.value=Resource.Loading
         viewModelScope.launch {
-            getUserData(userPhone,userPassword){
-                _userLoginDataMuta.value=it
+            val child1=launch (Dispatchers.IO){
+                getUserData(userPhone,userPassword){
+                    val child2=launch (Dispatchers.Main){
+                        _userLoginDataMuta.value=it
+                    }
+                }
             }
+            child1.join()
+
         }
     }
 

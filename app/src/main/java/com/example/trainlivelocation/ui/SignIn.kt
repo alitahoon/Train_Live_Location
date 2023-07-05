@@ -48,46 +48,6 @@ class SignIn : Fragment() {
             }
         resetDiffultDesign()
 
-        signInViewModel!!.checkingUserData()
-        signInViewModel!!.getUserSignInData.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is Resource.Loading -> {
-                    Log.i(TAG, "getting user date")
-                }
-                is Resource.Success -> {
-                    Log.i(TAG, "${it.data}")
-                    for (user in it.data) {
-                        signInViewModel!!.checkIfUserIsSignIn(
-                            userPhone = user.userName,
-                            userPassword = user.password
-                        )
-                    }
-                    signInViewModel!!.userLoginDataLive.observe(viewLifecycleOwner, Observer {
-                        when (it) {
-                            is Resource.Failure -> {
-                                Log.e(TAG, "${it.error}")
-                            }
-                            is Resource.Success -> {
-                                Log.i(TAG, "${it.data}")
-                                signInViewModel!!.saveUserTokenInSharedPreferences(it.data)
-                                findNavController().navigate(R.id.action_signIn_to_shareLocationDialog)
-
-                            }
-                            is Resource.Loading -> {
-                                Log.i(TAG, "check user info")
-
-                            }
-                            else -> {}
-                        }
-                    })
-                }
-                is Resource.Failure -> {
-                    Log.e(TAG, "${it.error}")
-                }
-                else -> {}
-            }
-        })
-
         setObservers()
         return binding.root
     }
@@ -106,12 +66,7 @@ class SignIn : Fragment() {
 
         signInViewModel!!.signInBtnClicked.observe(viewLifecycleOwner, Observer {
             if (it == true) {
-                signInViewModel!!.cashingUserData(
-                    UserSignInDataEntity(
-                        userName = binding.signinTxtPhone.text!!.trim().toString(),
-                        password = binding.signinEdittxtPassword.text!!.trim().toString()
-                    )
-                )
+
                 signInViewModel!!.checkIfUserIsSignIn(
                     binding.signinTxtPhone.text!!.trim().toString(),
                     binding.signinEdittxtPassword.text!!.trim().toString()
@@ -130,6 +85,12 @@ class SignIn : Fragment() {
                             is Resource.Success -> {
                                 Log.i(TAG, "Success:${it.data}")
                                 signInViewModel!!.saveUserTokenInSharedPreferences(it.data)
+                                signInViewModel!!.cashingUserData(
+                                    UserSignInDataEntity(
+                                        userName = signInViewModel!!.userPhone!!,
+                                        password = signInViewModel!!.userPassword!!
+                                    )
+                                )
                                 findNavController().navigate(R.id.action_signIn_to_shareLocationDialog)
                             }
 

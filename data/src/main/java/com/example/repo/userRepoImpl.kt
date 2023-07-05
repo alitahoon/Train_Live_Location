@@ -62,6 +62,18 @@ class userRepoImpl(
         }
     }
 
+    override suspend fun clearUserSignDataFromDatabase(result: (Resource<String>) -> Unit) {
+        try {
+            myDatabase.UserSignInDataEntityDao().clear()
+            result.invoke(
+                Resource.Success(
+                   "Successfully clear user data"
+                )
+            )
+        } catch (e: Exception) {
+            result.invoke(Resource.Failure("Failed getting StationAlarmsFromDatabase ---> ${e.message}"))
+        }    }
+
     override suspend fun insertNewUserItemToDatabase(
         userItemEntity: UserItemEntity,
         result: (Resource<String>) -> Unit
@@ -977,6 +989,7 @@ class userRepoImpl(
         } catch (e: Exception) {
             result.invoke(Resource.Failure("Failed inserting station item ---> ${e.message}"))
         }    }
+
 
     override suspend fun getNotificationTokenFromFirebase(
         userPhone: String?,

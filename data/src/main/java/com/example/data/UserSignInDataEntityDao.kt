@@ -3,7 +3,6 @@ package com.example.data
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.domain.entity.UserItemEntity
 import com.example.domain.entity.UserSignInDataEntity
 
 
@@ -15,4 +14,7 @@ interface UserSignInDataEntityDao {
 
     @Insert
     suspend fun insertUserSignInDataEntity(userSignInDataEntity: UserSignInDataEntity)
+
+    @Query("DELETE FROM UserSignInDataEntity")
+    fun clear()
 }

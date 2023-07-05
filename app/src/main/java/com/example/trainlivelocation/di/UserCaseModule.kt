@@ -448,6 +448,10 @@ object UserCaseModule {
     fun ProvideGetAllUserSignInDataEntity(userRepo: UserRepo): GetAllUserSignInDataEntity {
         return GetAllUserSignInDataEntity(userRepo)
     }
+    @Provides
+    fun ProvideClearUserSignDataFromDatabase(userRepo: UserRepo): ClearUserSignDataFromDatabase {
+        return ClearUserSignDataFromDatabase(userRepo)
+    }
 
 
 }

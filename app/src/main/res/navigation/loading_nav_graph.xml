@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/loading_nav_graph"
+    app:startDestination="@id/logo_loading">
+    <fragment
+        android:id="@+id/logo_loading"
+        android:name="com.example.trainlivelocation.ui.Logo_loading"
+        android:label="fragment_logo_loading"
+        tools:layout="@layout/fragment_logo_loading" >
+        <action
+            android:id="@+id/action_logo_loading_to_splash_features"
+            app:destination="@id/splash_features"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_logo_loading_to_splash2"
+            app:destination="@id/splash2"
+            app:enterAnim="@anim/fade"
+            app:exitAnim="@anim/zoom_in"
+            app:popEnterAnim="@anim/fade"
+            app:popExitAnim="@anim/fade" />
+        <action
+            android:id="@+id/action_logo_loading_to_chooseTrainDialogFragment"
+            app:destination="@id/chooseTrainDialogFragment"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/splash_features"
+        android:name="com.example.trainlivelocation.ui.Splash_features"
+        android:label="Splash_features" />
+    <activity
+        android:id="@+id/splash2"
+        android:name="com.example.trainlivelocation.ui.splash"
+        android:label="activity_splash"
+        tools:layout="@layout/activity_splash" />
+    <dialog
+        android:id="@+id/chooseTrainDialogFragment"
+        android:name="com.example.trainlivelocation.ui.ChooseTrainDialogFragment"
+        android:label="ChooseTrainDialogFragment" />
+</navigation>

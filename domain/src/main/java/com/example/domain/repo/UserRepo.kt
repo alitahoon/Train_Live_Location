@@ -365,5 +365,9 @@ interface UserRepo {
         result: (Resource<String>) -> Unit
     )
 
+    suspend fun clearUserSignDataFromDatabase(
+        result: (Resource<String>) -> Unit
+    )
+
 
 }
