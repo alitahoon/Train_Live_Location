@@ -1,58 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.splash_features"
-    android:orientation="vertical"
-    android:background="@color/DarkPrimaryColor">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.airbnb.lottie.LottieAnimationView
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        android:layout_marginTop="@dimen/_100sdp"
-        android:id="@+id/splashFeatureLotti"
-        android:layout_width="@dimen/_150sdp"
-        android:layout_height="@dimen/_150sdp"
-        android:layout_centerHorizontal="true"
-        app:lottie_rawRes="@raw/location_track" />
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.trainlivelocation.ui.Splash_features_ViewModel" />
+    </data>
 
-    <TextView
-        android:id="@+id/splashFeatureTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/splashFeatureLotti"
-        android:padding="@dimen/_15sdp"
-        android:text="Feature Title"
-        android:textColor="@color/white"
-        android:textSize="@dimen/_14ssp"
-        android:textStyle="bold" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.Splash_features"
+        android:orientation="vertical"
+        android:background="@color/DarkPrimaryColor">
 
-    <TextView
-        android:id="@+id/splashFeaturePara"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/splashFeatureTitle"
-        android:padding="@dimen/_15sdp"
-        android:text="Feature splashFeatureTitlesplashFeatureTitlesplashFeatureTitlesplashFeatureTitlesplashFeatureTitlesplashFeatureTitlesplashFeatureTitlesplashFeatureTitle"
-        android:textColor="@color/textHintColorFirst"
-        android:textSize="@dimen/_14ssp"
-         />
+        <com.airbnb.lottie.LottieAnimationView
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            android:layout_marginTop="@dimen/_100sdp"
+            android:id="@+id/splashFeatureLotti"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_150sdp"
+            android:layout_centerHorizontal="true"
+            app:lottie_rawRes="@raw/location_track" />
 
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/splashFeaturePara"
-        android:paddingVertical="@dimen/_10sdp"
-        android:layout_marginTop="@dimen/_15sdp"
-        android:text="Next"
-        app:cornerRadius="@dimen/_15sdp"
-        android:paddingHorizontal="@dimen/_50sdp"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/white" />
+        <TextView
+            android:id="@+id/splashFeatureTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/splashFeatureLotti"
+            android:padding="@dimen/_15sdp"
+            android:text="Feature Title"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_14ssp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/splashFeaturePara"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/splashFeatureTitle"
+            android:padding="@dimen/_15sdp"
+            android:text="Feature splashFeatureTitlesplashFeatureTitlesplashFeatureTitlesplashFeatureTitlesplashFeatureTitlesplashFeatureTitlesplashFeatureTitlesplashFeatureTitle"
+            android:textColor="@color/textHintColorFirst"
+            android:textSize="@dimen/_14ssp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/splashFeaturePara"
+            android:paddingVertical="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="Next"
+            app:cornerRadius="@dimen/_15sdp"
+            android:paddingHorizontal="@dimen/_50sdp"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/white"
+            android:onClick="@{viewModel::onBtnNextClick}" />
 
 
-</RelativeLayout>
+    </RelativeLayout>
+</layout>

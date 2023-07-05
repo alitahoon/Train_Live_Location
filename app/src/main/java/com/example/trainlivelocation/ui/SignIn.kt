@@ -34,6 +34,20 @@ class SignIn : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        binding = FragmentSignInBinding.inflate(inflater, container, false)
+            .apply {
+                this.viewmodel = signInViewModel
+            }
+        resetDiffultDesign()
+
         signInViewModel!!.checkingUserData()
         signInViewModel!!.getUserSignInData.observe(viewLifecycleOwner, Observer {
             when (it) {
@@ -73,18 +87,7 @@ class SignIn : Fragment() {
                 else -> {}
             }
         })
-    }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        binding = FragmentSignInBinding.inflate(inflater, container, false)
-            .apply {
-                this.viewmodel = signInViewModel
-            }
-        resetDiffultDesign()
         setObservers()
         return binding.root
     }
