@@ -68,8 +68,6 @@ class SignIn : Fragment() {
             if (it == true) {
 
                 signInViewModel!!.checkIfUserIsSignIn(
-                    binding.signinTxtPhone.text!!.trim().toString(),
-                    binding.signinEdittxtPassword.text!!.trim().toString()
                 )
                 signInViewModel?.userLoginDataLive?.observe(viewLifecycleOwner,
                     Observer {
@@ -85,13 +83,22 @@ class SignIn : Fragment() {
                             is Resource.Success -> {
                                 Log.i(TAG, "Success:${it.data}")
                                 signInViewModel!!.saveUserTokenInSharedPreferences(it.data)
-                                signInViewModel!!.cashingUserData(
-                                    UserSignInDataEntity(
-                                        userName = signInViewModel!!.userPhone!!,
-                                        password = signInViewModel!!.userPassword!!
-                                    )
-                                )
-                                findNavController().navigate(R.id.action_signIn_to_shareLocationDialog)
+                                signInViewModel!!.insertUserSignInData.observe(viewLifecycleOwner,
+                                    Observer {
+                                        when(it){
+                                            is Resource.Loading->{
+                                                Log.i(TAG,"cashing user data user data")
+                                            }
+                                            is Resource.Success->{
+                                                Log.i(TAG,"${it.data}")
+                                                findNavController().navigate(R.id.action_signIn_to_shareLocationDialog)
+                                            }
+                                            is Resource.Failure->{
+                                                Log.i(TAG,"${it.error}")
+                                            }
+                                            else -> {}
+                                        }
+                                    })
                             }
 
                             is Resource.Failure -> {

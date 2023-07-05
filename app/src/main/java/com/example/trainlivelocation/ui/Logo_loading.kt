@@ -23,7 +23,7 @@ class Logo_loading : Fragment() {
     private val TAG="Logo_loading"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        logo_loading_Viewmodel!!.clearUserData()
     }
 
     override fun onCreateView(

@@ -49,6 +49,7 @@ class HomeViewModel @Inject constructor(
     var chooseTrainTxtClicked = SingleLiveEvent<Boolean>()
     var passengersbtnClicked = SingleLiveEvent<Boolean>()
     var trainConverterbtnClicked = SingleLiveEvent<Boolean>()
+    var isHomeTrackingOn:Boolean?=false
 
     companion object{
         private var allReadyZooming=false
@@ -84,7 +85,7 @@ class HomeViewModel @Inject constructor(
 
 
     val _currantTrainLocation: MutableStateFlow<Location_Response?> =
-        MutableStateFlow(null)
+        MutableStateFlow(Location_Response(30.062959005017905,31.2472764196547))
 
     val currantTrainLocation=_currantTrainLocation
 
@@ -117,6 +118,14 @@ class HomeViewModel @Inject constructor(
 
     fun onLocationBtn(view: View) {
         locationBtn.postValue(true)
+    }
+
+    fun StartHomeTracking(){
+        isHomeTrackingOn=true
+    }
+
+    fun stopHometracking(){
+        isHomeTrackingOn=false
     }
 
     fun onTrainConverterBtnClicked(view: View) {
@@ -285,25 +294,29 @@ class HomeViewModel @Inject constructor(
     }
 
     fun geTrainLocation(trainId: Int?){
-        viewModelScope.launch (Dispatchers.IO){
-            getLiveLoctationFromApi(trainId!!){
-                when(it){
-                    is Resource.Loading->{
-                        Log.i(TAG,"getting train Location...")
+        Log.e(TAG,"isHomeTrackingOn : $isHomeTrackingOn")
+        if (isHomeTrackingOn!!){
+            viewModelScope.launch (Dispatchers.IO){
+                getLiveLoctationFromApi(trainId!!){
+                    when(it){
+                        is Resource.Loading->{
+                            Log.i(TAG,"getting train Location...")
+                        }
+                        is Resource.Failure->{
+                            Log.e(TAG,"${it.error}")
+                        }
+                        is Resource.Success->{
+                            Log.e(TAG,"train Location from  homeViewmodel : ${it.data}")
+                            _currantTrainLocation.value=it.data
+                            geTrainLocation(trainId)
+                        }
+                        else -> {}
                     }
-                    is Resource.Failure->{
-                        Log.e(TAG,"${it.error}")
-                    }
-                    is Resource.Success->{
-                        Log.e(TAG,"train Location from  homeViewmodel : ${it.data}")
-                        _currantTrainLocation.value=it.data
-                        geTrainLocation(trainId)
-                    }
-                    else -> {}
                 }
             }
         }
-    }
+        }
+
 
 
 }

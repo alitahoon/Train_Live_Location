@@ -156,59 +156,64 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
         binding = FragmentHomeBinding.inflate(inflater, container, false).apply {
             this.viewmodel = homeViewModel
         }
-        setObservers()
 
-        userModel = getuserModelFromSharedPreferences(requireContext())
-        if (getDistance() != null) {
-            binding?.homeTxtTrainDistance?.setText(getDistance().toString() + " Meal")
-        }
-
-        //check if track services is running
-        val serviceClass = TrackTrainService::class.java
-        val isRunning = isServiceRunning(serviceClass)
-        if (isRunning) {
-            // Service is running here we will show the map
-            //start mapView
-            requireContext().stopService(Intent(requireActivity(),
-                TrackTrainService::class.java))
-        } else {
-            // Service is not running
-
-        }
-
-
-        toast("Map State ${isMapOpen(requireContext())}")
-
-        if(isMapOpen(requireContext())){
-            listener!!.onMapOpened()
-            homeViewModel!!.geTrainLocation(getUserCurrantTrainIntoSharedPrefrences(requireContext()))
-            binding!!.homeTrackTrainIDTxt.setHint("Stop Map Tracking")
-            startHomeMap()
-            isCameraAnimated = true
-        }
-
-
-
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            permissionManager.request(Permission.Notification)
-                .rationale("We need permission to show Notifications")
-                .checkPermission { granted: Boolean ->
-                    if (granted) {
-                        Toast.makeText(requireContext(), "Permission Granted", Toast.LENGTH_SHORT)
-                            .show()
-                    } else {
-                        Toast.makeText(
-                            requireContext(),
-                            "No Permission to show notifications",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-        }
 
 
         return binding!!.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setObservers()
+
+        userModel = getuserModelFromSharedPreferences(requireContext())
+//        if (getDistance() != null) {
+//            binding?.homeTxtTrainDistance?.setText(getDistance().toString() + " Meal")
+//        }
+
+//        //check if track services is running
+//        val serviceClass = TrackTrainService::class.java
+//        val isRunning = isServiceRunning(serviceClass)
+//        if (isRunning) {
+//            // Service is running here we will show the map
+//            //start mapView
+//            requireContext().stopService(Intent(requireActivity(),
+//                TrackTrainService::class.java))
+//        } else {
+//            // Service is not running
+//
+//        }
+
+        binding!!.root?.postDelayed({
+            if (isMapOpen(requireContext())) {
+                listener?.onMapOpened()
+                homeViewModel?.geTrainLocation(getUserCurrantTrainIntoSharedPrefrences(requireContext()))
+                homeViewModel?.StartHomeTracking()
+                binding?.homeTrackTrainIDTxt?.setHint("Stop Map Tracking")
+                startHomeMap()
+                isCameraAnimated = true
+            }
+        }, 500) // Delay of 500 milliseconds
+
+
+
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+//            permissionManager.request(Permission.Notification)
+//                .rationale("We need permission to show Notifications")
+//                .checkPermission { granted: Boolean ->
+//                    if (granted) {
+//                        Toast.makeText(requireContext(), "Permission Granted", Toast.LENGTH_SHORT)
+//                            .show()
+//                    } else {
+//                        Toast.makeText(
+//                            requireContext(),
+//                            "No Permission to show notifications",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
+//                    }
+//                }
+//        }
     }
 
     fun startHomeMap(){
@@ -249,6 +254,7 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
         homeViewModel?.locationBtn?.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 val action = HomeDirections.actionHomeToLocationDialogFragment(userModel!!)
+                homeViewModel!!.stopHometracking()
                 findNavController().navigate(action)
             }
         })
@@ -256,6 +262,8 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
 
         homeViewModel?.postsBtn?.observe(viewLifecycleOwner, Observer {
             if (it == true) {
+                homeViewModel!!.stopHometracking()
+                listener!!.onMoveFromHome()
                 findNavController().navigate(HomeDirections.actionHomeToPosts(null))
             }
         })
@@ -263,6 +271,8 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
 
         homeViewModel?.locationCardBtn?.observe(viewLifecycleOwner, Observer {
             if (it == true) {
+                homeViewModel!!.stopHometracking()
+                listener!!.onMoveFromHome()
                 findNavController().navigate(R.id.action_home2_to_trainLocationInMap)
             }
         })
@@ -270,6 +280,8 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
         homeViewModel?.btnEmergancyClicked?.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 val action = HomeDirections.actionHome2ToEmergency(userModel!!)
+                homeViewModel!!.stopHometracking()
+                listener!!.onMoveFromHome()
                 findNavController().navigate(action)
             }
         })
@@ -277,6 +289,8 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
         homeViewModel?.btnTicketClicked?.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 val action = HomeDirections.actionHome2ToTickets(userModel!!)
+                homeViewModel!!.stopHometracking()
+                listener!!.onMoveFromHome()
                 findNavController().navigate(action)
             }
         })
@@ -284,6 +298,8 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
         homeViewModel?.passengersbtnClicked?.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 val action = HomeDirections.actionHome2ToPassengers(userModel!!)
+                homeViewModel!!.stopHometracking()
+                listener!!.onMoveFromHome()
                 findNavController().navigate(action)
             }
         })
@@ -300,6 +316,7 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
                     isCameraAnimated = false
                     binding!!.homeTrackTrainIDTxt.setHint("Choose Train To Track")
                     setMapFlag(requireContext(),false)
+                    homeViewModel!!.stopHometracking()
                 }
                 else{
                     var dialog = ChooseTrainDialogFragment(this)
@@ -312,6 +329,7 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
 
         homeViewModel?.trainConverterbtnClicked!!.observe(viewLifecycleOwner, Observer {
             if (it == true) {
+                listener!!.onMoveFromHome()
                 findNavController().navigate(R.id.action_home2_to_news)
             }
         })
@@ -346,6 +364,7 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
         binding!!.homeTrackTrainIDTxt.setHint(trainId!!.toString())
         binding!!.homeTrackTrainIDTxt.setHint("Stop Map Tracking")
         listener!!.onMapOpened()
+        homeViewModel!!.StartHomeTracking()
         insertUserCurrantTrainIntoSharedPrefrences(requireContext(), trainId)
         homeViewModel!!.geTrainLocation(trainId)
         setMapFlag(requireContext(),true)
@@ -569,34 +588,23 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
                                         }
                                         )
                                     } else {
-                                        when (it) {
-                                            is Resource.Success -> {
-                                                Log.e(TAG, "${it.data}")
-                                                Log.i(TAG, "Success ${it.data}")
-                                                if (it.data.isNotEmpty()) {
-                                                    // Decode the polyline string to LatLng points
-                                                    for (route in it.data) {
+                                        Log.e(TAG, "${it.data}")
+                                        Log.i(TAG, "Success ${it.data}")
+                                        if (it.data.isNotEmpty()) {
+                                            // Decode the polyline string to LatLng points
+                                            for (route in it.data) {
 
 
-                                                        val points = PolyUtil.decode(route.polyline)
+                                                val points = PolyUtil.decode(route.polyline)
 
-                                                        // Draw the polyline on the map
-                                                        val polylineOptions = PolylineOptions()
-                                                            .color(Color.BLUE)
-                                                            .width(5f)
-                                                            .addAll(points)
-                                                        Log.i(TAG, "draw poly.......")
-                                                        googleMap.addPolyline(polylineOptions)
-                                                    }
-                                                }
+                                                // Draw the polyline on the map
+                                                val polylineOptions = PolylineOptions()
+                                                    .color(Color.BLUE)
+                                                    .width(5f)
+                                                    .addAll(points)
+                                                Log.i(TAG, "draw poly.......")
+                                                googleMap.addPolyline(polylineOptions)
                                             }
-                                            is Resource.Loading -> {
-                                                Log.i(TAG, "getting routes from database ")
-                                            }
-                                            is Resource.Failure -> {
-                                                Log.e(TAG, "${it.error}")
-                                            }
-                                            else -> {}
                                         }
                                     }
 
