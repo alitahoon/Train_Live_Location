@@ -1,23 +1,30 @@
 package com.example.trainlivelocation.ui
 
 import Resource
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.*
 import com.example.domain.entity.RegisterUser
 import com.example.domain.entity.StationResponseItem
 import com.example.domain.entity.UserResponseItem
+import com.example.domain.usecase.ClearUserSignDataFromDatabase
 import com.example.domain.usecase.GetStationById
 import com.example.domain.usecase.UpdateUserData
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class UserProfileViewModel @Inject constructor(
     private val getStationById: GetStationById,
-    private val updateUserData: UpdateUserData
+    private val context: Context,
+    private val updateUserData: UpdateUserData,
+    private val clearUserSignDataFromDatabase: ClearUserSignDataFromDatabase
+
 ) : ViewModel() {
     private val TAG: String? = "UserProfileViewModel"
     var btnSaveUserDateClicked = SingleLiveEvent<Boolean>()
@@ -31,6 +38,10 @@ class UserProfileViewModel @Inject constructor(
     private val _userUpdated: MutableLiveData<Resource<String?>> =
         MutableLiveData(null)
     val userUpdated: LiveData<Resource<String?>> = _userUpdated
+
+    private val _clearUserData: MutableLiveData<Resource<String?>> =
+        MutableLiveData(null)
+    val clearUserData: LiveData<Resource<String?>> = _clearUserData
 
 
     fun getStationName(stationId: Int?) {
@@ -58,5 +69,38 @@ class UserProfileViewModel @Inject constructor(
         btnSaveUserDateClicked.postValue(true)
     }
 
+    fun clearUserData() {
+        viewModelScope.launch {
+            _clearUserData.value=Resource.Loading
+            val child1 = launch(Dispatchers.IO) {
+                clearUserSignDataFromDatabase() {
+                    val child2 = launch(Dispatchers.Main) {
+                        _clearUserData.value=it
+                        Log.e(TAG, "clearing user data ")
+                    }
+                }
+            }
+            child1.join()
+
+        }
+    }
+    fun saveUserTokenInSharedPreferences(userItem: UserResponseItem){
+        val userSharedPreferences : SharedPreferences =context.getSharedPreferences("UserToken",
+            Context.MODE_PRIVATE)
+        var editor=userSharedPreferences.edit()
+        editor.putString("userName",userItem.name)
+        editor.putString("userPhone",userItem.phone)
+        editor.putString("userBirthdate",userItem.birthDate)
+        editor.putString("userAddress",userItem.address)
+        editor.putString("userJop",userItem.jop)
+        editor.putString("userEmail",userItem.email)
+        editor.putString("userRole",userItem.role)
+        editor.putString("userGender",userItem.gender)
+        editor.putString("userPassword",userItem.password)
+        editor.putString("tokenForNotifications",userItem.tokenForNotifications)
+        editor.putInt("userId",userItem.id)
+        editor.apply()
+        editor.commit()
+    }
 
 }

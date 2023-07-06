@@ -185,6 +185,13 @@
         <action
             android:id="@+id/action_userProfile_to_home2"
             app:destination="@id/home2" />
+        <action
+            android:id="@+id/action_userProfile_to_splash3"
+            app:destination="@id/splash3"
+            app:enterAnim="@anim/pop_enter"
+            app:exitAnim="@anim/pop_exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
     </fragment>
     <fragment
         android:id="@+id/inbox"
@@ -248,5 +255,10 @@
         android:id="@+id/trackTrainInOpenStreetMap"
         android:name="com.example.trainlivelocation.ui.TrackTrainInOpenStreetMap"
         android:label="TrackTrainInOpenStreetMap" />
+    <activity
+        android:id="@+id/splash3"
+        android:name="com.example.trainlivelocation.ui.splash"
+        android:label="activity_splash"
+        tools:layout="@layout/activity_splash" />
 
 </navigation>

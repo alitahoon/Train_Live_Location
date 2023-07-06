@@ -76,6 +76,7 @@ class Logo_loading : Fragment() {
                                         }
                                         is Resource.Success -> {
                                             findNavController().navigate(R.id.action_logo_loading_to_shareLocationDialog2)
+
                                         }
                                         is Resource.Loading -> {
                                             Log.i(TAG, "checking user info")

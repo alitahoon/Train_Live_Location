@@ -28,6 +28,8 @@ class ShareLocationDialog : DialogFragment(), Train_Dialog_Listener {
     private val TAG: String? = "ShareLocationDialog"
     private lateinit var binding: FragmentShareLocationDialogBinding
     private val shareLocationDialogViewModel: ShareLocationDialogViewModel by activityViewModels()
+    // Create an intent to launch the activity
+    var intent:Intent?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -42,7 +44,7 @@ class ShareLocationDialog : DialogFragment(), Train_Dialog_Listener {
                 this.viewmodel = shareLocationDialogViewModel
             }
         dialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-
+        intent=Intent(activity, MainActivity::class.java)
         setObservers()
         return binding.root
     }
@@ -68,7 +70,7 @@ class ShareLocationDialog : DialogFragment(), Train_Dialog_Listener {
         shareLocationDialogViewModel.btnNo.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 dismiss()
-                findNavController().navigate(ShareLocationDialogDirections.actionShareLocationDialog2ToMainActivity2())
+                startActivity(intent)
             }
         })
 
@@ -92,10 +94,10 @@ class ShareLocationDialog : DialogFragment(), Train_Dialog_Listener {
         if(Build.VERSION.SDK_INT>= Build.VERSION_CODES.O){
             ContextCompat.startForegroundService(requireContext(),locationbckgroundSharingService!!)
             dismiss()
-            findNavController().navigate(R.id.action_shareLocationDialog_to_mainActivity)
+            startActivity(intent)
         }else{
             requireContext().startService(locationbckgroundSharingService!!)
-            findNavController().navigate(R.id.action_shareLocationDialog_to_mainActivity)
+            startActivity(intent)
             dismiss()
 
         }

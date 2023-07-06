@@ -724,7 +724,7 @@ class userRepoImpl(
         var res = apiService.UpdateUser(userRequest, userID!!)
         if (res.isSuccessful) {
             if (res.body() != null) {
-                result.invoke(Resource.Success("${res.body()!!}"))
+                result.invoke(Resource.Success("${res.message()!!}"))
             } else {
                 result.invoke((Resource.Failure("updateUserData -> Error response body = null :${res.body()}")))
             }

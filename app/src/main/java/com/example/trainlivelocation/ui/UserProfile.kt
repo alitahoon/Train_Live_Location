@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -41,6 +42,7 @@ class UserProfile : Fragment() {
                 this.userModel = user
             }
 
+
         var jobArrayAdapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(
             requireContext(),
             R.array.jopsArray,
@@ -51,6 +53,7 @@ class UserProfile : Fragment() {
 
         setSpinnerSelectionByValue(user!!.jop)
         setObserver()
+
         return binding.root
     }
 
@@ -59,21 +62,24 @@ class UserProfile : Fragment() {
         userProfileViewModel.btnSaveUserDateClicked.observe(viewLifecycleOwner, Observer {
             if (it == true) {
                 var user: UserResponseItem?=UserProfileArgs.fromBundle(requireArguments()).userModel
-                userProfileViewModel.updateUserProfileData(user!!.id,
-                    RegisterUser(
-                        user!!.address,
-                        user!!.birthDate,
-                        binding.profileTxtEmail.text.toString(),
-                        user!!.gender,
-                        binding.profileSpinnerJobs.selectedItem.toString(),
-                        binding.profileTxtUsername.text.toString(),
-                        binding.profileTxtPassword.text.toString(),
-                        binding.profileTxtPhone.text.toString(),
-                        user!!.role,
-                        user.tokenForNotifications,
-                        null
-                    )
+                val userUpdatedData =    RegisterUser(
+                    user!!.address,
+                    user!!.birthDate,
+                    binding.profileTxtEmail.text.toString(),
+                    user!!.gender,
+                    binding.profileSpinnerJobs.selectedItem.toString(),
+                    binding.profileTxtUsername.text.toString(),
+                    binding.profileTxtPassword.text.toString(),
+                    binding.profileTxtPhone.text.toString(),
+                    user!!.role,
+                    user.tokenForNotifications,
+                    null
                 )
+                userProfileViewModel.updateUserProfileData(user!!.id,
+                    userRequest = userUpdatedData
+                )
+
+                Log.i(TAG,"${userUpdatedData}")
 
                 userProfileViewModel.userUpdated.observe(viewLifecycleOwner, Observer {
                     when (it) {
@@ -84,59 +90,65 @@ class UserProfile : Fragment() {
                             binding.profileLoadingLotti.visibility = View.VISIBLE
                         }
                         is Resource.Success -> {
-                            Log.i(TAG, "${it.data}")
-                            binding.profileMainLayout.setBackgroundColor(requireContext().getColor(R.color.white))
-                            binding.profileTopShape.visibility = View.GONE
-                            binding.profileDataLayout.visibility = View.GONE
-                            binding.profileLoadingLotti.visibility = View.GONE
-                            binding.profileUpdateUserSeuccess.visibility = View.VISIBLE
-                            binding.profileUpdateUserSeuccess.addAnimatorListener(object :
-                                android.animation.Animator.AnimatorListener {
-                                override fun onAnimationStart(p0: android.animation.Animator) {
-                                    TODO("Not yet implemented")
-                                }
 
-                                override fun onAnimationEnd(p0: android.animation.Animator) {
-                                    findNavController().navigate(R.id.action_userProfile_to_home2)
-                                }
+                            //clearing user cashing data
+                            userProfileViewModel.clearUserData()
+                            userProfileViewModel.clearUserData.observe(viewLifecycleOwner, Observer {
+                                when(it){
+                                    is Resource.Loading->{
+                                        Log.i(TAG,"clearing user data")
+                                    }
+                                    is Resource.Failure->{
+                                        Log.e(TAG,"${it.error}")
+                                    }
+                                    is Resource.Success->{
+                                        Log.i(TAG,"${userUpdatedData}")
+                                        Log.i(TAG, "success ${it.data}")
+                                        userProfileViewModel.saveUserTokenInSharedPreferences(UserResponseItem(
+                                            address = userUpdatedData.address,
+                                            birthDate = userUpdatedData.birthDate,
+                                            email = userUpdatedData.email,
+                                            gender = userUpdatedData.gender,
+                                            id=user.id,
+                                            jop = userUpdatedData.jop,
+                                            name = userUpdatedData.name,
+                                            password = userUpdatedData.password,
+                                            phone = userUpdatedData.phone,
+                                            role = userUpdatedData.role,
+                                            tokenForNotifications = user.tokenForNotifications
+                                        ))
+                                        binding.profileMainLayout.setBackgroundColor(requireContext().getColor(R.color.white))
+                                        binding.profileTopShape.visibility = View.GONE
+                                        binding.profileDataLayout.visibility = View.GONE
+                                        binding.profileLoadingLotti.visibility = View.GONE
+                                        binding.profileUpdateUserSeuccess.visibility = View.VISIBLE
+                                        binding.profileUpdateUserSeuccess.addAnimatorListener(object :
+                                            android.animation.Animator.AnimatorListener {
+                                            override fun onAnimationStart(p0: android.animation.Animator) {
+                                                TODO("Not yet implemented")
+                                            }
 
-                                override fun onAnimationCancel(p0: android.animation.Animator) {
-                                    TODO("Not yet implemented")
-                                }
+                                            override fun onAnimationEnd(p0: android.animation.Animator) {
+                                                findNavController().navigate(R.id.action_userProfile_to_splash3)
+                                            }
 
-                                override fun onAnimationRepeat(p0: android.animation.Animator) {
-                                    TODO("Not yet implemented")
-                                }
+                                            override fun onAnimationCancel(p0: android.animation.Animator) {
+                                                TODO("Not yet implemented")
+                                            }
 
+                                            override fun onAnimationRepeat(p0: android.animation.Animator) {
+                                                TODO("Not yet implemented")
+                                            }
+
+                                        })
+
+                                    }
+                                    else -> {}
+                                }
                             })
                         }
                         is Resource.Failure -> {
-                            binding.profileMainLayout.setBackgroundColor(requireContext().getColor(R.color.white))
-                            binding.profileTopShape.visibility = View.GONE
-                            binding.profileDataLayout.visibility = View.GONE
-                            binding.profileLoadingLotti.visibility = View.GONE
-                            binding.profileUpdateUserSeuccess.visibility = View.VISIBLE
-                            binding.profileUpdateUserSeuccess.addAnimatorListener(object :
-                                android.animation.Animator.AnimatorListener {
-                                override fun onAnimationStart(p0: android.animation.Animator) {
-                                    TODO("Not yet implemented")
-                                }
-
-                                override fun onAnimationEnd(p0: android.animation.Animator) {
-                                    findNavController().navigate(R.id.action_userProfile_to_home2)
-                                }
-
-                                override fun onAnimationCancel(p0: android.animation.Animator) {
-                                    TODO("Not yet implemented")
-                                }
-
-                                override fun onAnimationRepeat(p0: android.animation.Animator) {
-                                    TODO("Not yet implemented")
-                                }
-
-                            })
-//                            resetLayout()
-                            Log.e(TAG, "Failed To Update user Data -> ${it.error}")
+                            Log.e(TAG, "${it.error}")
                         }
                         else -> {
                             resetLayout()
@@ -147,35 +159,28 @@ class UserProfile : Fragment() {
             }
         })
 
-        userProfileViewModel.stationName.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                is Resource.Loading -> {
-                    binding.profileTxtStation.setText(" ")
-                    Log.i(TAG, "${it}")
-                }
-                is Resource.Success -> {
-                    binding.profileTxtStation.setText(it.data!!.name)
-                    Log.i(TAG, "${it}")
-                }
-                is Resource.Failure -> {
-                    Log.e(TAG, "Error while loading station name from api ---> ${it.error}")
-                    toast("Error getting Station Name")
-                }
-                else -> {
-                    Log.e(TAG, "Error while loading station name from api ---> else brunsh")
-                }
-            }
-        })
     }
 
     fun setSpinnerSelectionByValue(value: String) {
-        val xmlArray: Array<String> =
-            requireContext().resources.getStringArray(R.array.jopsArray) // get array from resources
-        val spinner = binding.profileSpinnerJobs // get the spinner element
+        val spinner: Spinner = binding.profileSpinnerJobs// Replace R.id.spinner with your spinner's ID
 
-        spinner.setSelection(xmlArray.indexOf(
-            xmlArray.first { elem -> elem == value } // find first element in array equal to value
-        )) // get index of found element and use it as the position to set spinner to.
+        val desiredName = value
+
+        val spinnerData = resources.getStringArray(R.array.jopsArray) // Replace R.array.spinner_data with your data source
+
+        var selectedIndex = -1
+        for (i in spinnerData.indices) {
+            if (spinnerData[i] == desiredName) {
+                selectedIndex = i
+                break
+            }
+        }
+
+// Set the selected item of the spinner
+        if (selectedIndex != -1) {
+            spinner.setSelection(selectedIndex)
+        }
+
     }
 
     private fun resetLayout(){
