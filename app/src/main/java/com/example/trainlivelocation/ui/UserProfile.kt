@@ -35,6 +35,7 @@ class UserProfile : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         var user: UserResponseItem?=UserProfileArgs.fromBundle(requireArguments()).userModel
         binding = FragmentUserProfileBinding.inflate(inflater, container, false)
             .apply {
@@ -42,17 +43,19 @@ class UserProfile : Fragment() {
                 this.userModel = user
             }
 
+        binding.root.postDelayed({
+            var jobArrayAdapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.jopsArray,
+                R.layout.spinner_jop_item_layout
+            )
+            jobArrayAdapter.setDropDownViewResource(R.layout.spinner_job_dropdown_item_layout)
+            binding.profileSpinnerJobs.adapter=jobArrayAdapter
 
-        var jobArrayAdapter: ArrayAdapter<CharSequence> = ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.jopsArray,
-            R.layout.spinner_jop_item_layout
-        )
-        jobArrayAdapter.setDropDownViewResource(R.layout.spinner_job_dropdown_item_layout)
-        binding.profileSpinnerJobs.adapter=jobArrayAdapter
+            setSpinnerSelectionByValue(user!!.jop)
+            setObserver()
+        },2000)
 
-        setSpinnerSelectionByValue(user!!.jop)
-        setObserver()
 
         return binding.root
     }
