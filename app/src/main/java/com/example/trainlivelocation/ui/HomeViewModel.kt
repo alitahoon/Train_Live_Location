@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,6 +16,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.*
 import com.example.domain.usecase.*
 import com.google.android.gms.maps.model.LatLng
+import com.google.gson.Gson
 import com.google.maps.model.DirectionsResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -85,7 +87,7 @@ class HomeViewModel @Inject constructor(
 
 
     val _currantTrainLocation: MutableStateFlow<Location_Response?> =
-        MutableStateFlow(Location_Response(30.062959005017905,31.2472764196547))
+        MutableStateFlow(getLocationSharedPrefrence())
 
     val currantTrainLocation=_currantTrainLocation
 
@@ -115,6 +117,7 @@ class HomeViewModel @Inject constructor(
     private val _dirction: MutableLiveData<Resource<OpenRouteDirectionResult>?> =
         MutableLiveData(null)
     val dirction: LiveData<Resource<OpenRouteDirectionResult>?> = _dirction
+
 
     fun onLocationBtn(view: View) {
         locationBtn.postValue(true)
@@ -308,6 +311,7 @@ class HomeViewModel @Inject constructor(
                         is Resource.Success->{
                             Log.e(TAG,"train Location from  homeViewmodel : ${it.data}")
                             _currantTrainLocation.value=it.data
+                            setLocationFromMap(it.data)
                             geTrainLocation(trainId)
                         }
                         else -> {}
@@ -317,6 +321,24 @@ class HomeViewModel @Inject constructor(
         }
         }
 
+    fun setLocationFromMap(location: Location_Response){
+        val mapSharedPreferences: SharedPreferences = context.getSharedPreferences("location",
+            Context.MODE_PRIVATE)
 
+        val editor = mapSharedPreferences.edit()
+        val gson = Gson()
+        val locationGson = gson.toJson(location)
+
+        editor.putString("Location", locationGson)
+        editor.commit()
+    }
+
+    fun getLocationSharedPrefrence(): Location_Response{
+        val locationSharedPreferences: SharedPreferences =
+            context.getSharedPreferences("location", Context.MODE_PRIVATE)
+        val gson = Gson()
+        val json = locationSharedPreferences.getString("Location", gson.toJson(Location_Response(30.062959005017905,31.2472764196547)))
+        return gson.fromJson(json, Location_Response::class.java)
+    }
 
 }

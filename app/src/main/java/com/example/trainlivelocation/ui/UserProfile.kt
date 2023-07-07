@@ -1,6 +1,10 @@
 package com.example.trainlivelocation.ui
 
 import Resource
+import android.app.Activity
+import android.content.Intent
+import android.net.Uri
+import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -17,6 +21,8 @@ import com.example.domain.entity.RegisterUser
 import com.example.domain.entity.UserResponseItem
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentUserProfileBinding
+import com.example.trainlivelocation.utli.SingleLiveEvent
+import com.example.trainlivelocation.utli.getuserModelFromSharedPreferences
 import com.example.trainlivelocation.utli.toast
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,6 +31,8 @@ class UserProfile : Fragment() {
     private val TAG: String? = "UserProfile"
     private lateinit var binding: FragmentUserProfileBinding
     private val userProfileViewModel: UserProfileViewModel by activityViewModels()
+    private val REQUSET_CODE_IMAGE: Int = 102
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +68,15 @@ class UserProfile : Fragment() {
         return binding.root
     }
 
+
+
     private fun setObserver() {
+
+        userProfileViewModel.btnUserProfileImg.observe(viewLifecycleOwner, Observer {
+            if(it!!){
+                getImageUri()
+            }
+        })
 
         userProfileViewModel.btnSaveUserDateClicked.observe(viewLifecycleOwner, Observer {
             if (it == true) {
@@ -78,11 +94,40 @@ class UserProfile : Fragment() {
                     user.tokenForNotifications,
                     null
                 )
-                userProfileViewModel.updateUserProfileData(user!!.id,
-                    userRequest = userUpdatedData
-                )
 
-                Log.i(TAG,"${userUpdatedData}")
+                //sending user profile image to firebase
+                if(imageUri != null){
+                    userProfileViewModel.uploadProfileImage(imageUri!!, "+20${getuserModelFromSharedPreferences(requireContext()).phone}")
+                    userProfileViewModel.sendingProfileImageResult.observe(viewLifecycleOwner, Observer {
+                        when(it){
+                            is Resource.Success -> {
+                                Log.i(TAG, "${it.data}")
+                                userProfileViewModel.updateUserProfileData(user!!.id,
+                                    userRequest = userUpdatedData
+                                )
+
+                                Log.i(TAG,"${userUpdatedData}")
+
+
+                            }
+                            is Resource.Failure -> {
+                                Log.e(TAG, "${it.error}")
+                            }
+                            is Resource.Loading -> {
+                                Log.i(TAG, "Uploading image")
+                            }
+                            else -> {}
+                        }
+                    })
+                }
+                else{
+                    userProfileViewModel.updateUserProfileData(user!!.id,
+                        userRequest = userUpdatedData
+                    )
+
+                    Log.i(TAG,"${userUpdatedData}")
+
+                }
 
                 userProfileViewModel.userUpdated.observe(viewLifecycleOwner, Observer {
                     when (it) {
@@ -105,6 +150,7 @@ class UserProfile : Fragment() {
                                         Log.e(TAG,"${it.error}")
                                     }
                                     is Resource.Success->{
+                                        Log.i(TAG, "${it.data}")
                                         Log.i(TAG,"${userUpdatedData}")
                                         Log.i(TAG, "success ${it.data}")
                                         userProfileViewModel.saveUserTokenInSharedPreferences(UserResponseItem(
@@ -144,7 +190,6 @@ class UserProfile : Fragment() {
                                             }
 
                                         })
-
                                     }
                                     else -> {}
                                 }
@@ -162,6 +207,17 @@ class UserProfile : Fragment() {
             }
         })
 
+    }
+
+    private fun getImageUri() {
+        Intent(Intent.ACTION_GET_CONTENT).also {
+            it.type = "image/*"
+            startActivityForResult(it, REQUSET_CODE_IMAGE)
+        }
+    }
+
+    companion object{
+        private var imageUri: Uri? = null
     }
 
     fun setSpinnerSelectionByValue(value: String) {
@@ -193,5 +249,16 @@ class UserProfile : Fragment() {
         binding.profileLoadingLotti.visibility = View.GONE
         binding.profileUpdateUserSeuccess.visibility = View.GONE
     }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUSET_CODE_IMAGE) {
+            data?.data.let {
+                imageUri = it
+                binding.circleImageView.setImageURI(it)
+            }
+        }
+    }
+
 
 }

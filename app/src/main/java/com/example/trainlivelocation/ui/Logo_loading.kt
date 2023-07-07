@@ -75,8 +75,10 @@ class Logo_loading : Fragment() {
                                             Log.e(TAG, "${it.error}")
                                         }
                                         is Resource.Success -> {
-                                            findNavController().navigate(R.id.action_logo_loading_to_shareLocationDialog2)
-
+                                            //findNavController().navigate(Logo_loadingDirections.actionLogoLoadingToShareLocationDialog2())
+                                            var dialog = ShareLocationDialog()
+                                            var childFragmentManager = getChildFragmentManager()
+                                            dialog.show(childFragmentManager,"ShareLocationDialog")
                                         }
                                         is Resource.Loading -> {
                                             Log.i(TAG, "checking user info")

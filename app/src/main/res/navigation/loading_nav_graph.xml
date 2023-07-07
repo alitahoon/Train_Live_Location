@@ -26,10 +26,10 @@
         <action
             android:id="@+id/action_logo_loading_to_shareLocationDialog2"
             app:destination="@id/shareLocationDialog2"
-            app:enterAnim="@anim/fade"
-            app:exitAnim="@anim/slide_in_up"
-            app:popEnterAnim="@anim/fade"
-            app:popExitAnim="@anim/slide_out_down" />
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
     </fragment>
     <fragment
         android:id="@+id/splash_features"

@@ -3,6 +3,7 @@ package com.example.trainlivelocation.ui
 import Resource
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.Uri
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.*
@@ -11,6 +12,7 @@ import com.example.domain.entity.StationResponseItem
 import com.example.domain.entity.UserResponseItem
 import com.example.domain.usecase.ClearUserSignDataFromDatabase
 import com.example.domain.usecase.GetStationById
+import com.example.domain.usecase.SendImageToFirebaseStorage
 import com.example.domain.usecase.UpdateUserData
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,9 +25,10 @@ class UserProfileViewModel @Inject constructor(
     private val getStationById: GetStationById,
     private val context: Context,
     private val updateUserData: UpdateUserData,
-    private val clearUserSignDataFromDatabase: ClearUserSignDataFromDatabase
+    private val clearUserSignDataFromDatabase: ClearUserSignDataFromDatabase,
+    private val sendImageToFirebaseStorage: SendImageToFirebaseStorage
 
-) : ViewModel() {
+    ) : ViewModel() {
     private val TAG: String? = "UserProfileViewModel"
     var btnSaveUserDateClicked = SingleLiveEvent<Boolean>()
 
@@ -42,6 +45,26 @@ class UserProfileViewModel @Inject constructor(
     private val _clearUserData: MutableLiveData<Resource<String?>> =
         MutableLiveData(null)
     val clearUserData: LiveData<Resource<String?>> = _clearUserData
+    val btnUserProfileImg = SingleLiveEvent<Boolean>()
+
+    private var _sendingProfileImageResult: MutableLiveData<Resource<String>?> =
+        MutableLiveData(null)
+    var sendingProfileImageResult: LiveData<Resource<String>?> = _sendingProfileImageResult
+
+    fun onBtnUserProfileImg (view: View){
+        btnUserProfileImg.value=true
+    }
+
+    fun uploadProfileImage(profileImageUri: Uri, userPhone: String?) {
+        _sendingProfileImageResult.value = Resource.Loading
+        viewModelScope.launch {
+            sendImageToFirebaseStorage(profileImageUri, "profileImages/${userPhone!!}") {
+                Log.i(TAG, "${it}")
+                _sendingProfileImageResult.value = it
+            }
+
+        }
+    }
 
 
     fun getStationName(stationId: Int?) {

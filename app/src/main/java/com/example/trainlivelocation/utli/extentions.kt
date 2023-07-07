@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.domain.entity.Location_Response
 import com.example.domain.entity.StationDistanceModel
 import com.example.domain.entity.UserResponseItem
 import com.example.trainlivelocation.R
@@ -82,6 +83,28 @@ fun Context.setMapFlag(flag: Boolean){
     editor.commit()
 }
 
+fun Fragment.setLocationFromMap(context: Context, location: Location_Response){
+    val mapSharedPreferences: SharedPreferences = context.getSharedPreferences("location",Context.MODE_PRIVATE)
+
+    val editor = mapSharedPreferences.edit()
+    val gson = Gson()
+    val locationGson = gson.toJson(location)
+
+    editor.putString("Location", locationGson)
+    editor.commit()
+}
+
+fun Context.setLocationFromMap(location: Location_Response){
+    val mapSharedPreferences: SharedPreferences = getSharedPreferences("location",Context.MODE_PRIVATE)
+
+    val editor = mapSharedPreferences.edit()
+    val gson = Gson()
+    val locationGson = gson.toJson(location)
+
+    editor.putString("Location", locationGson)
+    editor.commit()
+}
+
 fun Fragment.isMapOpen(context: Context): Boolean{
     val mapSharedPreferences: SharedPreferences = context.getSharedPreferences("map",Context.MODE_PRIVATE)
 
@@ -110,6 +133,22 @@ fun Fragment.insertUserCurrantTrainIntoSharedPrefrences(context: Context,trainID
     var editor=trainSharedPreferences.edit()
     editor.putInt("trainID",trainID!!)
 
+}
+
+fun Fragment.getLocationSharedPrefrence(context: Context): Location_Response{
+    val locationSharedPreferences: SharedPreferences =
+        context.getSharedPreferences("location", Context.MODE_PRIVATE)
+    val gson = Gson()
+    val json = locationSharedPreferences.getString("Location", gson.toJson(Location_Response(30.062959005017905,31.2472764196547)))
+    return gson.fromJson(json, Location_Response::class.java)
+}
+
+fun Context.getLocationSharedPrefrence(): Location_Response{
+    val locationSharedPreferences: SharedPreferences =
+        getSharedPreferences("location", Context.MODE_PRIVATE)
+    val gson = Gson()
+    val json = locationSharedPreferences.getString("Location", gson.toJson(Location_Response(30.062959005017905,31.2472764196547)))
+    return gson.fromJson(json, Location_Response::class.java)
 }
 
 fun Fragment.getUserCurrantTrainIntoSharedPrefrences(context: Context):Int?{
