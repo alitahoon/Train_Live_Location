@@ -9,7 +9,7 @@ import javax.inject.Inject
 @HiltViewModel
 class Splash_features_ViewModel @Inject constructor() : ViewModel() {
     var btnNextClick = SingleLiveEvent <Boolean>()
-    var featuresCounter: Int = 0
+    var featuresCounter: Int = 1
 
     fun onBtnNextClick (view: View){
         btnNextClick.value = true

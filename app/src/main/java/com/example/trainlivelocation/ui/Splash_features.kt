@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentSplashFeaturesBinding
+import com.example.trainlivelocation.utli.setFirstTimeOpenSharedPreferences
 import dagger.hilt.android.AndroidEntryPoint
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
@@ -45,6 +46,7 @@ class Splash_features : Fragment() ,EasyPermissions.PermissionCallbacks {
             .apply {
                 this.viewModel = splash_features_ViewModel
             }
+        setFirstTimeOpenSharedPreferences(requireContext(),true)
         setObservers()
         return binding!!.root
     }

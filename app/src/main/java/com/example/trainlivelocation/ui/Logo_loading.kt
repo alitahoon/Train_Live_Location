@@ -14,6 +14,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentLogoLoadingBinding
+import com.example.trainlivelocation.utli.getFirstTimeOpenSharedPreferences
+import com.example.trainlivelocation.utli.setFirstTimeOpenSharedPreferences
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,6 +26,7 @@ class Logo_loading : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        logo_loading_Viewmodel!!.clearUserData()
+
     }
 
     override fun onCreateView(
@@ -34,6 +37,8 @@ class Logo_loading : Fragment() {
             .apply {
 
             }
+
+
 
 
         // Scale from 0% to 100%
@@ -52,52 +57,58 @@ class Logo_loading : Fragment() {
 
             override fun onAnimationEnd(p0: Animator) {
                 //check if the app is running for the first time
-
-
-                logo_loading_Viewmodel!!.checkingUserData()
-                logo_loading_Viewmodel!!.getUserSignInData.observe(viewLifecycleOwner, Observer {
-                    when (it) {
-                        is Resource.Loading -> {
-                            Log.i(TAG, "getting user date")
-                        }
-                        is Resource.Success -> {
-                            Log.i(TAG, "${it.data}")
-                            if (it.data.isNotEmpty()){
-                                for (user in it.data) {
-                                    logo_loading_Viewmodel!!.checkIfUserIsSignIn(
-                                        userPhone = user.userName,
-                                        userPassword = user.password
-                                    )
-                                }
-                                logo_loading_Viewmodel!!.userLoginDataLive.observe(viewLifecycleOwner, Observer {
-                                    when (it) {
-                                        is Resource.Failure -> {
-                                            Log.e(TAG, "${it.error}")
-                                        }
-                                        is Resource.Success -> {
-                                            //findNavController().navigate(Logo_loadingDirections.actionLogoLoadingToShareLocationDialog2())
-                                            var dialog = ShareLocationDialog()
-                                            var childFragmentManager = getChildFragmentManager()
-                                            dialog.show(childFragmentManager,"ShareLocationDialog")
-                                        }
-                                        is Resource.Loading -> {
-                                            Log.i(TAG, "checking user info")
-
-                                        }
-                                        else -> {}
-                                    }
-                                })
-                            }else{
-                                findNavController().navigate(R.id.action_logo_loading_to_splash2)
+                setFirstTimeOpenSharedPreferences(requireContext(),true)
+                if(getFirstTimeOpenSharedPreferences(requireContext())){
+                    findNavController().navigate(R.id.action_logo_loading_to_splash_features)
+                }
+                else{
+                    logo_loading_Viewmodel!!.checkingUserData()
+                    logo_loading_Viewmodel!!.getUserSignInData.observe(viewLifecycleOwner, Observer {
+                        when (it) {
+                            is Resource.Loading -> {
+                                Log.i(TAG, "getting user date")
                             }
+                            is Resource.Success -> {
+                                Log.i(TAG, "${it.data}")
+                                if (it.data.isNotEmpty()){
+                                    for (user in it.data) {
+                                        logo_loading_Viewmodel!!.checkIfUserIsSignIn(
+                                            userPhone = user.userName,
+                                            userPassword = user.password
+                                        )
+                                    }
+                                    logo_loading_Viewmodel!!.userLoginDataLive.observe(viewLifecycleOwner, Observer {
+                                        when (it) {
+                                            is Resource.Failure -> {
+                                                Log.e(TAG, "${it.error}")
+                                            }
+                                            is Resource.Success -> {
+                                                //findNavController().navigate(Logo_loadingDirections.actionLogoLoadingToShareLocationDialog2())
+                                                var dialog = ShareLocationDialog()
+                                                var childFragmentManager = getChildFragmentManager()
+                                                dialog.show(childFragmentManager,"ShareLocationDialog")
+                                            }
+                                            is Resource.Loading -> {
+                                                Log.i(TAG, "checking user info")
 
+                                            }
+                                            else -> {}
+                                        }
+                                    })
+                                }else{
+                                    findNavController().navigate(R.id.action_logo_loading_to_splash2)
+                                }
+
+                            }
+                            is Resource.Failure -> {
+                                Log.e(TAG, "${it.error}")
+                            }
+                            else -> {}
                         }
-                        is Resource.Failure -> {
-                            Log.e(TAG, "${it.error}")
-                        }
-                        else -> {}
-                    }
-                })
+                    })
+
+                }
+
 
             }
 

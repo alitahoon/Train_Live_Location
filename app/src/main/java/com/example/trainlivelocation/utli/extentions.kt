@@ -151,6 +151,36 @@ fun Context.getLocationSharedPrefrence(): Location_Response{
     return gson.fromJson(json, Location_Response::class.java)
 }
 
+fun Fragment.setFirstTimeOpenSharedPreferences(context: Context, isFirstTime: Boolean){
+    val firstTimeSharedPreferences: SharedPreferences =
+        context.getSharedPreferences("setFirstTimeOpen", Context.MODE_PRIVATE)
+
+    val editor = firstTimeSharedPreferences.edit()
+    editor.putBoolean("isFirstTime", isFirstTime)
+}
+
+fun Context.setFirstTimeOpenSharedPreferences(isFirstTime: Boolean){
+    val firstTimeSharedPreferences: SharedPreferences =
+        getSharedPreferences("setFirstTimeOpen", Context.MODE_PRIVATE)
+
+    val editor = firstTimeSharedPreferences.edit()
+    editor.putBoolean("isFirstTime", isFirstTime)
+}
+
+fun Fragment.getFirstTimeOpenSharedPreferences(context: Context,): Boolean{
+    val firstTimeSharedPreferences: SharedPreferences =
+        context.getSharedPreferences("setFirstTimeOpen", Context.MODE_PRIVATE)
+
+    return firstTimeSharedPreferences.getBoolean("isFirstTime", true)
+}
+
+fun Context.getFirstTimeOpenSharedPreferences(): Boolean{
+    val firstTimeSharedPreferences: SharedPreferences =
+        getSharedPreferences("setFirstTimeOpen", Context.MODE_PRIVATE)
+
+    return firstTimeSharedPreferences.getBoolean("isFirstTime", true)
+}
+
 fun Fragment.getUserCurrantTrainIntoSharedPrefrences(context: Context):Int?{
     val trainSharedPreferences: SharedPreferences =
         context.getSharedPreferences("userCurrantStation", Context.MODE_PRIVATE)
