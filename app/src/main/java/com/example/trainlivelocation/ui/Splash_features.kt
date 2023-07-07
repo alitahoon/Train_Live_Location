@@ -2,6 +2,7 @@ package com.example.trainlivelocation.ui
 
 import android.Manifest
 import android.app.Activity
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import com.airbnb.lottie.LottieDrawable
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentSplashFeaturesBinding
 import com.example.trainlivelocation.utli.setFirstTimeOpenSharedPreferences
@@ -46,7 +49,6 @@ class Splash_features : Fragment() ,EasyPermissions.PermissionCallbacks {
             .apply {
                 this.viewModel = splash_features_ViewModel
             }
-        setFirstTimeOpenSharedPreferences(requireContext(),true)
         setObservers()
         return binding!!.root
     }
@@ -54,53 +56,74 @@ class Splash_features : Fragment() ,EasyPermissions.PermissionCallbacks {
     private fun setObservers() {
         splash_features_ViewModel.btnNextClick.observe(viewLifecycleOwner, Observer {
             if(it!!){
-                when(splash_features_ViewModel.featuresCounter){
+                when(splash_features_ViewModel.getFeaturesCounter()){
                     1 -> {
                         binding!!.splashFeatureLotti.setAnimation(R.raw.alarm)
+                        binding!!.splashFeatureLotti.playAnimation()
+                        //binding!!.splashFeatureLotti.repeatCount = LottieDrawable.INFINITE
                         binding!!.splashFeaturePara.setText("Set alarms to the station to notify the user when the train reaches it.")
-                        binding!!.splashFeatureTitle.setText("Notification Alarm")
+                        binding!!.splashFeatureTitle.setText("Alarm")
                         splash_features_ViewModel.incrementCounter()
+                        Log.i(TAG, "${splash_features_ViewModel.getFeaturesCounter()}")
                     }
                     2 -> {
                         binding!!.splashFeatureLotti.setAnimation(R.raw.news)
+                        binding!!.splashFeatureLotti.playAnimation()
+                        //binding!!.splashFeatureLotti.repeatCount = LottieDrawable.INFINITE
                         binding!!.splashFeaturePara.setText("news of the station daily")
-                        binding!!.splashFeatureTitle.setText("Notification News")
+                        binding!!.splashFeatureTitle.setText("News")
+                        Log.i(TAG, "${splash_features_ViewModel.getFeaturesCounter()}")
                         splash_features_ViewModel.incrementCounter()
+                        Log.i(TAG, "${splash_features_ViewModel.getFeaturesCounter()}")
                     }
                     3 -> {
                         binding!!.splashFeatureLotti.setAnimation(R.raw.notification)
+                        binding!!.splashFeatureLotti.playAnimation()
+                        //binding!!.splashFeatureLotti.repeatCount = LottieDrawable.INFINITE
                         binding!!.splashFeaturePara.setText("Show description about the station when the train reaches it")
                         binding!!.splashFeatureTitle.setText("Notification ")
                         splash_features_ViewModel.incrementCounter()
                     }
                     4 -> {
                         binding!!.splashFeatureLotti.setAnimation(R.raw.post)
+                        binding!!.splashFeatureLotti.playAnimation()
+                        //binding!!.splashFeatureLotti.repeatCount = LottieDrawable.INFINITE
                         binding!!.splashFeaturePara.setText("When user miss anything or someone missed in the train you can share a post to find it.")
-                        binding!!.splashFeatureTitle.setText("Notification Post")
+                        binding!!.splashFeatureTitle.setText("Post")
                         splash_features_ViewModel.incrementCounter()
                     }
+//                    5 -> {
+//                        binding!!.splashFeatureLotti.setAnimation(R.raw.location_track)
+//                        binding!!.splashFeatureLotti.playAnimation()
+//                        //binding!!.splashFeatureLotti.repeatCount = LottieDrawable.INFINITE
+//                        binding!!.splashFeaturePara.setText("Show the train location track between station.")
+//                        binding!!.splashFeatureTitle.setText("Location Track")
+//                        splash_features_ViewModel.incrementCounter()
+//                    }
                     5 -> {
-                        binding!!.splashFeatureLotti.setAnimation(R.raw.location_track)
-                        binding!!.splashFeaturePara.setText("Show the train location track between station.")
-                        binding!!.splashFeatureTitle.setText("Notification Location Track")
+                        binding!!.splashFeatureLotti.setAnimation(R.raw.chat)
+                        binding!!.splashFeatureLotti.playAnimation()
+                        //binding!!.splashFeatureLotti.repeatCount = LottieDrawable.INFINITE
+                        binding!!.splashFeaturePara.setText("Allows users to communicate with each other.")
+                        binding!!.splashFeatureTitle.setText("Chat")
                         splash_features_ViewModel.incrementCounter()
                     }
                     6 -> {
-                        binding!!.splashFeatureLotti.setAnimation(R.raw.chat)
-                        binding!!.splashFeaturePara.setText("Allows users to communicate with each other.")
-                        binding!!.splashFeatureTitle.setText("Notification Chat")
-                        splash_features_ViewModel.incrementCounter()
-                    }
-                    7 -> {
                         binding!!.splashFeatureLotti.setAnimation(R.raw.emergamcy)
+                        binding!!.splashFeatureLotti.playAnimation()
+                        //binding!!.splashFeatureLotti.repeatCount = LottieDrawable.INFINITE
                         binding!!.splashFeaturePara.setText("Allows users to communicate with doctors in the same train.")
-                        binding!!.splashFeatureTitle.setText("Notification Emergamcy")
+                        binding!!.splashFeatureTitle.setText("Emergamcy")
                         splash_features_ViewModel.incrementCounter()
                     }
-                    8 ->{
+                    7 ->{
                         val permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION
                         ,Manifest.permission.ACCESS_BACKGROUND_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE,
                             Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_COARSE_LOCATION)
+                        if(EasyPermissions.hasPermissions(requireContext(), *permissions)){
+                            setFirstTimeOpenSharedPreferences(requireContext(), true)
+                            findNavController().navigate(R.id.action_splash_features_to_splash2)
+                        }
                         requestPermissions(requireActivity(), 123, *permissions)
                     }
                 }
@@ -111,7 +134,7 @@ class Splash_features : Fragment() ,EasyPermissions.PermissionCallbacks {
     fun requestPermissions(activity: Activity, requestCode: Int, vararg perms: String) {
         EasyPermissions.requestPermissions(
             Builder(activity, requestCode, *perms)
-                .setRationale("Permissions")
+                .setRationale("You should accept this permission to use this app.")
                 .setPositiveButtonText("Ok")
                 .setNegativeButtonText("Cancel")
                 .build()
@@ -135,6 +158,11 @@ class Splash_features : Fragment() ,EasyPermissions.PermissionCallbacks {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        Log.i(TAG, "$grantResults")
+        setFirstTimeOpenSharedPreferences(requireContext(), true)
+        findNavController().navigate(R.id.action_splash_features_to_splash2)
+
         // Forward the result to EasyPermissions for handling
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }

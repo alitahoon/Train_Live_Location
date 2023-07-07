@@ -33,7 +33,7 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/splashFeatureLotti"
             android:padding="@dimen/_15sdp"
-            android:text="Feature Title"
+            android:text="Train Location Track"
             android:textColor="@color/white"
             android:textSize="@dimen/_14ssp"
             android:textStyle="bold" />
@@ -45,9 +45,11 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/splashFeatureTitle"
             android:padding="@dimen/_15sdp"
-            android:text="Feature splashFeatureTitlesplashFeatureTitlesplashFeatureTitlesplashFeatureTitlesplashFeatureTitlesplashFeatureTitlesplashFeatureTitlesplashFeatureTitle"
+            android:text="Live tracking for the train location at all times."
             android:textColor="@color/textHintColorFirst"
-            android:textSize="@dimen/_14ssp" />
+            android:textSize="@dimen/_14ssp"
+            android:gravity="center"
+            android:layout_marginHorizontal="@dimen/_10sdp"/>
 
         <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
