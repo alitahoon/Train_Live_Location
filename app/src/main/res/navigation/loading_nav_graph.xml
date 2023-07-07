@@ -34,7 +34,15 @@
     <fragment
         android:id="@+id/splash_features"
         android:name="com.example.trainlivelocation.ui.Splash_features"
-        android:label="Splash_features" />
+        android:label="Splash_features" >
+        <action
+            android:id="@+id/action_splash_features_to_splash2"
+            app:destination="@id/splash2"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
+    </fragment>
     <activity
         android:id="@+id/splash2"
         android:name="com.example.trainlivelocation.ui.splash"
