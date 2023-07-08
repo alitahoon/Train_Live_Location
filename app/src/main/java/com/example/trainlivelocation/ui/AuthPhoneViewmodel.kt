@@ -51,16 +51,19 @@ class AuthPhoneViewmodel @Inject constructor(
                             Log.e(TAG,"${it.data}")
                             when(it.data){
                                 "onCodeSent"->{
-                                    onCodeSent.postValue(true)
+                                    onCodeSent.value=true
                                 }
                                 "onVerificationCompleted"->{
                                     Log.i(TAG,"onVerificationCompleted")
                                 }
+                                "onVerificationFailed"->{
+                                    onAuthFailed.value=true
+                                }
                             }
                         }
                         is Resource.Failure->{
-                            Log.e(TAG,"${it.error}")
-                            onAuthFailed.postValue(true)
+                            Log.e(TAG," ${it.error}")
+                            onAuthFailed.value=true
                         }
                         Resource.Loading->{
                             Log.i(TAG,"Waiting for sending code...")

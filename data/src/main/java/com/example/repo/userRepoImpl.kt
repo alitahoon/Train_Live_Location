@@ -361,7 +361,7 @@ class userRepoImpl(
                 result.invoke(Resource.Failure("Error Body is null:${res.body()}"))
             }
         } else {
-            result.invoke(Resource.Failure("${res.message()}:${res.errorBody()}"))
+            result.invoke(Resource.Failure("${res.message()}:${res.raw()}"))
         }
     }
 

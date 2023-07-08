@@ -16,6 +16,7 @@ import com.example.domain.usecase.*
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -130,16 +131,20 @@ class SignUpViewModel @Inject constructor(
                 userPassword?.trim()!!,
                 userPhone?.trim()!!,
                 "normal",
-                userToken,
-                null
-            )
+                userToken)
             Log.i(TAG, "${newUser}")
             viewModelScope.launch {
-                var result = addNewUser(
-                    newUser
-                ) {
-                    _userDataMuta.value = it
+                val child1=launch (Dispatchers.IO){
+                    var result = addNewUser(
+                        newUser
+                    ) {
+                        val child2=launch (Dispatchers.Main){
+                            _userDataMuta.value = it
+                        }
+                    }
                 }
+                child1.join()
+
             }
         }else{
             _userDataMuta.value=Resource.Failure("Please Enter  All Fields...")

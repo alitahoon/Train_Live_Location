@@ -91,9 +91,7 @@ class UserProfile : Fragment() {
                     binding.profileTxtPassword.text.toString(),
                     binding.profileTxtPhone.text.toString(),
                     user!!.role,
-                    user.tokenForNotifications,
-                    null
-                )
+                    user.tokenForNotifications)
 
                 //sending user profile image to firebase
                 if(imageUri != null){

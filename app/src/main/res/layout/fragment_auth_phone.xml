@@ -19,12 +19,19 @@
             android:stateListAnimator="@null"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_280sdp"
-            android:fitsSystemWindows="true"
+
             android:background="@color/DarkPrimaryColor"
             android:theme="@style/Theme.TrainLiveLocation">
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                app:title="Phone Authntication"
+                app:expandedTitleGravity="center|bottom"
+                android:fitsSystemWindows="true"
+                app:contentScrim="@color/DarkPrimaryColor"
+                app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
+                app:expandedTitleTextAppearance="@style/ExpandedAppBarTextStyle"
+                app:collapsedTitleTextAppearance="@style/CollapsedAppBarTextStyle">
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

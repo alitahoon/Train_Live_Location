@@ -8,10 +8,6 @@
             name="viewmodel"
             type="com.example.trainlivelocation.ui.AuthCodeViewmodel" />
     </data>
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="true">
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -27,7 +23,14 @@
                 android:theme="@style/Theme.TrainLiveLocation">
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    app:title="Phone Authntication"
+                    app:expandedTitleGravity="center|bottom"
+                    android:fitsSystemWindows="true"
+                    app:contentScrim="@color/DarkPrimaryColor"
+                    app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
+                    app:expandedTitleTextAppearance="@style/ExpandedAppBarTextStyle"
+                    app:collapsedTitleTextAppearance="@style/CollapsedAppBarTextStyle">
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -227,7 +230,6 @@
 
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-    </androidx.core.widget.NestedScrollView>
 
 
 </layout>
