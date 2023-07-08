@@ -9,7 +9,8 @@
             type="com.example.trainlivelocation.ui.Splash_features_ViewModel" />
     </data>
 
-    <RelativeLayout
+    <LinearLayout
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.Splash_features"
@@ -17,21 +18,21 @@
         android:background="@color/DarkPrimaryColor">
 
         <com.airbnb.lottie.LottieAnimationView
+            android:layout_weight="2"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             android:layout_marginTop="@dimen/_100sdp"
             android:id="@+id/splashFeatureLotti"
             android:layout_width="@dimen/_150sdp"
             android:layout_height="@dimen/_150sdp"
-            android:layout_centerHorizontal="true"
             app:lottie_rawRes="@raw/location_track" />
 
         <TextView
+            android:layout_weight="0.5"
+            android:letterSpacing="0.1"
             android:id="@+id/splashFeatureTitle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/splashFeatureLotti"
+            android:layout_height="@dimen/_40sdp"
             android:padding="@dimen/_15sdp"
             android:text="Train Location Track"
             android:textColor="@color/white"
@@ -39,31 +40,29 @@
             android:textStyle="bold" />
 
         <TextView
+            android:layout_weight="2"
             android:id="@+id/splashFeaturePara"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/splashFeatureTitle"
+            android:layout_height="@dimen/_80sdp"
             android:padding="@dimen/_15sdp"
             android:text="Live tracking for the train location at all times."
             android:textColor="@color/textHintColorFirst"
             android:textSize="@dimen/_14ssp"
-            android:gravity="center"
+            android:gravity="center|top"
             android:layout_marginHorizontal="@dimen/_10sdp"/>
 
         <com.google.android.material.button.MaterialButton
+            android:layout_weight="0.5"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/splashFeaturePara"
-            android:paddingVertical="@dimen/_10sdp"
+            android:layout_height="@dimen/_30sdp"
             android:layout_marginTop="@dimen/_15sdp"
             android:text="Next"
             app:cornerRadius="@dimen/_15sdp"
             android:paddingHorizontal="@dimen/_50sdp"
-            android:layout_centerHorizontal="true"
             android:textColor="@color/white"
+            android:layout_marginBottom="@dimen/_50sdp"
             android:onClick="@{viewModel::onBtnNextClick}" />
 
 
-    </RelativeLayout>
+    </LinearLayout>
 </layout>

@@ -18,12 +18,19 @@ class Splash_features_ViewModel @Inject constructor() : ViewModel() {
     fun incrementCounter(){
         featuresCounter = featuresCounter.plus(1)
     }
+    fun incrementPermissionsCounter(){
+        permissionsCounter = permissionsCounter.plus(1)
+    }
 
     companion object{
         var featuresCounter: Int = 1
+        var permissionsCounter: Int = 1
     }
 
     fun  getFeaturesCounter(): Int{
         return featuresCounter
+    }
+    fun  getPermissionsCounter(): Int{
+        return permissionsCounter
     }
 }

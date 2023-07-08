@@ -3,11 +3,13 @@ package com.example.trainlivelocation.ui
 import android.Manifest
 import android.app.Activity
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
@@ -16,20 +18,23 @@ import com.airbnb.lottie.LottieDrawable
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentSplashFeaturesBinding
 import com.example.trainlivelocation.utli.setFirstTimeOpenSharedPreferences
+import com.example.trainlivelocation.utli.showCustomToast
 import dagger.hilt.android.AndroidEntryPoint
+import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
 import pub.devrel.easypermissions.PermissionRequest.Builder;
 
 
 @AndroidEntryPoint
-class Splash_features : Fragment() ,EasyPermissions.PermissionCallbacks {
-    private val TAG: String?="Splash_features"
-    private val REQUSET_CODE_Camera:Int=102
-    private val REQUSET_CODE_location:Int=103
-    private val REQUSET_CODE_background_location:Int=104
-    private val REQUSET_CODE_Forground_location:Int=105
-    private val REQUSET_CODE_IMAGE:Int=101
+class Splash_features : Fragment(), EasyPermissions.PermissionCallbacks{
+    private val TAG: String? = "Splash_features"
+    private val REQUSET_CODE_Camera: Int = 102
+    private val REQUSET_CODE_location: Int = 103
+    private val REQUSET_CODE_background_location: Int = 104
+    private val REQUSET_CODE_Forground_location: Int = 105
+    private val REQUSET_CODE_IMAGE: Int = 101
+    private val REQUSET_CODE_STORAGE: Int = 102
 
 
     private var binding: FragmentSplashFeaturesBinding? = null
@@ -55,8 +60,8 @@ class Splash_features : Fragment() ,EasyPermissions.PermissionCallbacks {
 
     private fun setObservers() {
         splash_features_ViewModel.btnNextClick.observe(viewLifecycleOwner, Observer {
-            if(it!!){
-                when(splash_features_ViewModel.getFeaturesCounter()){
+            if (it!!) {
+                when (splash_features_ViewModel.getFeaturesCounter()) {
                     1 -> {
                         binding!!.splashFeatureLotti.setAnimation(R.raw.alarm)
                         binding!!.splashFeatureLotti.playAnimation()
@@ -116,54 +121,66 @@ class Splash_features : Fragment() ,EasyPermissions.PermissionCallbacks {
                         binding!!.splashFeatureTitle.setText("Emergamcy")
                         splash_features_ViewModel.incrementCounter()
                     }
-                    7 ->{
-                        val permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.ACCESS_FINE_LOCATION
-                        ,Manifest.permission.ACCESS_BACKGROUND_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE,
-                            Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.ACCESS_COARSE_LOCATION)
-                        if(EasyPermissions.hasPermissions(requireContext(), *permissions)){
-                            setFirstTimeOpenSharedPreferences(requireContext(), true)
-                            findNavController().navigate(R.id.action_splash_features_to_splash2)
-                        }
-                        requestPermissions(requireActivity(), 123, *permissions)
+                    7 -> {
+                       if (hasPermissions()){
+                           setFirstTimeOpenSharedPreferences(requireContext(),true)
+                           findNavController().navigate(R.id.action_splash_features_to_splash2)
+                       }else{
+                           requsetPermissions()
+                       }
                     }
                 }
             }
         })
     }
 
-    fun requestPermissions(activity: Activity, requestCode: Int, vararg perms: String) {
-        EasyPermissions.requestPermissions(
-            Builder(activity, requestCode, *perms)
-                .setRationale("You should accept this permission to use this app.")
-                .setPositiveButtonText("Ok")
-                .setNegativeButtonText("Cancel")
-                .build()
-        )
-    }
-
-
     companion object {
     }
 
+    fun requsetPermissions() {
+        EasyPermissions.requestPermissions(
+            this,
+            "You should accept this permissions to use our App ",
+            REQUSET_CODE_location,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA
+        )
+    }
+    fun hasPermissions():Boolean{
+        return EasyPermissions.hasPermissions(requireContext(),
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA,
+            Manifest.permission.SEND_SMS
+        )
+    }
+
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        Log.i(TAG,"onPermissionsGranted")
+        setFirstTimeOpenSharedPreferences(requireContext(),true)
+        findNavController().navigate(R.id.action_splash_features_to_splash2)
     }
 
     override fun onPermissionsDenied(requestCode: Int, perms: MutableList<String>) {
-        Log.i(TAG,"onPermissionsDenied")
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            AppSettingsDialog.Builder(this).build().show()
+        } else {
+            requsetPermissions()
+        }
     }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        Log.i(TAG, "$grantResults")
-        setFirstTimeOpenSharedPreferences(requireContext(), true)
-        findNavController().navigate(R.id.action_splash_features_to_splash2)
-
         // Forward the result to EasyPermissions for handling
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
+
 }
