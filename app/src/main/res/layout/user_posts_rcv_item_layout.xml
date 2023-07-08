@@ -85,6 +85,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_270sdp"
                     android:scaleType="centerCrop"
+                    userphone="@{post.userPhone}"
+                    imageId="@{post.id}"
                     android:src="@drawable/emptyicon"/>
 
             </LinearLayout>
