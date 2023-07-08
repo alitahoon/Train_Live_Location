@@ -87,6 +87,7 @@
                     android:scaleType="centerCrop"
                     userphone="@{post.userPhone}"
                     imageId="@{post.id}"
+
                     android:src="@drawable/emptyicon"/>
 
             </LinearLayout>
