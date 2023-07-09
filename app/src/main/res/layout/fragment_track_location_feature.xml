@@ -41,6 +41,7 @@
             app:layout_constraintTop_toBottomOf="@+id/track_Location_progress_bar">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:visibility="gone"
                 android:id="@+id/track_location_txt_train_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -59,6 +60,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
+            android:visibility="gone"
             android:id="@+id/track_btnTrack"
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_width="match_parent"
@@ -79,14 +81,96 @@
         <com.google.android.gms.maps.MapView
             android:id="@+id/track_locationMap"
             android:layout_width="match_parent"
-            android:visibility="gone"
             android:layout_height="match_parent"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/track_Location_progress_bar">
 
         </com.google.android.gms.maps.MapView>
+
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+            android:id="@+id/patient_btn_data"
+            android:layout_width="@dimen/_60sdp"
+            android:layout_height="@dimen/_60sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/_50sdp"
+            android:backgroundTint="@color/PrimaryColor"
+            app:icon="@drawable/patient_data"
+            app:iconTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="@+id/track_locationMap"
+            app:layout_constraintEnd_toEndOf="@+id/track_locationMap"
+            app:layout_constraintStart_toStartOf="@+id/track_locationMap" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/materialCardView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/patient_btn_data"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginHorizontal="@dimen/_20sdp"
+            android:layout_marginEnd="25dp"
+            android:backgroundTint="@color/PrimaryColor"
+            app:cardCornerRadius="@dimen/_15sdp"
+            app:cardElevation="@dimen/_15sdp"
+            app:layout_constraintBottom_toTopOf="@+id/patient_btn_data"
+            app:layout_constraintEnd_toEndOf="@+id/track_locationMap"
+            app:layout_constraintStart_toStartOf="@+id/track_locationMap">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/_10sdp">
+
+                <TextView
+                    android:id="@+id/doctorInMap.txtDistance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/distance"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:gravity="bottom"
+                    android:padding="@dimen/_5sdp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp" />
+
+                <TextView
+                    android:id="@+id/doctorInMap.txtCars"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/station_white"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/time"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    android:text="Remain Time: "
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_12ssp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    android:text="Note : The direction forward means that you should go on the driver side Backward go in the inverse side"
+                    android:textColor="@color/textHintColorFirst"
+                    android:textSize="@dimen/_8ssp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
