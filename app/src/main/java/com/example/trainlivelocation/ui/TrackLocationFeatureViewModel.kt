@@ -21,6 +21,7 @@ import com.example.trainlivelocation.utli.LocationTrackBackgroundService
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import com.example.trainlivelocation.utli.TrackLocationListener
 import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,7 +41,10 @@ class TrackLocationFeatureViewModel @Inject constructor(
     private val gettingTrainlocationFromApi: GettingTrainlocationFromApi,
     private val getAllStationsFromDatabase: GetAllStationsFromDatabase,
     private val getAllStations: GetAllStations,
-    private val insertNewStationToDatabase: InsertNewStationToDatabase
+    private val insertNewStationToDatabase: InsertNewStationToDatabase,
+    private val insertnewDirctionRouteInDatabase: InsertnewDirctionRouteInDatabase,
+    private val getDirctionRoutesFromDatabase: GetDirctionRoutesFromDatabase,
+    private val getLocationDirctionFromOpenRouteService: GetLocationDirctionFromOpenRouteService
 
 ) : ViewModel() {
     private var TAG: String? = "TrackLocationFeatureViewModel"
@@ -89,6 +93,18 @@ class TrackLocationFeatureViewModel @Inject constructor(
     private lateinit var activity: Activity
     var locationForegrondservice: Intent? = null
 
+    private val _dirction: MutableLiveData<Resource<OpenRouteDirectionResult>?> =
+        MutableLiveData(null)
+    val dirction: LiveData<Resource<OpenRouteDirectionResult>?> = _dirction
+
+    private val _insertRoutes: MutableLiveData<Resource<String>?> =
+        MutableLiveData(null)
+    val insertRoutes: LiveData<Resource<String>?> = _insertRoutes
+
+    private val _getRoutes: MutableLiveData<Resource<ArrayList<RouteDirctionEntity>>?> =
+        MutableLiveData(null)
+    val getRoutes: LiveData<Resource<ArrayList<RouteDirctionEntity>>?> = _getRoutes
+
 
     fun getMAP_VIEW_KEY(): Bundle? {
         MAP_VIEW_Bundle?.putString("MapViewBundleKey", "102")
@@ -97,6 +113,51 @@ class TrackLocationFeatureViewModel @Inject constructor(
 
     fun setbaseActivity(baseActivity: Activity) {
         activity = baseActivity
+    }
+
+    fun getLocationDirctions(
+        origin: LatLng,
+        destination: LatLng
+    ) {
+        viewModelScope.launch {
+            _dirction.value = Resource.Loading
+            val child1 = launch(Dispatchers.IO) {
+                getLocationDirctionFromOpenRouteService(origin, destination) {
+                    val child2 = launch(Dispatchers.Main) {
+                        _dirction.value = it
+                        Log.i(TAG, "from getLocationDirections method")
+                    }
+                }
+            }
+            child1.join()
+        }
+    }
+
+    fun insertingRoutesInDatabase(routeDirctionEntity: RouteDirctionEntity){
+        viewModelScope.launch {
+            _insertRoutes.value=Resource.Loading
+            val child1=launch (Dispatchers.IO){
+                insertnewDirctionRouteInDatabase(routeDirctionEntity){
+                    val child2=launch(Dispatchers.Main) {
+                        _insertRoutes.value=it
+                    }
+                }
+            }
+            child1.join()
+        }
+    }
+    fun gettingRoutesFromDatabase(){
+        viewModelScope.launch {
+            _getRoutes.value=Resource.Loading
+            val child1=launch (Dispatchers.IO){
+                getDirctionRoutesFromDatabase(){
+                    val child2=launch(Dispatchers.Main) {
+                        _getRoutes.value=it
+                    }
+                }
+            }
+            child1.join()
+        }
     }
 
     public fun onBtnTrackTrainLocationClicked(view: View) {

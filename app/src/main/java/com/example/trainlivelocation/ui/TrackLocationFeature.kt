@@ -23,10 +23,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
-import com.example.domain.entity.LocationDetails
-import com.example.domain.entity.StationItemEntity
-import com.example.domain.entity.StationResponseItem
-import com.example.domain.entity.StationSydny
+import com.example.domain.entity.*
 import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentTrackLocationFeatureBinding
 import com.example.trainlivelocation.utli.TrackLocationListener
@@ -39,7 +36,9 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.*
 import com.google.maps.android.SphericalUtil
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -57,6 +56,68 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
     private var binding: FragmentTrackLocationFeatureBinding? = null
     private var mMap: GoogleMap? = null
     lateinit var latlong: LatLng
+
+    var origin1: LatLng? = null// Ramsis(Cairo)
+    var destination1: LatLng? = null  // Shubra El-Kheima
+
+    var origin2: LatLng? = null// Qalyoub
+    var destination2: LatLng? = null  // Qalyoub Al , Balad
+
+    var origin3: LatLng? = null// al-qanater al-khairieh al-jadideh
+    var destination3: LatLng? = null  // Droh
+
+    var origin4: LatLng? = null// shatanov
+    var destination4: LatLng? = null  // al-halawasi al-balad
+
+    var origin5: LatLng? = null// al-halawasi
+    var destination5: LatLng? = null  // Ashmon
+
+
+    var origin6: LatLng? = null// al-halawasi
+    var destination6: LatLng? = null  // Ashmon
+
+    var origin7: LatLng? = null// al-halawasi
+    var destination7: LatLng? = null  // Ashmon
+
+    var origin8: LatLng? = null// al-halawasi
+    var destination8: LatLng? = null  // Ashmon
+
+    var origin9: LatLng? = null// al-halawasi
+    var destination9: LatLng? = null  // Ashmon
+
+    var origin10: LatLng? = null// al-halawasi
+    var destination10: LatLng? = null  // Ashmon
+
+    var origin11: LatLng? = null// al-halawasi
+    var destination11: LatLng? = null  // Ashmon
+
+    var origin12: LatLng? = null// al-halawasi
+    var destination12: LatLng? = null  // Ashmon
+
+
+    var origin13: LatLng? = null// al-halawasi
+    var destination13: LatLng? = null  // Ashmon
+
+    var origin14: LatLng? = null// al-halawasi
+    var destination14: LatLng? = null  // Ashmon
+
+    var origin15: LatLng? = null// al-halawasi
+    var destination15: LatLng? = null  // Ashmon
+
+    var origin16: LatLng? = null// al-halawasi
+    var destination16: LatLng? = null  // Ashmon
+
+    var origin17: LatLng? = null// al-halawasi
+    var destination17: LatLng? = null  // Ashmon
+
+    var origin18: LatLng? = null// al-halawasi
+    var destination18: LatLng? = null  // Ashmon
+
+    var origin19: LatLng? = null// al-halawasi
+    var destination19: LatLng? = null  // Ashmon
+
+    var origin20: LatLng? = null// al-halawasi
+    var destination20: LatLng? = null  // Ashmon
 
 
     private val TAG: String? = "TrackLocationFeature"
@@ -629,6 +690,218 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
                     else -> {}
                 }
             })
+    }
+
+    fun addRouteToMap(mapView: GoogleMap, stations: ArrayList<StationSydny>){
+        for (station in stations) {
+            if (station.stationName.equals("cairo")) {
+                origin1 = station.stationSydnyvalue
+            } else if (station.stationName.equals("Shubra El-Kheima")) {
+                destination1 = station.stationSydnyvalue
+                origin2 = station.stationSydnyvalue
+            } else if (station.stationName.equals("Qelyoub")) {
+                destination2 = station.stationSydnyvalue
+                origin3 = station.stationSydnyvalue
+            } else if (station.stationName.equals("Qelyoub Al-Balad")) {
+                destination3 = station.stationSydnyvalue
+                origin4 = station.stationSydnyvalue
+            } else if (station.stationName.equals("Al-Qanatir Al-Khairiya")) {
+                destination4 = station.stationSydnyvalue
+                origin5 = station.stationSydnyvalue
+            } else if (station.stationName.equals("Darwah")) {
+                destination5 = station.stationSydnyvalue
+                origin6 = station.stationSydnyvalue
+            } else if (station.stationName.equals("Shatanof")) {
+                destination6 = station.stationSydnyvalue
+                origin7 = station.stationSydnyvalue
+            } else if (station.stationName.equals("Al Hilwasi Al-Balad")) {
+                destination7 = station.stationSydnyvalue
+                origin8 = station.stationSydnyvalue
+            } else if (station.stationName.equals("Al Hilwasi")) {
+                destination8 = station.stationSydnyvalue
+                origin9 = station.stationSydnyvalue
+            } else if (station.stationName.equals("Ashmoun")) {
+                destination9 = station.stationSydnyvalue
+                origin10 = station.stationSydnyvalue
+            } else if (station.stationName.equals("Samadun")) {
+                destination10 = station.stationSydnyvalue
+                origin11 = station.stationSydnyvalue
+            } else if (station.stationName.equals("Ramlet Alonhab")) {
+                destination11 = station.stationSydnyvalue
+                origin12 = station.stationSydnyvalue
+            } else if (station.stationName.equals("Menouf")) {
+                destination12 = station.stationSydnyvalue
+                origin13 = station.stationSydnyvalue
+            } else if (station.stationName.equals("Al-Hamul")) {
+                destination13 = station.stationSydnyvalue
+                origin14 = station.stationSydnyvalue
+            } else if (station.stationName.equals("Shanwan")) {
+                destination14 = station.stationSydnyvalue
+                origin15 = station.stationSydnyvalue
+            } else if (station.stationName.equals("Shebin El-Kom")) {
+                destination15 = station.stationSydnyvalue
+                origin16 = station.stationSydnyvalue
+            } else if (station.stationName.equals("New Shebin El-Kom")) {
+                destination16 = station.stationSydnyvalue
+                origin17 = station.stationSydnyvalue
+            } else if (station.stationName.equals("Al-Batanoun")) {
+                destination17 = station.stationSydnyvalue
+                origin18 = station.stationSydnyvalue
+            } else if (station.stationName.equals("Tala")) {
+                destination18 = station.stationSydnyvalue
+                origin19 = station.stationSydnyvalue
+            } else if (station.stationName.equals("Tanta")) {
+                destination19 = station.stationSydnyvalue
+            }
+
+        }
+
+        trackLocationFeatureViewModel!!.gettingRoutesFromDatabase()
+        trackLocationFeatureViewModel!!.getRoutes.observe(viewLifecycleOwner, Observer{
+            when(it){
+                is Resource.Success-> {
+                    Log.i(TAG, "${it.data}")
+                    if(it.data.isEmpty()){
+                        getAllStationsRouteParrllel()
+                        trackLocationFeatureViewModel!!.dirction.observe(viewLifecycleOwner, Observer{
+                            when(it){
+                                is Resource.Success->{
+                                    Log.i(TAG, "${it.data}")
+                                    trackLocationFeatureViewModel!!.insertingRoutesInDatabase(routeDirctionEntity = RouteDirctionEntity(
+                                        polyline = it.data.polyline,
+                                        distance = it.data.distance,
+                                        duration = it.data.duration
+                                    ))
+                                }
+                                is Resource.Loading-> {
+                                    Log.i(TAG, "Getting Routes")
+                                }
+                                is Resource.Failure-> {
+                                    Log.e(TAG, "${it.error}")
+                                }
+                                else->{}
+                            }
+                        })
+                    }
+                }
+                is Resource.Loading-> {
+                    Log.i(TAG, "Getting Routes")
+                }
+                is Resource.Failure-> {
+                    Log.e(TAG, "${it.error}")
+                }
+                else->{}
+            }
+        })
+    }
+
+    fun getAllStationsRouteParrllel() {
+        // Create a CoroutineScope
+        val coroutineScope = CoroutineScope(Dispatchers.Main)
+
+
+        val origin1Distenation1 =
+            coroutineScope.async { trackLocationFeatureViewModel!!.getLocationDirctions(origin1!!, destination1!!) }
+        val origin2Distenation2 =
+            coroutineScope.async { trackLocationFeatureViewModel!!.getLocationDirctions(origin2!!, destination2!!) }
+        val origin3Distenation3 =
+            coroutineScope.async { trackLocationFeatureViewModel!!.getLocationDirctions(origin3!!, destination3!!) }
+        val origin4Distenation4 =
+            coroutineScope.async { trackLocationFeatureViewModel!!.getLocationDirctions(origin4!!, destination4!!) }
+        val origin5Distenation5 =
+            coroutineScope.async { trackLocationFeatureViewModel!!.getLocationDirctions(origin5!!, destination5!!) }
+        val origin6Distenation6 =
+            coroutineScope.async { trackLocationFeatureViewModel!!.getLocationDirctions(origin6!!, destination6!!) }
+        val origin7Distenation7 =
+            coroutineScope.async { trackLocationFeatureViewModel!!.getLocationDirctions(origin7!!, destination7!!) }
+        val origin8Distenation8 =
+            coroutineScope.async { trackLocationFeatureViewModel!!.getLocationDirctions(origin8!!, destination8!!) }
+        val origin9Distenation9 =
+            coroutineScope.async { trackLocationFeatureViewModel!!.getLocationDirctions(origin9!!, destination9!!) }
+        val origin10Distenation10 = coroutineScope.async {
+            trackLocationFeatureViewModel!!.getLocationDirctions(
+                origin10!!,
+                destination10!!
+            )
+        }
+        val origin11Distenation11 = coroutineScope.async {
+            trackLocationFeatureViewModel!!.getLocationDirctions(
+                origin11!!,
+                destination11!!
+            )
+        }
+        val origin12Distenation12 = coroutineScope.async {
+            trackLocationFeatureViewModel!!.getLocationDirctions(
+                origin12!!,
+                destination12!!
+            )
+        }
+        val origin13Distenation13 = coroutineScope.async {
+            trackLocationFeatureViewModel!!.getLocationDirctions(
+                origin13!!,
+                destination13!!
+            )
+        }
+        val origin14Distenation14 = coroutineScope.async {
+            trackLocationFeatureViewModel!!.getLocationDirctions(
+                origin14!!,
+                destination14!!
+            )
+        }
+        val origin15Distenation15 = coroutineScope.async {
+            trackLocationFeatureViewModel!!.getLocationDirctions(
+                origin15!!,
+                destination15!!
+            )
+        }
+        val origin16Distenation16 = coroutineScope.async {
+            trackLocationFeatureViewModel!!.getLocationDirctions(
+                origin16!!,
+                destination16!!
+            )
+        }
+        val origin17Distenation17 = coroutineScope.async {
+            trackLocationFeatureViewModel!!.getLocationDirctions(
+                origin17!!,
+                destination17!!
+            )
+        }
+        val origin18Distenation18 = coroutineScope.async {
+            trackLocationFeatureViewModel!!.getLocationDirctions(
+                origin18!!,
+                destination18!!
+            )
+        }
+        val origin19Distenation19 = coroutineScope.async {
+            trackLocationFeatureViewModel!!.getLocationDirctions(
+                origin19!!,
+                destination19!!
+            )
+        }
+
+
+        coroutineScope.launch(Dispatchers.IO) {
+            val result1 = origin1Distenation1.await()
+            val result2 = origin2Distenation2.await()
+            val result3 = origin3Distenation3.await()
+            val result4 = origin4Distenation4.await()
+            val result5 = origin5Distenation5.await()
+            val result6 = origin6Distenation6.await()
+            val result7 = origin7Distenation7.await()
+            val result8 = origin8Distenation8.await()
+            val result9 = origin9Distenation9.await()
+            val result10 = origin10Distenation10.await()
+            val result11 = origin11Distenation11.await()
+            val result12 = origin12Distenation12.await()
+            val result13 = origin13Distenation13.await()
+            val result14 = origin14Distenation14.await()
+            val result15 = origin15Distenation15.await()
+            val result16 = origin16Distenation16.await()
+            val result17 = origin17Distenation17.await()
+            val result18 = origin18Distenation18.await()
+            val result19 = origin19Distenation19.await()
+        }
+
     }
 
     fun genenrateStationsSydny(stationsList: ArrayList<StationResponseItem>): ArrayList<StationSydny> {
