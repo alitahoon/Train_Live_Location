@@ -41,7 +41,7 @@
             app:layout_constraintTop_toBottomOf="@+id/track_Location_progress_bar">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:visibility="gone"
+                android:visibility="visible"
                 android:id="@+id/track_location_txt_train_id"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/track_btnTrack"
             android:layout_marginTop="@dimen/_15sdp"
             android:layout_width="match_parent"
@@ -82,7 +82,7 @@
             android:id="@+id/track_locationMap"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -103,7 +103,8 @@
             app:iconTint="@color/white"
             app:layout_constraintBottom_toBottomOf="@+id/track_locationMap"
             app:layout_constraintEnd_toEndOf="@+id/track_locationMap"
-            app:layout_constraintStart_toStartOf="@+id/track_locationMap" />
+            app:layout_constraintStart_toStartOf="@+id/track_locationMap"
+            android:visibility="gone"/>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/materialCardView2"
@@ -114,12 +115,14 @@
             android:layout_alignParentEnd="true"
             android:layout_marginHorizontal="@dimen/_20sdp"
             android:layout_marginEnd="25dp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:backgroundTint="@color/PrimaryColor"
             app:cardCornerRadius="@dimen/_15sdp"
             app:cardElevation="@dimen/_15sdp"
             app:layout_constraintBottom_toTopOf="@+id/patient_btn_data"
             app:layout_constraintEnd_toEndOf="@+id/track_locationMap"
-            app:layout_constraintStart_toStartOf="@+id/track_locationMap">
+            app:layout_constraintStart_toStartOf="parent"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"

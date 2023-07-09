@@ -3,6 +3,7 @@ package com.example.trainlivelocation.ui
 import Resource
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.location.Location
 import android.os.Bundle
@@ -34,6 +35,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.*
+import com.google.maps.android.PolyUtil
 import com.google.maps.android.SphericalUtil
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -660,6 +662,7 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
                                                     )
                                                 )
                                             }
+                                            addRouteToMap(mapView, stationSydny)
                                             zoomingOnStations(mMap!!, builder, stationSydny)
                                         }
                                         else -> {}
@@ -678,6 +681,7 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
                                     "station"
                                 )
                             }
+                            addRouteToMap(mapView, stationSydny)
                             zoomingOnStations(mMap!!, builder, stationSydny)
                         }
                     }
@@ -772,6 +776,7 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
                                         distance = it.data.distance,
                                         duration = it.data.duration
                                     ))
+                                    drawPolyLine(mapView, it.data)
                                 }
                                 is Resource.Loading-> {
                                     Log.i(TAG, "Getting Routes")
@@ -783,6 +788,16 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
                             }
                         })
                     }
+                    else{
+                        for(route in it.data){
+                            drawPolyLine(mapView, OpenRouteDirectionResult(
+                                polyline = route.polyline,
+                                distance = route.distance,
+                                duration = route.duration
+                            )
+                            )
+                        }
+                    }
                 }
                 is Resource.Loading-> {
                     Log.i(TAG, "Getting Routes")
@@ -793,6 +808,19 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
                 else->{}
             }
         })
+    }
+
+    fun drawPolyLine(mapView: GoogleMap, point: OpenRouteDirectionResult){
+
+            val points = PolyUtil.decode(point.polyline)
+
+            // Draw the polyline on the map
+            val polylineOptions = PolylineOptions()
+                .color(Color.BLUE)
+                .width(5f)
+                .addAll(points)
+            Log.i(TAG, "draw poly.......")
+            mapView.addPolyline(polylineOptions)
     }
 
     fun getAllStationsRouteParrllel() {
