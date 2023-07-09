@@ -14,47 +14,117 @@
             type="com.example.trainlivelocation.utli.PostCustomAdapter" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/dark_mode_background"
-        tools:context=".ui.CriticalPost">
-
-        <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:id="@+id/crtical_progress_bar"
-            style="@style/Widget.MaterialComponents.LinearProgressIndicator"
-            android:layout_width="match_parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+        android:background="@color/DarkPrimaryColor"
+        android:orientation="vertical"
+        tools:context=".ui.CriticalPost"
+        >
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/critical_posts_RCV_Posts"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/crtical_progress_bar"
             app:setAdapter="@{adapter}"
             tools:listitem="@layout/user_posts_rcv_item_layout" />
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="@dimen/_100sdp"
-
-            android:layout_height="@dimen/_100sdp"
+        <com.facebook.shimmer.ShimmerFrameLayout
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-        <!--            app:manageState="@{viewModel.showProgressBar}"/>-->
+            android:id="@+id/critical_posts_shimmer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <include layout="@layout/post_shimmer_layout"/>
+                <include layout="@layout/post_shimmer_layout"/>
 
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:background="@color/DarkPrimaryColor"
+            android:id="@+id/critical_posts_empty_post_layout">
+            <ImageView
+                android:layout_width="@dimen/_150sdp"
+                android:layout_height="@dimen/_150sdp"
+                android:src="@drawable/emptyicon"
+                android:layout_marginHorizontal="@dimen/_30sdp"
+                android:layout_gravity="center" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/para_empty_post2"
+                android:layout_gravity="center"
+                android:layout_marginVertical="@dimen/_5sdp"
+                android:gravity="center"
+                android:textSize="@dimen/_14ssp"
+                android:textColor="@color/textHintColorFirst"
+                android:layout_marginHorizontal="@dimen/_40sdp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/para_empty_post"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="@dimen/_12ssp"
+                android:layout_marginHorizontal="@dimen/_50sdp"
+                android:textColor="@color/textHintColorFirst"/>
+        </LinearLayout>
+
+    </LinearLayout>
 </layout>
+
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:background="@color/dark_mode_background"-->
+<!--        tools:context=".ui.CriticalPost">-->
+
+<!--        <com.google.android.material.progressindicator.LinearProgressIndicator-->
+<!--            android:id="@+id/crtical_progress_bar"-->
+<!--            style="@style/Widget.MaterialComponents.LinearProgressIndicator"-->
+<!--            android:layout_width="match_parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:indeterminate="true"-->
+<!--            android:visibility="invisible"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent" />-->
+
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:orientation="vertical"-->
+<!--            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/crtical_progress_bar"-->
+<!--            app:setAdapter="@{adapter}"-->
+<!--            tools:listitem="@layout/user_posts_rcv_item_layout" />-->
+
+<!--        <ProgressBar-->
+<!--            android:id="@+id/progressBar"-->
+<!--            android:layout_width="@dimen/_100sdp"-->
+
+<!--            android:layout_height="@dimen/_100sdp"-->
+<!--            android:visibility="gone"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+<!--        &lt;!&ndash;            app:manageState="@{viewModel.showProgressBar}"/>&ndash;&gt;-->
+
+
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--</layout>-->

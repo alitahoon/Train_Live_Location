@@ -26,6 +26,7 @@ class MainActivityViewModel @Inject constructor(
     private val sharedPrefFile = "UserToken"
     var menuBtnClicked= SingleLiveEvent<Boolean>()
 
+    var btnBack = SingleLiveEvent<Boolean>()
 
 
 
@@ -34,6 +35,9 @@ class MainActivityViewModel @Inject constructor(
 
 
 
+    fun onBtnBack(view: View){
+        btnBack.value = true
+    }
 
     fun getProfileImage(imageRef:String?){
         _userProfileImageUri.value=Resource.Loading
