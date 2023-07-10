@@ -2,7 +2,9 @@ package com.example.trainlivelocation.ui
 
 import Resource
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.location.Location
 import android.os.Bundle
 import android.util.Log
@@ -22,6 +24,7 @@ import com.example.trainlivelocation.utli.SingleLiveEvent
 import com.example.trainlivelocation.utli.TrackLocationListener
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.maps.model.LatLng
+import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,6 +34,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TrackLocationFeatureViewModel @Inject constructor(
+    private val context: Context,
     private val getLiveLoctationFromApi: GetLiveLoctationFromApi,
     private var getLocationTrackForegroundService: GetLocationTrackForegroundService,
     private val getUserLocation: GetUserLocation,
@@ -49,10 +53,16 @@ class TrackLocationFeatureViewModel @Inject constructor(
 ) : ViewModel() {
     private var TAG: String? = "TrackLocationFeatureViewModel"
 
+    var btnDetailsFloatingButton = SingleLiveEvent<Boolean>()
+
     private var MAP_VIEW_Bundle: Bundle? = null
 
     private val _userLocationMuta: MutableLiveData<LocationDetails?> = MutableLiveData(null)
     val userLocation: LiveData<LocationDetails?> = _userLocationMuta
+
+    private val _nearbyStation: MutableLiveData<Resource<StationResponseItem>?> = MutableLiveData(null)
+    val nearbyStation: LiveData<Resource<StationResponseItem>?> = _nearbyStation
+
 
     private val _trainLocation = MutableStateFlow<Location_Response>(Location_Response(0.0,0.0))
     val trainLocation= _trainLocation
@@ -106,6 +116,9 @@ class TrackLocationFeatureViewModel @Inject constructor(
     val getRoutes: LiveData<Resource<ArrayList<RouteDirctionEntity>>?> = _getRoutes
 
 
+    fun onBtnDetailsFloatingButton(view: View){
+        btnDetailsFloatingButton.value = true
+    }
     fun getMAP_VIEW_KEY(): Bundle? {
         MAP_VIEW_Bundle?.putString("MapViewBundleKey", "102")
         return MAP_VIEW_Bundle
@@ -113,6 +126,26 @@ class TrackLocationFeatureViewModel @Inject constructor(
 
     fun setbaseActivity(baseActivity: Activity) {
         activity = baseActivity
+    }
+
+    fun setLocationFromMap(location: Location_Response){
+        val mapSharedPreferences: SharedPreferences = context.getSharedPreferences("location",
+            Context.MODE_PRIVATE)
+
+        val editor = mapSharedPreferences.edit()
+        val gson = Gson()
+        val locationGson = gson.toJson(location)
+
+        editor.putString("Location", locationGson)
+        editor.commit()
+    }
+
+    fun getLocationSharedPrefrence(): Location_Response{
+        val locationSharedPreferences: SharedPreferences =
+            context.getSharedPreferences("location", Context.MODE_PRIVATE)
+        val gson = Gson()
+        val json = locationSharedPreferences.getString("Location", gson.toJson(Location_Response(30.062959005017905,31.2472764196547)))
+        return gson.fromJson(json, Location_Response::class.java)
     }
 
     fun getLocationDirctions(
@@ -236,6 +269,7 @@ class TrackLocationFeatureViewModel @Inject constructor(
                                 is Resource.Success->{
                                     Log.i(TAG,"train location ---> ${it.data}")
                                     _trainLocation.value=it.data
+                                    gettingTrainLocaion(trinID)
                                 }
                                 is Resource.Failure->{
                                     Log.e(TAG,"${it.error}")
@@ -261,8 +295,6 @@ class TrackLocationFeatureViewModel @Inject constructor(
     }
 
     //station fun
-
-
 
 
 
@@ -308,5 +340,58 @@ class TrackLocationFeatureViewModel @Inject constructor(
             child1.join()
         }
     }
+    fun getttingNearbyStation(trainLocation:LatLng){
+        var distanceBetweenTrainAndStaions:ArrayList<StationDistanceModel>?=null
+            _nearbyStation.value=Resource.Loading
+        viewModelScope.launch {
+            val child1=launch (Dispatchers.IO){
+                getAllStations{
+                    val child2=launch (Dispatchers.Main){
+                        when(it){
+                            is Resource.Success->{
+                                Log.i(TAG,"${it.data}")
+                                for (staion in it.data){
+                                    distanceBetweenTrainAndStaions!!.add(
+                                        StationDistanceModel(staion!!,
+                                    getDistanceInKM(
+                                        trainLocation.longitude,trainLocation.latitude,
+                                        staion.latitude,staion.longitude
+                                    ))
+                                    )
+                                }
+                                _nearbyStation.value=Resource.Success(distanceBetweenTrainAndStaions!!.minByOrNull { it.distance }!!.station)
+                            }
+                            is Resource.Loading->{
+                                Log.i(TAG, "Getting stations")
+                            }
+                            is Resource.Failure->{
+                                Log.e(TAG, "${it.error}")
+                                _nearbyStation.value=Resource.Failure("${it.error}")
+                            }
 
+                            else -> {}
+                        }
+                    }
+                }
+            }
+            child1.join()
+        }
+
+    }
+    private fun getDistanceInKM(
+        startLat: Double,
+        startLon: Double,
+        endLat: Double,
+        endLon: Double
+    ): Double {
+        var results = FloatArray(1)
+        Log.e(TAG, "startLat ${startLat}")
+        Log.e(TAG, "startLon ${startLon}")
+        Log.e(TAG, "endLat ${endLat}")
+        Log.e(TAG, "endLon ${endLon}")
+
+        Location.distanceBetween(startLat, startLon, endLat, endLon, results)
+        Log.e(TAG, "distance In Kilo Meter ${results[0].toDouble() / 1000}")
+        return results[0].toDouble() / 1000
+    }
 }

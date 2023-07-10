@@ -29,6 +29,7 @@ import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.FragmentTrackLocationFeatureBinding
 import com.example.trainlivelocation.utli.TrackLocationListener
 import com.example.trainlivelocation.utli.Train_Dialog_Listener
+import com.example.trainlivelocation.utli.getLocationSharedPrefrence
 import com.example.trainlivelocation.utli.toast
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -41,6 +42,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -121,6 +123,13 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
     var origin20: LatLng? = null// al-halawasi
     var destination20: LatLng? = null  // Ashmon
 
+    private val _trainLocationFromService: MutableLiveData<Resource<Location_Response>> =
+        MutableLiveData()
+    var _locationStateFlow: MutableStateFlow<Location_Response> = MutableStateFlow(
+        Location_Response(0.0, 0.0)
+    )
+
+
 
     private val TAG: String? = "TrackLocationFeature"
 
@@ -189,8 +198,23 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
 //            }
 //        })
     }
+    fun animateView(_view: View,alpha:Float) {
+        _view!!.animate()
+            .alpha(alpha) // Set the final alpha to 1 (fully visible)
+            .setDuration(500) // Set the duration of the animation (in milliseconds)
+            .start()
+    }
 
     fun setObservers() {
+        trackLocationFeatureViewModel!!.btnTrackLocationFeature.observe(viewLifecycleOwner, Observer{
+            if(it!!){
+                if (binding!!.materialCardView.alpha==0f){
+                    animateView(binding!!.materialCardView,1f)
+                }else{
+                    animateView(binding!!.materialCardView,0f)
+                }
+            }
+        })
         trackLocationFeatureViewModel?.txtChooseTrainIdClicked?.observe(
             viewLifecycleOwner,
             Observer {
@@ -232,7 +256,6 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
 
                         })
                     }
-
 
 //
 //
@@ -443,6 +466,48 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
                         trackLocationFeatureViewModel!!.gettingTrainLocaion(trainId)
                         lifecycleScope.launch (Dispatchers.IO){
                             trackLocationFeatureViewModel!!.trainLocation.collect{
+                                //here we will set card ui
+                                //we will get distance
+                                //this operation will repeat while tracking
+                                trackLocationFeatureViewModel!!.getLocationDirctions(
+                                    LatLng(sydnyUserLocation.latitude,sydnyUserLocation.longitude),
+                                    LatLng(it.latitude,it.longitude)
+                                )
+                                trackLocationFeatureViewModel!!.dirction.observe(viewLifecycleOwner, Observer{
+                                    when(it){
+                                        is Resource.Success->{
+                                            Log.i(TAG,"${it.data}")
+                                            binding!!.trackLocationTxtDistance.setText("Train distance from you : ${it.data.distance}")
+                                            binding!!.trackLocationTxtDuration.setText("Remaining Time for train arrival : ${it.data.duration}")
+                                            trackLocationFeatureViewModel!!.getttingNearbyStation(
+                                                sydnyTrainLocation!!)
+                                            trackLocationFeatureViewModel!!.nearbyStation.observe(viewLifecycleOwner, Observer{
+                                                when(it){
+                                                    is Resource.Success ->{
+                                                        Log.i(TAG, "${it.data}")
+                                                        binding!!.trackLocationTxtNearbyStation.setText("Nearby : ${it.data.name}")
+                                                    }
+                                                    is Resource.Loading ->{
+                                                        Log.i(TAG, "Getting nearbyStations")
+                                                    }
+                                                    is Resource.Failure ->{
+                                                        Log.e(TAG, "${it.error}")
+                                                    }
+                                                    else ->{}
+                                                }
+                                            })
+                                        }
+                                        is Resource.Failure->{
+                                            Log.e(TAG,"${it.error}")
+                                        }
+                                        is Resource.Loading->{
+                                            Log.i(TAG,"getting distance between train and user ")
+                                        }
+                                        else -> {
+
+                                        }
+                                    }
+                                })
                                 Log.i(TAG, "Train location from track fragment ----> ${it}")
                                 sydnyTrainLocation =
                                     LatLng(it.longitude, it.latitude)
