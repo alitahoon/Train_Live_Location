@@ -341,7 +341,7 @@ class TrackLocationFeatureViewModel @Inject constructor(
         }
     }
     fun getttingNearbyStation(trainLocation:LatLng){
-        var distanceBetweenTrainAndStaions:ArrayList<StationDistanceModel>?=null
+        var distanceBetweenTrainAndStaions = arrayListOf<StationDistanceModel>()
             _nearbyStation.value=Resource.Loading
         viewModelScope.launch {
             val child1=launch (Dispatchers.IO){
@@ -350,11 +350,12 @@ class TrackLocationFeatureViewModel @Inject constructor(
                         when(it){
                             is Resource.Success->{
                                 Log.i(TAG,"${it.data}")
+                                Log.i(TAG,"train location ${trainLocation}")
                                 for (staion in it.data){
                                     distanceBetweenTrainAndStaions!!.add(
                                         StationDistanceModel(staion!!,
                                     getDistanceInKM(
-                                        trainLocation.longitude,trainLocation.latitude,
+                                        trainLocation.latitude,trainLocation.longitude,
                                         staion.latitude,staion.longitude
                                     ))
                                     )

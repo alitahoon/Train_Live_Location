@@ -124,7 +124,7 @@
             app:layout_constraintBottom_toTopOf="@+id/patient_btn_data"
             app:layout_constraintEnd_toEndOf="@+id/track_locationMap"
             app:layout_constraintStart_toStartOf="parent"
-            >
+            android:visibility="visible">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -160,9 +160,9 @@
                     android:layout_height="wrap_content"
                     android:drawableStart="@drawable/time"
                     android:drawablePadding="@dimen/_5sdp"
-                    android:gravity="center"
+                    android:gravity="center|start"
                     android:padding="@dimen/_5sdp"
-                    android:text="Remain Time: "
+                    android:text="Remain Time:"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12ssp" />
 

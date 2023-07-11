@@ -206,8 +206,9 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
     }
 
     fun setObservers() {
-        trackLocationFeatureViewModel!!.btnTrackLocationFeature.observe(viewLifecycleOwner, Observer{
+        trackLocationFeatureViewModel!!.btnDetailsFloatingButton.observe(viewLifecycleOwner, Observer{
             if(it!!){
+                binding!!.materialCardView.visibility=View.VISIBLE
                 if (binding!!.materialCardView.alpha==0f){
                     animateView(binding!!.materialCardView,1f)
                 }else{
@@ -439,6 +440,7 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
+        binding!!.patientBtnData.visibility=View.VISIBLE
         var trainId=binding!!.trackLocationTxtTrainId.text.toString().toInt()
         binding!!.trackLocationMap.onResume()
         mMap = googleMap
@@ -464,74 +466,83 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
 
                         //getting train Location
                         trackLocationFeatureViewModel!!.gettingTrainLocaion(trainId)
-                        lifecycleScope.launch (Dispatchers.IO){
+                        lifecycleScope.launch (Dispatchers.Main){
                             trackLocationFeatureViewModel!!.trainLocation.collect{
-                                //here we will set card ui
-                                //we will get distance
-                                //this operation will repeat while tracking
-                                trackLocationFeatureViewModel!!.getLocationDirctions(
-                                    LatLng(sydnyUserLocation.latitude,sydnyUserLocation.longitude),
-                                    LatLng(it.latitude,it.longitude)
-                                )
-                                trackLocationFeatureViewModel!!.dirction.observe(viewLifecycleOwner, Observer{
-                                    when(it){
-                                        is Resource.Success->{
-                                            Log.i(TAG,"${it.data}")
-                                            binding!!.trackLocationTxtDistance.setText("Train distance from you : ${it.data.distance}")
-                                            binding!!.trackLocationTxtDuration.setText("Remaining Time for train arrival : ${it.data.duration}")
-                                            trackLocationFeatureViewModel!!.getttingNearbyStation(
-                                                sydnyTrainLocation!!)
-                                            trackLocationFeatureViewModel!!.nearbyStation.observe(viewLifecycleOwner, Observer{
-                                                when(it){
-                                                    is Resource.Success ->{
-                                                        Log.i(TAG, "${it.data}")
-                                                        binding!!.trackLocationTxtNearbyStation.setText("Nearby : ${it.data.name}")
-                                                    }
-                                                    is Resource.Loading ->{
-                                                        Log.i(TAG, "Getting nearbyStations")
-                                                    }
-                                                    is Resource.Failure ->{
-                                                        Log.e(TAG, "${it.error}")
-                                                    }
-                                                    else ->{}
+                                if(it.latitude == 0.0 && it.longitude == 0.0){
+
+                                }
+                                else{
+                                    Log.i(TAG,"track location feature${it}")
+                                    //here we will set card ui
+                                    //we will get distance
+                                    //this operation will repeat while tracking
+                                    trackLocationFeatureViewModel!!.getLocationDirctions(
+                                        LatLng(sydnyUserLocation.latitude,sydnyUserLocation.longitude),
+                                        LatLng(it.longitude,it.latitude)
+                                    )
+                                    trackLocationFeatureViewModel!!.dirction.observe(viewLifecycleOwner, Observer{
+                                        when(it){
+                                            is Resource.Success->{
+                                                lifecycleScope.launch(Dispatchers.Main){
+                                                    Log.i(TAG,"Get Location from ${it.data}")
+                                                    binding!!.trackLocationTxtDistance.setText("Train distance from you : ${it.data.distance}")
+                                                    val hours = (it.data.duration.toInt() / 3600)
+                                                    val minutes = ((it.data.duration.toInt() % 3600) / 60)
+                                                    binding!!.trackLocationTxtDuration.setText("Remaining Time : ${String.format("%02d Hrs : %02d Min", hours, minutes)}")
+                                                    trackLocationFeatureViewModel!!.getttingNearbyStation(
+                                                        sydnyTrainLocation!!)
+                                                    trackLocationFeatureViewModel!!.nearbyStation.observe(viewLifecycleOwner, Observer{
+                                                        when(it){
+                                                            is Resource.Success ->{
+                                                                Log.i(TAG, "${it.data}")
+                                                                binding!!.trackLocationTxtNearbyStation.setText("Nearby : ${it.data.name}")
+                                                            }
+                                                            is Resource.Loading ->{
+                                                                Log.i(TAG, "Getting nearbyStations")
+                                                            }
+                                                            is Resource.Failure ->{
+                                                                Log.e(TAG, "${it.error}")
+                                                            }
+                                                            else ->{}
+                                                        }
+                                                    })
                                                 }
-                                            })
-                                        }
-                                        is Resource.Failure->{
-                                            Log.e(TAG,"${it.error}")
-                                        }
-                                        is Resource.Loading->{
-                                            Log.i(TAG,"getting distance between train and user ")
-                                        }
-                                        else -> {
+                                            }
+                                            is Resource.Failure->{
+                                                Log.e(TAG,"${it.error}")
+                                            }
+                                            is Resource.Loading->{
+                                                Log.i(TAG,"getting distance between train and user ")
+                                            }
+                                            else -> {
 
+                                            }
                                         }
+                                    })
+                                    Log.i(TAG, "Train location from track fragment ----> ${it}")
+                                    sydnyTrainLocation =
+                                        LatLng(it.longitude, it.latitude)
+                                    trainMarker = MarkerOptions()
+                                    if (isCodeExecuted) {
+                                        lifecycleScope.launch (Dispatchers.Main){
+                                            trainMarker=addMarkersToMap(
+                                                mMap!!,
+                                                sydnyTrainLocation!!,
+                                                "Train Location",
+                                                "train"
+                                            )
+                                        }
+                                        isCodeExecuted = false
                                     }
-                                })
-                                Log.i(TAG, "Train location from track fragment ----> ${it}")
-                                sydnyTrainLocation =
-                                    LatLng(it.longitude, it.latitude)
-
-                                if (isCodeExecuted) {
-                                    lifecycleScope.launch (Dispatchers.Main){
-                                        trainMarker=addMarkersToMap(
-                                            mMap!!,
-                                            sydnyTrainLocation!!,
-                                            "Train Location",
-                                            "train"
-                                        )
+                                    lifecycleScope.launch(Dispatchers.Main){
+                                        moveMarker(trainMarker!!,LatLng(it.latitude,it.longitude))
+                                        trackLocationFeatureViewModel!!.gettingTrainLocaion(trainId)
                                     }
-                                    isCodeExecuted = false
-                                }
-                                lifecycleScope.launch(Dispatchers.Main){
-                                    moveMarker(trainMarker!!,LatLng(it.latitude,it.longitude))
-                                    trackLocationFeatureViewModel!!.gettingTrainLocaion(trainId)
-                                }
 //                                        mMap!!.moveCamera(CameraUpdateFactory.newLatLng(sydnyUserLocation))
 //                                        mMap!!.moveCamera(CameraUpdateFactory.newLatLng(sydnyTrainLocation))
-                                // Initialize the GoogleMap instance (googleMap) and add the marker
-                                // Set the initial location of the marker
-                                // Set the OnCameraMoveListener
+                                    // Initialize the GoogleMap instance (googleMap) and add the marker
+                                    // Set the initial location of the marker
+                                    // Set the OnCameraMoveListener
 //                                        mMap!!.setOnCameraMoveListener {
 //                                            val screenTrainPosition =
 //                                                mMap!!.projection.toScreenLocation(
@@ -563,7 +574,7 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
 //                                            }
 //                                        }
 
-                                // Add markers to the map
+                                    // Add markers to the map
 
 //                        val cameraPosition: CameraPosition = CameraPosition.Builder()
 //                            .target(
@@ -573,7 +584,7 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
 //                            .bearing(0F) // Sets the orientation of the camera to east
 ////            .tilt(40F) // Sets the tilt of the camera to 30 degrees
 //                            .build() // Creates a CameraPosition from the builder
-                                // Calculate bounds that encompass both positions
+                                    // Calculate bounds that encompass both positions
 //                                        val bounds = LatLngBounds.Builder()
 //                                            .include(sydnyUserLocation)
 //                                            .include(sydnyTrainLocation!!)
@@ -599,6 +610,7 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
 //                                        mMap?.addPolyline(polylineOptions)
 
 
+                                }
                             }
 
                         }
