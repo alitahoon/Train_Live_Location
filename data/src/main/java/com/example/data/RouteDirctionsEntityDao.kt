@@ -17,4 +17,7 @@ interface RouteDirctionsEntityDao {
     @Insert
     suspend fun insertTrainItemEntity(routeDirctionEntity: RouteDirctionEntity)
 
+    @Query("DELETE FROM RouteDirctionEntity")
+    fun clear()
+
 }

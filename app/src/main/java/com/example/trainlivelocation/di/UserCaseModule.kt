@@ -453,5 +453,8 @@ object UserCaseModule {
         return ClearUserSignDataFromDatabase(userRepo)
     }
 
+    fun ProvideClearDirectionRouteFromDatabase(userRepo: UserRepo): ClearDirectionRouteFromDatabase {
+        return ClearDirectionRouteFromDatabase(userRepo)
+    }
 
 }

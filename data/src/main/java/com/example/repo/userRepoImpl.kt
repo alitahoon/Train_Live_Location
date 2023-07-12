@@ -74,6 +74,19 @@ class userRepoImpl(
             result.invoke(Resource.Failure("Failed getting StationAlarmsFromDatabase ---> ${e.message}"))
         }    }
 
+    override suspend fun clearDirectionRouteFromDatabase(result: (Resource<String>) -> Unit) {
+        try {
+            myDatabase.RouteDirctionsEntityDao().clear()
+            result.invoke(
+                Resource.Success(
+                    "Successfully clear route data"
+                )
+            )
+        } catch (e: Exception) {
+            result.invoke(Resource.Failure("Failed clear RouteFromDatabase ---> ${e.message}"))
+        }
+    }
+
     override suspend fun insertNewUserItemToDatabase(
         userItemEntity: UserItemEntity,
         result: (Resource<String>) -> Unit

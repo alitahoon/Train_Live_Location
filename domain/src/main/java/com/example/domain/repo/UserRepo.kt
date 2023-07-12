@@ -369,5 +369,9 @@ interface UserRepo {
         result: (Resource<String>) -> Unit
     )
 
+    suspend fun clearDirectionRouteFromDatabase(
+        result: (Resource<String>) -> Unit
+    )
+
 
 }

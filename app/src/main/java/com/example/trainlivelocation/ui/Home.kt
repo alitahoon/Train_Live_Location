@@ -125,7 +125,7 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        homeViewModel!!.clearDirectionRoute()
     }
 
     override fun onAttach(context: Context) {

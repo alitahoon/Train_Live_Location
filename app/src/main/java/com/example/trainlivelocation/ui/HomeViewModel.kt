@@ -39,7 +39,8 @@ class HomeViewModel @Inject constructor(
     private val getDirctionRoutesFromDatabase: GetDirctionRoutesFromDatabase,
     private val insertNewStationToDatabase: InsertNewStationToDatabase,
     private val getAllStationsFromDatabase: GetAllStationsFromDatabase,
-    private val getLiveLoctationFromApi: GetLiveLoctationFromApi
+    private val getLiveLoctationFromApi: GetLiveLoctationFromApi,
+    private val clearDirectionRouteFromDatabase: ClearDirectionRouteFromDatabase
 ) : ViewModel() {
     private val TAG: String = "HomeViewModel"
     private val sharedPrefFile = "UserToken"
@@ -56,6 +57,25 @@ class HomeViewModel @Inject constructor(
     companion object{
         private var allReadyZooming=false
 
+    }
+
+    fun clearDirectionRoute(){
+        viewModelScope.launch {
+            clearDirectionRouteFromDatabase(){
+                when(it){
+                    is Resource.Success->{
+                        Log.i(TAG, "${it.data}")
+                    }
+                    is Resource.Loading->{
+                        Log.i(TAG, "Loading")
+                    }
+                    is Resource.Failure->{
+                        Log.e(TAG, "${it.error}")
+                    }
+                    else->{}
+                }
+            }
+        }
     }
 
     fun setZooming(zoom:Boolean){
