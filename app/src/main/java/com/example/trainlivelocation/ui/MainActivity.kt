@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
@@ -30,6 +31,7 @@ import com.example.trainlivelocation.R
 import com.example.trainlivelocation.databinding.ActivityMainBinding
 import com.example.trainlivelocation.databinding.HeaderNavMenuLayoutBinding
 import com.example.trainlivelocation.utli.HomeMapListener
+import com.example.trainlivelocation.utli.OnBackPressedListener
 import com.example.trainlivelocation.utli.getuserModelFromSharedPreferences
 import com.example.trainlivelocation.utli.toast
 import com.google.android.material.navigation.NavigationView
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity() ,HomeMapListener{
     private lateinit var binding: ActivityMainBinding
     private val mainActivityViewModel: MainActivityViewModel? by viewModels()
     private val TAG: String? = "MainActivity"
+    var navController:NavController?=null
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +69,7 @@ class MainActivity : AppCompatActivity() ,HomeMapListener{
             .build()
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView2) as NavHostFragment
-        val navController = navHostFragment.navController
+         navController = navHostFragment.navController
         //handle navView
         binding.mainActivityNavigationView.setNavigationItemSelectedListener(object :
             NavigationView.OnNavigationItemSelectedListener {
@@ -76,19 +79,19 @@ class MainActivity : AppCompatActivity() ,HomeMapListener{
                         val bundle = Bundle()
                         bundle.putParcelable("userModel", userModel)
                         Log.i(TAG, "$userModel")
-                        navController.navigate(R.id.userProfile, bundle)
+                        navController!!.navigate(R.id.userProfile, bundle)
                         binding.mainActivityDrwerLayout.closeDrawer(GravityCompat.START);
 
                     }
 
                     R.id.home_menu_alarms ->{
-                        navController.navigate(R.id.alarms,null,navOptions)
+                        navController!!.navigate(R.id.alarms,null,navOptions)
                         binding.mainActivityDrwerLayout.closeDrawer(GravityCompat.START);
                     }
 
                     R.id.home_menu_Settings->{
                         setHeader("Settings")
-                        navController.navigate(R.id.settings,null,navOptions)
+                        navController!!.navigate(R.id.settings,null,navOptions)
                         binding.mainActivityDrwerLayout.closeDrawer(GravityCompat.START);
                     }
                 }
@@ -98,7 +101,7 @@ class MainActivity : AppCompatActivity() ,HomeMapListener{
 
 
         //handle navbar
-        navController.addOnDestinationChangedListener(object :
+        navController!!.addOnDestinationChangedListener(object :
             NavController.OnDestinationChangedListener {
             override fun onDestinationChanged(
                 controller: NavController,
@@ -160,15 +163,15 @@ class MainActivity : AppCompatActivity() ,HomeMapListener{
                         val bundle = Bundle()
                         bundle.putParcelable("userModel", userModel)
                         Log.i(TAG, "$userModel")
-                        navController.navigate(R.id.inbox, bundle, navOptions)
+                        navController!!.navigate(R.id.inbox, bundle, navOptions)
                     }
                     1 -> {
                         setHeader("home")
-                        navController.navigate(R.id.home2, null, navOptions)
+                        navController!!.navigate(R.id.home2, null, navOptions)
                     }
                     0 -> {
                         setHeader("Alarms")
-                        navController.navigate(R.id.alarms, null, navOptions)
+                        navController!!.navigate(R.id.alarms, null, navOptions)
 
                     }
                 }
@@ -196,7 +199,7 @@ class MainActivity : AppCompatActivity() ,HomeMapListener{
                         "patientLocation",
                         doctorNotificationData
                     )
-                    navController.navigate(R.id.doctorLocationInMap, bundle)
+                    navController!!.navigate(R.id.doctorLocationInMap, bundle)
                 }
                 "AddPostFragment" -> {
                     setHeader("Posts")
@@ -208,7 +211,7 @@ class MainActivity : AppCompatActivity() ,HomeMapListener{
                     bundle.putSerializable("postNotificationModel", notificationModel)
 //                    bundle.putInt("patientLocation",trainID!!)
 //                    bundle.putBoolean("patientLocation",postCritical)
-                    navController.navigate(R.id.posts2, bundle)
+                    navController!!.navigate(R.id.posts2, bundle)
                 }
                 "NewPostComment" -> {
                     val notificationModel: AddPostCommentNotificationData =
@@ -242,6 +245,31 @@ class MainActivity : AppCompatActivity() ,HomeMapListener{
         setContentView(binding.root)
     }
 
+    fun checkBackToLogin(){
+        // Show a dialog confirming the user's intention to go back
+        AlertDialog.Builder(this)
+            .setTitle("Confirmation")
+            .setMessage("Are you sure you want to go back?")
+            .setPositiveButton("Yes") { dialog, _ ->
+                super.onBackPressed() // Proceed with the default back button behavior
+                dialog.dismiss()
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss() // Dismiss the dialog and stay on the current fragment
+            }
+            .show()
+    }
+
+    override fun onBackPressed() {
+        val currentFragment = navController!!.currentDestination?.id
+        if (currentFragment == R.id.home2) {
+            // Handle the back button behavior for the specific fragment
+            // For example, show a dialog or perform a custom action
+//            checkBackToLogin()
+        } else {
+            super.onBackPressed()
+        }
+    }
 
     private fun setObservers() {
         mainActivityViewModel!!.menuBtnClicked.observe(this) {
