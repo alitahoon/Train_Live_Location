@@ -88,7 +88,7 @@ interface ApiService {
 
 
     //Station
-    @GET("/api/station/GetAllStation")
+    @GET("/api/station/GetStationsInRailway/1")
     suspend fun GetAllStation(): Response<ArrayList<StationResponseItem>>
 
     @GET("/api/station/GetStationById")

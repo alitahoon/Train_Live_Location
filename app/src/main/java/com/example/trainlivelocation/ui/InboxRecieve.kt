@@ -16,6 +16,7 @@ import com.example.trainlivelocation.databinding.FragmentInboxBinding
 import com.example.trainlivelocation.databinding.FragmentInboxRecieveBinding
 import com.example.trainlivelocation.utli.MessageCustomAdapter
 import com.example.trainlivelocation.utli.MessageListener
+import com.example.trainlivelocation.utli.getuserModelFromSharedPreferences
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -84,7 +85,7 @@ class InboxRecieve : Fragment(),MessageListener {
 
 
     private fun setAdapterItems(userModel:UserResponseItem): MessageCustomAdapter {
-        val adapter = MessageCustomAdapter("inbox", this, userModel!!.phone)
+        val adapter = MessageCustomAdapter("inbox", this, userModel!!.phone,getuserModelFromSharedPreferences(requireContext()))
         inboxRecieveViewModel.inboxRecicve!!.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Loading -> {
@@ -108,6 +109,8 @@ class InboxRecieve : Fragment(),MessageListener {
                         binding!!.inboxRecieveImgViewEmptyMsg.visibility = View.GONE
                         binding!!.inboxRecieveTxtViewEmptyMsg.visibility = View.GONE
                         binding!!.inboxLoadinigShimmer.visibility = View.GONE
+//                        adapter.setData(ArrayList(it.data.filter { it.reciever==userModel.phone}.toSet().toList()))
+                        adapter.setDataWithNoFilter(it.data)
 
                         if (it.data.size>1){
                             adapter.setData(filterRecicveMessages(it.data))

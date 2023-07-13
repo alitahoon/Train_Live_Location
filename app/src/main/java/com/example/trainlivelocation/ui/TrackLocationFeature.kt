@@ -485,7 +485,7 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
                                             is Resource.Success->{
                                                 lifecycleScope.launch(Dispatchers.Main){
                                                     Log.i(TAG,"Get Location from ${it.data}")
-                                                    binding!!.trackLocationTxtDistance.setText("Train distance from you : ${it.data.distance}")
+                                                    binding!!.trackLocationTxtDistance.setText("Train distance from you : ${it.data.distance/1000} KM")
                                                     val hours = (it.data.duration.toInt() / 3600)
                                                     val minutes = ((it.data.duration.toInt() % 3600) / 60)
                                                     binding!!.trackLocationTxtDuration.setText("Remaining Time : ${String.format("%02d Hrs : %02d Min", hours, minutes)}")
@@ -625,12 +625,12 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
             })
 
 
-        trackLocationFeatureViewModel!!.startGettingUserLocation()
-        trackLocationFeatureViewModel!!.userLiveLocation.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-
-            }
-        })
+//        trackLocationFeatureViewModel!!.startGettingUserLocation()
+//        trackLocationFeatureViewModel!!.userLiveLocation.observe(viewLifecycleOwner, Observer {
+//            if (it != null) {
+//
+//            }
+//        })
     }
 
 
@@ -775,6 +775,7 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
 
     fun addRouteToMap(mapView: GoogleMap, stations: ArrayList<StationSydny>){
         for (station in stations) {
+
             if (station.stationName.equals("cairo")) {
                 origin1 = station.stationSydnyvalue
             } else if (station.stationName.equals("Shubra El-Kheima")) {
@@ -856,7 +857,7 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
                                     drawPolyLine(mapView, it.data)
                                 }
                                 is Resource.Loading-> {
-                                    Log.i(TAG, "Getting Routes")
+                                    Log.i(TAG, "Getting Routes From Database")
                                 }
                                 is Resource.Failure-> {
                                     Log.e(TAG, "${it.error}")
@@ -877,7 +878,7 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
                     }
                 }
                 is Resource.Loading-> {
-                    Log.i(TAG, "Getting Routes")
+                    Log.i(TAG, "Getting Routes From api")
                 }
                 is Resource.Failure-> {
                     Log.e(TAG, "${it.error}")
@@ -903,6 +904,25 @@ class TrackLocationFeature : Fragment(), TrackLocationListener, Train_Dialog_Lis
     fun getAllStationsRouteParrllel() {
         // Create a CoroutineScope
         val coroutineScope = CoroutineScope(Dispatchers.Main)
+        Log.i(TAG,"$origin1 ,$destination1")
+        Log.i(TAG,"$origin2 ,$destination2")
+        Log.i(TAG,"$origin3 ,$destination3")
+        Log.i(TAG,"$origin4 ,$destination4")
+        Log.i(TAG,"$origin5 ,$destination5")
+        Log.i(TAG,"$origin6 ,$destination6")
+        Log.i(TAG,"$origin7 ,$destination7")
+        Log.i(TAG,"$origin8 ,$destination8")
+        Log.i(TAG,"$origin9 ,$destination9")
+        Log.i(TAG,"$origin10 ,$destination10")
+        Log.i(TAG,"$origin11 ,$destination11")
+        Log.i(TAG,"$origin12 ,$destination12")
+        Log.i(TAG,"$origin13 ,$destination13")
+        Log.i(TAG,"$origin14 ,$destination14")
+        Log.i(TAG,"$origin15 ,$destination15")
+        Log.i(TAG,"$origin16 ,$destination16")
+        Log.i(TAG,"$origin17 ,$destination17")
+        Log.i(TAG,"$origin18 ,$destination18")
+        Log.i(TAG,"$origin19 ,$destination19")
 
 
         val origin1Distenation1 =

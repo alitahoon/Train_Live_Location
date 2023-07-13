@@ -3,11 +3,9 @@ package com.example.trainlivelocation.utli
 import android.graphics.Color
 import android.util.Log
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.entity.Message
-import com.example.domain.entity.Post
-import com.example.domain.entity.PostCommentsResponseItem
-import com.example.domain.entity.PostModelResponse
+import com.example.domain.entity.*
 import com.example.trainlivelocation.databinding.ChatMessageItemLayoutBinding
 import com.example.trainlivelocation.databinding.InboxMessageItemLayoutBinding
 import com.example.trainlivelocation.databinding.PostCommentItemLayoutBinding
@@ -17,7 +15,9 @@ class MessageAdapterViewHolder(
     private val binding: ChatMessageItemLayoutBinding,
     private val MessageListener: MessageListener,
     private val phone: String,
-    private val layoutType:String
+    private val currantUserModel:UserResponseItem,
+    private val layoutType:String,
+    private val messagesList:ArrayList<Message>
     ) : RecyclerView.ViewHolder(binding.root) {
     private val TAG:String?="MessageAdapterViewHolder"
     fun bind(message: Message) {
@@ -38,6 +38,8 @@ class MessageAdapterViewHolder(
                 binding.chatMessageItemLayout.visibility=View.GONE
                 Log.i(TAG,"${message}")
                 binding.message = message
+                binding.lastMessage=messagesList[messagesList.size-1].message
+                binding.currantUserModel=currantUserModel
             }
         }
     }

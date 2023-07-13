@@ -373,5 +373,9 @@ interface UserRepo {
         result: (Resource<String>) -> Unit
     )
 
+    suspend fun clearStationsFromDatabase(
+        result: (Resource<String>) -> Unit
+    )
+
 
 }

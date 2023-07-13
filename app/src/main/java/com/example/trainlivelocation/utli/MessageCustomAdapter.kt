@@ -7,10 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.example.domain.entity.Message
-import com.example.domain.entity.Post
-import com.example.domain.entity.PostCommentsResponseItem
-import com.example.domain.entity.PostModelResponse
+import com.example.domain.entity.*
 import com.example.trainlivelocation.databinding.ChatMessageItemLayoutBinding
 import com.example.trainlivelocation.databinding.InboxMessageItemLayoutBinding
 import com.example.trainlivelocation.databinding.PostCommentItemLayoutBinding
@@ -19,12 +16,14 @@ import com.example.trainlivelocation.databinding.UserPostsRcvItemLayoutBinding
 class MessageCustomAdapter(
     private val layoutType: String?,
     private val messageListener: MessageListener,
-    private val phone: String
+    private val phone: String,
+    private val currantUserModel:UserResponseItem
 ) :
     RecyclerView.Adapter<MessageAdapterViewHolder>(), BindableAdapter<ArrayList<Message>> {
     private val TAG: String? = "MessageCustomAdapter"
     private var binding: ChatMessageItemLayoutBinding? = null
     lateinit var messageArrayList: ArrayList<Message>
+    private var messageArrayListWithNoFilter= arrayListOf<Message>()
     var messageList = emptyList<Message>()
 
     public fun updateData(postList: ArrayList<PostCommentsResponseItem>) {
@@ -38,7 +37,7 @@ class MessageCustomAdapter(
             false
         )
 
-        return MessageAdapterViewHolder(binding!!, messageListener, phone,layoutType!!)
+        return MessageAdapterViewHolder(binding!!, messageListener, phone,currantUserModel,layoutType!!,messageArrayListWithNoFilter)
     }
 
     override fun getItemCount(): Int = messageArrayList.size
@@ -57,5 +56,9 @@ class MessageCustomAdapter(
         Log.i(TAG, "data from adapter ---> ${data}")
         this.messageArrayList = data
         notifyDataSetChanged()
+    }
+
+    fun setDataWithNoFilter(data: ArrayList<Message>){
+        this.messageArrayListWithNoFilter= data
     }
 }

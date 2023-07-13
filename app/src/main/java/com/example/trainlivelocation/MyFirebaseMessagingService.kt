@@ -79,25 +79,25 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             Log.d(TAG, "Message data payload: " + remoteMessage.data)
             var title: String? = remoteMessage.getData()["title"]
             var message: String? = remoteMessage.getData()["message"]
+            var intent:Intent?=null
+            var remoteView: RemoteViews? = null
+            var pendingIntent:PendingIntent?=null
 
             when (title!!) {
                 "doctors" -> {
                     //create doctors notification
                     var longitude = remoteMessage.getData()["longitude"]!!.toDouble()
                     var latitude = remoteMessage.getData()["latitude"]!!.toDouble()
-                    val intent = Intent(this, MainActivity::class.java)
+                    intent = Intent(this, MainActivity::class.java)
                     intent.putExtra("FRAGMENT_NAME", "DoctorLocationInMap")
-//                    intent.putExtra("doctorLocationLongitude", longitude)
-//                    intent.putExtra("doctorLocationLatitude", latitude)
                     intent.putExtra("doctorNotification",DoctorNotificationData(title,message!!,latitude,longitude))
-                    val pendingIntent = PendingIntent.getActivity(
+                    pendingIntent = PendingIntent.getActivity(
                         this,
                         0,
                         intent,
                         PendingIntent.FLAG_IMMUTABLE
                     )
                     //create doctors notification
-                    var remoteView: RemoteViews? = null
                     remoteView =
                         RemoteViews("com.example.trainlivelocation", R.layout.doctor_notification)
                     remoteView.setTextViewText(R.id.doctor_notification_title, title)
@@ -121,7 +121,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     var userId = remoteMessage.getData()["userId"]!!.toInt()
                     var userName = remoteMessage.getData()["userName"]!!.toString()
                     var userPhone = remoteMessage.getData()["userPhone"]!!.toString()
-                    val intent = Intent(this, MainActivity::class.java)
+                    intent = Intent(this, MainActivity::class.java)
                     intent.putExtra("FRAGMENT_NAME", "NewPostComment")
 //                    intent.putExtra("trainID", trainID)
                     intent.putExtra(
@@ -144,14 +144,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     )
 //                    intent.putExtra("critical", criticalPost)
                     Log.i(TAG, "Post ID ${id::class.simpleName}")
-                    val pendingIntent = PendingIntent.getActivity(
+                    pendingIntent = PendingIntent.getActivity(
                         this,
                         0,
                         intent,
                         PendingIntent.FLAG_IMMUTABLE
                     )
                     //create doctors notification
-                    var remoteView: RemoteViews? = null
                     remoteView =
                         RemoteViews("com.example.trainlivelocation", R.layout.doctor_notification)
                     remoteView.setTextViewText(R.id.doctor_notification_title, title)
@@ -168,7 +167,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     var trainID = remoteMessage.getData()["trainID"]!!.toInt()
                     var criticalPost = remoteMessage.getData()["critical"]!!.toBoolean()
                     var id = remoteMessage.getData()["postId"]!!.toInt()
-                    val intent = Intent(this, MainActivity::class.java)
+                     intent = Intent(this, MainActivity::class.java)
                     intent.putExtra("FRAGMENT_NAME", "AddPostFragment")
 //                    intent.putExtra("trainID", trainID)
                     intent.putExtra(
@@ -177,7 +176,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     )
 //                    intent.putExtra("critical", criticalPost)
                     Log.i(TAG, "Post ID ${id::class.simpleName}")
-                    val pendingIntent = PendingIntent.getActivity(
+                    pendingIntent = PendingIntent.getActivity(
                         this,
                         0,
                         intent,
@@ -185,7 +184,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     )
 
                     //create post  notification
-                    val remoteView =
+                    remoteView =
                         RemoteViews("com.example.trainlivelocation", R.layout.add_post_notification)
                     remoteView.setTextViewText(R.id.doctor_notification_title, title)
                     remoteView.setTextViewText(R.id.doctor_notification_content, message)
@@ -202,10 +201,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     val reciverPhone=remoteMessage.getData()["reciverPhone"]
                     val senderUsername=remoteMessage.getData()["senderUsername"]
                     val reciverUsername=remoteMessage.getData()["reciverUsername"]
-                    val intent = Intent(this, MainActivity::class.java)
+                     intent = Intent(this, MainActivity::class.java)
                     intent.putExtra("FRAGMENT_NAME", "chatFragment")
                     MessageNotificationData(title,message!!,senderPhone!!,reciverPhone!!,senderUsername!!,reciverUsername!!)
-                    val pendingIntent = PendingIntent.getActivity(
+                    pendingIntent = PendingIntent.getActivity(
                         this,
                         0,
                         intent,
@@ -213,7 +212,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     )
 
                     //create post  notification
-                    val remoteView =
+                    remoteView =
                         RemoteViews("com.example.trainlivelocation", R.layout.add_post_notification)
                     remoteView.setTextViewText(R.id.doctor_notification_title, title)
                     remoteView.setTextViewText(R.id.doctor_notification_content, message)

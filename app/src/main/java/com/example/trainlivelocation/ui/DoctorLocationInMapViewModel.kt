@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.Location_Response
+import com.example.domain.usecase.GetUserCurrantLocationJustOnce
 import com.example.domain.usecase.GetUserCurrantLocationLive
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DoctorLocationInMapViewModel @Inject constructor(
-    private var getUserCurrantLocationLive: GetUserCurrantLocationLive
+    private var getUserCurrantLocationLive: GetUserCurrantLocationLive,
+    private var getUserCurrantLocationJustOnce: GetUserCurrantLocationJustOnce
 ) : ViewModel() {
     private var TAG: String? = "DoctorLocationInMapViewModel"
     private var MAP_VIEW_Bundle: Bundle? = null
@@ -39,7 +41,7 @@ class DoctorLocationInMapViewModel @Inject constructor(
     fun getCurrantLocation(patientLocation: Location_Response) {
         _userCurrantLocation.value = Resource.Loading
         viewModelScope.launch {
-            getUserCurrantLocationLive() {
+            getUserCurrantLocationJustOnce() {
                 when (it) {
                     is Resource.Loading -> {
                         Log.i(TAG, "getting currant location...")

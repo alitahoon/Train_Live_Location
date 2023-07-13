@@ -45,6 +45,7 @@ class DoctorLocationInMap : Fragment() ,OnMapReadyCallback{
     ): View? {
        binding= FragmentDoctorLocationInMapBinding.inflate(inflater,container,false)
            .apply {
+
                this.doctorLocationMapMapView.onCreate(doctorLocationInMapViewModel?.getMAP_VIEW_KEY())
            }
         val viewModelff = ViewModelProvider(this).get(DoctorLocationInMapViewModel::class.java)
@@ -149,7 +150,7 @@ class DoctorLocationInMap : Fragment() ,OnMapReadyCallback{
                         val polylineOptions = PolylineOptions()
                             .add(sydnyDoctor, sydnyPatient)
                             .color(R.color.textAlarmColor)
-                            .width(16f)
+                            .width(12f)
 
                         // Animate camera to the calculated bounds
                         // Calculate the padding based on the map size and desired zoom level

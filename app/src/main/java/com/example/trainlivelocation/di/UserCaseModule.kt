@@ -452,9 +452,14 @@ object UserCaseModule {
     fun ProvideClearUserSignDataFromDatabase(userRepo: UserRepo): ClearUserSignDataFromDatabase {
         return ClearUserSignDataFromDatabase(userRepo)
     }
-
+    @Provides
     fun ProvideClearDirectionRouteFromDatabase(userRepo: UserRepo): ClearDirectionRouteFromDatabase {
         return ClearDirectionRouteFromDatabase(userRepo)
+    }
+
+    @Provides
+    fun ProvideClearStationsFromDatabase(userRepo: UserRepo): ClearStationsFromDatabase {
+        return ClearStationsFromDatabase(userRepo)
     }
 
 }

@@ -15,4 +15,6 @@ interface StationItemEntityDao {
 
     @Insert
     suspend fun insertStationItemEntityDao(stationItemEntity: StationItemEntity)
+    @Query("DELETE FROM StationItemEntity")
+    fun clear()
 }

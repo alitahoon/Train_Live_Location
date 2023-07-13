@@ -40,7 +40,8 @@ class HomeViewModel @Inject constructor(
     private val insertNewStationToDatabase: InsertNewStationToDatabase,
     private val getAllStationsFromDatabase: GetAllStationsFromDatabase,
     private val getLiveLoctationFromApi: GetLiveLoctationFromApi,
-    private val clearDirectionRouteFromDatabase: ClearDirectionRouteFromDatabase
+    private val clearDirectionRouteFromDatabase: ClearDirectionRouteFromDatabase,
+    private val clearStationsFromDatabase: ClearStationsFromDatabase
 ) : ViewModel() {
     private val TAG: String = "HomeViewModel"
     private val sharedPrefFile = "UserToken"
@@ -60,21 +61,53 @@ class HomeViewModel @Inject constructor(
     }
 
     fun clearDirectionRoute(){
+        Log.i(TAG,"clearDirectionRoute")
         viewModelScope.launch {
-            clearDirectionRouteFromDatabase(){
-                when(it){
-                    is Resource.Success->{
-                        Log.i(TAG, "${it.data}")
+            val child1=launch (Dispatchers.IO){
+                clearDirectionRouteFromDatabase(){
+                    val child2=launch (Dispatchers.Main){
+                        when(it){
+                            is Resource.Success->{
+                                Log.i(TAG, "${it.data}")
+                            }
+                            is Resource.Loading->{
+                                Log.i(TAG, "Loading")
+                            }
+                            is Resource.Failure->{
+                                Log.e(TAG, "${it.error}")
+                            }
+                            else->{}
+                        }
                     }
-                    is Resource.Loading->{
-                        Log.i(TAG, "Loading")
-                    }
-                    is Resource.Failure->{
-                        Log.e(TAG, "${it.error}")
-                    }
-                    else->{}
+
                 }
             }
+
+        }
+    }
+    fun clearStationsFromDatabase(){
+        Log.i(TAG,"clearDirectionRoute")
+        viewModelScope.launch {
+            val child1=launch (Dispatchers.IO){
+                clearStationsFromDatabase(){
+                    val child2=launch (Dispatchers.Main){
+                        when(it){
+                            is Resource.Success->{
+                                Log.i(TAG, "${it.data}")
+                            }
+                            is Resource.Loading->{
+                                Log.i(TAG, "Loading")
+                            }
+                            is Resource.Failure->{
+                                Log.e(TAG, "${it.error}")
+                            }
+                            else->{}
+                        }
+                    }
+
+                }
+            }
+
         }
     }
 

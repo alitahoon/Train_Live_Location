@@ -144,7 +144,7 @@ class StationAlarmService() : LifecycleService() {
                             for (station in it.data){
                                 _locationStateFlow.collect{
                                     distance=getDistanceInKM(it.longitude!!,it.latitude!!,station.latitude!!,station.longitude!!)
-                                    Log.i(TAG,"distance between station ${station.name } and train $distance")
+                                    Log.i(TAG,"distance between station ${station.name } and train $distance KM")
                                     setData(station.name,distance.toInt(),station.distance)
                                 }
                             }

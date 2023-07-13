@@ -155,7 +155,7 @@ class Chat(val reciver:String?,val reciverUserName:String?,val user:UserResponse
         })
     }
     private fun setAdapterItems(): MessageCustomAdapter {
-        val adapter= MessageCustomAdapter("message",this, user.phone)
+        val adapter= MessageCustomAdapter("message",this, user.phone,getuserModelFromSharedPreferences(requireContext()))
         chatViewmodel.chatMessages.observe(viewLifecycleOwner, Observer {
             when(it){
                 is Resource.Loading->{

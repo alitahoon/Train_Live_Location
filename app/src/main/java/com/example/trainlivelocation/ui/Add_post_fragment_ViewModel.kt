@@ -38,18 +38,26 @@ class Add_post_fragment_ViewModel @Inject constructor(
     var btnSubmitClicked = SingleLiveEvent<Boolean>()
     var btnChooseImageClicked = SingleLiveEvent<Boolean>()
     var btnChooseTrainClicked = SingleLiveEvent<Boolean>()
-    val postContent: String? = null
     val post_redio_checked = MutableLiveData<Boolean>()
-    val _trainId: String? = null
     private var imageRefrence: StorageReference = Firebase.storage.reference
     private val sharedPrefFile = "UserToken"
 
 
-    private val _postOwnerNotificationToken: MutableLiveData<Resource<NotificationTokenResponse>> = MutableLiveData(null)
-    val postOwnerNotificationToken: LiveData<Resource<NotificationTokenResponse>> = _postOwnerNotificationToken
+    var _postContent: String? = null
 
-    private val _usersTokenInTrain: MutableLiveData<Resource<ArrayList<NotificationTokenResponseInTrain>>> = MutableLiveData(null)
-    val usersTokenInTrain: LiveData<Resource<ArrayList<NotificationTokenResponseInTrain>>> = _usersTokenInTrain
+
+    private val _postOwnerNotificationToken: MutableLiveData<Resource<NotificationTokenResponse>> =
+        MutableLiveData(null)
+    val postOwnerNotificationToken: LiveData<Resource<NotificationTokenResponse>> =
+        _postOwnerNotificationToken
+
+    private val _noData: MutableLiveData<Resource<Boolean>> = MutableLiveData(null)
+    val noData: LiveData<Resource<Boolean>> = _noData
+
+    private val _usersTokenInTrain: MutableLiveData<Resource<ArrayList<NotificationTokenResponseInTrain>>> =
+        MutableLiveData(null)
+    val usersTokenInTrain: LiveData<Resource<ArrayList<NotificationTokenResponseInTrain>>> =
+        _usersTokenInTrain
 
     private val _post: MutableLiveData<Resource<PostModelResponse>>? = MutableLiveData(null)
     val post: LiveData<Resource<PostModelResponse>>? = _post
@@ -59,13 +67,15 @@ class Add_post_fragment_ViewModel @Inject constructor(
 
 
     private val _AddedPostNotification: MutableLiveData<Resource<String>> = MutableLiveData(null)
-    val AddedPostNotification: LiveData<Resource<String>>?= _AddedPostNotification
-
-
+    val AddedPostNotification: LiveData<Resource<String>>? = _AddedPostNotification
 
 
     fun setCritical() {
         post_redio_checked.postValue(true)
+    }
+
+    fun clearFields() {
+        _postContent = ""
     }
 
     fun setNONCritical() {
@@ -79,6 +89,7 @@ class Add_post_fragment_ViewModel @Inject constructor(
     fun onBtnChooseImageclicked(view: View) {
         btnChooseImageClicked.postValue(true)
     }
+
     fun onBtnChooseTrainclicked(view: View) {
         btnChooseTrainClicked.postValue(true)
     }
@@ -92,11 +103,11 @@ class Add_post_fragment_ViewModel @Inject constructor(
         }
     }
 
-    fun sendAddedPostNotificationPost(notification: PushPostNotification){
-        _AddedPostNotification.value=Resource.Loading
+    fun sendAddedPostNotificationPost(notification: PushPostNotification) {
+        _AddedPostNotification.value = Resource.Loading
         viewModelScope.launch {
-            pushAddPostNotification(notification){
-                _AddedPostNotification.value=it
+            pushAddPostNotification(notification) {
+                _AddedPostNotification.value = it
             }
         }
     }
@@ -104,25 +115,37 @@ class Add_post_fragment_ViewModel @Inject constructor(
     fun addPost(post: Post) {
         viewModelScope.launch {
             Log.i(TAG, "${post}")
-            _post!!.value = Resource.Loading
-            val child1=  launch  (Dispatchers.IO){
-                createPost(post) {
-                    val child2=   launch(Dispatchers.Main) {
-                        _post!!.value = it }
+            val child1 = launch(Dispatchers.IO) {
+                createPost(
+                    Post(
+                        _postContent!!,
+                        post.trainNumber,
+                        isPostIsCritical(_postContent),
+                        post.imgName,
+                        post.userid,
+                        post.userPhone,
+                        post.userName,
+                        post.imgId
+                    )
+                ) {
+                    val child2 = launch(Dispatchers.Main) {
+                        _post!!.value = it
+                    }
 
                 }
             }
-            child1.join()  }
+            child1.join()
+        }
     }
 
 
-    fun getUsersTokenInTrainById(trainID:Int){
-        _usersTokenInTrain.value=Resource.Loading
+    fun getUsersTokenInTrainById(trainID: Int) {
+        _usersTokenInTrain.value = Resource.Loading
         viewModelScope.launch {
-            val child1= launch (Dispatchers.IO){
-                getNotificationTokenForUsersInTrain(trainID){
-                    val child2=launch (Dispatchers.Main){
-                        _usersTokenInTrain.value=it
+            val child1 = launch(Dispatchers.IO) {
+                getNotificationTokenForUsersInTrain(trainID) {
+                    val child2 = launch(Dispatchers.Main) {
+                        _usersTokenInTrain.value = it
                     }
                 }
             }
@@ -131,7 +154,18 @@ class Add_post_fragment_ViewModel @Inject constructor(
     }
 
 
-
+    fun isPostIsCritical(postContent: String?): Boolean {
+        val tokenList = postContent!!.split(" ")
+        for (token in tokenList) {
+            if (token.equals("طفل") || token.equals("مريض") || token.equals("معاق") || token.equals(
+                    "اعمي"
+                )
+            ) {
+                return true
+            }
+        }
+        return false
+    }
 
 
 }

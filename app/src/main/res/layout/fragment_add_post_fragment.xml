@@ -9,49 +9,48 @@
             type="com.example.trainlivelocation.ui.Add_post_fragment_ViewModel" />
     </data>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/DarkPrimaryColor"
-        android:orientation="vertical">
-        <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:fillViewport="true">
+        <LinearLayout
             android:layout_width="match_parent"
-            android:id="@+id/add_post_progress_bar"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:indeterminate="true"
-            style="@style/Widget.MaterialComponents.LinearProgressIndicator"/>
+            android:layout_height="match_parent"
+            android:background="@color/DarkPrimaryColor"
+            android:orientation="vertical">
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:layout_width="match_parent"
+                android:id="@+id/add_post_progress_bar"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:indeterminate="true"
+                style="@style/Widget.MaterialComponents.LinearProgressIndicator"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_20sdp"
-            android:layout_marginTop="@dimen/_20sdp"
-            android:textColorHint="@color/textHintColorFirst"
-            >
-            <com.google.android.material.textfield.TextInputEditText
+
+            <EditText
+                android:padding="@dimen/_5sdp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:textColorHint="@color/textHintColorFirst"
                 android:textSize="@dimen/_15sdp"
                 android:lines="5"
                 android:textColor="@color/white"
                 android:background="@color/PrimaryColor"
                 android:hint="Enter New Post ?"
-                android:layout_width="match_parent"
                 android:maxHeight="@dimen/_250sdp"
-                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:gravity="top|start"
                 android:imeOptions="actionDone"
-                android:text="@{viewModel.postContent}"
+                android:text="@={viewModel._postContent}"
                 android:id="@+id/add_post_txt_postContent"/>
-        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/_20sdp"
-            android:textColorHint="@color/textHintColorFirst">
 
-            <com.google.android.material.textfield.TextInputEditText
+            <EditText
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:padding="@dimen/_5sdp"
+                android:textColorHint="@color/textHintColorFirst"
                 android:id="@+id/add_post_txt_train_id"
                 android:focusable="false"
                 android:layout_width="match_parent"
@@ -63,80 +62,82 @@
                 android:hint="Train Id"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_16ssp" />
-        </com.google.android.material.textfield.TextInputLayout>
 
 
 
 
-        <ImageView
-            android:id="@+id/add_post_imageView_postImage"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_200sdp"
-            android:background="@color/PrimaryColor"
-            android:src="@drawable/add_photo_icon"
-            android:layout_marginHorizontal="@dimen/_20sdp"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/_1sdp"
-            android:layout_marginHorizontal="@dimen/_20sdp"
-            android:background="@color/textHintColorFirst"/>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="@dimen/_15sdp"
-            android:layout_marginHorizontal="@dimen/_20sdp"
-            android:gravity="center"
-            android:background="#340AA1DD">
+            <ImageView
+                android:id="@+id/add_post_imageView_postImage"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_200sdp"
+                android:background="@color/PrimaryColor"
+                android:src="@drawable/add_photo_icon"
+                android:layout_marginHorizontal="@dimen/_20sdp"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_1sdp"
+                android:layout_marginHorizontal="@dimen/_20sdp"
+                android:background="@color/textHintColorFirst"/>
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:layout_marginBottom="@dimen/_15sdp"-->
+<!--                android:layout_marginHorizontal="@dimen/_20sdp"-->
+<!--                android:gravity="center"-->
+<!--                android:background="#340AA1DD">-->
 
 
 
-            <RadioGroup
-                android:visibility="gone"
-                android:id="@+id/add_post_rcv_item_radio_group"
+<!--                <RadioGroup-->
+<!--                    android:visibility="gone"-->
+<!--                    android:id="@+id/add_post_rcv_item_radio_group"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:orientation="vertical"-->
+<!--                    android:gravity="start"-->
+<!--                    android:layout_marginStart="@dimen/_10sdp"-->
+<!--                    >-->
+
+<!--                    <RadioButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:textColorHint="@color/textHintColorFirst"-->
+<!--                        android:textSize="@dimen/_14ssp"-->
+<!--                        android:hint="@string/add_critical_post_content"-->
+<!--                        android:onClick="@{()->viewModel.setCritical()}"-->
+<!--                        />-->
+
+<!--                    <RadioButton-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:textColorHint="@color/textHintColorFirst"-->
+<!--                        android:textSize="@dimen/_14ssp"-->
+<!--                        android:hint="@string/add_non_critical_post_content"-->
+<!--                        android:onClick="@{()->viewModel.setNONCritical()}"/>-->
+
+<!--                </RadioGroup>-->
+
+<!--            </LinearLayout>-->
+
+            <com.google.android.material.button.MaterialButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="start"
-                android:layout_marginStart="@dimen/_10sdp"
-                >
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/textHintColorFirst"
-                    android:textSize="@dimen/_14ssp"
-                    android:hint="@string/add_critical_post_content"
-                    android:onClick="@{()->viewModel.setCritical()}"
-                    />
-
-                <RadioButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColorHint="@color/textHintColorFirst"
-                    android:textSize="@dimen/_14ssp"
-                    android:hint="@string/add_non_critical_post_content"
-                    android:onClick="@{()->viewModel.setNONCritical()}"/>
-
-            </RadioGroup>
+                android:layout_marginTop="@dimen/_20sdp"
+                android:id="@+id/add_post_btn_submit"
+                android:text="@string/add_post_submit"
+                android:backgroundTint="@color/PrimaryColor"
+                android:textSize="@dimen/_10ssp"
+                android:padding="@dimen/_5sdp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:textColor="@color/white"
+                android:layout_marginHorizontal="@dimen/_100sdp"
+                app:cornerRadius="@dimen/_15sdp"
+              />
 
         </LinearLayout>
+    </ScrollView>
 
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/add_post_btn_submit"
-            android:text="@string/add_post_submit"
-            android:backgroundTint="@color/PrimaryColor"
-            android:textSize="@dimen/_10ssp"
-            android:padding="@dimen/_5sdp"
-            android:paddingHorizontal="@dimen/_10sdp"
-            android:textColor="@color/white"
-            android:layout_marginHorizontal="@dimen/_100sdp"
-            app:cornerRadius="@dimen/_15sdp"
-            android:onClick="@{()->viewModel.onSubmitButtonClick()}"/>
-
-    </LinearLayout>
 
 </layout>
 

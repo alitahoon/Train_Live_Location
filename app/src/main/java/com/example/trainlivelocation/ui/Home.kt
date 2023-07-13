@@ -17,6 +17,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -44,7 +45,7 @@ import kotlin.math.log2
 
 
 @AndroidEntryPoint
-class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
+class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback ,OnBackPressedListener {
     private val TAG: String? = "Home";
     private val eventBus: EventBus = EventBus.getDefault()
     private val homeViewModel: HomeViewModel? by activityViewModels()
@@ -125,7 +126,13 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        homeViewModel!!.clearDirectionRoute()
+        requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        onBackPressedCallback.remove() // Remove the callback when the fragment is destroyed
     }
 
     override fun onAttach(context: Context) {
@@ -713,6 +720,7 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
         })
     }
 
+
     private fun calculateZoomLevel(bounds: LatLngBounds, width: Int, height: Int): Float {
         val padding = 100 // Adjust as needed
 
@@ -738,6 +746,17 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
         }
         return stationSydnyList
     }
+    private val onBackPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            toast("done")
+            // Handle the back button behavior for your specific fragment
+            // For example, you can show a toast message or ignore the back button press
+            requireActivity().finish() // Finish the current activity and exit the app
+            // You can also perform a specific action or navigate to a different fragment/activity if needed
+        }
+    }
+
+
 
     fun genenrateStationsSydnyFromDatbaseStationsItems(stationsList: ArrayList<StationItemEntity>): ArrayList<StationSydny> {
         val stationSydnyList = ArrayList<StationSydny>()
@@ -787,7 +806,15 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
         // Create a CoroutineScope
         val coroutineScope = CoroutineScope(Dispatchers.Main)
 
-
+        Log.i(TAG,"$origin1 ,$destination1")
+        Log.i(TAG,"$origin2 ,$destination2")
+        Log.i(TAG,"$origin3 ,$destination3")
+        Log.i(TAG,"$origin4 ,$destination4")
+        Log.i(TAG,"$origin5 ,$destination5")
+        Log.i(TAG,"$origin6 ,$destination6")
+        Log.i(TAG,"$origin7 ,$destination7")
+        Log.i(TAG,"$origin8 ,$destination8")
+        Log.i(TAG,"$origin9 ,$destination9")
         val origin1Distenation1 =
             coroutineScope.async { homeViewModel!!.getLocationDirctions(origin1!!, destination1!!) }
         val origin2Distenation2 =
@@ -890,6 +917,10 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback {
             val result19 = origin19Distenation19.await()
         }
 
+    }
+
+    override fun onBackPressed() {
+        requireActivity().finish()
     }
 
 }

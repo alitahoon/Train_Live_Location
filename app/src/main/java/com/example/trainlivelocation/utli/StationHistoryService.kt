@@ -5,6 +5,7 @@ import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.SharedPreferences
 import android.location.Location
 import android.os.Build
 import android.os.Handler
@@ -18,6 +19,7 @@ import com.example.domain.entity.*
 import com.example.domain.usecase.*
 import com.example.trainlivelocation.R
 import com.google.android.gms.maps.model.LatLng
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -63,9 +65,6 @@ class StationHistoryService : LifecycleService() {
     lateinit var getStationById: GetStationById
 
 
-
-
-
     @Inject
     lateinit var getLocationDirctionFromOpenRouteService: GetLocationDirctionFromOpenRouteService
 
@@ -87,15 +86,19 @@ class StationHistoryService : LifecycleService() {
         super.onCreate()
         timerHandler = Handler()
         createNotificationChannel()
-        coroutineScope.launch (Dispatchers.Main){
-            getUserCurrantLocationJustOnce{
-                when(it){
-                    is Resource.Loading->{
-                        Log.i(TAG,"getting currant location")
+        preformHistoryNotification()
+    }
+
+    private fun preformHistoryNotification(){
+        coroutineScope.launch(Dispatchers.Main) {
+            getUserCurrantLocationJustOnce {
+                when (it) {
+                    is Resource.Loading -> {
+                        Log.i(TAG, "getting currant location")
                     }
-                    is Resource.Success->{
-                        Log.i(TAG,"${it.data}")
-                        Log.i(TAG,"from shared ${getStationHistoryAlarm()!!.station}")
+                    is Resource.Success -> {
+                        Log.i(TAG, "${it.data}")
+                        Log.i(TAG, "from shared ${getStationHistoryAlarm()!!.station}")
 //                        var duration =getDurationBetweentrainAndStation(
 //                            LatLng(
 //                                it.data.latitude,
@@ -108,13 +111,15 @@ class StationHistoryService : LifecycleService() {
 //                        )
 
                         coroutineScope.launch(Dispatchers.IO) {
-                            getLocationDirctionFromOpenRouteService(  LatLng(
-                                it.data.latitude,
-                                it.data.longitude
-                            ),    LatLng(
-                                getStationHistoryAlarm()!!.station.latitude,
-                                getStationHistoryAlarm()!!.station.longitude,
-                            )) {
+                            getLocationDirctionFromOpenRouteService(
+                                LatLng(
+                                    it.data.latitude,
+                                    it.data.longitude
+                                ), LatLng(
+                                    getStationHistoryAlarm()!!.station.latitude,
+                                    getStationHistoryAlarm()!!.station.longitude,
+                                )
+                            ) {
                                 when (it) {
                                     is Resource.Loading -> {
                                         Log.i(TAG, "getting duration ...")
@@ -125,7 +130,7 @@ class StationHistoryService : LifecycleService() {
                                     is Resource.Success -> {
                                         Log.i(TAG, " duration -------> ${it.data.duration}")
 //                                        duration = it.data.duration
-                                        coroutineScope.launch (Dispatchers.Main){
+                                        coroutineScope.launch(Dispatchers.Main) {
                                             startNotificationTimer(it.data.duration!!.toInt())
                                         }
 
@@ -135,15 +140,16 @@ class StationHistoryService : LifecycleService() {
                             }
                         }
                     }
-                    is Resource.Failure->{
-                        Log.i(TAG,"${it.error}")
+                    is Resource.Failure -> {
+                        Log.i(TAG, "${it.error}")
                     }
                     else -> {}
                 }
             }
         }
     }
-    private fun startNotificationTimer(durationInSeconds:Int?) {
+
+    private fun startNotificationTimer(durationInSeconds: Int?) {
         timerCount = durationInSeconds!!
         timerRunnable = object : Runnable {
             override fun run() {
@@ -159,17 +165,71 @@ class StationHistoryService : LifecycleService() {
         }
         timerHandler.postDelayed(timerRunnable, 1000) // initial delay
     }
+
     private fun sendHistoryNotification() {
-        // Perform history notification
+        var nextStationModel: StationDistanceModel?=null
+        val nextStationName=getStationHistoryAlarm()!!.station.nextStation
+        //getting the next station
+        coroutineScope.launch (Dispatchers.IO){
+            getAllStations(){
+                when(it){
+                    is Resource.Success->{
+                        Log.i(TAG,"got stations in history services ${it.data}")
+                        for (station in it.data){
+                            if (station.name==getStationHistoryAlarm()!!.station.nextStation){
+                                nextStationModel=
+                                    StationDistanceModel(station,getStationHistoryAlarm()!!.distance)
+
+                                // Perform next history notification
+                                val stationSharedPreferences: SharedPreferences =
+                                    context.getSharedPreferences("stationHistory", Context.MODE_PRIVATE)
+                                var editor=stationSharedPreferences.edit()
+                                val gson = Gson()
+                                val json = gson.toJson(nextStationModel)
+                                editor.putString("stationData",json!!)
+                                editor.commit()
+                                preformHistoryNotification()
+                            }
+                        }
+                    }
+                    is Resource.Failure->{
+                        Log.e(TAG,"${it.error}")
+                    }
+                    is Resource.Loading->{
+                        Log.i(TAG,"getting stations ")
+                    }
+                    else -> {}
+                }
+            }
+        }
+
     }
 
     private fun updateNotification(timerCount: Int) {
         val hours = timerCount / 3600
         val minutes = (timerCount % 3600) / 60
+        val bigTextStyle = NotificationCompat.BigTextStyle()
+            .bigText("Time remaining for the station \n" +
+                    " ${
+                        String.format(
+                            "%02d Hours : %02d Minutes",
+                            hours,
+                            minutes
+                        )
+                    } \n  Some Inoformation About this station ${getStationHistoryAlarm()!!.station.description}") // Set the expanded text
         val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID!!)
             .setSmallIcon(R.drawable.app_logo)
-            .setContentTitle("station Description Notificationion")
-            .setContentText("Time remaining for the station ${getStationHistoryAlarm()!!.station.name} \n ${String.format("%02d Hours : %02d Minutes", hours, minutes)}")
+            .setContentTitle("station ${getStationHistoryAlarm()!!.station.name}")
+            .setStyle(bigTextStyle)
+            .setContentText(
+                "Time remaining for the station ${getStationHistoryAlarm()!!.station.name} \n ${
+                    String.format(
+                        "%02d Hours : %02d Minutes",
+                        hours,
+                        minutes
+                    )
+                } }"
+            )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setOnlyAlertOnce(true) // Set to true to update notification without showing popup
             .setAutoCancel(true)
@@ -179,6 +239,7 @@ class StationHistoryService : LifecycleService() {
         notificationManager.notify(NOTIFICATION_ID!!, notificationBuilder.build())
         startForeground(NOTIFICATION_ID!!, notificationBuilder.build())
     }
+
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -210,7 +271,6 @@ class StationHistoryService : LifecycleService() {
     }
 
 
-
     fun getStationDecriptionByID(stationID: Int?): String? {
         var description: String? = null
         coroutineScope.launch {
@@ -233,7 +293,6 @@ class StationHistoryService : LifecycleService() {
 
         return description
     }
-
 
 
 //    private fun getDurationBetweentrainAndStation(
@@ -334,12 +393,20 @@ class StationHistoryService : LifecycleService() {
                     .setSmallIcon(R.drawable.app_logo)
                     .setOnlyAlertOnce(true) // Set to true to update notification without showing popup
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
-                    .setVibrate(longArrayOf(100, 200, 300, 400, 500)) // Set custom vibration pattern
+                    .setVibrate(
+                        longArrayOf(
+                            100,
+                            200,
+                            300,
+                            400,
+                            500
+                        )
+                    ) // Set custom vibration pattern
 
                 val notificationManager =
                     getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
                 notificationManager.notify(notificationId, notificationBuilder.build())
-                startForeground(NOTIFICATION_ID!!,notificationBuilder.build()!!)
+                startForeground(NOTIFICATION_ID!!, notificationBuilder.build()!!)
                 // Schedule the next update
                 handler.postDelayed(this, updateIntervalMillis)
             }

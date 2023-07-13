@@ -462,7 +462,7 @@ class SettingsViewModel @Inject constructor(
 
                                             Log.i(TAG,"indexOfnearbyStations   ${indexOfnearbyStations}")
 
-                                            var stationToAlarm = stationsDistatnceList.get(indexOfnearbyStations+ 1)
+                                            var stationToAlarm = stationsDistatnceList.get(indexOfnearbyStations)
 
                                             var duration =getDurationBetweentrainAndStation(
                                                 com.google.android.gms.maps.model.LatLng(

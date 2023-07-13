@@ -343,6 +343,18 @@ class userRepoImpl(
             result.invoke(Resource.Failure("Failed inserting Route Item To Database ---> ${e.message}"))
         }    }
 
+    override suspend fun clearStationsFromDatabase(result: (Resource<String>) -> Unit) {
+        try {
+            myDatabase.StationItemEntityDao().clear()
+            result.invoke(
+                Resource.Success(
+                    "Successfully clear stations data"
+                )
+            )
+        } catch (e: Exception) {
+            result.invoke(Resource.Failure("Failed clearing Station From Database ---> ${e.message}"))
+        }    }
+
     override suspend fun insertNewStationAlarm(
         stationAlarmEntity: StationAlarmEntity,
         result: (Resource<String>) -> Unit

@@ -123,7 +123,7 @@ class Splash_features : Fragment(), EasyPermissions.PermissionCallbacks{
                     }
                     7 -> {
                        if (hasPermissions()){
-                           setFirstTimeOpenSharedPreferences(requireContext(),true)
+                           setFirstTimeOpenSharedPreferences(requireContext(),false)
                            findNavController().navigate(R.id.action_splash_features_to_splash2)
                        }else{
                            requsetPermissions()
@@ -161,7 +161,7 @@ class Splash_features : Fragment(), EasyPermissions.PermissionCallbacks{
     }
 
     override fun onPermissionsGranted(requestCode: Int, perms: MutableList<String>) {
-        setFirstTimeOpenSharedPreferences(requireContext(),true)
+        setFirstTimeOpenSharedPreferences(requireContext(),false)
         findNavController().navigate(R.id.action_splash_features_to_splash2)
     }
 

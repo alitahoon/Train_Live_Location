@@ -11,9 +11,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.entity.UserResponseItem
 import com.example.domain.entity.UserSignInDataEntity
-import com.example.domain.usecase.GetAllUserSignInDataEntity
-import com.example.domain.usecase.GetUserData
-import com.example.domain.usecase.InsertUserSignInDataEntity
+import com.example.domain.usecase.*
 import com.example.trainlivelocation.utli.SingleLiveEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +24,9 @@ class SignInViewModel @Inject constructor(
     private val getUserData: GetUserData,
     private val context: Context,
     private val insertUserSignInDataEntity: InsertUserSignInDataEntity,
-    private val getAllUserSignInDataEntity: GetAllUserSignInDataEntity
+    private val getAllUserSignInDataEntity: GetAllUserSignInDataEntity,
+    private val clearDirectionRouteFromDatabase: ClearDirectionRouteFromDatabase,
+    private val clearStationsFromDatabase: ClearStationsFromDatabase
 ) : ViewModel() {
     private val TAG: String? = "SignInViewModel"
     var userPhone: String? = ""
@@ -48,7 +48,56 @@ class SignInViewModel @Inject constructor(
         MutableLiveData(null)
     val getUserSignInData: LiveData<Resource<ArrayList<UserSignInDataEntity>>?> = _getUserSignInData
 
+    fun clearDirectionRoute(){
+        Log.i(TAG,"clearDirectionRoute")
+        viewModelScope.launch {
+            val child1=launch (Dispatchers.IO){
+                clearDirectionRouteFromDatabase(){
+                    val child2=launch (Dispatchers.Main){
+                        when(it){
+                            is Resource.Success->{
+                                Log.i(TAG, "${it.data}")
+                            }
+                            is Resource.Loading->{
+                                Log.i(TAG, "Loading")
+                            }
+                            is Resource.Failure->{
+                                Log.e(TAG, "${it.error}")
+                            }
+                            else->{}
+                        }
+                    }
 
+                }
+            }
+
+        }
+    }
+    fun clearStationsFromDatabase(){
+        Log.i(TAG,"clearDirectionRoute")
+        viewModelScope.launch {
+            val child1=launch (Dispatchers.IO){
+                clearStationsFromDatabase(){
+                    val child2=launch (Dispatchers.Main){
+                        when(it){
+                            is Resource.Success->{
+                                Log.i(TAG, "${it.data}")
+                            }
+                            is Resource.Loading->{
+                                Log.i(TAG, "Loading")
+                            }
+                            is Resource.Failure->{
+                                Log.e(TAG, "${it.error}")
+                            }
+                            else->{}
+                        }
+                    }
+
+                }
+            }
+
+        }
+    }
     fun onSignInBtnClicked(view: View) {
         val REG = "r'/^\\(?(\\d{3})\\)?[- ]?(\\d{3})[- ]?(\\d{4})\$/'"
         var PATTERN: Pattern = Pattern.compile(REG)

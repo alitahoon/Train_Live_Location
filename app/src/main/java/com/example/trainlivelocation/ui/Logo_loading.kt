@@ -58,6 +58,7 @@ class Logo_loading : Fragment() {
             override fun onAnimationEnd(p0: Animator) {
                 //check if the app is running for the first time
                 if(getFirstTimeOpenSharedPreferences(requireContext())){
+                    setFirstTimeOpenSharedPreferences(requireContext(),false)
                     findNavController().navigate(R.id.action_logo_loading_to_splash_features)
                 }
                 else{

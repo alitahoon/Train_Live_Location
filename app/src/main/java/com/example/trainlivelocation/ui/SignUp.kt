@@ -145,49 +145,54 @@ class SignUp : Fragment(), DatePickerListener, Station_Dialog_Listener {
 
         signUpViewModel!!.submitBtnClicked.observe(viewLifecycleOwner, Observer {
             if (it == true) {
-                signUpViewModel!!.uploadProfileImage(imageUri!!, "+20${args.userPhone}")
-                signUpViewModel!!.sendingProfileImageResult.observe(viewLifecycleOwner, Observer {
-                    when (it) {
-                        is Resource.Loading -> {
-                            binding.signUpSuccessLoadingLotti.setVisibility(View.GONE)
-                            binding.signUpLayoutProfileImage.setVisibility(View.GONE)
-                            binding.signUpBtnNext.setVisibility(View.GONE)
-                            binding.signUpLoadingLayout.setVisibility(View.VISIBLE)
+                if (imageUri!=null){
+                    signUpViewModel!!.uploadProfileImage(imageUri!!, "+20${args.userPhone}")
+                    signUpViewModel!!.sendingProfileImageResult.observe(viewLifecycleOwner, Observer {
+                        when (it) {
+                            is Resource.Loading -> {
+                                binding.signUpSuccessLoadingLotti.setVisibility(View.GONE)
+                                binding.signUpLayoutProfileImage.setVisibility(View.GONE)
+                                binding.signUpBtnNext.setVisibility(View.GONE)
+                                binding.signUpLoadingLayout.setVisibility(View.VISIBLE)
+                            }
+                            is Resource.Success -> {
+                                Log.i(TAG, "Image Send Successfully")
+                                binding.signUpLoadingLotti.setVisibility(View.GONE)
+                                binding.signUpSuccessLoadingLotti.setVisibility(View.VISIBLE)
+                                binding.signUpSuccessLoadingLotti.playAnimation()
+                                binding.signUpSuccessLoadingLotti.addAnimatorListener(object :
+                                    AnimatorListener {
+                                    override fun onAnimationStart(p0: Animator) {
+                                        TODO("Not yet implemented")
+                                    }
+
+                                    override fun onAnimationEnd(p0: Animator) {
+                                        findNavController().navigate(SignUpDirections.actionSignUpToSplash())
+                                    }
+
+                                    override fun onAnimationCancel(p0: Animator) {
+                                        TODO("Not yet implemented")
+                                    }
+
+                                    override fun onAnimationRepeat(p0: Animator) {
+                                        TODO("Not yet implemented")
+                                    }
+
+                                })
+                            }
+                            is Resource.Failure -> {
+                                Log.i(TAG, "Failed To send image to Fire base ${it.error}")
+                            }
+
+                            else -> {
+                                Log.e(TAG, "else brunch...")
+                            }
                         }
-                        is Resource.Success -> {
-                            Log.i(TAG, "Image Send Successfully")
-                            binding.signUpLoadingLotti.setVisibility(View.GONE)
-                            binding.signUpSuccessLoadingLotti.setVisibility(View.VISIBLE)
-                            binding.signUpSuccessLoadingLotti.playAnimation()
-                            binding.signUpSuccessLoadingLotti.addAnimatorListener(object :
-                                AnimatorListener {
-                                override fun onAnimationStart(p0: Animator) {
-                                    TODO("Not yet implemented")
-                                }
+                    })
+                }else{
+                    showCustomToast(requireContext(),"Please choose image")
+                }
 
-                                override fun onAnimationEnd(p0: Animator) {
-                                    findNavController().navigate(SignUpDirections.actionSignUpToSplash())
-                                }
-
-                                override fun onAnimationCancel(p0: Animator) {
-                                    TODO("Not yet implemented")
-                                }
-
-                                override fun onAnimationRepeat(p0: Animator) {
-                                    TODO("Not yet implemented")
-                                }
-
-                            })
-                        }
-                        is Resource.Failure -> {
-                            Log.i(TAG, "Failed To send image to Fire base ${it.error}")
-                        }
-
-                        else -> {
-                            Log.e(TAG, "else brunch...")
-                        }
-                    }
-                })
             }
         })
 

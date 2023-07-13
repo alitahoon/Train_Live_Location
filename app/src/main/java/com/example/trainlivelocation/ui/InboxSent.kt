@@ -15,6 +15,7 @@ import com.example.trainlivelocation.databinding.FragmentInboxRecieveBinding
 import com.example.trainlivelocation.databinding.FragmentInboxSentBinding
 import com.example.trainlivelocation.utli.MessageCustomAdapter
 import com.example.trainlivelocation.utli.MessageListener
+import com.example.trainlivelocation.utli.getuserModelFromSharedPreferences
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.runBlocking
 
@@ -66,7 +67,7 @@ class InboxSent : Fragment() ,MessageListener{
     }
 
     private fun setAdapterItems(userModel:UserResponseItem): MessageCustomAdapter {
-        val adapter = MessageCustomAdapter("inbox", this, userModel.phone)
+        val adapter = MessageCustomAdapter("inbox", this, userModel.phone,getuserModelFromSharedPreferences(requireContext()))
         inboxSentViewModel.inboxSent!!.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Resource.Loading -> {
@@ -90,6 +91,8 @@ class InboxSent : Fragment() ,MessageListener{
                         binding!!.inboxSentImgViewEmptyMsg.visibility = View.GONE
                         binding!!.inboxSentTxtViewEmptyMsg.visibility = View.GONE
                         binding!!.inboxLoadinigShimmer.visibility = View.GONE
+                        adapter.setDataWithNoFilter(it.data)
+//                        adapter.setData(ArrayList(it.data.filter { it.sender==userModel.phone}.toSet().toList()))
 
                         if (it.data.size>1){
                             adapter.setData(filterSentMessages(it.data))
