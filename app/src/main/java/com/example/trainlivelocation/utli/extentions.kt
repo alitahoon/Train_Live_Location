@@ -83,6 +83,131 @@ fun Context.setMapFlag(flag: Boolean){
     editor.commit()
 }
 
+fun Fragment.insertStationsHistoryNotificationSharedPreferences(context: Context, switchBtn: Boolean){
+    val stationsHistoryNotificationSharedPreferences: SharedPreferences = context.getSharedPreferences("stationsHistoryNotification",Context.MODE_PRIVATE)
+
+    val editor = stationsHistoryNotificationSharedPreferences.edit()
+
+    editor.putBoolean("stationsHistory", switchBtn)
+    editor.commit()
+}
+
+fun Context.insertStationsHistoryNotificationSharedPreferences(switchBtn: Boolean){
+    val stationsHistoryNotificationSharedPreferences: SharedPreferences = getSharedPreferences("stationsHistoryNotification",Context.MODE_PRIVATE)
+
+    val editor = stationsHistoryNotificationSharedPreferences.edit()
+
+    editor.putBoolean("stationsHistory", switchBtn)
+    editor.commit()
+}
+
+fun Fragment.getStationsHistoryNotificationSharedPreferences(context: Context,): Boolean{
+    val stationsHistoryNotificationSharedPreferences: SharedPreferences =
+        context.getSharedPreferences("stationsHistoryNotification", Context.MODE_PRIVATE)
+
+    return stationsHistoryNotificationSharedPreferences.getBoolean("stationsHistory", true)
+}
+
+fun Context.getStationsHistoryNotificationSharedPreferences(): Boolean{
+    val stationsHistoryNotificationSharedPreferences: SharedPreferences =
+        getSharedPreferences("stationsHistoryNotification", Context.MODE_PRIVATE)
+
+    return stationsHistoryNotificationSharedPreferences.getBoolean("stationsHistory", true)
+}
+
+fun Fragment.insertTrackTrainNotificationSharedPreferences(context: Context, switchBtn: Boolean){
+    val trackTrainNotificationSharedPreferences: SharedPreferences = context.getSharedPreferences("trackTrainNotification",Context.MODE_PRIVATE)
+
+    val editor = trackTrainNotificationSharedPreferences.edit()
+
+    editor.putBoolean("trackTrain", switchBtn)
+    editor.commit()
+}
+fun Context.insertTrackTrainNotificationSharedPreferences(switchBtn: Boolean){
+    val trackTrainNotificationSharedPreferences: SharedPreferences = getSharedPreferences("trackTrainNotification",Context.MODE_PRIVATE)
+
+    val editor = trackTrainNotificationSharedPreferences.edit()
+
+    editor.putBoolean("trackTrain", switchBtn)
+    editor.commit()
+}
+
+fun Fragment.getTrackTrainNotificationSharedPreferences(context: Context,): Boolean{
+    val trackTrainNotificationSharedPreferences: SharedPreferences =
+        context.getSharedPreferences("trackTrainNotification", Context.MODE_PRIVATE)
+
+    return trackTrainNotificationSharedPreferences.getBoolean("trackTrain", true)
+}
+
+fun Context.getTrackTrainNotificationSharedPreferences(): Boolean{
+    val trackTrainNotificationSharedPreferences: SharedPreferences =
+        getSharedPreferences("trackTrainNotification", Context.MODE_PRIVATE)
+
+    return trackTrainNotificationSharedPreferences.getBoolean("trackTrain", true)
+}
+
+fun Fragment.insertStationAlarmNotificationSharedPreferences(context: Context, switchBtn: Boolean){
+    val stationAlarmNotificationSharedPreferences: SharedPreferences = context.getSharedPreferences("stationAlarmNotification",Context.MODE_PRIVATE)
+
+    val editor = stationAlarmNotificationSharedPreferences.edit()
+
+    editor.putBoolean("stationAlarm", switchBtn)
+    editor.commit()
+}
+fun Context.insertStationAlarmNotificationSharedPreferences(switchBtn: Boolean){
+    val stationAlarmNotificationSharedPreferences: SharedPreferences = getSharedPreferences("stationAlarmNotification",Context.MODE_PRIVATE)
+
+    val editor = stationAlarmNotificationSharedPreferences.edit()
+
+    editor.putBoolean("stationAlarm", switchBtn)
+    editor.commit()
+}
+
+fun Fragment.getStationAlarmNotificationSharedPreferences(context: Context,): Boolean{
+    val stationAlarmNotificationSharedPreferences: SharedPreferences =
+        context.getSharedPreferences("stationAlarmNotification", Context.MODE_PRIVATE)
+
+    return stationAlarmNotificationSharedPreferences.getBoolean("stationAlarm", true)
+}
+
+fun Context.getStationAlarmNotificationSharedPreferences(): Boolean{
+    val stationAlarmNotificationSharedPreferences: SharedPreferences =
+        getSharedPreferences("stationAlarmNotification", Context.MODE_PRIVATE)
+
+    return stationAlarmNotificationSharedPreferences.getBoolean("stationAlarm", true)
+}
+
+fun Fragment.insertSharingLocationSharedPreferences(context: Context, switchBtn: Boolean){
+    val sharingLocationSharedPreferences: SharedPreferences = context.getSharedPreferences("sharingLocationNotification",Context.MODE_PRIVATE)
+
+    val editor = sharingLocationSharedPreferences.edit()
+
+    editor.putBoolean("sharingLocation", switchBtn)
+    editor.commit()
+}
+fun Context.insertSharingLocationSharedPreferences(switchBtn: Boolean){
+    val sharingLocationSharedPreferences: SharedPreferences = getSharedPreferences("sharingLocationNotification",Context.MODE_PRIVATE)
+
+    val editor = sharingLocationSharedPreferences.edit()
+
+    editor.putBoolean("sharingLocation", switchBtn)
+    editor.commit()
+}
+
+fun Fragment.getSharingLocationSharedPreferences(context: Context,): Boolean{
+    val sharingLocationSharedPreferences: SharedPreferences =
+        context.getSharedPreferences("sharingLocationNotification", Context.MODE_PRIVATE)
+
+    return sharingLocationSharedPreferences.getBoolean("sharingLocation", true)
+}
+
+fun Context.getSharingLocationSharedPreferences(): Boolean{
+    val sharingLocationSharedPreferences: SharedPreferences =
+        getSharedPreferences("sharingLocationNotification", Context.MODE_PRIVATE)
+
+    return sharingLocationSharedPreferences.getBoolean("sharingLocation", true)
+}
+
 fun Fragment.setLocationFromMap(context: Context, location: Location_Response){
     val mapSharedPreferences: SharedPreferences = context.getSharedPreferences("location",Context.MODE_PRIVATE)
 
