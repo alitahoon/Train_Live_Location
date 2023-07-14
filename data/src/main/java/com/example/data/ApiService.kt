@@ -209,5 +209,5 @@ interface ApiService {
     suspend fun GetUsersTokenInTrain(@Query("TrainId") trainId:Int): Response<ArrayList<NotificationTokenResponseInTrain>>
 
     @GET("/api/user/GetUserTokenByPhone")
-    suspend fun GetUserTokenByPhoneNumber(@Query("phoneNumber") phoneNumber: String): Response<PhoneTokenResponse>
+    suspend fun GetUserTokenByPhoneNumber(@Query("Phone") phoneNumber: String): Response<PhoneTokenResponse>
 }

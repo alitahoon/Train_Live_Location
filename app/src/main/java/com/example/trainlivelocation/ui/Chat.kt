@@ -112,6 +112,7 @@ class Chat(val reciver:String?,val reciverUserName:String?,val user:UserResponse
 
                             //send notification to reciver
                             //get reciver token from api
+                            Log.i(TAG,"phone $reciver")
                             chatViewmodel.getToken(reciver)
                             chatViewmodel.userTokenByPhoneNumber.observe(viewLifecycleOwner,
                                 Observer {
