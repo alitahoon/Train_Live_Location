@@ -355,6 +355,22 @@ class userRepoImpl(
             result.invoke(Resource.Failure("Failed clearing Station From Database ---> ${e.message}"))
         }    }
 
+    override suspend fun getUserTokenByPhoneNumber(
+        phoneNumber: String?,
+        result: (Resource<String>) -> Unit
+    ) {
+        var res = apiService.GetUserTokenByPhoneNumber(phoneNumber!!)
+        if (res.isSuccessful) {
+            if (res.body() != null) {
+                result.invoke(Resource.Success(res.body()!!.tokenForNotifications))
+            } else {
+                result.invoke(Resource.Failure("Error while getting phone number token is null:${res.body()}"))
+            }
+        } else {
+            result.invoke(Resource.Failure("${res.message()}:${res.errorBody()}"))
+        }
+    }
+
     override suspend fun insertNewStationAlarm(
         stationAlarmEntity: StationAlarmEntity,
         result: (Resource<String>) -> Unit

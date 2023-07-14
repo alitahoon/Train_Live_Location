@@ -95,6 +95,13 @@
             app:exitAnim="@anim/exit"
             app:popEnterAnim="@anim/pop_enter"
             app:popExitAnim="@anim/pop_exit" />
+        <action
+            android:id="@+id/action_home2_to_splash_Loading"
+            app:destination="@id/splash_Loading"
+            app:enterAnim="@anim/enter"
+            app:exitAnim="@anim/exit"
+            app:popEnterAnim="@anim/pop_enter"
+            app:popExitAnim="@anim/pop_exit" />
     </fragment>
     <dialog
         android:id="@+id/locationDialogFragment"
@@ -260,5 +267,10 @@
         android:name="com.example.trainlivelocation.ui.splash"
         android:label="activity_splash"
         tools:layout="@layout/activity_splash" />
+    <activity
+        android:id="@+id/splash_Loading"
+        android:name="com.example.trainlivelocation.ui.Splash_Loading"
+        android:label="activity_splash_loading"
+        tools:layout="@layout/activity_splash_loading" />
 
 </navigation>

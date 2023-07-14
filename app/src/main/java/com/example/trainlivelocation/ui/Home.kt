@@ -35,6 +35,8 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.*
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.maps.android.PolyUtil
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
@@ -124,10 +126,20 @@ class Home : Fragment(), Train_Dialog_Listener, OnMapReadyCallback ,OnBackPresse
     var origin20: LatLng? = null// al-halawasi
     var destination20: LatLng? = null  // Ashmon
 
+    fun createUserNotificationToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener {
+            if (it.isSuccessful) {
+                Log.i(TAG, "${it.result}")
+            } else {
+                Log.i(TAG, "${it.exception}")
+            }
+        })
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackPressedCallback)
-
+        createUserNotificationToken()
     }
 
     override fun onDestroyView() {

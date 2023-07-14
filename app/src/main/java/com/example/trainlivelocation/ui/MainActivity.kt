@@ -251,7 +251,8 @@ class MainActivity : AppCompatActivity() ,HomeMapListener{
             .setTitle("Confirmation")
             .setMessage("Are you sure you want to go back?")
             .setPositiveButton("Yes") { dialog, _ ->
-                super.onBackPressed() // Proceed with the default back button behavior
+                //super.onBackPressed() // Proceed with the default back button behavior
+                navController!!.navigate(R.id.splash_Loading)
                 dialog.dismiss()
             }
             .setNegativeButton("No") { dialog, _ ->
@@ -265,7 +266,7 @@ class MainActivity : AppCompatActivity() ,HomeMapListener{
         if (currentFragment == R.id.home2) {
             // Handle the back button behavior for the specific fragment
             // For example, show a dialog or perform a custom action
-//            checkBackToLogin()
+            checkBackToLogin()
         } else {
             super.onBackPressed()
         }

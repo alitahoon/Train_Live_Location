@@ -462,4 +462,9 @@ object UserCaseModule {
         return ClearStationsFromDatabase(userRepo)
     }
 
+    @Provides
+    fun ProvideGetUserTokenByPhoneNumber(userRepo: UserRepo): GetUserTokenByPhoneNumber {
+        return GetUserTokenByPhoneNumber(userRepo)
+    }
+
 }

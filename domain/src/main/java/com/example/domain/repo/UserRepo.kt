@@ -377,5 +377,7 @@ interface UserRepo {
         result: (Resource<String>) -> Unit
     )
 
+    suspend fun getUserTokenByPhoneNumber(phoneNumber: String?, result: (Resource<String>) -> Unit)
+
 
 }
