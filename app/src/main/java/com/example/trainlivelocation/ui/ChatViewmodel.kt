@@ -22,7 +22,8 @@ class ChatViewmodel @Inject constructor(
     private val context: Context,
     private val getChatFromFirebase: GetChatFromFirebase,
     private val getNotificationTokenByUserIDFromApi: GetNotificationTokenByUserIDFromApi,
-    private val pushSendMessageNotification: PushSendMessageNotification
+    private val pushSendMessageNotification: PushSendMessageNotification,
+    private val getUserTokenByPhoneNumber: GetUserTokenByPhoneNumber
 ) : ViewModel() {
     var btnSendMessageClicked = SingleLiveEvent<Boolean>()
     var message:String?=" "
@@ -45,6 +46,11 @@ class ChatViewmodel @Inject constructor(
     val Notification: LiveData<Resource<String>> = _Notification
 
 
+    private val _userTokenByPhoneNumber: MutableLiveData<Resource<String>> = MutableLiveData(null)
+    val userTokenByPhoneNumber: LiveData<Resource<String>> = _userTokenByPhoneNumber
+
+
+
 
 
     fun sendMessage(sender:String?,reciever:String?,senderUsername:String?,recieverUsername:String?){
@@ -62,6 +68,20 @@ class ChatViewmodel @Inject constructor(
             getChatFromFirebase(sender,reciever){
                 _chatMessages.value=it
             }
+        }
+    }
+
+    fun getToken(phoneNumber:String?){
+        viewModelScope.launch {
+            _userTokenByPhoneNumber.value=Resource.Loading
+            val child1=launch (Dispatchers.IO){
+                getUserTokenByPhoneNumber(phoneNumber!!){
+                    val child2=launch (Dispatchers.Main){
+                        _userTokenByPhoneNumber.value=it
+                    }
+                }
+            }
+            child1.join()
         }
     }
 

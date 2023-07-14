@@ -112,8 +112,8 @@ class Chat(val reciver:String?,val reciverUserName:String?,val user:UserResponse
 
                             //send notification to reciver
                             //get reciver token from api
-                            chatViewmodel.getUserToken(user.id)
-                            chatViewmodel.NotificationToken.observe(viewLifecycleOwner,
+                            chatViewmodel.getToken(reciver)
+                            chatViewmodel.userTokenByPhoneNumber.observe(viewLifecycleOwner,
                                 Observer {
                                     when(it){
                                         is Resource.Loading->{
@@ -131,7 +131,7 @@ class Chat(val reciver:String?,val reciverUserName:String?,val user:UserResponse
                                                         user.name
                                                     )
                                                    ,
-                                                    it.data.tokenForNotifications
+                                                    it.data
                                                 )
 
                                             )
