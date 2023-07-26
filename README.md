@@ -1,5 +1,3 @@
-
-https://github.com/alitahoon/Train_Live_Location/assets/73113143/bf9be6a4-f3b5-4f6d-8271-55b518dda5b7
 # Train Live Location
 It is an android app,That displays The location of the reain Live to help user not to wast his time waiting in the station and other features related to train passengers
 ## Application Features
