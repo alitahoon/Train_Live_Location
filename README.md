@@ -27,9 +27,30 @@ https://github.com/alitahoon/Train_Live_Location/assets/73113143/5baeb992-a977-4
 
 - News
   - By using the train news API, we can obtain the most important train news and display it to the user in an updated manner
-https://github.com/alitahoon/Train_Live_Location/assets/73113143/bb8f707e-3eeb-49aa-961f-481752bb07e4
 
+https://github.com/alitahoon/Train_Live_Location/assets/73113143/c6e11923-1fa5-494e-86bc-8785d37875dd
 
+## Android Technology
+- Firebase
+  - Realtime Database
+  - Cloud Messaging
+  - Authentication
+  - Storage
+- Retrofit
+- Databinding
+- Viewbinding
+- Dependency Injection
+  - Helt
+- Navigation Component
+- Rooming Database
+- Kotlin Coroutines
+- Facbook Shimmer
+- Material Design
+- Google Maps API
+- Route Directions API
+- Clean Architecture Onion Architecture 
+- modularization
+- Architecture Pattern MVVM
 
 
 
