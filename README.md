@@ -20,8 +20,18 @@ https://github.com/alitahoon/Train_Live_Location/assets/73113143/006a7646-883a-4
 
 https://github.com/alitahoon/Train_Live_Location/assets/73113143/fd13e6da-74c1-4c99-8085-2059527eebcc
 
+- Emergency
+  - When there is a serious accident on the train, the identification number of the train is entered, and then all the doctors and nurses present on the train are displayed, and the user can alert them all, then the application sends a notification to these doctors. and When the doctor responds and presses the notification, an illustrative map opens of the patient's location on the train, the distance between them, the number of carriages, and the direction 
 
- 
+https://github.com/alitahoon/Train_Live_Location/assets/73113143/5baeb992-a977-4932-a61c-f608efa491b3
+
+- News
+  - By using the train news API, we can obtain the most important train news and display it to the user in an updated manner
+https://github.com/alitahoon/Train_Live_Location/assets/73113143/bb8f707e-3eeb-49aa-961f-481752bb07e4
+
+
+
+
 
   
 
