@@ -13,7 +13,10 @@ https://github.com/alitahoon/Train_Live_Location/assets/73113143/d5a58173-a5c8-4
 - Information About Stations
   - Here, a notification is sent to users with information about the current train station and the date of its establishment when passing through the various stations
 
-https://github.com/alitahoon/Train_Live_Location/assets/73113143/9202d02d-f324-4467-b1dd-d80e4b4f5c02
+
+
+https://github.com/alitahoon/Train_Live_Location/assets/73113143/006a7646-883a-4618-86b9-db9b6e06805d
+
 
 
 - Missing Staff And Childerns
